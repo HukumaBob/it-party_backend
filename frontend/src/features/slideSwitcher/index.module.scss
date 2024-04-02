@@ -1,0 +1,19 @@
+@import "../../app/styles/vars.scss";
+.slideBlock {
+  max-width: 504px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 4px;
+  gap: 24px;
+  .slide {
+    border: 2px solid $c-str-medium;
+    max-width: 152px;
+    width: 100%;
+  }
+  .slideActive {
+    border: 2px solid $c-str-dark;
+    max-width: 152px;
+    width: 100%;
+  }
+}
