@@ -21,10 +21,11 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('api/', include('users.urls', namespace='users')),
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-    path('api/', include('users.urls', namespace='users')),
+    path('', include('social_django.urls', namespace='social')),
     path(
         'swagger<format>/', schema_view.without_ui(cache_timeout=0),
         name='schema-json'
@@ -40,8 +41,8 @@ urlpatterns = [
         ),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT
-        )
+# if settings.DEBUG:
+#     urlpatterns += static(
+#         settings.MEDIA_URL,
+#         document_root=settings.MEDIA_ROOT
+#         )

@@ -1,8 +1,19 @@
 from django.contrib import admin
 
-from .models import UserProfile, Specialization, Experience
+from .models import (
+    User,
+    UserProfile,
+    Specialization,
+    Experience)
 
 admin.site.site_header = 'Site administration'
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in User._meta.fields
+        ]
 
 
 @admin.register(UserProfile)
