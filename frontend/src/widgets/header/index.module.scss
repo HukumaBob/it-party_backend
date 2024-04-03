@@ -2,7 +2,7 @@
 @import "/src/app/fonts/fonts.scss";
 .container {
   width: 100%;
-  background: $c-def-blue;
+  background: $c-gray;
   height: 84px;
   padding: $sp-20 0px;
   display: flex;
@@ -15,29 +15,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .inputBlock {
-      display: flex;
-      max-width: 505px;
-      width: 100%;
-      position: relative;
-      .input {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        background: $c-def-button;
-        border: 1px solid $c-str-light;
-        border-radius: 8px;
-        padding: $sp-12;
-        outline: 0px;
-      }
-      img {
-        width: 20px;
-        height: 20px;
-        position: absolute;
-        right: 14px;
-        top: 12px;
-      }
-    }
+
     .avatar {
       display: flex;
       align-items: center;
