@@ -162,7 +162,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'nikitahackathon@gmail.com'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 #  Для Гугла требуются пляски с бубном - надо получить App password
 #  https://support.google.com/accounts/answer/185833?hl=en

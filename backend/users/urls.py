@@ -13,7 +13,5 @@ router_v1 = routers.DefaultRouter()
 urlpatterns = [
     path('home/', home, name='home'),
     path('', include(router_v1.urls)),
-    path('auth/', include('djoser.urls')),
     path('activate/<uidb64>/<token>/', activate_account, name='activate'),
-    path('auth/', include('djoser.urls.jwt')),
 ]
