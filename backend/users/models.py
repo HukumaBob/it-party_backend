@@ -4,7 +4,9 @@ from django.contrib.auth.models import (
     PermissionsMixin,
     )
 from users.managers import CustomUserManager
-from additions.models import Country, FamilyStatus, Education, Income
+from additions.models import (
+    Country, FamilyStatus, Education, Income, Notification
+    )
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -50,7 +52,7 @@ class UserProfile(models.Model):
     experience = models.ForeignKey(
         'Experience', on_delete=models.CASCADE
     )
-    #  необязательные поля:    
+    #  необязательные поля:
     date_of_birth = models.DateField(blank=True, null=True)
     familystatus = models.ForeignKey(
         FamilyStatus, on_delete=models.CASCADE, blank=True, null=True
@@ -60,6 +62,9 @@ class UserProfile(models.Model):
         )
     income = models.ForeignKey(
         Income, on_delete=models.CASCADE, blank=True, null=True
+        )
+    notification = models.ForeignKey(
+        Notification, on_delete=models.CASCADE, default=None, null=True
         )
     country = models.ForeignKey(
         Country, on_delete=models.CASCADE, blank=True, null=True

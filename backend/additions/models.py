@@ -39,3 +39,10 @@ class Education(models.Model):
 
     def __str__(self):
         return self.education
+
+
+class Notification(models.Model):
+    notification = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.notification

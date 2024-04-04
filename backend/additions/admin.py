@@ -6,6 +6,7 @@ from .models import (
     Education,
     FamilyStatus,
     Income,
+    Notification
     )
 
 
@@ -41,4 +42,11 @@ class FamilyStatusAdmin(admin.ModelAdmin):
 class IncomeAdmin(admin.ModelAdmin):
     list_display = [
         field.name for field in Income._meta.fields
+        ]
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in Notification._meta.fields
         ]

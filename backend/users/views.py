@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import UserProfile
+from .permissions import IsOwnerOrAdmin
 from .serializers import UserProfileSerializer
 
 
@@ -58,3 +59,4 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     # Указываем набор данных и сериализатор
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+    permission_classes = [IsOwnerOrAdmin]
