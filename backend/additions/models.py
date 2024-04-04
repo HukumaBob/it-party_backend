@@ -18,3 +18,24 @@ class City(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class FamilyStatus(models.Model):
+    familystatus = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.familystatus
+
+
+class Income(models.Model):
+    income = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.income
+
+
+class Education(models.Model):
+    education = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.education

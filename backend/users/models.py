@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
-    BaseUserManager,
     PermissionsMixin,
     )
 from users.managers import CustomUserManager
+from additions.models import Country, FamilyStatus, Education, Income
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -15,11 +15,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+    user_photo = models.ImageField(blank=True)
+    agreement_required = models.BooleanField(default=True)
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []  
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email
@@ -41,7 +43,6 @@ class UserProfile(models.Model):
     place_of_work = models.CharField(max_length=255)
     position = models.CharField(max_length=255)
     online = models.BooleanField(default=False)
-    agreement_required = models.BooleanField(default=True)
     agreement_optional = models.BooleanField(default=False)
     specialization = models.ForeignKey(
         'Specialization', on_delete=models.CASCADE
@@ -49,6 +50,25 @@ class UserProfile(models.Model):
     experience = models.ForeignKey(
         'Experience', on_delete=models.CASCADE
     )
+    #  необязательные поля:    
+    date_of_birth = models.DateField(blank=True, null=True)
+    familystatus = models.ForeignKey(
+        FamilyStatus, on_delete=models.CASCADE, blank=True, null=True
+        )
+    education = models.ForeignKey(
+        Education, on_delete=models.CASCADE, blank=True, null=True
+        )
+    income = models.ForeignKey(
+        Income, on_delete=models.CASCADE, blank=True, null=True
+        )
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, blank=True, null=True
+        )
+    hobby = models.TextField(blank=True, null=True)
+    values = models.TextField(blank=True, null=True)
+    aims = models.TextField(blank=True, null=True)
+    cv = models.TextField(blank=True, null=True)
+    motivation = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.user}'

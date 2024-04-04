@@ -3,7 +3,9 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.db import models
 from users.models import Experience, Specialization
-from additions.models import City, Country
+from additions.models import (
+    City, Country, FamilyStatus, Income, Education,
+    )
 
 
 class Command(BaseCommand):
@@ -28,11 +30,20 @@ class Command(BaseCommand):
         # Загрузка специализаций
         self.load_from_csv(Specialization)
 
-        # # Загрузка опыта работы
+        # # # Загрузка опыта работы
         self.load_from_csv(Experience)
 
-        # Загрузка стран
+        # # Загрузка стран
         self.load_from_csv(Country)
 
-        # Загрузка городов
+        # # Загрузка городов
         self.load_from_csv(City)
+        
+        # Загрузка образования
+        self.load_from_csv(Education)
+        
+        # Загрузка семейного положения
+        self.load_from_csv(FamilyStatus)
+        
+        # Загрузка дохода
+        self.load_from_csv(Income)
