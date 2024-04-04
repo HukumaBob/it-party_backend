@@ -1,0 +1,15 @@
+@import "../../app/styles/vars.scss";
+.chip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 111px;
+  font-size: 13px;
+  border-radius: 12px;
+  max-height: 24px;
+  height: 100%;
+  font-weight: 400;
+  padding: 4px 12px;
+  gap: 4px;
+  color: $c-def-white;
+}

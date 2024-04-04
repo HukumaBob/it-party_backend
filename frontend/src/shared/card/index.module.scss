@@ -1,0 +1,91 @@
+@import "../../app/styles/vars.scss";
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 328px;
+  width: 100%;
+  max-height: 416px;
+  height: 100%;
+  gap: 16px;
+  background: $c-gray;
+  border-radius: 8px;
+  padding-bottom: 16px;
+  .imageBlock {
+    position: relative;
+    .image {
+      width: 100%;
+      max-height: 200px;
+      height: 100%;
+      z-index: 1;
+      border-radius: 8px;
+    }
+    .background {
+      position: absolute;
+      max-width: 328px;
+      width: 100%;
+      background: #70738859;
+      height: 200px;
+      z-index: 2;
+      left: 0;
+      border-radius: 8px;
+
+      &:hover {
+        display: none;
+      }
+    }
+    .info {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: $c-def-white;
+      padding: 4px 8px;
+      z-index: 3;
+      border-radius: 4px;
+    }
+    .favoriteBackground {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 3;
+    }
+  }
+  .title {
+    padding: 0px 16px;
+    font-size: $sp-18;
+    font-weight: 500;
+  }
+  .description {
+    padding: 0px $sp-16;
+    font-size: $sp-13;
+    font-weight: 400;
+  }
+  .eventTime {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0px $sp-16;
+    font-weight: 400;
+    color: #797981;
+    span {
+      font-size: $sp-13;
+    }
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    .button {
+      display: flex;
+      justify-content: center;
+      max-width: 296px;
+      width: 100%;
+      padding: 12px;
+      outline: none;
+      border-radius: 8px;
+      border: none;
+      color: $c-def-white;
+      font-weight: 500;
+      text-align: center;
+      background: $c-def-blue;
+    }
+  }
+}
