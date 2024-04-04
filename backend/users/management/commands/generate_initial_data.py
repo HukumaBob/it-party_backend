@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from users.models import Experience, Specialization
 from additions.models import (
-    City, Country, FamilyStatus, Income, Education,
+    City, Country, FamilyStatus, Income, Education, Notification
     )
 
 
@@ -47,3 +47,6 @@ class Command(BaseCommand):
         
         # Загрузка дохода
         self.load_from_csv(Income)
+        
+        # Загрузка дохода
+        self.load_from_csv(Notification)
