@@ -15,7 +15,8 @@ def set_random_user_photo(sender, instance, created, **kwargs):
         files = list(path.glob('*'))
         # Выбираем случайный файл
         random_file = random.choice(files)
-        # Открываем случайное изображение и устанавливаем его как фото пользователя
+        # Открываем случайное изображение и
+        # устанавливаем его как фото пользователя
         with open(random_file, 'rb') as file:
             instance.user_photo.save(random_file.name, File(file), save=True)
 
