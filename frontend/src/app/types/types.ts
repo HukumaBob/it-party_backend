@@ -4,3 +4,11 @@ export type TChip = {
   icon: boolean;
 };
 
+export type TCard = {
+  info?: string;
+  title: string;
+  description: string;
+  img: string;
+  date:string;
+  time:string;
+};

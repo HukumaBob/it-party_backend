@@ -1,0 +1,24 @@
+@import "../../app/styles/vars.scss";
+.wrapper {
+  .container {
+    .title {
+      font-size: $sp-24;
+      margin-bottom: $sp-32;
+    }
+    .questionsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      .question {
+        display: flex;
+        margin: 0;
+        justify-content: space-between;
+        .text {
+          color: $c-def-black;
+          font-size: $sp-18;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
