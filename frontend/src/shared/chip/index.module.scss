@@ -12,4 +12,36 @@
   padding: 4px 12px;
   gap: 4px;
   color: $c-def-white;
+  border: 1px solid transparent;
+  cursor: pointer;
+  &.blue {
+    &:hover {
+      border: 1px solid $c-ch-act-blue;
+    }
+  }
+  &.purple {
+    &:hover {
+      border: 1px solid $c-ch-act-purple;
+    }
+  }
+  &.pink {
+    &:hover {
+      border: 1px solid $c-ch-act-pink;
+    }
+  }
+  &.green {
+    &:hover {
+      border: 1px solid $c-ch-act-green;
+    }
+  }
+  &.orange {
+    &:hover {
+      border: 1px solid $c-ch-act-orange;
+    }
+  }
+  &.yellow {
+    &:hover {
+      border: 1px solid $c-ch-act-yellow;
+    }
+  }
 }

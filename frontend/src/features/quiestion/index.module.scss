@@ -1,0 +1,33 @@
+@import "../../app/styles/vars.scss";
+.questionBlock {
+  display: flex;
+  margin: 0;
+  justify-content: space-between;
+  cursor: pointer;
+  .question {
+    .text {
+      color: $c-def-black;
+      font-family: "YS-T-Medium";
+      font-size: $sp-18;
+      font-weight: 500;
+    }
+  }
+}
+.response {
+  display: flex;
+  margin: 0;
+  justify-content: space-between;
+  align-items: flex-start;
+  cursor: pointer;
+  .question {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    .text {
+      color: $c-def-black;
+      font-family: "YS-T-Medium";
+      font-size: $sp-18;
+      font-weight: 500;
+    }
+  }
+}

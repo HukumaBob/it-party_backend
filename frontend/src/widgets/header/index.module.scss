@@ -19,6 +19,27 @@
     .avatar {
       display: flex;
       align-items: center;
+      justify-content: flex-end;
+      position: relative;
+      max-width: 240px;
+      width: 100%;
+      // .dropMenu {
+      //   display: flex;
+      //   flex-direction: column;
+      //   position: absolute;
+      //   top: 60px;
+      //   left: 0px;
+      //   background: $c-def-white;
+      //   max-width: 240px;
+      //   width: 100%;
+      //   list-style: none;
+      //   align-items: flex-end;
+      //   padding: 12px 12px 16px 12px;
+      //   z-index: 2;
+      //   li {
+      //     padding: 12px;
+      //   }
+      // }
     }
   }
 }

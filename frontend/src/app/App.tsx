@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { Layout } from "./Layout";
 import { MainPage } from "../pages/MainPage";
 import { AuthorizationPage } from "../pages/AuthorizationPage";
+import { EventPage } from "../pages/EventPage";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         /> */}
         <Route element={<Layout />}>
           <Route path='/' element={<MainPage />} />
-          {/* <Route path='/event' element={<EventPage />} /> */}
+          <Route path='/event' element={<EventPage />} />
           {/* <Route path='/account' element={<AccountPage />} /> */}
           {/* <Route path='/myEvent' element={<MyEventPage />} /> */}
         </Route>
