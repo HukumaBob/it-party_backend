@@ -9,7 +9,7 @@ environ.Env.read_env(BASE_DIR / '.env')
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', default="secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'users',
     'additions',
     'core',
+    'events',
 ]
 
 MIDDLEWARE = [
@@ -162,8 +163,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default="")
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default="")
 #  Для Гугла требуются пляски с бубном - надо получить App password
 #  https://support.google.com/accounts/answer/185833?hl=en
 
@@ -184,11 +185,5 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_YANDEX_OAUTH2_KEY = env('SOCIAL_AUTH_YANDEX_OAUTH2_KEY')
-SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = env('SOCIAL_AUTH_YANDEX_OAUTH2_SECRET')
-
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+SOCIAL_AUTH_YANDEX_OAUTH2_KEY = env('SOCIAL_AUTH_YANDEX_OAUTH2_KEY', default="")
+SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = env('SOCIAL_AUTH_YANDEX_OAUTH2_SECRET', default="")
