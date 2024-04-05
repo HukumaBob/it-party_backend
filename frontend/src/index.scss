@@ -1,0 +1,9 @@
+@import "./app/fonts/fonts.scss";
+@import "./app/styles/vars.scss";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "YS-T-Regular", sans-serif;
+  font-size: $sp-16;
+}
