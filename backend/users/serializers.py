@@ -10,8 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('email', 'password', 'agreement_required')
-        ref_name = 'UserSerializer1' #  два разных сериализатора
-        #  (djoser.serializers.UserSerializer и users.serializers.UserSerializer)
+        ref_name = 'UserSerializer1'
+        #  два разных сериализатора(djoser.serializers.UserSerializer
+        #  и users.serializers.UserSerializer)
         #  неявно используют одно и то же имя ссылки (ref_name).
         #  Это приводит к конфликту, поскольку drf_yasg пытается
         #  создать две разные схемы с одним и тем же ref_name. Поэтому
