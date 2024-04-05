@@ -155,7 +155,7 @@ DJOSER = {
     # 'ACTIVATION_URL': '#/activate/{uid}/{token}', #  Регистрация на стороне клиента
     'ACTIVATION_URL': 'api/activate/{uid}/{token}', #  Регистрация на стороне сервера
     'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {'user_create': 'users.serializers.UserSerializer',},
+    'SERIALIZERS': {'user_create': 'users.serializers.UserSerializer', },
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
