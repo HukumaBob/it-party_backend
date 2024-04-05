@@ -41,16 +41,18 @@ class UserProfile(models.Model):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=255)
-    place_of_work = models.CharField(max_length=255)
-    position = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255, blank=True)
+    place_of_work = models.CharField(max_length=255, blank=True)
+    position = models.CharField(max_length=255, blank=True)
     online = models.BooleanField(default=False)
     agreement_optional = models.BooleanField(default=False)
     specialization = models.ForeignKey(
-        'Specialization', on_delete=models.CASCADE
+        'Specialization', on_delete=models.CASCADE,
+        blank=True, null=True
     )
     experience = models.ForeignKey(
-        'Experience', on_delete=models.CASCADE
+        'Experience', on_delete=models.CASCADE,
+        blank=True, null=True
     )
     #  необязательные поля:
     date_of_birth = models.DateField(blank=True, null=True)
@@ -64,7 +66,8 @@ class UserProfile(models.Model):
         Income, on_delete=models.CASCADE, blank=True, null=True
         )
     notification = models.ForeignKey(
-        Notification, on_delete=models.CASCADE, default=None, null=True
+        Notification, on_delete=models.CASCADE,
+        blank=True, null=True
         )
     country = models.ForeignKey(
         Country, on_delete=models.CASCADE, blank=True, null=True
