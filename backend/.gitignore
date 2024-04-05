@@ -152,4 +152,5 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-/media/
+media/user_photo/
+media/random_photo/
