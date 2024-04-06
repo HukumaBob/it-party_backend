@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from .models import City, Country
+from .models import (
+    City,
+    Country,
+    Education,
+    FamilyStatus,
+    Income,
+    Notification
+    )
 
 
 @admin.register(City)
@@ -14,4 +21,32 @@ class CityAdmin(admin.ModelAdmin):
 class CountryAdmin(admin.ModelAdmin):
     list_display = [
         field.name for field in Country._meta.fields
+        ]
+
+
+@admin.register(Education)
+class EducationAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in Education._meta.fields
+        ]
+
+
+@admin.register(FamilyStatus)
+class FamilyStatusAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in FamilyStatus._meta.fields
+        ]
+
+
+@admin.register(Income)
+class IncomeAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in Income._meta.fields
+        ]
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in Notification._meta.fields
         ]

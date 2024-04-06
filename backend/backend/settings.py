@@ -1,4 +1,5 @@
 from datetime import timedelta
+from django.utils.translation import gettext_lazy as _
 from pathlib import Path
 import environ
 
@@ -9,7 +10,7 @@ environ.Env.read_env(BASE_DIR / '.env')
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', default="secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'users',
     'additions',
     'core',
+    'events',
 ]
 
 MIDDLEWARE = [
@@ -45,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -109,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -117,6 +120,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = [
+    ('en', _('English')),
+    ('ru', _('Russian')),
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -155,15 +162,15 @@ DJOSER = {
     # 'ACTIVATION_URL': '#/activate/{uid}/{token}', #  Регистрация на стороне клиента
     'ACTIVATION_URL': 'api/activate/{uid}/{token}', #  Регистрация на стороне сервера
     'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
+    'SERIALIZERS': {'user_create': 'users.serializers.UserSerializer', },
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default="")
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default="")
 #  Для Гугла требуются пляски с бубном - надо получить App password
 #  https://support.google.com/accounts/answer/185833?hl=en
 
@@ -184,5 +191,15 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_YANDEX_OAUTH2_KEY = env('SOCIAL_AUTH_YANDEX_OAUTH2_KEY')
-SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = env('SOCIAL_AUTH_YANDEX_OAUTH2_SECRET')
+SOCIAL_AUTH_YANDEX_OAUTH2_KEY = env(
+    'SOCIAL_AUTH_YANDEX_OAUTH2_KEY', default=""
+    )
+SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = env(
+    'SOCIAL_AUTH_YANDEX_OAUTH2_SECRET', default=""
+    )
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
