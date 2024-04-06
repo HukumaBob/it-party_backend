@@ -15,10 +15,10 @@
     outline: 0px;
   }
   img {
-    width: 20px;
-    height: 20px;
+    width: $sp-20;
+    height: $sp-20;
     position: absolute;
     right: 14px;
-    top: 12px;
+    top: $sp-12;
   }
 }

@@ -51,3 +51,36 @@ export type TBanner = {
     banner_blue: string;
   };
 };
+
+export type TProps = {
+  children: React.ReactNode;
+  close: () => void;
+};
+
+export type TStateCard = {
+  active: boolean;
+  open: boolean;
+};
+
+export type TActionCard =
+  | { type: "TOGGLE_ACTIVE"; payload: boolean }
+  | { type: "SET_OPEN"; payload: boolean };
+
+export type TPopupRegistration = {
+  onClose: () => void;
+};
+
+export type TTextInput = {
+  title: string;
+  placeholder: string;
+  type: string;
+};
+
+export type TForm = {
+  nameForm: string;
+  children: React.ReactNode;
+};
+
+export type TSelectInput = {
+  title: string;
+};

@@ -3,7 +3,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: $sp-32;
   .title {
     font-family: "YS-T-Medium";
     font-size: $sp-24;
@@ -11,6 +11,6 @@
   }
   .cardContainer {
     display: flex;
-    gap: 24px;
+    gap: $sp-24;
   }
 }

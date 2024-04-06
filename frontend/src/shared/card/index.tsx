@@ -1,10 +1,28 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import style from "./index.module.scss";
 import eventCard from "../../app/assets/image/EventCardImage/Photo.png";
 import calendar from "../../app/assets/icons/calendar.svg";
 import inactiveFavorite from "../../app/assets/icons/inactiveFavorite.svg";
 import favoriteActive from "../../app/assets/icons/favoriteActive.svg";
-import { TCard } from "../../app/types/types";
+import { TActionCard, TCard, TStateCard } from "../../app/types/types";
+import { PopupRegistration } from "../../entities/PopupRegistration";
+
+const reducer = (state: TStateCard, action: TActionCard) => {
+  switch (action.type) {
+    case "TOGGLE_ACTIVE":
+      return {
+        ...state,
+        active: action.payload,
+      };
+    case "SET_OPEN":
+      return {
+        ...state,
+        open: action.payload,
+      };
+    default:
+      return state;
+  }
+};
 export const EventCard = ({
   info,
   title,
@@ -13,9 +31,22 @@ export const EventCard = ({
   date,
   time,
 }: TCard) => {
-  const [active, setActive] = useState<boolean>(false);
+  const [state, dispatch] = useReducer(reducer, {
+    active: false,
+    open: false,
+  });
+  const { active, open } = state;
+
   const handleClick = () => {
-    setActive(!active);
+    dispatch({ type: "TOGGLE_ACTIVE", payload: !active });
+  };
+
+  const handleOpen = () => {
+    dispatch({ type: "SET_OPEN", payload: true });
+  };
+
+  const handleClose = () => {
+    dispatch({ type: "SET_OPEN", payload: false });
   };
   return (
     <div className={style.wrapper}>
@@ -48,7 +79,14 @@ export const EventCard = ({
         <span> {time}</span>
       </div>
       <div className={style.buttonContainer}>
-        <button className={style.button}>Подать заявку</button>
+        <button className={style.button} onClick={handleOpen}>
+          Подать заявку
+        </button>
+        {open && (
+          <div className={style.popup}>
+            <PopupRegistration onClose={handleClose} />
+          </div>
+        )}
       </div>
     </div>
   );

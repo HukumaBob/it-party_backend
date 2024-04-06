@@ -22,7 +22,7 @@
   .question {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: $sp-16;
     .text {
       color: $c-def-black;
       font-family: "YS-T-Medium";

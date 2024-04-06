@@ -2,7 +2,7 @@ import React from "react";
 import { EventCard } from "../../shared/card";
 import style from "./index.module.scss";
 import { TPopularOrRecomendedEvents } from "../../app/types/types";
-export const PopularOrRecomendedEvents = ({
+export const CardBlock = ({
   title,
 }: TPopularOrRecomendedEvents) => {
   return (

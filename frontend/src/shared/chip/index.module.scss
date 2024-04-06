@@ -4,12 +4,12 @@
   justify-content: center;
   align-items: center;
   max-width: 111px;
-  font-size: 13px;
-  border-radius: 12px;
-  max-height: 24px;
+  font-size:$sp-13;
+  border-radius: $sp-12;
+  max-height: $sp-24;
   height: 100%;
   font-weight: 400;
-  padding: 4px 12px;
+  padding: 4px $sp-12;
   gap: 4px;
   color: $c-def-white;
   border: 1px solid transparent;

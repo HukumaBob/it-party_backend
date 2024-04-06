@@ -1,3 +1,4 @@
+@import "../../app/styles/vars.scss";
 .container {
   max-width: 120px;
   width: 100%;
@@ -12,5 +13,24 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    position: relative;
   }
+  .calendarBlock {
+    position: absolute;
+    background: $c-def-white;
+    top: 0;
+    z-index: 12;
+  }
+}
+
+.customCalendar {
+  position: absolute;
+  top: 50px;
+  // left: 0px;
+  right: -100px;
+  background-color: #d8d8d8;
+  color: $c-def-black;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 12;
 }

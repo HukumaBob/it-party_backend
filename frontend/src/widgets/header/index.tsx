@@ -19,18 +19,23 @@ export const Header = () => {
         </div>
         <SearchInput />
         <div className={style.avatar} onClick={handleClick}>
-          {/* <span>Владимир</span> */}
           <img src={avatar} alt='avatar' />
-          {/* {open ? (
+          {open ? (
             <ul className={style.dropMenu}>
+              <li className={style.dropMenu_avatar}>
+                <span>Владимир Белоголовцев</span>
+                <img src={avatar} alt='avatar' />
+              </li>
               <li>Управление аккаунтом</li>
-              <li>Мои мероприятия</li>
+              <li>
+                <Link to='/myEvent'>Мои мероприятия</Link>
+              </li>
               <li>Помощь</li>
               <li>Выйти</li>
             </ul>
           ) : (
             ""
-          )} */}
+          )}
         </div>
       </div>
     </header>

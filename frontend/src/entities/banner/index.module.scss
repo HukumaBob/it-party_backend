@@ -7,7 +7,7 @@
   align-items: flex-end;
   justify-content: center;
   color: $c-def-black;
-  margin-bottom: 24px;
+  margin-bottom: $sp-24;
   transition: all 1s ease;
   .box {
     background-color: $c-ch-act-green;
@@ -71,7 +71,7 @@
   }
   .subTitle {
     position: absolute;
-    bottom: 12px;
+    bottom: $sp-12;
     right: 100px;
     font-size: 100px;
     z-index: 2;
@@ -134,7 +134,7 @@
   }
   .line {
     background-color: $c-ch-act-purple;
-    top: 20px;
+    top: $sp-20;
     left: 415px;
    
     .city {

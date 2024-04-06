@@ -2,6 +2,8 @@
 .wrapper {
   .container {
     .title {
+      font-family: "YS-T-Medium";
+      font-weight: 500;
       font-size: $sp-24;
       margin-bottom: $sp-32;
     }
@@ -11,7 +13,7 @@
       gap: 26px;
       .otherQuestions {
         .help {
-          color:$c-def-blue;
+          color: $c-def-blue;
         }
       }
     }

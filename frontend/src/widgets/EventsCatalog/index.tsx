@@ -2,6 +2,7 @@ import React from "react";
 import { FilterBlock } from "../../features/FilterBlock";
 import style from "./index.module.scss";
 import { EventCard } from "../../shared/card";
+import { Link } from "react-router-dom";
 export const EventsCatalog = () => {
   return (
     <div className={style.wrapper}>
@@ -17,6 +18,7 @@ export const EventsCatalog = () => {
           time='12:00'
           info='Есть запись'
         />
+
         <EventCard
           title='Библиотека решений платформы данныхYandex Cloud'
           description='Рассказали о структуре библиотеки и разобрали два решения.'
@@ -24,6 +26,7 @@ export const EventsCatalog = () => {
           date='29 февраля 2024'
           time='12:00'
         />
+
         <EventCard
           title='Библиотека решений платформы данныхYandex Cloud'
           description='Рассказали о структуре библиотеки и разобрали два решения.'
