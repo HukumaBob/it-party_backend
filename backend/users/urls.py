@@ -1,6 +1,10 @@
 from django.urls import include, path
 from rest_framework import routers
-from .views import ActivateAccountView, UserProfileViewSet
+from .views import (
+    ActivateAccountView,
+    PasswordResetConfirmView,
+    UserProfileViewSet,
+    )
 
 # from .views import ProfileViewSet
 
@@ -15,6 +19,11 @@ urlpatterns = [
     path(
         'activate/<uidb64>/<token>/',
         ActivateAccountView.as_view(),
+        name='activate'
+        ),
+    path(
+        'password/reset/confirm/<uidb64>/<token>/',
+        PasswordResetConfirmView.as_view(),
         name='activate'
         ),
 ]

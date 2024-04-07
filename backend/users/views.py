@@ -6,6 +6,7 @@ from django.utils.http import urlsafe_base64_decode
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.utils.translation import gettext_lazy as _
 from .models import UserProfile
 from .permissions import IsOwnerOrAdmin
 from .serializers import UserProfileSerializer
@@ -38,15 +39,60 @@ class ActivateAccountView(APIView):
             user.save()
             # Возвращаем сообщение об успешной активации
             return Response(
-                'Спасибо за подтверждение вашего электронного адреса. '
-                'Теперь вы можете войти в свой аккаунт.',
+                _(
+                    'Спасибо за подтверждение вашего электронного адреса. '
+                    'Теперь вы можете войти в свой аккаунт.'
+                    ),
                 status=status.HTTP_200_OK
                 )
         else:
             # Возвращаем сообщение об ошибке
             return Response(
-                'Ссылка для активации недействительна!',
+                _('Ссылка для активации недействительна!'),
                 status=status.HTTP_400_BAD_REQUEST)
+
+
+# Аналогичный класс для восстановления пароля
+class PasswordResetConfirmView(APIView):
+    def post(self, request, uidb64, token):
+        User = get_user_model()
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            return Response(
+                {
+                    'detail': _(
+                        'Ссылка для восстановления пароля недействительна!'
+                        )
+                    },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not default_token_generator.check_token(user, token):
+            return Response(
+                {
+                    'detail': _(
+                        'Ссылка для восстановления пароля недействительна!'
+                        )
+                        },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        new_password = request.data.get('new_password')
+        if new_password is None:
+            return Response(
+                {'detail': _('Необходимо указать новый пароль')},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response(
+            {'detail': _('Пароль успешно обновлен')},
+            status=status.HTTP_200_OK
+        )
 
 
 # Класс для работы с профилем пользователя через API

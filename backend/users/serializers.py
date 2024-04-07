@@ -1,7 +1,31 @@
+import re
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from .models import UserProfile
+
+
+def validate_password(value):
+    if len(value) < 8:
+        raise ValidationError(
+            _('Пароль должен содержать не менее 8 символов.')
+            )
+    if not re.search('[A-Za-z]', value):
+        raise ValidationError(
+            _('Пароль должен содержать хотя бы одну латинскую букву.')
+            )
+    if not re.search(r'\d', value):
+        raise ValidationError(
+            _('Пароль должен содержать хотя бы одну цифру.')
+            )
+    if not re.search(r'^[\w@%&$*#^-]+$', value):
+        raise ValidationError(
+            _(
+                'Пароль может содержать только латинские '
+                'буквы, цифры и специальные символы.'
+                )
+            )
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,10 +48,17 @@ class UserSerializer(serializers.ModelSerializer):
             raise ValidationError(
                 {
                     "agreement_required":
-                    "Вы должны согласиться с условиями использования."
+                    _("Вы должны согласиться с условиями использования.")
                     }
                 )
+        #  Djoser сохраняет пароль в открытом виде, поэтому приходится
+        #  удалять пароль и после хеширования засовывать обратно.
+        #  Иначе не дает токен.
+        password = validated_data.pop('password')
+        validate_password(password)
         user = super().create(validated_data)
+        user.set_password(password)
+        user.save()
         return user
 
 
