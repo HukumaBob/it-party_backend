@@ -6,6 +6,8 @@ import inactiveFavorite from "../../app/assets/icons/inactiveFavorite.svg";
 import favoriteActive from "../../app/assets/icons/favoriteActive.svg";
 import { TActionCard, TCard, TStateCard } from "../../app/types/types";
 import { PopupRegistration } from "../../entities/PopupRegistration";
+import { Link } from "react-router-dom";
+import { RegistrationButton } from "../../features/RegistrationButton";
 
 const reducer = (state: TStateCard, action: TActionCard) => {
   switch (action.type) {
@@ -43,6 +45,7 @@ export const EventCard = ({
 
   const handleOpen = () => {
     dispatch({ type: "SET_OPEN", payload: true });
+    window.scrollTo({ top: 100, behavior: "smooth" });
   };
 
   const handleClose = () => {
@@ -50,43 +53,41 @@ export const EventCard = ({
   };
   return (
     <div className={style.wrapper}>
-      <div className={style.imageBlock}>
-        <span className={`${info ? style.info : style.none}`}>{info}</span>
-        <div className={style.favoriteBackground} onClick={handleClick}>
-          {active ? (
-            <img
-              src={favoriteActive}
-              alt='favorite'
-              className={style.favorite}
-              onClick={handleClick}
-            />
-          ) : (
-            <img
-              src={inactiveFavorite}
-              alt='favorite'
-              className={style.favorite}
-            />
-          )}
-        </div>
-        <img src={eventCard} alt='eventImage' className={style.image} />
-        <span className={style.background}></span>
-      </div>
-      <span className={style.title}>{title}</span>
-      <span className={style.description}>{description}</span>
-      <div className={style.eventTime}>
-        <img src={calendar} alt='calendar' />
-        <span>{date}</span>
-        <span> {time}</span>
-      </div>
-      <div className={style.buttonContainer}>
-        <button className={style.button} onClick={handleOpen}>
-          Подать заявку
-        </button>
-        {open && (
-          <div className={style.popup}>
-            <PopupRegistration onClose={handleClose} />
+      <Link to='/event'>
+        <div className={style.imageBlock}>
+          <span className={`${info ? style.info : style.none}`}>{info}</span>
+          <div className={style.favoriteBackground} onClick={handleClick}>
+            {active ? (
+              <img
+                src={favoriteActive}
+                alt='favorite'
+                className={style.favorite}
+                onClick={handleClick}
+              />
+            ) : (
+              <img
+                src={inactiveFavorite}
+                alt='favorite'
+                className={style.favorite}
+              />
+            )}
           </div>
-        )}
+          <img src={eventCard} alt='eventImage' className={style.image} />
+          <span className={style.background}></span>
+        </div>
+        <span className={style.title}>{title}</span>
+        <span className={style.description}>{description}</span>
+        <div className={style.eventTime}>
+          <img src={calendar} alt='calendar' />
+          <span>{date}</span>
+          <span> {time}</span>
+        </div>
+      </Link>
+
+      <div className={style.buttonContainer}>
+        <div className={style.button}>
+          <RegistrationButton />
+        </div>
       </div>
     </div>
   );

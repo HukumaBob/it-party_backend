@@ -1,0 +1,22 @@
+@import "../../app/styles/vars.scss";
+.button {
+  max-width: 328px;
+  width: 100%;
+  max-height: 44px;
+  height: 100%;
+  background: $c-def-blue;
+  color: $c-def-white;
+  border: none;
+  padding: $sp-12;
+  border-radius: 8px;
+}
+.popup {
+  max-width: 99vw;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  left: 0;
+  z-index: 4;
+  top: 200px;
+}

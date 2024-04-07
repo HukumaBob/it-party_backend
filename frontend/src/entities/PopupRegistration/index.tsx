@@ -9,9 +9,14 @@ import { SelectInput } from "../../shared/inputs/selectInput";
 import { CheckBox } from "../../shared/checkbox";
 
 export const PopupRegistration = ({ onClose }: TPopupRegistration) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
   const handleClick = () => {
-    setOpen(!open);
+    if (isValid) {
+      console.log(isValid);
+      console.log("Форма отправлена");
+    } else {
+      console.log("Форма не может быть отправлена из-за ошибок валидации");
+    }
   };
   return (
     <div className={style.wrapper}>
@@ -36,7 +41,12 @@ export const PopupRegistration = ({ onClose }: TPopupRegistration) => {
         <div className={style.form}>
           <Form nameForm={"Персональные данные"}>
             <TextInput title={"Имя"} placeholder={"Иван"} type='text' />
-            <TextInput title={"Фамилия"} placeholder={"Иванов"} type='text' />
+            <TextInput
+              title={"Фамилия"}
+              placeholder={"Иванов"}
+              type='text'
+              isValid={isValid}
+            />
           </Form>
           <Form nameForm={"Контакты"}>
             <TextInput

@@ -1,0 +1,33 @@
+@import "../../app/styles/vars.scss";
+.speaker_1 {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 500px;
+  transform-style: preserve-3d;
+  transform: rotateY(180deg);
+  transition: transform 1s ease;
+
+  &:hover {
+    transform: rotateX(0deg);
+  }
+
+  .speaker_1__info {
+    display: none;
+  }
+  &:hover .speaker_1__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 240px;
+    text-align: center;
+    width: 100%;
+    gap: 24px;
+    .name {
+      font-family: "YS-D-Medium";
+      font-weight: 500;
+      font-size: $sp-24;
+    }
+  }
+}

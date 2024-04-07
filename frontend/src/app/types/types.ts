@@ -74,6 +74,7 @@ export type TTextInput = {
   title: string;
   placeholder: string;
   type: string;
+  isValid?: boolean;
 };
 
 export type TForm = {
@@ -83,4 +84,10 @@ export type TForm = {
 
 export type TSelectInput = {
   title: string;
+};
+
+export type TSpeaker = {
+  name: string;
+  post: string;
+  img: string;
 };

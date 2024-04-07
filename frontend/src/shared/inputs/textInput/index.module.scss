@@ -16,9 +16,14 @@
     outline: none;
     border-radius: $sp-12;
   }
-  span {
+  .message {
     font-family: "YS-T-Regular";
     font-size: $sp-13;
     color: $c-black-500;
+  }
+  .error {
+    font-family: "YS-T-Regular";
+    font-size: $sp-13;
+    color: $c-er-red;
   }
 }

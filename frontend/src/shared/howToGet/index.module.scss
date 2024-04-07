@@ -1,0 +1,16 @@
+@import "../../app/styles/vars.scss";
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  .title {
+    font-family: "YS-D-Medium";
+    font-weight: 500;
+    font-size: $sp-24;
+  }
+  .howToGet {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+}
