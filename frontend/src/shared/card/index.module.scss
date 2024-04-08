@@ -11,61 +11,61 @@
   background: $c-gray;
   border-radius: 8px;
   padding-bottom: $sp-16;
+  .imageBlock {
+    position: relative;
+    &:hover {
+      .background {
+        display: none;
+      }
+    }
+    .image {
+      max-width: 328px;
+      max-height: 200px;
+      height: 100%;
+      z-index: 1;
+      border-radius: 8px 8px 0px 0px;
+      background: #70738859;
+    }
+    .background {
+      position: absolute;
+      max-width: 328px;
+      width: 100%;
+      background: #70738859;
+      height: 200px;
+      z-index: 2;
+      left: 0;
+      border-radius: 8px;
+    }
+    .info {
+      position: absolute;
+      top: $sp-12;
+      left: $sp-12;
+      background: $c-def-white;
+      padding: 4px 8px;
+      z-index: 3;
+      border-radius: 4px;
+    }
+    .none {
+      display: none;
+    }
+    .favoriteBackground {
+      position: absolute;
+      top: $sp-12;
+      right: $sp-12;
+      z-index: 4;
+      cursor: pointer;
+      .favorite {
+        width: $sp-20;
+        height: $sp-20;
+      }
+    }
+  }
   a {
     display: flex;
     flex-direction: column;
     text-decoration: none;
     color: $c-def-black;
     gap: 16px;
-    .imageBlock {
-      position: relative;
-      &:hover {
-        .background {
-          display: none;
-        }
-      }
-      .image {
-        max-width: 328px;
-        max-height: 200px;
-        height: 100%;
-        z-index: 1;
-        border-radius: 8px 8px 0px 0px;
-        background: #70738859;
-      }
-      .background {
-        position: absolute;
-        max-width: 328px;
-        width: 100%;
-        background: #70738859;
-        height: 200px;
-        z-index: 2;
-        left: 0;
-        border-radius: 8px;
-      }
-      .info {
-        position: absolute;
-        top: $sp-12;
-        left: $sp-12;
-        background: $c-def-white;
-        padding: 4px 8px;
-        z-index: 3;
-        border-radius: 4px;
-      }
-      .none {
-        display: none;
-      }
-      .favoriteBackground {
-        position: absolute;
-        top: $sp-12;
-        right: $sp-12;
-        z-index: 3;
-        cursor: pointer;
-        .favorite {
-          width: $sp-20;
-          height: $sp-20;
-        }
-      }
-    }
     .title {
       font-family: "YS-T-Medium";
       padding: 0px $sp-16;

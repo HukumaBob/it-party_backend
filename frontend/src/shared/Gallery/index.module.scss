@@ -9,13 +9,17 @@
   .topImage {
     display: flex;
     gap: $sp-24;
+    width: 100%;
+    flex-wrap: wrap;
     margin-bottom: $sp-24;
     .gallery_1 {
       max-width: 328px;
+      width: 100%;
       max-height: 324px;
     }
     .gallery_2 {
       max-width: 680px;
+      width: 100%;
       max-height: 324px;
     }
   }

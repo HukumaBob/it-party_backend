@@ -8,8 +8,7 @@
   background: $c-def-white;
   position: relative;
   border-radius: 8px;
-  box-shadow: 2px 2px 12px 0px #242F7B26;
-  
+  box-shadow: 2px 2px 12px 0px #242f7b26;
 
   .closeIcon {
     display: flex;
@@ -24,7 +23,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    justify-content: center;
     max-width: 576px;
     width: 100%;
     position: relative;
@@ -49,6 +48,35 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
+      align-items: center;
+      .name_form {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        label {
+          font-weight: 500;
+          font-family: "YS-T-Medium";
+          span {
+            color: $c-def-blue;
+          }
+        }
+        input {
+          padding: $sp-16;
+          border: 1px solid $c-str-medium;
+          outline: none;
+          border-radius: $sp-12;
+        }
+        .message {
+          font-family: "YS-T-Regular";
+          font-size: $sp-13;
+          color: $c-black-500;
+        }
+        .error {
+          font-family: "YS-T-Regular";
+          font-size: $sp-13;
+          color: $c-er-red;
+        }
+      }
 
       .element {
         display: flex;
@@ -58,7 +86,7 @@
         align-items: center;
       }
     }
-    .button {
+    .submit {
       max-width: 300px;
       width: 100%;
       display: flex;
@@ -69,6 +97,13 @@
       border-radius: 8px;
       background-color: $c-def-blue;
       color: $c-def-white;
+      cursor: pointer;
+    }
+    .disabled {
+      @extend .submit;
+      background-color: $c-black-300;
+      color: $c-def-white;
+      cursor: not-allowed;
     }
   }
 }

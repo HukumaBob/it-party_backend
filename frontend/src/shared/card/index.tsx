@@ -53,28 +53,28 @@ export const EventCard = ({
   };
   return (
     <div className={style.wrapper}>
-      <Link to='/event'>
-        <div className={style.imageBlock}>
-          <span className={`${info ? style.info : style.none}`}>{info}</span>
-          <div className={style.favoriteBackground} onClick={handleClick}>
-            {active ? (
-              <img
-                src={favoriteActive}
-                alt='favorite'
-                className={style.favorite}
-                onClick={handleClick}
-              />
-            ) : (
-              <img
-                src={inactiveFavorite}
-                alt='favorite'
-                className={style.favorite}
-              />
-            )}
-          </div>
-          <img src={eventCard} alt='eventImage' className={style.image} />
-          <span className={style.background}></span>
+      <div className={style.imageBlock}>
+        <span className={`${info ? style.info : style.none}`}>{info}</span>
+        <div className={style.favoriteBackground} onClick={handleClick}>
+          {active ? (
+            <img
+              src={favoriteActive}
+              alt='favorite'
+              className={style.favorite}
+              onClick={handleClick}
+            />
+          ) : (
+            <img
+              src={inactiveFavorite}
+              alt='favorite'
+              className={style.favorite}
+            />
+          )}
         </div>
+        <img src={eventCard} alt='eventImage' className={style.image} />
+        <span className={style.background}></span>
+      </div>
+      <Link to='/event'>
         <span className={style.title}>{title}</span>
         <span className={style.description}>{description}</span>
         <div className={style.eventTime}>

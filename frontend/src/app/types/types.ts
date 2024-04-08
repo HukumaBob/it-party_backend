@@ -90,4 +90,21 @@ export type TSpeaker = {
   name: string;
   post: string;
   img: string;
+  imgReverse: string;
+};
+
+export type TFormValues = {
+  name: string;
+  secondName: string;
+  email: string;
+  phoneNumber: string;
+  workplace: string;
+  post: string;
+  experience: string;
+  direction: string;
+  onlineParticipation: boolean;
+  offlineParticipation: boolean;
+};
+export type TFormErrors = {
+  FieldErrors: TFormValues;
 };

@@ -5,13 +5,29 @@
   flex-direction: column;
   height: 500px;
   transform-style: preserve-3d;
-  transform: rotateY(180deg);
+  transform: rotateY(0deg);
   transition: transform 1s ease;
 
   &:hover {
-    transform: rotateX(0deg);
+    transform: rotateY(180deg);
+    .image {
+      opacity: 1;
+      display: block;
+    }
+    .imageReverse {
+      opacity: 0;
+      display: none;
+    }
   }
+  .imageReverse {
+    opacity: 1;
+  }
+  .image {
+    opacity: 0;
+    display: none;
+    transform: rotateY(180deg);
 
+  }
   .speaker_1__info {
     display: none;
   }
