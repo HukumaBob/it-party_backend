@@ -1,0 +1,14 @@
+@import "../../app/styles/vars.scss";
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-32;
+  .filterBlock {
+    height: 88px;
+  }
+  .cardsBlock {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $sp-24;
+  }
+}

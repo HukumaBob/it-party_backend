@@ -1,0 +1,26 @@
+@import "../../app/fonts/fonts.scss";
+@import "../../app/styles/vars.scss";
+.container {
+  display: flex;
+  max-height: 500px;
+  flex-direction: column;
+  .title {
+    font-family: "YS-T-Medium";
+    font-size: $sp-24;
+    font-weight: 500;
+    margin-bottom: $sp-32;
+  }
+  .reviewsBlock {
+    display: flex;
+    height: 412px;
+    margin-bottom: $sp-24;
+    justify-content: center;
+    gap: $sp-24;
+ 
+  }
+  .slider {
+    display: flex;
+    justify-content: center;
+    z-index: 1;
+  }
+}

@@ -1,0 +1,57 @@
+@import "../../app/styles/vars.scss";
+.mainText {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-24;
+
+  .title {
+    font-family: "YS-D-Medium";
+    font-size: $sp-24;
+    font-weight: 500;
+  }
+  .discription {
+    font-family: "YS-T-Regular";
+    font-weight: 400;
+    font-size: $sp-16;
+    display: flex;
+    flex-direction: column;
+    gap: $sp-24;
+    .paragraph {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 680px;
+      width: 100%;
+    }
+    .list {
+      li {
+        margin-left: 24px;
+      }
+
+      li:first-child {
+        margin-top: 8px;
+      }
+    }
+    .info {
+      margin: 0;
+      max-width: 680px;
+      width: 100%;
+    }
+    .warning {
+      display: flex;
+      justify-content: space-between;
+      p {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .button {
+        max-width: 328px;
+        width: 100%;
+        max-height: 44px;
+        height: 100%;
+      }
+    }
+  }
+}

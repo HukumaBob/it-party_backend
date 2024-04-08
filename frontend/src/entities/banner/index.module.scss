@@ -7,7 +7,8 @@
   align-items: flex-end;
   justify-content: center;
   color: $c-def-black;
-  margin-bottom: 24px;
+  margin-bottom: $sp-24;
+  transition: all 1s ease;
   .box {
     background-color: $c-ch-act-green;
     max-width: 416px;
@@ -15,9 +16,10 @@
     max-height: 416px;
     height: 100%;
     position: absolute;
-    right: 0;
+    left: 616px;
     top: 0;
     z-index: 1;
+    transition: all 1s ease;
   }
   .line {
     display: flex;
@@ -28,19 +30,20 @@
     max-height: 80px;
     height: 100%;
     position: absolute;
-    right: 0;
-    bottom: 65px;
+    left: 0;
+    top: 400px;
     z-index: 3;
-    font-family: Helvetica, sans-serif;
+    font-family: Helvetica;
     font-weight: 700;
     font-size: 60px;
     letter-spacing: -3px;
     justify-content: center;
+    transition: all 1s ease;
 
     .city {
       font-weight: 300;
       font-size: 60px;
-      font-family: Helvetica, sans-serif;
+      font-family: Helvetica;
     }
   }
   img {
@@ -54,31 +57,101 @@
   .title {
     position: absolute;
     top: 120px;
-    left: 20px;
+    left: 0px;
     font-size: 140px;
     z-index: 2;
-    max-width: 750px;
+    max-width: 880px;
     width: 100%;
     max-height: 240px;
     height: 100%;
     line-height: 120px;
     font-weight: 700;
     letter-spacing: -3px;
-    font-family: Helvetica, sans-serif;
+    font-family: Helvetica;
   }
   .subTitle {
     position: absolute;
-    top: 365px;
-    left: 64px;
+    bottom: $sp-12;
+    right: 100px;
     font-size: 100px;
     z-index: 2;
-    max-width: 161px;
+    max-width: 128px;
     width: 100%;
     max-height: 80px;
     height: 100%;
     line-height: 80px;
     font-weight: 400;
-    font-family: Helvetica, sans-serif;
+    font-family: Helvetica;
     letter-spacing: -3px;
+  }
+}
+
+.banner1 {
+  .box {
+    background-color: $c-ch-act-orange;
+    top: 0;
+    left: 0;
+    transition: all 1s ease;
+  }
+  .line {
+    background-color: $c-ch-act-orange;
+    left: 415px;
+    .city {
+      font-weight: 300;
+      font-size: 60px;
+      font-family: Helvetica, sans-serif;
+    }
+  }
+  .subTitle {
+    top: 76px;
+  }
+}
+
+.banner3 {
+  .box {
+    background-color: $c-def-blue;
+    right: 0;
+    top: 144px;
+  }
+  .line {
+    background-color: $c-def-blue;
+    top: 0;
+    left: 0;
+  }
+  img {
+    position: absolute;
+    top: 0;
+  }
+  .subTitle {
+    top: 0;
+  }
+}
+.banner4 {
+  .box {
+    background-color: $c-ch-act-purple;
+    left: 0;
+    top: 144px;
+  }
+  .line {
+    background-color: $c-ch-act-purple;
+    top: $sp-20;
+    left: 415px;
+   
+    .city {
+      font-weight: 300;
+      font-size: 60px;
+      font-family: Helvetica, sans-serif;
+    }
+  }
+  img {
+    position: absolute;
+    left: 88px;
+    top: 0;
+  }
+  .title {
+    max-width: 946px;
+  }
+  .subTitle {
+    top: 404px;
   }
 }
