@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Детали продукта: {{ product.name }}</h2>
+<p>Описание: {{ product.description }}</p>
+<p>Цена: {{ product.price }}</p>
+<a
+  href="{% url 'shopping_list:product_edit' pk=product.pk %}"
+  class="btn btn-primary"
+  >Редактировать</a
+>
+<a
+  href="{% url 'shopping_list:product_delete' pk=product.pk %}"
+  class="btn btn-danger"
+  >Удалить</a
+>
+{% endblock %}

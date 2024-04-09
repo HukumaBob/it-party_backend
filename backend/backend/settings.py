@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'additions',
     'core',
     'events',
+    'userevents',
 ]
 
 MIDDLEWARE = [

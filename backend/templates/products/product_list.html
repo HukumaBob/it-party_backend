@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Список продуктов</h2>
+
+<form method="GET" class="mb-3">
+  <div class="row">
+    <div class="col">
+      <input
+        type="text"
+        name="filter"
+        placeholder="Фильтр по названию"
+        class="form-control"
+      />
+    </div>
+    <div class="col">
+      <select name="sort" class="form-select">
+        <option value="">Сортировать по...</option>
+        <option value="name">Название</option>
+        <option value="price">Цена</option>
+      </select>
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-primary">Применить</button>
+    </div>
+  </div>
+</form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Описание</th>
+      <th>Цена</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>{{ product.description }}</td>
+      <td>{{ product.price }}</td>
+      <td>
+        <a
+          href="{% url 'shopping_list:product_edit' pk=product.pk %}"
+          class="btn btn-primary"
+          >Редактировать</a
+        >
+        <a
+          href="{% url 'shopping_list:product_delete' pk=product.pk %}"
+          class="btn btn-danger"
+          >Удалить</a
+        >
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4">Нет продуктов</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{% url 'shopping_list:product_new' %}" class="btn btn-success"
+  >Добавить продукт</a
+>
+{% endblock %}

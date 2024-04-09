@@ -75,3 +75,11 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class EventFormTemplate(models.Model):
+    event = models.OneToOneField(Event, on_delete=models.CASCADE)
+    fields = models.JSONField()  # список необходимых полей
+    
+    def __str__(self):
+        return str(self.fields)
