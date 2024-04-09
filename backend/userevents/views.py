@@ -6,6 +6,7 @@ from .models import UserEvent, UserProfileSnapshot
 from .serializers import UserEventSerializer
 from events.models import Event, EventFormTemplate
 from users.models import UserProfile
+from users.serializers import UserProfileSerializer
 
 
 class UserEventViewSet(viewsets.ModelViewSet):
@@ -49,28 +50,31 @@ class SubmitApplicationView(APIView):
 
 class ApplyForEventView(APIView):
     permission_classes = [IsAuthenticated]
-
+    
     def post(self, request, event_id, format=None):
         user = request.user
         event = Event.objects.get(id=event_id)
         user_profile = UserProfile.objects.get(user=user)
         form_template = EventFormTemplate.objects.get(event=event)
-        # Проверяем, существует ли уже UserEvent
-        # для этого пользователя и ивента
+        # Получаем параметр запроса
+        apply = request.data.get('apply', False)
+        # Устанавливаем статус заявки в зависимости от параметра запроса
+        application_status = 'pending' if apply else 'none'
+        # Проверяем, существует ли уже
+        # UserEvent для этого пользователя и ивента
         user_event, created = UserEvent.objects.get_or_create(
-            user_profile=user_profile, event=event
-            )
-        # Извлекаем данные из профиля пользователя
+            user_profile=user_profile, event=event, defaults={
+                'application_status': application_status
+                }
+                )
+        if not created and apply:
+            user_event.application_status = 'pending'
+            user_event.save()
+        # Используем сериализатор для извлечения данных из профиля пользователя
+        serializer = UserProfileSerializer(user_profile)
         form_data = {
-            field: getattr(
-                user_profile, field
-                ) if hasattr(
-                    user_profile, field
-                    ) else getattr(
-                        user_profile.user, field
-                        )
-            for field in form_template.fields
-        }
+            field: serializer.data[field] for field in form_template.fields
+            }
         # Отправляем данные на фронт
         return Response(form_data)
 
