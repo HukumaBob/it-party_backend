@@ -10,7 +10,7 @@
   }
   .speakers {
     flex: 1;
-    gap: 24px;
+    gap: $sp-24;
     display: flex;
     flex-wrap: wrap;
     max-width: 1032px;

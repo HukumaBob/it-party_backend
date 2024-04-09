@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Banner } from "../../entities/banner";
 import style from "./index.module.scss";
 import { SlideSwitcher } from "../../features/slideSwitcher";
+import { useDispatch, useSelector } from "../../app/types/hooks";
+import { setActiveIndex } from "../../app/services/slices/bannerSlice";
 
 export const BannerSlider = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-
+  const dispatch = useDispatch();
+  const { activeIndex } = useSelector((store) => store.banner);
   const handleClick = (index: number) => {
-    setActiveIndex(index);
+    dispatch(setActiveIndex(index));
   };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       const nextIndex = (activeIndex + 1) % 4;
-      setActiveIndex(nextIndex);
+      dispatch(setActiveIndex(nextIndex));
     }, 5000);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [activeIndex]);
+  }, [activeIndex, dispatch]);
 
   return (
     <div className={style.bannerBlock}>

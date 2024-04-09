@@ -23,11 +23,11 @@ export const FilterBlock = () => {
         </div>
       </div>
       <div className={style.filterButton}>
-        <Chip background='blue' title='Backend' icon={true} />
-        <Chip background='purple' title='Frontend' icon={true} />
-        <Chip background='pink' title='Mobile' icon={true} />
-        <Chip background='green' title='QA' icon={true} />
-        <Chip background='orange' title='ML' icon={true} />
+        <Chip background='blue' title='Backend' />
+        <Chip background='purple' title='Frontend' />
+        <Chip background='pink' title='Mobile' />
+        <Chip background='green' title='QA' />
+        <Chip background='orange' title='ML' />
       </div>
     </div>
   );

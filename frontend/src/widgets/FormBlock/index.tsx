@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { TFormValues } from "../../app/types/types";
 import style from "./index.module.scss";
@@ -7,51 +7,61 @@ import { Form } from "../../features/form";
 import { CheckBox } from "../../shared/checkbox";
 import arrow_down from "../../app/assets/icons/arrow_down.svg";
 import checkIcon from "../../app/assets/icons/check_mini.svg";
+import { useDispatch, useSelector } from "../../app/types/hooks";
+import {
+  setAgreementChecked,
+  setAgreementPersonInfoChecked,
+  setClickDirection,
+  setClickExperience,
+  setOfflineChecked,
+  setOnlineChecked,
+  setSelectedDirection,
+  setSelectedExperience,
+} from "../../app/services/slices/formSlice";
 export const FormBlock = () => {
-  const [clickExperience, setClickExperience] = useState(false);
-  const [selectedExperience, setSelectedExperience] = useState("");
-
-  const [clickDirection, setClickDirection] = useState(false);
-  const [selectedDirection, setSelectedDirection] = useState("");
-
-  const [onlineChecked, setOnlineChecked] = useState(false);
-  const [offlineChecked, setOfflineChecked] = useState(false);
-
-  const [agreementChecked, setAgreementChecked] = useState(false);
-  const [agreementPersonInfoChecked, setAgreementPersonInfoChecked] =
-    useState(false);
+  const dispatch = useDispatch();
+  const {
+    clickDirection,
+    clickExperience,
+    onlineChecked,
+    offlineChecked,
+    agreementChecked,
+    agreementPersonInfoChecked,
+    selectedDirection,
+    selectedExperience,
+  } = useSelector((state) => state.form);
 
   const handleOnlineChange = () => {
-    setOnlineChecked(!onlineChecked);
+    dispatch(setOnlineChecked(!onlineChecked));
   };
 
   const handleOfflineChange = () => {
-    setOfflineChecked(!offlineChecked);
+    dispatch(setOfflineChecked(!offlineChecked));
   };
   const handleAgreementChange = () => {
-    setAgreementChecked(!agreementChecked);
+    dispatch(setAgreementChecked(!agreementChecked));
   };
   const handleAgreementPersonInfoChange = () => {
-    setAgreementPersonInfoChecked(!agreementPersonInfoChecked);
+    dispatch(setAgreementPersonInfoChecked(!agreementPersonInfoChecked));
   };
 
   const handleClickExperience = () => {
-    setClickExperience(!clickExperience);
+    dispatch(setClickExperience(!clickExperience));
   };
 
   const handleClickDirection = () => {
-    setClickDirection(!clickDirection);
+    dispatch(setClickDirection(!clickDirection));
   };
 
   const handleOptionClickExperience = (value: string) => {
-    setSelectedExperience(value);
-    setClickExperience(false);
+    dispatch(setSelectedExperience(value));
+    dispatch(setClickExperience(false));
     setValue("experience", value);
   };
 
   const handleOptionClickDirection = (value: string) => {
-    setSelectedDirection(value);
-    setClickDirection(false);
+    dispatch(setSelectedDirection(value));
+    dispatch(setClickDirection(false));
     setValue("direction", value);
   };
 
@@ -95,11 +105,12 @@ export const FormBlock = () => {
         alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
       });
     reset();
-    setOnlineChecked(false);
-    setOfflineChecked(false);
-    setAgreementChecked(false);
-    setSelectedExperience("");
-    setSelectedDirection("");
+    dispatch(setOnlineChecked(false));
+    dispatch(setOfflineChecked(false));
+    dispatch(setAgreementChecked(false));
+    dispatch(setAgreementPersonInfoChecked(false));
+    dispatch(setSelectedExperience(""));
+    dispatch(setSelectedDirection(""));
   };
 
   return (
@@ -110,6 +121,7 @@ export const FormBlock = () => {
             Имя <span>*</span>
           </label>
           <input
+            className={`${errors.name ? style.errorInput : style.message}`}
             type='text'
             placeholder='Иван'
             {...register("name", {
@@ -136,6 +148,7 @@ export const FormBlock = () => {
             Фамилия <span>*</span>
           </label>
           <input
+            className={`${errors.secondName ? style.errorInput : ""}`}
             type='text'
             placeholder='Иван'
             {...register("secondName", {
@@ -163,6 +176,7 @@ export const FormBlock = () => {
             Email <span>*</span>
           </label>
           <input
+            className={`${errors.email ? style.errorInput : style.message}`}
             type='email'
             placeholder='ivan@ya.ru'
             {...register("email", {
@@ -186,6 +200,9 @@ export const FormBlock = () => {
             Номер телефона<span>*</span>
           </label>
           <input
+            className={`${
+              errors.phoneNumber ? style.errorInput : style.message
+            }`}
             type='number'
             placeholder='+79521120101'
             {...register("phoneNumber", {
@@ -210,6 +227,7 @@ export const FormBlock = () => {
             Место работы <span>*</span>
           </label>
           <input
+            className={`${errors.workplace ? style.errorInput : style.message}`}
             type='text'
             placeholder='Yandex Tech'
             {...register("workplace", {
@@ -234,6 +252,7 @@ export const FormBlock = () => {
             Должность <span>*</span>
           </label>
           <input
+            className={`${errors.post ? style.errorInput : style.message}`}
             type='text'
             placeholder='Frontend Developer'
             {...register("post", {

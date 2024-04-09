@@ -2,7 +2,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: $sp-32;
   .title {
     font-family: "YS-D-Medium";
     font-weight: 500;
@@ -11,6 +11,6 @@
   .howToGet {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: $sp-24;
   }
 }
