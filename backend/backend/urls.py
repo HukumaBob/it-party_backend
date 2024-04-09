@@ -6,7 +6,6 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-
 schema_view = get_schema_view(
    openapi.Info(
       title="It Party API",
@@ -21,8 +20,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('api/', include('users.urls', namespace='users')),
-    path('api/', include('userevents.urls', namespace='userevent')),
+    path('api/v1/', include('users.urls', namespace='users')),
+    path('api/v1/', include('userevents.urls', namespace='userevents')),
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),

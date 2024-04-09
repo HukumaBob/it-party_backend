@@ -6,7 +6,6 @@ from .views import (
     UserProfileViewSet,
     )
 
-# from .views import ProfileViewSet
 
 app_name = 'users'
 
@@ -24,6 +23,6 @@ urlpatterns = [
     path(
         'password/reset/confirm/<uidb64>/<token>/',
         PasswordResetConfirmView.as_view(),
-        name='activate'
+        name='reset'
         ),
 ]
