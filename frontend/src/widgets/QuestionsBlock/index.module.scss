@@ -1,0 +1,21 @@
+@import "../../app/styles/vars.scss";
+.wrapper {
+  .container {
+    .title {
+      font-family: "YS-T-Medium";
+      font-weight: 500;
+      font-size: $sp-24;
+      margin-bottom: $sp-32;
+    }
+    .questionsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      .otherQuestions {
+        .help {
+          color: $c-def-blue;
+        }
+      }
+    }
+  }
+}

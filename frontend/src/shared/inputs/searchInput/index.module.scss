@@ -1,0 +1,24 @@
+@import "../../../app/styles/vars.scss";
+.inputBlock {
+  display: flex;
+  max-width: 505px;
+  width: 100%;
+  position: relative;
+  .input {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background: $c-bg-blue;
+    border: 1px solid $c-str-medium;
+    border-radius: 8px;
+    padding: $sp-12;
+    outline: 0px;
+  }
+  img {
+    width: $sp-20;
+    height: $sp-20;
+    position: absolute;
+    right: 14px;
+    top: $sp-12;
+  }
+}

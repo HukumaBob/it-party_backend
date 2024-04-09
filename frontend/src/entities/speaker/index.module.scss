@@ -1,0 +1,48 @@
+@import "../../app/styles/vars.scss";
+.speaker_1 {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 500px;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 1s ease;
+
+  &:hover {
+    transform: rotateY(180deg);
+    .image {
+      opacity: 1;
+      display: block;
+    }
+    .imageReverse {
+      opacity: 0;
+      display: none;
+    }
+  }
+  .imageReverse {
+    opacity: 1;
+  }
+  .image {
+    opacity: 0;
+    display: none;
+    transform: rotateY(180deg);
+  }
+  .speaker_1__info {
+    display: none;
+  }
+  &:hover .speaker_1__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 240px;
+    text-align: center;
+    width: 100%;
+    gap: $sp-24;
+    .name {
+      font-family: "YS-D-Medium";
+      font-weight: 500;
+      font-size: $sp-24;
+    }
+  }
+}

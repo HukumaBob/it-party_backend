@@ -5,14 +5,16 @@
   display: flex;
   justify-content: center;
   height: 4px;
-  gap: 24px;
+  gap: $sp-24;
   .slide {
     border: 2px solid $c-str-medium;
     max-width: 152px;
     width: 100%;
+    background: $c-str-medium;
   }
   .slideActive {
     border: 2px solid $c-str-dark;
+    background: $c-str-dark;
     max-width: 152px;
     width: 100%;
   }

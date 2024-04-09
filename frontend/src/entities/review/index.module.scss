@@ -1,0 +1,54 @@
+@import "../../app/fonts/fonts.scss";
+@import "../../app/styles/vars.scss";
+.review {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 856px;
+  width: 100%;
+  position: relative;
+
+  .background {
+    background: #f1f6ff;
+    position: absolute;
+    width: 100%;
+    height: 352px;
+    top: 60px;
+    z-index: 0;
+    border-radius: $sp-24;
+  }
+  .review_user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: $sp-20;
+    z-index: 1;
+    .review_user__info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: $sp-16;
+      margin-bottom: $sp-24;
+      h2 {
+        font-family: "YS-D-Medium";
+        font-size: $sp-24;
+        font-weight: 500;
+      }
+      span {
+        color: $c-black-500;
+      }
+    }
+  }
+  .review_text {
+    max-width: 728px;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+  }
+}
+.none {
+  display: none;
+}

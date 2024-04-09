@@ -6,4 +6,16 @@
   box-sizing: border-box;
   font-family: "YS-T-Regular", sans-serif;
   font-size: $sp-16;
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $c-ch-act-blue;
+    border-radius: 5px;
+  }
 }

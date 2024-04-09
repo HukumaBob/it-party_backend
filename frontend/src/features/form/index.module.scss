@@ -1,0 +1,24 @@
+@import "../../app/styles/vars.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: $sp-20;
+  height: 100%;
+  .personalInfo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    .personalInfo_text {
+      font-family: "YS-T-Medium";
+      font-size: $sp-18;
+      font-weight: 500;
+    }
+  }
+  .formBlock {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-16;
+  }
+}
