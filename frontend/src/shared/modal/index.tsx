@@ -9,22 +9,18 @@ export const Modal = ({ children, close }: TProps) => {
       close();
     }
   };
-
-  const closeModalAfterClick = () => {
-    close();
-  };
   useEffect(() => {
     document.addEventListener("keydown", pressKeyEsc);
+    document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", pressKeyEsc);
+      document.body.style.overflow = "auto";
     };
   }, []);
   const modalRoot = document.getElementById("modal");
   return PortalReactDOM.createPortal(
-    <div className={style.wrapper} onClick={closeModalAfterClick}>
-      <div className={style.container}>
-        {children}
-      </div>
+    <div className={style.wrapper}>
+      <div className={style.container}>{children}</div>
     </div>,
     modalRoot!,
   );

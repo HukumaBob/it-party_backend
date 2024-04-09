@@ -3,7 +3,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: $sp-24;
   align-items: center;
   .name_form {
     display: flex;
@@ -22,6 +22,9 @@
       outline: none;
       border-radius: $sp-12;
     }
+    .errorInput {
+      border: 1px solid $c-er-red;
+    }
     .message {
       font-family: "YS-T-Regular";
       font-size: $sp-13;
@@ -31,9 +34,9 @@
 
   .element {
     display: flex;
-    height: 24px;
+    height: $sp-24;
     width: 130px;
-    gap: 12px;
+    gap: $sp-12;
     align-items: center;
   }
 }
@@ -48,7 +51,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 12px 0;
+    padding: $sp-12 0;
     border: none;
     border-radius: 8px;
     background-color: $c-def-blue;
@@ -84,18 +87,18 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 16px;
+  padding: $sp-16;
   cursor: pointer;
   outline: none;
   border: 1px solid $c-str-medium;
-  border-radius: 12px;
+  border-radius: $sp-12;
   gap: 8px;
   max-height: 52px;
 }
 
 .options {
   position: absolute;
-  top: 25%;
+  top: 70%;
   left: 0;
   width: 100%;
   background-color: #fff;
@@ -106,7 +109,7 @@
 }
 
 .option {
-  padding: 8px 16px;
+  padding: 8px $sp-16;
   cursor: pointer;
 }
 
@@ -150,6 +153,7 @@
   font-size: $sp-13;
   color: $c-er-red;
 }
+
 .agreementBlock {
   display: flex;
   flex-direction: column;
@@ -163,7 +167,7 @@
     .agreement_text {
       gap: $sp-12;
       display: flex;
-      P {
+      p {
         max-width: 538px;
         width: 100%;
       }

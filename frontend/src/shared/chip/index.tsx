@@ -18,7 +18,7 @@ const ACTIVE: Record<string, string> = {
   orange: "#FF8834",
 };
 
-export const Chip = ({ background, title, icon }: TChip) => {
+export const Chip = ({ background, title }: TChip) => {
   const [clicked, setClicked] = useState<boolean>(false);
 
   const handleClick = () => {

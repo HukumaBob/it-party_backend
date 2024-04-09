@@ -52,7 +52,7 @@
       position: absolute;
       top: $sp-12;
       right: $sp-12;
-      z-index: 4;
+      z-index: 3;
       cursor: pointer;
       .favorite {
         width: $sp-20;
@@ -65,7 +65,7 @@
     flex-direction: column;
     text-decoration: none;
     color: $c-def-black;
-    gap: 16px;
+    gap: $sp-16;
     .title {
       font-family: "YS-T-Medium";
       padding: 0px $sp-16;

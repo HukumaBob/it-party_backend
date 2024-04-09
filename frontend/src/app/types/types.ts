@@ -1,7 +1,6 @@
 export type TChip = {
   background: string;
   title: string;
-  icon: boolean;
 };
 
 export type TCard = {
@@ -11,6 +10,7 @@ export type TCard = {
   img: string;
   date: string;
   time: string;
+  id: number;
 };
 
 export type TQuestion = {
@@ -59,7 +59,6 @@ export type TProps = {
 
 export type TStateCard = {
   active: boolean;
-  open: boolean;
 };
 
 export type TActionCard =
@@ -87,8 +86,6 @@ export type TSelectInput = {
 };
 
 export type TSpeaker = {
-  name: string;
-  post: string;
   img: string;
   imgReverse: string;
 };
@@ -105,6 +102,32 @@ export type TFormValues = {
   onlineParticipation: boolean;
   offlineParticipation: boolean;
 };
+
+export type TFormAuthorization = {
+  email: string;
+  password: string;
+};
+
 export type TFormErrors = {
   FieldErrors: TFormValues;
+};
+
+export type TInitialStateBannerSlide = {
+  activeIndex: number;
+};
+
+export type TInitialStateForm = {
+  clickExperience: boolean;
+  selectedExperience: string;
+  clickDirection: boolean;
+  selectedDirection: string;
+  onlineChecked: boolean;
+  offlineChecked: boolean;
+  agreementChecked: boolean;
+  agreementPersonInfoChecked: boolean;
+};
+
+export type TAuthorizationInitialState = {
+  openModal: boolean;
+  showPassword: boolean;
 };

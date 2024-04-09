@@ -2,9 +2,7 @@ import React from "react";
 import { EventCard } from "../../shared/card";
 import style from "./index.module.scss";
 import { TPopularOrRecomendedEvents } from "../../app/types/types";
-export const CardBlock = ({
-  title,
-}: TPopularOrRecomendedEvents) => {
+export const CardBlock = ({ title }: TPopularOrRecomendedEvents) => {
   return (
     <div className={style.container}>
       <section>
@@ -17,6 +15,7 @@ export const CardBlock = ({
           img=''
           date='28 апреля 2024'
           time='12:00'
+          id={10}
         />
 
         <EventCard
@@ -25,6 +24,7 @@ export const CardBlock = ({
           img=''
           date='28 апреля 2024'
           time='12:00'
+          id={11}
         />
 
         <EventCard
@@ -33,6 +33,7 @@ export const CardBlock = ({
           img=''
           date='28 апреля 2024'
           time='12:00'
+          id={12}
         />
       </div>
     </div>
