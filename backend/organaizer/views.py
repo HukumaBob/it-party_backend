@@ -5,6 +5,7 @@ from .permissions import IsOrganizator
 
 
 class OrganizatorViewSet(viewsets.ModelViewSet):
+    """Представление для работы организатора"""
     queryset = Organizator.objects.all()
     serializer_class = OrganizatorSerializer
     permission_classes = [IsOrganizator]

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'core',
     'events',
     'userevents',
+    'organaizer',
 ]
 
 MIDDLEWARE = [

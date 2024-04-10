@@ -1,5 +1,3 @@
-from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import permissions
@@ -20,6 +18,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('api/v1/', include('events.urls', namespace='events')),
+    path('api/v1/', include('organaizer.urls', namespace='organaizer')),
     path('api/v1/', include('users.urls', namespace='users')),
     path('api/v1/', include('userevents.urls', namespace='userevents')),
     path('admin/', admin.site.urls),

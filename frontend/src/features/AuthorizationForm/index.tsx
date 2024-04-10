@@ -31,7 +31,7 @@ export const AuthorizationForm = () => {
   });
 
   const onSubmit = (data: TFormAuthorization) => {
-    fetch("", {
+    fetch("http://localhost:8000/auth/jwt/create/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
