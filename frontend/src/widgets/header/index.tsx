@@ -17,7 +17,7 @@ export const Header = () => {
   };
   return (
     <header className={style.container}>
-      <div className={style.main} onClick={handleOpenModal}>
+      <div className={style.main}>
         <div className={style.logo}>
           <Link to='/'>
             <img src={logo} alt='logo' />
@@ -32,7 +32,7 @@ export const Header = () => {
                 <span>Владимир Белоголовцев</span>
                 <img src={avatar} alt='avatar' />
               </li>
-              <li>Управление аккаунтом</li>
+              <li onClick={handleOpenModal}>Управление аккаунтом</li>
               <li>
                 <Link to='/myEvent'>Мои мероприятия</Link>
               </li>

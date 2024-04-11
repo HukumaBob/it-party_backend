@@ -11,11 +11,11 @@ import { setOpenModal } from "../../app/services/slices/authorization";
 import { AuthorizationModal } from "../../widgets/Authorization";
 
 export const MainPage = () => {
-  const { openModal } = useSelector((state) => state.authorization);
-  const dispatch = useDispatch();
-  const handleCloseModal = () => {
-    dispatch(setOpenModal(false));
-  };
+  // const { openModal } = useSelector((state) => state.authorization);
+  // const dispatch = useDispatch();
+  // const handleCloseModal = () => {
+  //   dispatch(setOpenModal(false));
+  // };
   return (
     <div className={style.wrapper}>
       <div className={style.container}>
@@ -25,11 +25,11 @@ export const MainPage = () => {
         <CardBlock title={"Популярные"} />
         <CardBlock title={"Рекомендуемые"} />
         <Reviews />
-        {openModal && (
+        {/* {openModal && (
           <Modal close={handleCloseModal}>
             <AuthorizationModal />
           </Modal>
-        )}
+        )} */}
       </div>
     </div>
   );

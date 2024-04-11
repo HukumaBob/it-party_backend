@@ -106,6 +106,7 @@ export type TFormValues = {
 export type TFormAuthorization = {
   email: string;
   password: string;
+  checked?: boolean;
 };
 
 export type TFormErrors = {
@@ -130,4 +131,21 @@ export type TInitialStateForm = {
 export type TAuthorizationInitialState = {
   openModal: boolean;
   showPassword: boolean;
+  openRegistration: boolean;
+  checked: boolean;
+};
+
+export type TUser = {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  surName: string;
+  workplace: string;
+  post: string;
+};
+
+export type TLoginResponse = {
+  user: TFormAuthorization;
+  accessToken: string;
+  refreshToken: string;
 };

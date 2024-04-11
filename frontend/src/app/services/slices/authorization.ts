@@ -4,6 +4,8 @@ import { TAuthorizationInitialState } from "../../types/types";
 export const initialState: TAuthorizationInitialState = {
   openModal: false,
   showPassword: false,
+  openRegistration: false,
+  checked:false
 };
 export const authorizationSlice = createSlice({
   name: "authorization",
@@ -15,9 +17,16 @@ export const authorizationSlice = createSlice({
     setShowPassword: (state, action: PayloadAction<boolean>) => {
       state.showPassword = action.payload;
     },
+    setOpenRegistration: (state, action: PayloadAction<boolean>) => {
+      state.openRegistration = action.payload;
+    },
+    setCheked: (state, action: PayloadAction<boolean>) => {
+      state.checked = action.payload;
+    },
   },
 });
 
-export const { setOpenModal, setShowPassword } = authorizationSlice.actions;
+export const { setOpenModal, setShowPassword, setOpenRegistration,setCheked } =
+  authorizationSlice.actions;
 
 export default authorizationSlice.reducer;
