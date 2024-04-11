@@ -77,12 +77,18 @@ itParty - это веб-приложение, разработанное на Dj
    python manage.py generate_initial_data
    ```
 
-7. **Генерация начальных пользователей**
+7. **Генерация начальных пользователей и профилей**
 
    Запустите команду для генерации начальных пользователей:
 
    ```bash
    python manage.py generate_initial_users
+   ```
+
+   и юзеров с профилями
+
+   ```bash
+   python manage.py generate_initial_data_users_profile
    ```
 
 8. **Генерация начальных ивентов**

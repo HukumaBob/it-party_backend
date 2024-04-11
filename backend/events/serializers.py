@@ -25,13 +25,4 @@ class EventDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Event
-        fields = (
-            'logo',
-            'name',
-            'data',
-            'time',
-            'position',
-            'description',
-            'gallery',
-            'speakers',
-        )
+        fields = '__all__'

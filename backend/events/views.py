@@ -16,4 +16,4 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return EventSerializer
-        EventDetailSerializer
+        return EventDetailSerializer
