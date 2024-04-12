@@ -15,6 +15,11 @@ class UserEventViewSet(viewsets.ModelViewSet):
 
 
 class SubmitApplicationView(APIView):
+    """
+    Пользователь заполнил или изменил поля анкеты
+    присланной ему для регистрации на ивент и
+    отправил на фронт
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, user_event_id, format=None):
@@ -49,6 +54,12 @@ class SubmitApplicationView(APIView):
 
 
 class ApplyForEventView(APIView):
+    """
+    Подача заявки пользователем на ивент - 
+    пользователь кликнул на кнопку "зарегистрироваться"
+    На фронт пришли необходимые поля анкеты, частично
+    или полностью заполненные данными юзера из профиля
+    """
     permission_classes = [IsAuthenticated]
     
     def post(self, request, event_id, format=None):
