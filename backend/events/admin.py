@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import (
     Event,
     Speaker,
+    FormTemplate,
     EventFormTemplate
     )
 
@@ -18,6 +19,13 @@ class SpeakerAdmin(admin.ModelAdmin):
 class EventAdmin(admin.ModelAdmin):
     list_display = [
         field.name for field in Event._meta.fields
+        ]
+
+
+@admin.register(FormTemplate)
+class FormTemplateAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in FormTemplate._meta.fields
         ]
 
 

@@ -135,5 +135,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        user_representation = UserPassportSerializer(instance.user).data  # получите данные пользователя
-        return {**representation, **user_representation}  # объедините данные пользователя и профиля пользователя
+        user_representation = UserPassportSerializer(instance.user).data
+        # получите данные пользователя
+        return {**representation, **user_representation}
+    # объедините данные пользователя и профиля пользователя

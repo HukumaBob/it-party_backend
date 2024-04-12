@@ -1,9 +1,9 @@
 from rest_framework import permissions
 
 
-class IsOrganizator(permissions.BasePermission):
+class IsStaff(permissions.BasePermission):
     """
-    Проверка, является ли пользователь организатором данного события
+    Проверка, является ли пользователь сотрудником (staff)
     """
     def has_object_permission(self, request, view, obj):
-        return obj.user == request.user
+        return request.user.is_staff

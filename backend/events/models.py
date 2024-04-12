@@ -6,7 +6,7 @@ class Speaker(models.Model):
     foto = models.ImageField(
         verbose_name=_("Фото спикера"),
         upload_to='images/',
-        blank=False,
+        blank=False, null=True,
     )
     name = models.CharField(
         verbose_name=_("Фамилия Имя"),
@@ -28,11 +28,36 @@ class Speaker(models.Model):
         return self.name
 
 
+class FormTemplate(models.Model):
+    fields = models.JSONField()  # базовый шаблон
+
+    def __str__(self):
+        return str(self.fields)
+
+
+def get_default_fields():
+    return {"first_name": "", "phone": ""}
+
+
+class EventFormTemplate(models.Model):
+    event = models.OneToOneField('Event', on_delete=models.CASCADE)
+    form_template = models.ForeignKey(
+        FormTemplate, on_delete=models.CASCADE,
+        blank=True,
+        null=True
+        )  # ссылка на базовый шаблон, каждый экземпляр
+    fields = models.JSONField(default=get_default_fields)
+    # дополнительные или измененные поля
+
+    def __str__(self):
+        return str(self.fields)
+
+
 class Event(models.Model):
     logo = models.ImageField(
         verbose_name=_("Логотип"),
         upload_to='images/',
-        blank=False,
+        blank=False, null=True,
     )
     name = models.CharField(
         verbose_name=_("Название"),
@@ -60,7 +85,7 @@ class Event(models.Model):
     gallery = models.ImageField(
         verbose_name=_("Галерея"),
         upload_to='images/',
-        blank=False,
+        blank=False, null=True,
     )
     speakers = models.ManyToManyField(
         Speaker,
@@ -72,14 +97,13 @@ class Event(models.Model):
         verbose_name=_("Онлайн"),
         default=False,
     )
+    event_form_template = models.OneToOneField(
+        EventFormTemplate,
+        on_delete=models.CASCADE,
+        related_name='related_event',
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return self.name
-    
-
-class EventFormTemplate(models.Model):
-    event = models.OneToOneField(Event, on_delete=models.CASCADE)
-    fields = models.JSONField()  # список необходимых полей
-    
-    def __str__(self):
-        return str(self.fields)

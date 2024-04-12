@@ -54,7 +54,7 @@ class ApplyForEventView(APIView):
     def post(self, request, event_id, format=None):
         user = request.user
         event = Event.objects.get(id=event_id)
-        user_profile = UserProfile.objects.get(user=user)
+        user_profile, created = UserProfile.objects.get_or_create(user=user)
         form_template = EventFormTemplate.objects.get(event=event)
         # Получаем параметр запроса
         apply = request.data.get('apply', False)

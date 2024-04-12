@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./index.module.scss";
 import { useForm } from "react-hook-form";
 import closeIcon from "../../app/assets/icons/close_mini.svg";
+import checkIcon from "../../app/assets/icons/check_mini.svg";
 import {
+  setCheked,
   setOpenModal,
+  setOpenRegistration,
   setShowPassword,
 } from "../../app/services/slices/authorization";
 import { useDispatch, useSelector } from "../../app/types/hooks";
@@ -11,15 +14,27 @@ import { TFormAuthorization } from "../../app/types/types";
 import yandex from "../../app/assets/icons/Yandex.svg";
 import eyeIcon from "../../app/assets/icons/eye.svg";
 import eyeSlashedIcon from "../../app/assets/icons/eye-slashed.svg";
+import { login, registerUser } from "../../app/api/api";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const AuthorizationForm = () => {
   const dispatch = useDispatch();
   const handleCloseModal = () => {
     dispatch(setOpenModal(false));
+    dispatch(setOpenRegistration(false));
+    dispatch(setCheked(false));
   };
-  const { showPassword } = useSelector((state) => state.authorization);
+  const { showPassword, openRegistration, checked } = useSelector(
+    (state) => state.authorization,
+  );
   const handleClick = () => {
     dispatch(setShowPassword(!showPassword));
+  };
+  const handleOpenRegistration = () => {
+    dispatch(setOpenRegistration(!openRegistration));
+  };
+  const handleCheked = () => {
+    dispatch(setCheked(!checked));
   };
   const {
     register,
@@ -31,30 +46,41 @@ export const AuthorizationForm = () => {
   });
 
   const onSubmit = (data: TFormAuthorization) => {
-    fetch("http://localhost:8000/auth/jwt/create/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Ошибка отправки данных на сервер");
-      })
-      .then((responseData) => {
-        alert(
-          "Ваша форма успешно отправлена. Ожидайте подтверждения регистрации.",
-        );
-        reset();
-      })
-      .catch((error) => {
-        console.error("Ошибка:", error);
-        alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-      });
-    reset();
+    const formData = {
+      ...data,
+      checked: checked,
+    };
+    if (openRegistration) {
+      const loginUser = createAsyncThunk(
+        "user/login",
+        async ({ email, password, checked }: TFormAuthorization) => {
+          const res = await login(email, password, checked!);
+          localStorage.setItem("accessToken", res.accessToken);
+          localStorage.setItem("refreshToken", res.refreshToken);
+          return res;
+        },
+      );
+      dispatch(
+        loginUser({
+          email: data.email,
+          password: data.password,
+          checked: formData.checked,
+        }),
+      );
+      reset();
+    } else {
+      const registerUsers = createAsyncThunk(
+        "user/register",
+        async ({ email, password }: TFormAuthorization) => {
+          const res = await registerUser(email, password!);
+          localStorage.setItem("accessToken", res.accessToken);
+          localStorage.setItem("refreshToken", res.refreshToken);
+          return res;
+        },
+      );
+      dispatch(registerUsers({ email: data.email, password: data.password }));
+      reset();
+    }
   };
   return (
     <div className={style.container}>
@@ -65,7 +91,9 @@ export const AuthorizationForm = () => {
           className={style.icon}
           onClick={handleCloseModal}
         />
-        <h2 className={style.title}>Авторизация</h2>
+        <h2 className={style.title}>
+          {openRegistration ? "Регистрация" : "Авторизация"}
+        </h2>
       </section>
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={style.inputBlock}>
@@ -129,20 +157,51 @@ export const AuthorizationForm = () => {
           <span>Не помню пароль</span>
         </div>
         <button type='submit' className={style.button}>
-          Войти
+          {openRegistration ? "Зарегистрироваться" : "Войти"}
         </button>
+        {openRegistration && (
+          <div className={style.element}>
+            <div className={style.container_checkbox}>
+              <div className={style.customCheckBox} onClick={handleCheked}>
+                {checked ? <img src={checkIcon} alt='check' /> : ""}
+              </div>
+            </div>
+            <p className={style.agreement}>
+              Соглашаюсь с <span>Пользовательским соглашением</span> и 
+              <span>Политикой конфиденциальности</span>
+            </p>
+          </div>
+        )}
       </form>
       <p className={style.lineBlock}>
         <span className={style.line}></span> или{" "}
         <span className={style.line}></span>{" "}
       </p>
       <div className={style.buttonBlock}>
-        <button type='button' className={style.buttonYandex}>
-          <img src={yandex} alt='yandex' /> Войти с Яндекс ID
-        </button>
-        <button type='button' className={style.buttonRegister}>
-          Зарегистрироваться
-        </button>
+        {openRegistration ? (
+          <button
+            type='button'
+            className={style.buttonRegister}
+            onClick={handleOpenRegistration}>
+            Войти
+          </button>
+        ) : (
+          <button type='button' className={style.buttonYandex}>
+            <img src={yandex} alt='yandex' /> Войти с Яндекс ID
+          </button>
+        )}
+        {openRegistration ? (
+          <button type='button' className={style.buttonYandex}>
+            <img src={yandex} alt='yandex' /> Войти с Яндекс ID
+          </button>
+        ) : (
+          <button
+            type='button'
+            className={style.buttonRegister}
+            onClick={handleOpenRegistration}>
+            Зарегистрироваться
+          </button>
+        )}
       </div>
       <span className={style.loginProblem}>Проблемы со входом?</span>
     </div>

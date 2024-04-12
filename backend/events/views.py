@@ -4,11 +4,11 @@ from .models import Event
 from .serializers import EventSerializer, EventDetailSerializer
 
 
-class EventViewSet(viewsets.ReadOnlyModelViewSet):
+class EventViewSet(viewsets.ModelViewSet):
     """
     Главная страница эвентов, с возможностью просмотреть подробную информацию.
     """
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().prefetch_related('event_form_template')
     filterset_fields = ('position',)
     search_fields = ('name',)
     ordering_fields = ('data',)
