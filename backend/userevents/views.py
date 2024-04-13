@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -29,11 +30,14 @@ class SubmitApplicationView(APIView):
         user_event = UserEvent.objects.get(id=user_event_id)
         user_profile = user_event.user_profile
         form_template = user_event.event.form_template
-        required_fields = form_template.fields
+        if form_template is None:
+            fields = get_default_fields()
+        else:
+            fields = form_template.fields
         # Получаем обновленные данные анкеты из запроса
         form_data = request.data
         # Проверяем, что все необходимые поля заполнены
-        for field in required_fields:
+        for field in fields:
             if field not in form_data:
                 return Response(
                     {
@@ -43,7 +47,11 @@ class SubmitApplicationView(APIView):
         # Обновляем профиль пользователя
         for field, value in form_data.items():
             if hasattr(user_profile, field):
-                setattr(user_profile, field, value)
+                field_instance = getattr(user_profile, field)
+                if field_instance.__class__.__name__ == 'ForeignKey':
+                    model = field_instance.field.related_model
+                    related_instance = get_object_or_404(model, id=value)
+                    getattr(user_profile, field).set(related_instance)
         user_profile.save()
         # Создаем "снимок" обновленной анкеты пользователя
         UserProfileSnapshot.objects.create(
@@ -73,7 +81,7 @@ class ApplyForEventView(APIView):
         if form_template is None:
             fields = get_default_fields()
         else:
-            fields = form_template.fields        
+            fields = form_template.fields
         # Получаем параметр запроса
         apply = request.data.get('apply', False)
         # Устанавливаем статус заявки в зависимости от параметра запроса

@@ -4,7 +4,7 @@ from .models import (
     Event,
     Speaker,
     FormTemplate,
-    EventFormTemplate
+    # EventFormTemplate
     )
 
 
@@ -29,8 +29,8 @@ class FormTemplateAdmin(admin.ModelAdmin):
         ]
 
 
-@admin.register(EventFormTemplate)
-class EventFormTemplateAdmin(admin.ModelAdmin):
-    list_display = [
-        field.name for field in EventFormTemplate._meta.fields
-        ]
+# @admin.register(EventFormTemplate)
+# class EventFormTemplateAdmin(admin.ModelAdmin):
+#     list_display = [
+#         field.name for field in EventFormTemplate._meta.fields
+#         ]

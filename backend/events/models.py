@@ -51,18 +51,18 @@ class FormTemplate(models.Model):
         return str(self.fields)
 
 
-class EventFormTemplate(models.Model):
-    event = models.OneToOneField('Event', on_delete=models.CASCADE)
-    form_template = models.ForeignKey(
-        FormTemplate, on_delete=models.CASCADE,
-        blank=True,
-        null=True
-        )  # ссылка на базовый шаблон, каждый экземпляр
-    fields = models.JSONField(default=get_default_fields)
-    # дополнительные или измененные поля
+# class EventFormTemplate(models.Model):
+#     event = models.OneToOneField('Event', on_delete=models.CASCADE)
+#     form_template = models.ForeignKey(
+#         FormTemplate, on_delete=models.CASCADE,
+#         blank=True,
+#         null=True
+#         )  # ссылка на базовый шаблон, каждый экземпляр
+#     fields = models.JSONField(default=get_default_fields)
+#     # дополнительные или измененные поля
 
-    def __str__(self):
-        return str(self.fields)
+#     def __str__(self):
+#         return str(self.fields)
 
 
 class Event(models.Model):
