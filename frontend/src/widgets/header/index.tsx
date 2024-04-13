@@ -36,7 +36,9 @@ export const Header = () => {
               <li>
                 <Link to='/myEvent'>Мои мероприятия</Link>
               </li>
-              <li>Помощь</li>
+              <li>
+                <Link to='/admin'>Помощь</Link>
+              </li>
               <li>Выйти</li>
             </ul>
           ) : (

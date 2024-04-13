@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "./types/hooks";
 import { setOpenModal } from "./services/slices/authorization";
 import { Modal } from "../shared/modal";
 import { AuthorizationModal } from "../widgets/Authorization";
+import { AdminPage } from "../pages/AdminPage";
+import { AdminLayout } from "./AdminLayout";
 
 function App() {
   const { openModal } = useSelector((state) => state.authorization);
@@ -18,6 +20,9 @@ function App() {
   return (
     <div className={style.wrapper}>
       <Routes>
+        <Route element={<AdminLayout />}>
+          <Route path='/admin' element={<AdminPage />} />
+        </Route>
         <Route element={<Layout />}>
           <Route path='/' element={<MainPage />} />
           <Route path='/event/:id' element={<EventPage />} />
