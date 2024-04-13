@@ -5,6 +5,7 @@ from PIL import Image
 from io import BytesIO
 from faker import Faker
 from events.models import Event, Speaker
+from additions.models import City
 import random
 
 fake = Faker()
@@ -14,14 +15,15 @@ class Command(BaseCommand):
     help = 'Generate test events'
 
     def handle(self, *args, **options):
-        for _ in range(100):
+        for _ in range(50):
             # Generate an event
             event = Event.objects.create(
                 logo=self.create_image_file(),
                 name=fake.sentence(),
                 data=fake.date_between(start_date='-1y', end_date='+1y'),
                 time=fake.time(),
-                position=fake.address(),
+                city=City.objects.order_by('?').first(),
+                address=fake.address(),
                 description=fake.text(),
                 gallery=self.create_image_file(),
                 online=fake.boolean()

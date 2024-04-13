@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Генерация пользователей и их профилей
-        for _ in range(100):
+        for _ in range(20):
             user = mixer.blend(
                 User,
                 first_name=fake.first_name(),
@@ -22,7 +22,8 @@ class Command(BaseCommand):
                 date_of_birth=fake.date_of_birth(),
                 phone_number=fake.phone_number(),
                 email=fake.email(),
-                password=fake.password()
+                password=fake.password(),
+                is_active=True
             )
 
             # Генерация профиля пользователя

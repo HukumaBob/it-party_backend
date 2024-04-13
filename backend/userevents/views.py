@@ -4,7 +4,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import UserEvent, UserProfileSnapshot
 from .serializers import UserEventSerializer
-from events.models import Event, EventFormTemplate
+from events.models import (
+    Event,
+    get_default_fields,
+    )
 from users.models import UserProfile
 from users.serializers import UserProfileSerializer
 
@@ -25,7 +28,7 @@ class SubmitApplicationView(APIView):
     def post(self, request, user_event_id, format=None):
         user_event = UserEvent.objects.get(id=user_event_id)
         user_profile = user_event.user_profile
-        form_template = EventFormTemplate.objects.get(event=user_event.event)
+        form_template = user_event.event.form_template
         required_fields = form_template.fields
         # Получаем обновленные данные анкеты из запроса
         form_data = request.data
@@ -61,12 +64,16 @@ class ApplyForEventView(APIView):
     или полностью заполненные данными юзера из профиля
     """
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, event_id, format=None):
         user = request.user
         event = Event.objects.get(id=event_id)
         user_profile, created = UserProfile.objects.get_or_create(user=user)
-        form_template = EventFormTemplate.objects.get(event=event)
+        form_template = event.form_template
+        if form_template is None:
+            fields = get_default_fields()
+        else:
+            fields = form_template.fields        
         # Получаем параметр запроса
         apply = request.data.get('apply', False)
         # Устанавливаем статус заявки в зависимости от параметра запроса
@@ -84,8 +91,36 @@ class ApplyForEventView(APIView):
         # Используем сериализатор для извлечения данных из профиля пользователя
         serializer = UserProfileSerializer(user_profile)
         form_data = {
-            field: serializer.data[field] for field in form_template.fields
+            field: serializer.data.get(field, '') for field in fields
             }
         # Отправляем данные на фронт
         return Response(form_data)
 
+
+class UnfavoriteEventView(APIView):
+    """
+    Удаление события из списка "Избранное" пользователя
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, event_id, format=None):
+        user = request.user
+        event = Event.objects.get(id=event_id)
+        user_profile = UserProfile.objects.get(user=user)
+        # Находим UserEvent для данного пользователя и события
+        user_event = UserEvent.objects.filter(
+            user_profile=user_profile, event=event
+            )
+        if user_event.exists():
+            user_event.delete()
+            return Response(
+                {
+                    "message": "Событие успешно удалено из списка 'Избранное'"
+                }, status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {
+                    "message": "Событие не найдено в списке 'Избранное'"
+                }, status=status.HTTP_400_BAD_REQUEST
+            )

@@ -38,15 +38,21 @@ class Command(BaseCommand):
 
         # # Загрузка городов
         self.load_from_csv(City)
-        
+
         # Загрузка образования
         self.load_from_csv(Education)
-        
+
         # Загрузка семейного положения
         self.load_from_csv(FamilyStatus)
-        
+
         # Загрузка дохода
         self.load_from_csv(Income)
-        
+
         # Загрузка дохода
         self.load_from_csv(Notification)
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                'Successfully created initial data'
+            )
+        )

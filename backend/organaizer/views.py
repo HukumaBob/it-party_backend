@@ -1,4 +1,3 @@
-import json
 from django.conf import settings
 from django.core.mail import EmailMessage, send_mail
 from rest_framework import viewsets

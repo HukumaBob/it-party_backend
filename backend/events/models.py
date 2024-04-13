@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from additions.models import City
 
 
 class Speaker(models.Model):
@@ -28,15 +29,26 @@ class Speaker(models.Model):
         return self.name
 
 
+def get_default_fields():
+    return {
+        "first_name": "",
+        "last_name": "",
+        "date_of_birth": "",
+        "place_of_work": "",
+        "position": "",
+        "specialization": "",
+        "experience": "",
+        "phone": "",
+        "online": False
+        }
+
+
 class FormTemplate(models.Model):
-    fields = models.JSONField()  # базовый шаблон
+    name = models.CharField(_("Name"), max_length=200)
+    fields = models.JSONField(default=get_default_fields)  # базовый шаблон
 
     def __str__(self):
         return str(self.fields)
-
-
-def get_default_fields():
-    return {"first_name": "", "phone": ""}
 
 
 class EventFormTemplate(models.Model):
@@ -72,8 +84,14 @@ class Event(models.Model):
         verbose_name=_("Время проведения"),
         blank=False,
     )
-    position = models.CharField(
-        verbose_name=_("Место проведения"),
+    city = models.ForeignKey(
+        City,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=True,
+    )
+    address = models.CharField(
+        verbose_name=_("Адрес места проведения"),
         max_length=200,
         blank=False,
     )
@@ -97,8 +115,8 @@ class Event(models.Model):
         verbose_name=_("Онлайн"),
         default=False,
     )
-    event_form_template = models.OneToOneField(
-        EventFormTemplate,
+    form_template = models.OneToOneField(
+        FormTemplate,
         on_delete=models.CASCADE,
         related_name='related_event',
         null=True,
