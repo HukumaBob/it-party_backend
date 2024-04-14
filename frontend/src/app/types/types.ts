@@ -6,11 +6,12 @@ export type TChip = {
 export type TCard = {
   info?: string;
   title: string;
-  description: string;
+  description?: string;
   img: string;
   date: string;
   time: string;
   id: number;
+  admin?: boolean;
 };
 
 export type TQuestion = {
@@ -148,4 +149,15 @@ export type TLoginResponse = {
   user: TFormAuthorization;
   accessToken: string;
   refreshToken: string;
+};
+
+export type TEventsInitialState = {
+  cards: TCard[];
+  loading: boolean;
+  error?: string | null;
+};
+
+export type TAdminPageInitialState = {
+  activeTab: string;
+  archive: TCard[];
 };

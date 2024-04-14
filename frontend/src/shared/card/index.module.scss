@@ -7,10 +7,11 @@
   width: 100%;
   max-height: 416px;
   height: 100%;
-  gap: $sp-16;
+  gap: $sp-12;
   background: $c-gray;
   border-radius: 8px;
   padding-bottom: $sp-16;
+  justify-content: space-between;
   .imageBlock {
     position: relative;
     &:hover {
@@ -71,6 +72,7 @@
       padding: 0px $sp-16;
       font-size: $sp-18;
       font-weight: 500;
+      height: 40px;
     }
     .description {
       padding: 0px $sp-16;
@@ -101,5 +103,27 @@
       max-width: 296px;
       width: 100%;
     }
+  }
+}
+
+.buttonBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-12;
+  .adminButton {
+    padding: 12px;
+    outline: none;
+    border: none;
+    background: $c-def-blue;
+    border-radius: 8px;
+    color: $c-def-white;
+    cursor: pointer;
+  }
+  .adminButtonArchive {
+    @extend .adminButton;
+    background: $c-def-white;
+    color: $c-def-black;
+    border: 1px solid $c-def-blue;
+    cursor: pointer;
   }
 }

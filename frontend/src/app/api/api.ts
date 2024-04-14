@@ -1,9 +1,9 @@
-import { TLoginResponse, TUser } from "../types/types";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { TCard, TLoginResponse, TUser } from "../types/types";
 
 type TServerResponse<T> = {
   success: boolean;
   data: T;
-  order: T;
 } & T;
 export const checkResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : Promise.reject(`Ошибка:${res.status}`);
@@ -13,7 +13,7 @@ export const registerUser = (
   email: string,
   password: string,
 ): Promise<TLoginResponse> => {
-  return fetch(`http://localhost:8000/auth/users/`, {
+  return fetch(`/auth/users/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -36,7 +36,7 @@ export const login = (
   password: string,
   checked: boolean,
 ): Promise<TLoginResponse> => {
-  return fetch(`http://localhost:8000/auth/jwt/create/`, {
+  return fetch(``, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -56,7 +56,7 @@ export const login = (
 };
 
 export const logout = (): Promise<TUser> => {
-  return fetch(`http://localhost:8000/`, {
+  return fetch(``, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -76,7 +76,7 @@ export const getUserProfile = (): Promise<TUser> => {
     return Promise.reject("No accessToken available");
   }
 
-  return fetch(`http://localhost:8000/`, {
+  return fetch(``, {
     method: "GET",
     headers: {
       Authorization: accessToken,
@@ -90,3 +90,8 @@ export const getUserProfile = (): Promise<TUser> => {
       return Promise.reject(data);
     });
 };
+export const getEvents = createAsyncThunk("asyncIngredient", async () => {
+  const response = await fetch(`/api/v1/events/`);
+  const data = await checkResponse<TServerResponse<TCard[]>>(response);
+  return data.data;
+});
