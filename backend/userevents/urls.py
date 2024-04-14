@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (
     ApplyForEventView,
     SubmitApplicationView,
-    UnfavoriteEventView
+    UnfavoriteEventView,
+    StaffUserEventView,
     )
 
 app_name = 'userevents'
@@ -22,5 +23,10 @@ urlpatterns = [
         'remove_event_from_favorite/<int:event_id>/',
         UnfavoriteEventView.as_view(),
         name='remove_event_from_favorite'
+        ),
+    path(
+        'list_event_viev_staff',
+        StaffUserEventView.as_view(),
+        name='list_event_viev_staff'
         ),
 ]

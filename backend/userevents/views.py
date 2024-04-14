@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from rest_framework import permissions
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -132,3 +133,15 @@ class UnfavoriteEventView(APIView):
                     "message": "Событие не найдено в списке 'Избранное'"
                 }, status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class StaffUserEventView(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request, format=None):
+        user_events = UserEvent.objects.filter(
+            application_status__in=['pending', 'approved', 'rejected']
+            )
+        serializer = UserEventSerializer(user_events, many=True)
+        return Response(serializer.data)
+

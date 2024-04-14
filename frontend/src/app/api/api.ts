@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { TCard, TLoginResponse, TUser } from "../types/types";
+import { BASE_URL, LOGIN_API_ENDPOINT } from "./constants";
 
 type TServerResponse<T> = {
   success: boolean;
@@ -13,7 +14,7 @@ export const registerUser = (
   email: string,
   password: string,
 ): Promise<TLoginResponse> => {
-  return fetch(`/auth/users/`, {
+  return fetch(`${BASE_URL}${LOGIN_API_ENDPOINT}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
