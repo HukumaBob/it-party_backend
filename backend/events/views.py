@@ -34,5 +34,5 @@ class EventDetailView(views.APIView):
     """
     def get(self, request, event_id, format=None):
         event = Event.objects.get(id=event_id)
-        serializer = EventSerializer(event, context={'request': request})
+        serializer = EventDetailSerializer(event, context={'request': request})
         return Response(serializer.data)

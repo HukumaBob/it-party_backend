@@ -4,7 +4,6 @@ from .models import (
     Event,
     Speaker,
     FormTemplate,
-    # EventFormTemplate
     )
 from userevents.models import UserEvent
 from users.models import UserProfile
@@ -15,14 +14,6 @@ class FormTemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = FormTemplate
         fields = '__all__'
-
-
-# class EventFormTemplateSerializer(serializers.ModelSerializer):
-#     form_template = FormTemplateSerializer(read_only=True)
-
-#     class Meta:
-#         model = EventFormTemplate
-#         fields = '__all__'
 
 
 class SpeakerSerializer(serializers.ModelSerializer):
