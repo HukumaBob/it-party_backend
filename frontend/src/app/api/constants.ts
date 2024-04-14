@@ -1,5 +1,6 @@
 // Базовый URL для всех запросов к API
-export const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
+// export const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
+export const BASE_URL = "http://localhost:8000/";
 
 // Эндпоинты API
 export const LOGIN_API_ENDPOINT = "auth/jwt/create/"; // Эндпоинт для аутентификации пользователя

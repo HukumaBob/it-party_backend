@@ -1,6 +1,6 @@
 # Импорт необходимых модулей и классов
 from django.contrib.auth.tokens import default_token_generator
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, permissions
 from django.contrib.auth import get_user_model
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import status
@@ -123,6 +123,7 @@ class SpecializationViewSet(
         ):
     queryset = Specialization.objects.all()
     serializer_class = SpecializationSerializer
+    permission_classes = [permissions.AllowAny]
 
 
 class StackViewSet(
@@ -130,6 +131,7 @@ class StackViewSet(
         ):
     queryset = Stack.objects.all()
     serializer_class = StackSerializer
+    permission_classes = [permissions.AllowAny]
 
 
 class ExperienceViewSet(
@@ -137,3 +139,4 @@ class ExperienceViewSet(
         ):
     queryset = Experience.objects.all()
     serializer_class = ExperienceSerializer
+    permission_classes = [permissions.AllowAny]
