@@ -1,0 +1,81 @@
+"name","specialization_id"
+"Python",1
+"JavaScript",1
+"PHP",1
+"Java",2
+"C#",2
+"Ruby",2
+"Swift",3
+"Kotlin",3
+"Objective-C",3
+"TensorFlow",4
+"PyTorch",4
+"Keras",4
+"SQL",16
+"MongoDB",16
+"Cassandra",16
+"React",1
+"Vue.js",1
+"Angular",1
+"Django",1
+"Flask",1
+"Laravel",1
+"Spring Boot",2
+".NET Core",2
+"Rails",2
+"Node.js",1
+"Express.js",1
+"ASP.NET",2
+"JUnit",2
+"RSpec",2
+"Mocha",1
+"Jest",1
+"Enzyme",1
+"Flutter",3
+"React Native",3
+"Xamarin",3
+"Docker",8
+"Kubernetes",8
+"Ansible",8
+"AWS",7
+"GCP",7
+"Azure",7
+"Solidity",9
+"Ether.js",9
+"Web3.js",9
+"Unity",10
+"Unreal Engine",10
+"Godot",10
+"Raspberry Pi",11
+"Arduino",11
+"ESP32",11
+"Selenium",12
+"JMeter",12
+"Postman",12
+"Sketch",13
+"Figma",13
+"Adobe XD",13
+"Wireshark",15
+"Cisco IOS",15
+"Junos OS",15
+"PostgreSQL",16
+"MySQL",16
+"Oracle DB",16
+"Photoshop",17
+"Illustrator",17
+"InDesign",17
+"Tableau",18
+"Power BI",18
+"Google Analytics",18
+"Scrum",19
+"Kanban",19
+"Waterfall",19
+"SAP",20
+"Oracle",20
+"Salesforce",20
+"Perl",21
+"BioPython",21
+"Bioconductor",21
+"Qiskit",22
+"PennyLane",22
+"Cirq",22

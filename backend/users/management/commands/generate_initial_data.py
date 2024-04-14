@@ -2,9 +2,14 @@ import csv
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.db import models
-from users.models import Experience, Specialization
+from users.models import (
+    Experience,
+    Specialization,
+    Stack
+    )
 from additions.models import (
-    City, Country, FamilyStatus, Income, Education, Notification
+    City, Country, FamilyStatus, Income,
+    Education, Notification
     )
 
 
@@ -29,6 +34,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Загрузка специализаций
         self.load_from_csv(Specialization)
+    
+        # Загрузка стек
+        self.load_from_csv(Stack)
 
         # # # Загрузка опыта работы
         self.load_from_csv(Experience)

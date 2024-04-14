@@ -1,15 +1,25 @@
 # Импорт необходимых модулей и классов
 from django.contrib.auth.tokens import default_token_generator
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 from django.contrib.auth import get_user_model
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils.translation import gettext_lazy as _
-from .models import UserProfile
+from .models import (
+    UserProfile,
+    Specialization,
+    Stack,
+    Experience,
+    )
 from .permissions import IsOwnerOrAdmin
-from .serializers import UserProfileSerializer
+from .serializers import (
+    UserProfileSerializer,
+    SpecializationSerializer,
+    StackSerializer,
+    ExperienceSerializer
+    )
 
 
 # Класс для активации аккаунта пользователя
@@ -106,3 +116,24 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [IsOwnerOrAdmin]
+
+
+class SpecializationViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+        ):
+    queryset = Specialization.objects.all()
+    serializer_class = SpecializationSerializer
+
+
+class StackViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+        ):
+    queryset = Stack.objects.all()
+    serializer_class = StackSerializer
+
+
+class ExperienceViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+        ):
+    queryset = Experience.objects.all()
+    serializer_class = ExperienceSerializer

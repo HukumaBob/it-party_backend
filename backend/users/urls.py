@@ -4,6 +4,9 @@ from .views import (
     ActivateAccountView,
     PasswordResetConfirmView,
     UserProfileViewSet,
+    SpecializationViewSet,
+    StackViewSet,
+    ExperienceViewSet,
     )
 
 
@@ -11,7 +14,10 @@ app_name = 'users'
 
 router_v1 = routers.DefaultRouter()
 
-router_v1.register('userprofiles', UserProfileViewSet, basename='profile')
+router_v1.register(r'userprofiles', UserProfileViewSet, basename='profile')
+router_v1.register(r'specialization', SpecializationViewSet, basename='specialization')
+router_v1.register(r'stack', StackViewSet, basename='stack')
+router_v1.register(r'experience', ExperienceViewSet, basename='experience')
 
 urlpatterns = [
     path('', include(router_v1.urls)),

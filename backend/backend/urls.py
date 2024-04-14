@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/v1/', include('organaizer.urls', namespace='organaizer')),
     path('api/v1/', include('users.urls', namespace='users')),
     path('api/v1/', include('userevents.urls', namespace='userevents')),
+    path('api/v1/', include('additions.urls', namespace='additions')),
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),

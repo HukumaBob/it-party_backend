@@ -3,7 +3,9 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from .models import User, UserProfile
+from .models import (
+    User, UserProfile, Specialization, Stack, Experience
+    )
 
 
 def validate_password(value):
@@ -81,6 +83,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     Чтобы в Response были данные и User, добавлен сериализатор
     UserPassportSerializer и метод to_representation
     """
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
     first_name = serializers.CharField(write_only=True, required=False)
     last_name = serializers.CharField(write_only=True, required=False)
     user_photo = serializers.ImageField(write_only=True, required=False)
@@ -90,28 +93,29 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        if 'user' in validated_data:
-            user_email = validated_data.pop('user')
-            user_instance = User.objects.get(email=user_email)
-            first_name = validated_data.pop('first_name', None)
-            last_name = validated_data.pop('last_name', None)
-            user_photo = validated_data.pop('user_photo', None)
-
-            if first_name is not None:
-                user_instance.first_name = first_name
-            if last_name is not None:
-                user_instance.last_name = last_name
-            if user_photo is not None:
-                user_instance.user_photo = user_photo
-
-            user_instance.save()
-
-            instance = UserProfile.objects.create(
-                user=user_instance, **validated_data
+        # Получаем текущего авторизованного пользователя
+        user = self.context['request'].user
+        # Проверяем, существует ли уже профиль для этого пользователя
+        if UserProfile.objects.filter(user=user).exists():
+            raise serializers.ValidationError(
+                "Профиль для этого пользователя уже существует"
                 )
-            return instance
-        else:
-            raise serializers.ValidationError("User email is required")
+
+        first_name = validated_data.pop('first_name', None)
+        last_name = validated_data.pop('last_name', None)
+        user_photo = validated_data.pop('user_photo', None)
+
+        if first_name is not None:
+            user.first_name = first_name
+        if last_name is not None:
+            user.last_name = last_name
+        if user_photo is not None:
+            user.user_photo = user_photo
+
+        user.save()
+
+        instance = UserProfile.objects.create(user=user, **validated_data)
+        return instance
 
     def update(self, instance, validated_data):
         first_name = validated_data.pop('first_name', None)
@@ -139,3 +143,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # получите данные пользователя
         return {**representation, **user_representation}
     # объедините данные пользователя и профиля пользователя
+
+
+class SpecializationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialization
+        fields = '__all__'
+
+
+class StackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stack
+        fields = '__all__'
+
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Experience
+        fields = '__all__'

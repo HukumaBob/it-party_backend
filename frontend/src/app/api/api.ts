@@ -13,7 +13,7 @@ export const registerUser = (
   email: string,
   password: string,
 ): Promise<TLoginResponse> => {
-  return fetch(``, {
+  return fetch(`http://localhost:8000/auth/users/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -36,7 +36,7 @@ export const login = (
   password: string,
   checked: boolean,
 ): Promise<TLoginResponse> => {
-  return fetch(``, {
+  return fetch(`http://localhost:8000/auth/jwt/create/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -56,7 +56,7 @@ export const login = (
 };
 
 export const logout = (): Promise<TUser> => {
-  return fetch(``, {
+  return fetch(`http://localhost:8000/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -76,7 +76,7 @@ export const getUserProfile = (): Promise<TUser> => {
     return Promise.reject("No accessToken available");
   }
 
-  return fetch(``, {
+  return fetch(`http://localhost:8000/`, {
     method: "GET",
     headers: {
       Authorization: accessToken,
