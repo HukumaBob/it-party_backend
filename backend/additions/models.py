@@ -57,6 +57,12 @@ class Notification(models.Model):
     notification = models.CharField(
         max_length=255, verbose_name=_("Notification")
         )
+    minutes_before_notification = models.IntegerField(
+        default=0,
+        verbose_name=_("Minutes before Notification"),
+        null=True,
+        blank=True
+        )
 
     def __str__(self):
         return self.notification

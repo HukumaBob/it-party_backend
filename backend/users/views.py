@@ -117,6 +117,11 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
     permission_classes = [IsOwnerOrAdmin]
 
+    def get_object(self):
+        if self.kwargs.get('pk') == 'me':
+            return UserProfile.objects.get(user=self.request.user)
+        return super().get_object()
+
 
 class SpecializationViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet

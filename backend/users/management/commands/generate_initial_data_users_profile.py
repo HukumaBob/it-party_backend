@@ -22,9 +22,10 @@ class Command(BaseCommand):
                 date_of_birth=fake.date_of_birth(),
                 phone_number=fake.phone_number(),
                 email=fake.email(),
-                password=fake.password(),
                 is_active=True
             )
+            user.set_password("Bobobo67")
+            user.save()
 
             # Генерация профиля пользователя
             _ = UserProfile.objects.create(
@@ -55,3 +56,4 @@ class Command(BaseCommand):
                     f'"{user.email}" and their profile'
                 )
             )
+

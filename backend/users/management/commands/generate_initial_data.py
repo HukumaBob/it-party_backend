@@ -56,7 +56,7 @@ class Command(BaseCommand):
         # Загрузка дохода
         self.load_from_csv(Income)
 
-        # Загрузка дохода
+        # Загрузка уведомлений
         self.load_from_csv(Notification)
 
         self.stdout.write(

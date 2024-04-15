@@ -19,9 +19,10 @@ class Command(BaseCommand):
                 date_of_birth=fake.date_of_birth(),
                 phone_number=fake.phone_number(),
                 email=fake.email(),
-                password=fake.password(),
                 is_active=True
             )
+            user.set_password("Bobobo67")
+            user.save()            
             self.stdout.write(
                 self.style.SUCCESS(
                     f'Successfully created user {user.first_name}'

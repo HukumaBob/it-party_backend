@@ -65,6 +65,17 @@ class UserEventApplicationStatusViewSet(viewsets.GenericViewSet):
             email.send()
         elif instance.application_status == 'rejected':
             message = 'Ваша заявка отклонена.'
+            explanation = self.request.data.get(
+                'explanation'
+                )  # получаем объяснение из запроса
+            if explanation:  # добавляем объяснение, если оно есть
+                message += ' Причина: {}'.format(explanation)
+                snapshot = UserProfileSnapshot.objects.get(user_event=instance)
+                snapshot.snapshot_data[
+                    'explanation'
+                    ] = explanation
+                # добавляем объяснение в snapshot_data
+                snapshot.save()
             send_mail(
                 subject, message, settings.EMAIL_HOST_USER,
                 [instance.user_profile.user.email]
