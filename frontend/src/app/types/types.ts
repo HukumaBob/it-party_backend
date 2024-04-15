@@ -107,7 +107,7 @@ export type TFormValues = {
 export type TFormAuthorization = {
   email: string;
   password: string;
-  checked?: boolean;
+  agreement_required?: boolean;
 };
 
 export type TFormErrors = {
@@ -171,4 +171,5 @@ export type TAdminPageInitialState = {
   refusals: TApplication[];
   showInput: number | null;
   inputValues: Record<number, string>;
+  status: Record<number, string>;
 };

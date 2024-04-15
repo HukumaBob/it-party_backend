@@ -1,23 +1,22 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TAdminPageInitialState, TApplication, TCard } from "../../types/types";
 
-// Функция для сохранения данных в локальное хранилище
 const saveDataToLocalStorage = <T>(key: string, data: T) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
 
-// Функция для загрузки данных из локального хранилища
 const loadDataFromLocalStorage = <T>(key: string): T => {
   const storedData = localStorage.getItem(key);
-  return storedData ? JSON.parse(storedData) : null; // Изменено на null, чтобы возвращать пустой объект по умолчанию
+  return storedData ? JSON.parse(storedData) : null;
 };
 
 export const initialState: TAdminPageInitialState = {
   activeTab: "Все",
-  archive: loadDataFromLocalStorage("archive") || [], // Исправлено: Добавлено значение по умолчанию
-  refusals: loadDataFromLocalStorage("refusals") || [], // Исправлено: Добавлено значение по умолчанию
+  archive: loadDataFromLocalStorage("archive") || [],
+  refusals: loadDataFromLocalStorage("refusals") || [],
   showInput: null,
-  inputValues: loadDataFromLocalStorage("inputValues") || {}, // Исправлено: Добавлено значение по умолчанию
+  inputValues: loadDataFromLocalStorage("inputValues") || {},
+  status: loadDataFromLocalStorage("status") || {},
 };
 
 export const adminSlice = createSlice({
@@ -54,6 +53,14 @@ export const adminSlice = createSlice({
       state.inputValues[userId] = inputValue;
       saveDataToLocalStorage("inputValues", state.inputValues);
     },
+    setStatus: (
+      state,
+      action: PayloadAction<{ userId: number; value: string }>,
+    ) => {
+      const { userId, value } = action.payload;
+      state.status[userId] = value;
+      saveDataToLocalStorage("status", state.status);
+    },
   },
 });
 
@@ -65,6 +72,7 @@ export const {
   deleteRefusal,
   setShowInput,
   setInputValue,
+  setStatus,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;

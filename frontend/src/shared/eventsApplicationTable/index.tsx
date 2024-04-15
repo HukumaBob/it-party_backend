@@ -8,13 +8,20 @@ import {
   addToRefusals,
   setInputValue,
   setShowInput,
+  setStatus,
 } from "../../app/services/slices/adminPageSlice";
 import { TApplication } from "../../app/types/types";
 import { Modal } from "../modal";
 export const EventsTable = () => {
-  const { refusals, showInput, inputValues } = useSelector(
+  const { refusals, showInput, inputValues, status } = useSelector(
     (store) => store.admin,
   );
+
+  const handleSave = (el: any) => {
+    dispatch(setShowInput(null));
+    handleAddToRefusals(el);
+  };
+
   const handleAddToRefusals = (el: TApplication) => {
     const existingItem = refusals.find((item) => item.id === el.id);
     if (!existingItem) {
@@ -23,6 +30,9 @@ export const EventsTable = () => {
   };
   const handleInputChange = (userId: number, inputValue: string) => {
     dispatch(setInputValue({ userId, inputValue }));
+  };
+  const handleStatus = (userId: number, value: string) => {
+    dispatch(setStatus({ userId, value }));
   };
   const dispatch = useDispatch();
   return (
@@ -45,15 +55,28 @@ export const EventsTable = () => {
               <td className={style.body_company}>{el.company}</td>
               <td className={style.body_post}>{el.post}r</td>
               <td className={style.body_experience}>{el.experience}</td>
-              <td className={style.body_status}>{el.status}</td>
+              <td
+                className={`${
+                  status === "Одобрено" ? style.statusTrue : style.body_status
+                }`}>
+                {status[el.id]}
+              </td>
               <td className={style.body_application}>
                 <img
                   src={iconFalse}
                   alt='falseIcon'
                   className={style.false}
-                  onClick={() => dispatch(setShowInput(el.id))}
+                  onClick={() => {
+                    dispatch(setShowInput(el.id));
+                    handleStatus(el.id, "Отклонено");
+                  }}
                 />
-                <img src={iconTrue} alt='trueIcon' className={style.true} />
+                <img
+                  src={iconTrue}
+                  alt='trueIcon'
+                  className={style.true}
+                  onClick={() => handleStatus(el.id, "Одобрено")}
+                />
               </td>
             </tr>
             {showInput === el.id && (
@@ -71,8 +94,7 @@ export const EventsTable = () => {
                     />
                     <button
                       onClick={() => {
-                        dispatch(setShowInput(null));
-                        handleAddToRefusals(el);
+                        handleSave(el);
                       }}>
                       Сохранить
                     </button>

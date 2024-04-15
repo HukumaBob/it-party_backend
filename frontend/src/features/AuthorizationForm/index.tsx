@@ -53,7 +53,7 @@ export const AuthorizationForm = () => {
     if (openRegistration) {
       const loginUser = createAsyncThunk(
         "user/login",
-        async ({ email, password, checked }: TFormAuthorization) => {
+        async ({ email, password }: TFormAuthorization) => {
           const res = await login(email, password, checked!);
           localStorage.setItem("accessToken", res.accessToken);
           localStorage.setItem("refreshToken", res.refreshToken);
@@ -64,15 +64,14 @@ export const AuthorizationForm = () => {
         loginUser({
           email: data.email,
           password: data.password,
-          checked: formData.checked,
         }),
       );
       reset();
     } else {
       const registerUsers = createAsyncThunk(
         "user/register",
-        async ({ email, password }: TFormAuthorization) => {
-          const res = await registerUser(email, password!);
+        async ({ email, password, agreement_required }: TFormAuthorization) => {
+          const res = await registerUser(email, password, agreement_required!);
           localStorage.setItem("accessToken", res.accessToken);
           localStorage.setItem("refreshToken", res.refreshToken);
           return res;
