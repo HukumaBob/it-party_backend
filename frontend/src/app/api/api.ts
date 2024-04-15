@@ -36,7 +36,6 @@ export const registerUser = (
 export const login = (
   email: string,
   password: string,
-  checked: boolean,
 ): Promise<TLoginResponse> => {
   return fetch(``, {
     method: "POST",
@@ -46,8 +45,6 @@ export const login = (
     body: JSON.stringify({
       email: email,
       password: password,
-      checked: checked,
-      token: localStorage.getItem("accesToken"),
     }),
   })
     .then(checkResponse<TServerResponse<TLoginResponse>>)
