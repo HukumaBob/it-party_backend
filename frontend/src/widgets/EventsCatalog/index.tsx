@@ -5,6 +5,7 @@ import { EventCard } from "../../shared/card";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import { getEvents } from "../../app/api/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { eventCatalogMock } from "../../app/mocks/eventsCatalogMock";
 export const EventsCatalog = () => {
   const dispatch = useDispatch();
   const { loading, cards, error } = useSelector((store) => store.events);
@@ -20,7 +21,7 @@ export const EventsCatalog = () => {
         <FilterBlock />
       </div>
       <div className={style.cardsBlock}>
-        {/* {.map((event) => (
+        {eventCatalogMock.map((event) => (
           <EventCard
             title={event.title}
             description={event.description}
@@ -30,8 +31,8 @@ export const EventsCatalog = () => {
             info={event.info}
             time={event.time}
           />
-        ))} */}
-        <EventCard
+        ))}
+        {/* <EventCard
           title='Библиотека решений платформы данныхYandex Cloud'
           description='Рассказали о структуре библиотеки и разобрали два решения.'
           img=''
@@ -108,7 +109,7 @@ export const EventsCatalog = () => {
           time='12:00'
           info='Москва'
           id={9}
-        />
+        /> */}
       </div>
     </div>
   );

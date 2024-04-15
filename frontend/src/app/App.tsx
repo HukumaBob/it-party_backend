@@ -10,6 +10,7 @@ import { Modal } from "../shared/modal";
 import { AuthorizationModal } from "../widgets/Authorization";
 import { AdminPage } from "../pages/AdminPage";
 import { AdminLayout } from "./AdminLayout";
+import { NewApplicationPage } from "../pages/NewApplicationPage";
 
 function App() {
   const { openModal } = useSelector((state) => state.authorization);
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route element={<AdminLayout />}>
           <Route path='/admin' element={<AdminPage />} />
+          <Route path='/newApplication' element={<NewApplicationPage />} />
         </Route>
         <Route element={<Layout />}>
           <Route path='/' element={<MainPage />} />

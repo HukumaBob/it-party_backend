@@ -44,11 +44,6 @@ export const EventCard = ({
   return (
     <div className={style.wrapper}>
       <div className={style.imageBlock}>
-        {activeTab !== "Архив" ? (
-          <span className={`${info ? style.info : style.none}`}>{info}</span>
-        ) : (
-          ""
-        )}
         {admin && activeTab === "Архив" ? (
           <div className={style.favoriteBackground} onClick={handleDelete}>
             <img src={close_mini} alt='closeIcon' className={style.favorite} />
@@ -70,11 +65,19 @@ export const EventCard = ({
                 />
               )}
             </div>
-            <span className={`${info ? style.info : style.none}`}>{info}</span>
+            {admin ? (
+              <span className={`${info ? style.info : style.none}`}>
+                <Link to='/newApplication'>{info}</Link>
+              </span>
+            ) : (
+              <span className={`${info ? style.info : style.none}`}>
+                {info}
+              </span>
+            )}
           </>
         )}
 
-        <img src={eventCard} alt='eventImage' className={style.image} />
+        <img src={img || eventCard} alt='eventImage' className={style.image} />
         <span className={style.background}></span>
       </div>
       <Link to={`/event/${id}`}>

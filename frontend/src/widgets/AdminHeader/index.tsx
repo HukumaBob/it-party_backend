@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import style from "./index.module.scss";
 
 import headerImage from "../../app/assets/image/other/headerImage.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 export const AdminHeader = () => {
   const [open, setOpen] = useState<boolean>(false);
   const handleClick = () => {
     setOpen(!open);
   };
+  const location = useLocation();
+  console.log(location.pathname === "/newApplication");
   return (
-    <header className={style.container}>
+    <header
+      className={`${
+        location.pathname !== "/newApplication"
+          ? style.container
+          : style.newApplication
+      }`}>
       <div className={style.main}>
         <h2 className={style.title}>Я Организую</h2>
         <div className={style.avatar} onClick={handleClick}>

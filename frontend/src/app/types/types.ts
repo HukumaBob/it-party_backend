@@ -157,7 +157,18 @@ export type TEventsInitialState = {
   error?: string | null;
 };
 
+export type TApplication = {
+  name: string;
+  company: string;
+  post: string;
+  experience: string;
+  status: string;
+  id: number;
+};
 export type TAdminPageInitialState = {
   activeTab: string;
   archive: TCard[];
+  refusals: TApplication[];
+  showInput: number | null;
+  inputValues: Record<number, string>;
 };
