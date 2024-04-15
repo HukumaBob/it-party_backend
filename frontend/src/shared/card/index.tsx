@@ -7,7 +7,12 @@ import favoriteActive from "../../app/assets/icons/favoriteActive.svg";
 import { TCard } from "../../app/types/types";
 import { Link } from "react-router-dom";
 import { RegistrationButton } from "../../features/RegistrationButton";
-
+import { useDispatch, useSelector } from "../../app/types/hooks";
+import {
+  addToArchive,
+  deleteItem,
+} from "../../app/services/slices/adminPageSlice";
+import close_mini from "../../app/assets/icons/close_mini_white.svg";
 export const EventCard = ({
   info,
   title,
@@ -16,39 +21,68 @@ export const EventCard = ({
   date,
   time,
   id,
+  admin,
 }: TCard) => {
   const [active, setActive] = useState(false);
-
   const handleClick = () => {
     setActive(!active);
+  };
+  const { archive, activeTab } = useSelector((store) => store.admin);
+  const dispatch = useDispatch();
+  const handleAddToArchive = () => {
+    const existingItem = archive.find((item) => item.id === id);
+    if (!existingItem) {
+      dispatch(
+        addToArchive({ info, title, description, img, date, time, id, admin }),
+      );
+    }
+  };
+  const handleDelete = () => {
+    dispatch(deleteItem(id));
   };
 
   return (
     <div className={style.wrapper}>
       <div className={style.imageBlock}>
-        <span className={`${info ? style.info : style.none}`}>{info}</span>
-        <div className={style.favoriteBackground} onClick={handleClick}>
-          {active ? (
-            <img
-              src={favoriteActive}
-              alt='favorite'
-              className={style.favorite}
-              onClick={handleClick}
-            />
-          ) : (
-            <img
-              src={inactiveFavorite}
-              alt='favorite'
-              className={style.favorite}
-            />
-          )}
-        </div>
-        <img src={eventCard} alt='eventImage' className={style.image} />
+        {admin && activeTab === "Архив" ? (
+          <div className={style.favoriteBackground} onClick={handleDelete}>
+            <img src={close_mini} alt='closeIcon' className={style.favorite} />
+          </div>
+        ) : (
+          <>
+            <div className={style.favoriteBackground} onClick={handleClick}>
+              {active ? (
+                <img
+                  src={favoriteActive}
+                  alt='favorite'
+                  className={style.favorite}
+                />
+              ) : (
+                <img
+                  src={inactiveFavorite}
+                  alt='favorite'
+                  className={style.favorite}
+                />
+              )}
+            </div>
+            {admin ? (
+              <span className={`${info ? style.info : style.none}`}>
+                <Link to='/newApplication'>{info}</Link>
+              </span>
+            ) : (
+              <span className={`${info ? style.info : style.none}`}>
+                {info}
+              </span>
+            )}
+          </>
+        )}
+
+        <img src={img || eventCard} alt='eventImage' className={style.image} />
         <span className={style.background}></span>
       </div>
       <Link to={`/event/${id}`}>
         <span className={style.title}>{title}</span>
-        <span className={style.description}>{description}</span>
+        {admin ? "" : <span className={style.description}>{description}</span>}
         <div className={style.eventTime}>
           <img src={calendar} alt='calendar' />
           <span>{date}</span>
@@ -58,7 +92,18 @@ export const EventCard = ({
 
       <div className={style.buttonContainer}>
         <div className={style.button}>
-          <RegistrationButton />
+          {admin ? (
+            <div className={style.buttonBlock}>
+              <button className={style.adminButton}>Редактировать</button>
+              <button
+                className={style.adminButtonArchive}
+                onClick={handleAddToArchive}>
+                В архив
+              </button>
+            </div>
+          ) : (
+            <RegistrationButton />
+          )}
         </div>
       </div>
     </div>

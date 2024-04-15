@@ -1,0 +1,121 @@
+@import "../../app/styles/vars.scss";
+.table {
+  box-shadow: 2px 2px 12px 0px #242f7b26;
+  border-radius: $sp-16;
+  max-width: 1032px;
+  width: 100%;
+  position: relative;
+  thead th {
+    padding: 16px 8px 16px 12px;
+    max-height: 52px;
+    border-bottom: 1px solid $c-black-100;
+    text-align: left;
+    font-family: "YS-T-Medium";
+    font-weight: 500;
+    line-height: 20px;
+  }
+  tbody td {
+    text-align: left;
+    font-family: "YS-T-Medium";
+    font-weight: 400;
+    max-height: 52px;
+    height: 100%;
+    line-height: 20px;
+    &:first-child {
+      font-weight: 500;
+    }
+  }
+}
+.people {
+  width: 220px;
+  padding: 16px 8px 16px 12px;
+}
+.company {
+  width: 238px;
+}
+.post {
+  width: 235px;
+}
+.experience {
+  width: 113px;
+}
+.status {
+  width: 128px;
+}
+.application {
+  width: 100px;
+}
+.body_people {
+  width: 220px;
+  padding: 16px 8px 16px 12px;
+}
+.body_company {
+  width: 238px;
+  padding: 16px 8px 16px 12px;
+}
+.body_post {
+  width: 235px;
+  padding: 16px 8px 16px 12px;
+}
+.body_experience {
+  width: 113px;
+  padding: 16px 8px 16px 12px;
+}
+.body_status {
+  width: 128px;
+  background: $c-ch-def-yellow;
+  padding: 16px 8px 16px 12px;
+}
+.body_application {
+  width: 100px;
+  padding: 0px 12px 0px 4px;
+  display: flex;
+  gap: 4px;
+}
+.false {
+  padding: 11px;
+  border: 1px solid $c-black-100;
+  border-radius: 4px;
+}
+.true {
+  padding: 11px;
+  border: 1px solid $c-black-100;
+  border-radius: 4px;
+}
+.inputBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $sp-24;
+  position: absolute;
+  top: 20%;
+
+  span {
+    font-family: "YS-T-Medium";
+    font-weight: 500;
+    font-size: $sp-24;
+  }
+  .input {
+    width: 500px;
+    top: 50%;
+    left: 0;
+    padding: 20px;
+    color: $c-def-black;
+    border-radius: 8px;
+    border: 1px solid $c-str-medium;
+    outline: none;
+  }
+  button {
+    padding: $sp-12;
+    border-radius: 8px;
+    background-color: $c-def-blue;
+    color: $c-def-white;
+    border: none;
+    outline: none;
+    max-width: 300px;
+    width: 100%;
+  }
+}
+.statusTrue {
+  background-color: green;
+}
