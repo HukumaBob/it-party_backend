@@ -4,7 +4,9 @@ from .models import (
     User,
     UserProfile,
     Specialization,
-    Experience)
+    Experience,
+    Stack,
+    )
 
 admin.site.site_header = 'Site administration'
 
@@ -27,6 +29,13 @@ class UserProfileAdmin(admin.ModelAdmin):
 class SpecializationAdmin(admin.ModelAdmin):
     list_display = [
         field.name for field in Specialization._meta.fields
+        ]
+
+
+@admin.register(Stack)
+class StackAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in Stack._meta.fields
         ]
 
 

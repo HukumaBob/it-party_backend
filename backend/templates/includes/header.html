@@ -1,0 +1,16 @@
+{% load static %}
+
+<nav class="navbar navbar-light" style="background-color: lightskyblue">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'recipes_without_product' %}">
+      <img
+        src="{% static 'img/logo.svg' %}"
+        width="30"
+        height="30"
+        class="d-inline-block align-top"
+        alt=""
+      />
+      Cook book
+    </a>
+  </div>
+</nav>

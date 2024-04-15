@@ -1,12 +1,14 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from additions.models import City
 
 
 class Speaker(models.Model):
     foto = models.ImageField(
         verbose_name=_("Фото спикера"),
         upload_to='images/',
-        blank=False,
+        blank=False, null=True,
     )
     name = models.CharField(
         verbose_name=_("Фамилия Имя"),
@@ -28,11 +30,33 @@ class Speaker(models.Model):
         return self.name
 
 
+def get_default_fields():
+    return {
+        "first_name": "",
+        "last_name": "",
+        "date_of_birth": "",
+        "place_of_work": "",
+        "position": "",
+        "specialization": "",
+        "experience": "",
+        "phone": "",
+        "online": False
+        }
+
+
+class FormTemplate(models.Model):
+    name = models.CharField(_("Name"), max_length=200)
+    fields = models.JSONField(default=get_default_fields)  # базовый шаблон
+
+    def __str__(self):
+        return str(self.fields)
+
+
 class Event(models.Model):
     logo = models.ImageField(
         verbose_name=_("Логотип"),
         upload_to='images/',
-        blank=False,
+        blank=False, null=True,
     )
     name = models.CharField(
         verbose_name=_("Название"),
@@ -47,8 +71,14 @@ class Event(models.Model):
         verbose_name=_("Время проведения"),
         blank=False,
     )
-    position = models.CharField(
-        verbose_name=_("Место проведения"),
+    city = models.ForeignKey(
+        City,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=True,
+    )
+    address = models.CharField(
+        verbose_name=_("Адрес места проведения"),
         max_length=200,
         blank=False,
     )
@@ -60,7 +90,7 @@ class Event(models.Model):
     gallery = models.ImageField(
         verbose_name=_("Галерея"),
         upload_to='images/',
-        blank=False,
+        blank=False, null=True,
     )
     speakers = models.ManyToManyField(
         Speaker,
@@ -71,6 +101,33 @@ class Event(models.Model):
     online = models.BooleanField(
         verbose_name=_("Онлайн"),
         default=False,
+    )
+    form_template = models.OneToOneField(
+        FormTemplate,
+        on_delete=models.CASCADE,
+        related_name='related_event',
+        null=True,
+        blank=True
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_events',
+        verbose_name=_("Создатель ивента"),
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name=_("Дата создания"),
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        null=True,
+        blank=True,
+        verbose_name=_("Дата обновления"),
     )
 
     def __str__(self):
