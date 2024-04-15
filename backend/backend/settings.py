@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'additions',
     'core',
     'events',
+    'userevents',
+    'organaizer',
 ]
 
 MIDDLEWARE = [
@@ -152,15 +154,17 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('Bearer',),
-   "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
-   "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
+   "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+   "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
 }
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
-    # 'ACTIVATION_URL': '#/activate/{uid}/{token}', #  Регистрация на стороне клиента
-    'ACTIVATION_URL': 'api/activate/{uid}/{token}', #  Регистрация на стороне сервера
+    #  'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'api/v1/password/reset/confirm/{uid}/{token}',
+    #  'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'api/v1/username/reset/confirm/{uid}/{token}',
+    # 'ACTIVATION_URL': '#/activate/{uid}/{token}',  #  Регистрация на стороне клиента
+    'ACTIVATION_URL': 'api/activate/{uid}/{token}',  #  Регистрация на стороне сервера
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {'user_create': 'users.serializers.UserSerializer', },
 }
@@ -203,3 +207,5 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
