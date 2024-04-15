@@ -48,13 +48,31 @@ export const AuthorizationForm = () => {
   const onSubmit = (data: TFormAuthorization) => {
     const formData = {
       ...data,
-      checked: checked,
+      agreement_required: checked,
     };
     if (openRegistration) {
+      const registerUsers = createAsyncThunk(
+        "user/register",
+        async ({ email, password, agreement_required }: TFormAuthorization) => {
+          const res = await registerUser(email, password, agreement_required!);
+          localStorage.setItem("accessToken", res.accessToken);
+          localStorage.setItem("refreshToken", res.refreshToken);
+          return res;
+        },
+      );
+      dispatch(
+        registerUsers({
+          email: formData.email,
+          password: formData.password,
+          agreement_required: formData.agreement_required,
+        }),
+      );
+      reset();
+    } else {
       const loginUser = createAsyncThunk(
         "user/login",
-        async ({ email, password, checked }: TFormAuthorization) => {
-          const res = await login(email, password, checked!);
+        async ({ email, password }: TFormAuthorization) => {
+          const res = await login(email, password!);
           localStorage.setItem("accessToken", res.accessToken);
           localStorage.setItem("refreshToken", res.refreshToken);
           return res;
@@ -64,24 +82,12 @@ export const AuthorizationForm = () => {
         loginUser({
           email: data.email,
           password: data.password,
-          checked: formData.checked,
         }),
       );
       reset();
-    } else {
-      const registerUsers = createAsyncThunk(
-        "user/register",
-        async ({ email, password }: TFormAuthorization) => {
-          const res = await registerUser(email, password!);
-          localStorage.setItem("accessToken", res.accessToken);
-          localStorage.setItem("refreshToken", res.refreshToken);
-          return res;
-        },
-      );
-      dispatch(registerUsers({ email: data.email, password: data.password }));
-      reset();
     }
   };
+  console.log(openRegistration);
   return (
     <div className={style.container}>
       <section className={style.titleBlock}>

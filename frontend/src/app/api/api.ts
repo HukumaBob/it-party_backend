@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { TCard, TLoginResponse, TUser } from "../types/types";
-import { BASE_URL, LOGIN_API_ENDPOINT, USERS_API_ENDPOINT } from "./constants";
+import { BASE_URL, USERS_API_ENDPOINT } from "./constants";
 
 type TServerResponse<T> = {
   success: boolean;
@@ -13,8 +13,9 @@ export const checkResponse = <T>(res: Response): Promise<T> => {
 export const registerUser = (
   email: string,
   password: string,
+  agreement_required: boolean,
 ): Promise<TLoginResponse> => {
-  return fetch(`${BASE_URL}${LOGIN_API_ENDPOINT}`, {
+  return fetch(`${BASE_URL}${USERS_API_ENDPOINT}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -22,7 +23,7 @@ export const registerUser = (
     body: JSON.stringify({
       email: email,
       password: password,
-      token: localStorage.getItem("refreshToken"),
+      agreement_required: agreement_required,
     }),
   })
     .then(checkResponse<TServerResponse<TLoginResponse>>)
@@ -35,9 +36,8 @@ export const registerUser = (
 export const login = (
   email: string,
   password: string,
-  checked: boolean,
 ): Promise<TLoginResponse> => {
-  return fetch(`${BASE_URL}${USERS_API_ENDPOINT}`, {
+  return fetch(``, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -45,8 +45,6 @@ export const login = (
     body: JSON.stringify({
       email: email,
       password: password,
-      checked: checked,
-      token: localStorage.getItem("accesToken"),
     }),
   })
     .then(checkResponse<TServerResponse<TLoginResponse>>)
