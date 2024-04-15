@@ -57,7 +57,11 @@ export const EventsTable = () => {
               <td className={style.body_experience}>{el.experience}</td>
               <td
                 className={`${
-                  status === "Одобрено" ? style.statusTrue : style.body_status
+                  status[el.id] === "Одобрено"
+                    ? style.statusTrue
+                    : status[el.id] === "Отклонено"
+                    ? style.statusFalse
+                    : style.body_status
                 }`}>
                 {status[el.id]}
               </td>

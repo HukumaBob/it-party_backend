@@ -87,7 +87,6 @@ export const AuthorizationForm = () => {
       reset();
     }
   };
-  console.log(openRegistration);
   return (
     <div className={style.container}>
       <section className={style.titleBlock}>

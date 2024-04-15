@@ -65,6 +65,8 @@
   width: 128px;
   background: $c-ch-def-yellow;
   padding: 16px 8px 16px 12px;
+  // display: flex;
+  justify-content: center;
 }
 .body_application {
   width: 100px;
@@ -117,5 +119,11 @@
   }
 }
 .statusTrue {
-  background-color: green;
+  @extend.body_status;
+  background-color: $c-ch-act-green;
+}
+.statusFalse {
+  @extend.body_status;
+  background-color: $c-er-red;
+  color: $c-def-white;
 }

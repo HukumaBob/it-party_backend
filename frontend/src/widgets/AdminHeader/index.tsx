@@ -31,7 +31,9 @@ export const AdminHeader = () => {
               <li>
                 <Link to='/'>Вернуться на главную</Link>
               </li>
-              <li>Помощь</li>
+              <li>
+                <Link to='/admin'>Вернуться к мероприятиям</Link>
+              </li>
               <li>Выйти</li>
             </ul>
           ) : (

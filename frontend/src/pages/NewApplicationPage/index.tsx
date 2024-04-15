@@ -4,9 +4,15 @@ import style from "./index.module.scss";
 import { EventsTable } from "../../shared/eventsApplicationTable";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import close from "../../app/assets/icons/close_mini.svg";
-import { deleteRefusal } from "../../app/services/slices/adminPageSlice";
+import {
+  deleteRefusal,
+  setStatus,
+} from "../../app/services/slices/adminPageSlice";
 export const NewApplicationPage = () => {
   const { refusals, inputValues } = useSelector((store) => store.admin);
+  const handleStatus = (userId: number, value: string) => {
+    dispatch(setStatus({ userId, value }));
+  };
   const dispatch = useDispatch();
   return (
     <div className={style.wrapper}>
@@ -34,7 +40,10 @@ export const NewApplicationPage = () => {
               <img
                 src={close}
                 alt='iconClose'
-                onClick={() => dispatch(deleteRefusal(el.id))}
+                onClick={() => {
+                  dispatch(deleteRefusal(el.id));
+                  handleStatus(el.id, "Ожидает");
+                }}
               />
             </p>
           ))}
