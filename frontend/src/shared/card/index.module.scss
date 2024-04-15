@@ -44,6 +44,7 @@
       background: $c-def-white;
       padding: 4px 8px;
       z-index: 3;
+      cursor: pointer;
       border-radius: 4px;
     }
     .none {
@@ -73,6 +74,11 @@
       font-size: $sp-18;
       font-weight: 500;
       height: 40px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .description {
       padding: 0px $sp-16;

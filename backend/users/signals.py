@@ -6,6 +6,7 @@ from django.conf import settings
 from .models import User
 from django.core.files import File
 
+
 @receiver(post_save, sender=User)
 def set_random_user_photo(sender, instance, created, **kwargs):
     if created:
