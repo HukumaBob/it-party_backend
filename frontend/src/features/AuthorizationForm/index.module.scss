@@ -174,3 +174,54 @@
     }
   }
 }
+.containerCenter {
+  @extend .container;
+  align-items: center;
+}
+.registationTrue {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-24;
+  max-width: 300px;
+  width: 100%;
+  text-align: center;
+  p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    span {
+      display: flex;
+      justify-content: center;
+      gap: 4;
+    }
+    .registationTrue_email {
+      color: $c-def-blue;
+    }
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      outline: none;
+      border: none;
+      border-radius: 8px;
+      gap: 4px;
+      padding: $sp-12;
+      background: $c-def-blue;
+      color: $c-def-white;
+      font-family: "YS-T-Medium";
+      font-weight: 500;
+    }
+    .again {
+      @extend .button;
+      background: $c-def-white;
+      color: $c-def-blue;
+      border: 1px solid $c-def-blue;
+    }
+  }
+}

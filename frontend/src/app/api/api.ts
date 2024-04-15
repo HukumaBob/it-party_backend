@@ -6,8 +6,21 @@ type TServerResponse<T> = {
   success: boolean;
   data: T;
 } & T;
-export const checkResponse = <T>(res: Response): Promise<T> => {
-  return res.ok ? res.json() : Promise.reject(`Ошибка:${res.status}`);
+export const checkResponse = async <T>(res: Response): Promise<T> => {
+  if (res.ok) {
+    return res.json();
+  } else {
+    const errorBody = await res.json();
+    const errorMessage = JSON.stringify(errorBody);
+    return Promise.reject(
+      errorMessage
+        .replace(/[{}[\]]/g, "")
+        .replace(/"/g, "")
+        .split(":")
+        .slice(1)
+        .join(" "),
+    );
+  }
 };
 
 export const registerUser = (
@@ -28,7 +41,7 @@ export const registerUser = (
   })
     .then(checkResponse<TServerResponse<TLoginResponse>>)
     .then((data) => {
-      if (data?.success) return data;
+      if (data) return data;
       return Promise.reject(data);
     });
 };
@@ -41,17 +54,15 @@ export const login = (
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      
     },
     body: JSON.stringify({
       email: email,
       password: password,
-      
     }),
   })
     .then(checkResponse<TServerResponse<TLoginResponse>>)
     .then((data) => {
-      if (data?.success) return data;
+      if (data) return data;
       return Promise.reject(data);
     });
 };
@@ -65,7 +76,7 @@ export const logout = (): Promise<TUser> => {
   })
     .then(checkResponse<TServerResponse<TUser>>)
     .then((data) => {
-      if (data?.success) return data;
+      if (data) return data;
       return Promise.reject(data);
     });
 };
@@ -88,6 +99,7 @@ export const getUserProfile = (): Promise<TUser> => {
       if (data?.success) {
         return data;
       }
+      console.log(data);
       return Promise.reject(data);
     });
 };

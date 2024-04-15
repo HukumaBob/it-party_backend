@@ -134,6 +134,12 @@ export type TAuthorizationInitialState = {
   showPassword: boolean;
   openRegistration: boolean;
   checked: boolean;
+  error?: string | null;
+  ok: boolean;
+  data: {
+    email: string;
+    password: string;
+  };
 };
 
 export type TUser = {
@@ -172,4 +178,12 @@ export type TAdminPageInitialState = {
   showInput: number | null;
   inputValues: Record<number, string>;
   status: Record<number, string>;
+};
+export type TErrorMessage = {
+  email: string;
+};
+export type TResponseReg = {
+    email: string;
+    password: string;
+    ok: boolean;
 };
