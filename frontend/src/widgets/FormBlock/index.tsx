@@ -18,6 +18,10 @@ import {
   setSelectedDirection,
   setSelectedExperience,
 } from "../../app/services/slices/formSlice";
+import {
+  BASE_URL,
+  SUBMIT_APPLICATION_API_ENDPOINT,
+} from "../../app/api/constants";
 export const FormBlock = () => {
   const dispatch = useDispatch();
   const {
@@ -81,7 +85,7 @@ export const FormBlock = () => {
       onlineChecked: onlineChecked,
       offlineChecked: offlineChecked,
     };
-    fetch("", {
+    fetch(`${BASE_URL}${SUBMIT_APPLICATION_API_ENDPOINT}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

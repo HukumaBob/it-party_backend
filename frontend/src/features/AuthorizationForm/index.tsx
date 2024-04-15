@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import closeIcon from "../../app/assets/icons/close_mini.svg";
 import checkIcon from "../../app/assets/icons/check_mini.svg";
 import {
+  setAuth,
   setCheked,
   setError,
   setOk,
@@ -29,13 +30,21 @@ export const AuthorizationForm = () => {
     dispatch(setCheked(false));
     dispatch(setOk(false));
   };
-  const { showPassword, openRegistration, checked, error, ok, data } =
-    useSelector((state) => state.authorization);
+  const {
+    showPassword,
+    openRegistration,
+    checked,
+    error,
+    ok,
+    data,
+    authorizationUser,
+  } = useSelector((state) => state.authorization);
   const handleClick = () => {
     dispatch(setShowPassword(!showPassword));
   };
   const handleOpenRegistration = () => {
     dispatch(setOpenRegistration(!openRegistration));
+    dispatch(setError(null));
   };
   const handleCheked = () => {
     dispatch(setCheked(!checked));
@@ -63,6 +72,9 @@ export const AuthorizationForm = () => {
       );
       reset();
     } else {
+      if (authorizationUser) {
+        handleCloseModal();
+      }
       dispatch(
         loginUser({
           email: data.email,
@@ -172,7 +184,10 @@ export const AuthorizationForm = () => {
             <div className={style.forgotPasswod}>
               <span>Не помню пароль</span>
             </div>
-            <button type='submit' className={style.button}>
+            <button
+              type='submit'
+              className={style.button}
+              onClick={() => dispatch(setAuth(true))}>
               {openRegistration ? "Зарегистрироваться" : "Войти"}
             </button>
             {openRegistration && (
