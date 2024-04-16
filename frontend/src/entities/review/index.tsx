@@ -1,6 +1,5 @@
 import React from "react";
 import style from "./index.module.scss";
-import user_photo from "../../app/assets/image/other/reviewUser.png";
 import { TReview } from "../../app/types/types";
 export const Review = ({
   img,
