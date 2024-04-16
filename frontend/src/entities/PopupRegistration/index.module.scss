@@ -1,0 +1,115 @@
+@import "../../app/styles/vars.scss";
+.wrapper {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  max-width: 856px;
+  width: 100%;
+  background: $c-def-white;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 2px 2px 12px 0px #242f7b26;
+
+  .closeIcon {
+    display: flex;
+    position: absolute;
+    top: $sp-24;
+    right: $sp-24;
+    width: $sp-20;
+    height: $sp-20;
+    cursor: pointer;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 576px;
+    width: 100%;
+    position: relative;
+    padding: $sp-40 0;
+    gap: $sp-32;
+
+    .title {
+      font-family: "YS-D-Medium";
+      font-size: $sp-24;
+      font-weight: 500;
+    }
+    .description {
+      margin: 0;
+      font-weight: 400;
+      line-height: $sp-20;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+      .name_form {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        label {
+          font-weight: 500;
+          font-family: "YS-T-Medium";
+          span {
+            color: $c-def-blue;
+          }
+        }
+        input {
+          padding: $sp-16;
+          border: 1px solid $c-str-medium;
+          outline: none;
+          border-radius: $sp-12;
+        }
+        .message {
+          font-family: "YS-T-Regular";
+          font-size: $sp-13;
+          color: $c-black-500;
+        }
+        .error {
+          font-family: "YS-T-Regular";
+          font-size: $sp-13;
+          color: $c-er-red;
+        }
+      }
+
+      .element {
+        display: flex;
+        height: 24px;
+        width: 130px;
+        gap: 12px;
+        align-items: center;
+      }
+    }
+    .submit {
+      max-width: 300px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 0;
+      border: none;
+      border-radius: 8px;
+      background-color: $c-def-blue;
+      color: $c-def-white;
+      cursor: pointer;
+    }
+    .disabled {
+      @extend .submit;
+      background-color: $c-black-300;
+      color: $c-def-white;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.formBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-16;
+}

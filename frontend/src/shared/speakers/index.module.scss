@@ -1,0 +1,20 @@
+@import "../../app/styles/vars.scss";
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-32;
+  .title {
+    font-family: "YS-D-Medium";
+    font-weight: 500;
+    font-size: $sp-24;
+  }
+  .speakers {
+    flex: 1;
+    gap: $sp-24;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1032px;
+    width: 100%;
+    
+  }
+}

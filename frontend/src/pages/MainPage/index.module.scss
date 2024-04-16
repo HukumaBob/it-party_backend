@@ -1,0 +1,13 @@
+.wrapper {
+  display: flex;
+  max-width: 1032px;
+  width: 100%;
+  justify-content: center;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 56px;
+  }
+}
