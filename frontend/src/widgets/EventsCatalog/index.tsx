@@ -13,7 +13,7 @@ export const EventsCatalog = () => {
     if (!loading) {
       dispatch(getEvents());
     }
-  }, [dispatch]);
+  }, [dispatch,loading]);
 
   return (
     <div className={style.wrapper}>
