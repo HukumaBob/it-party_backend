@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 volumes:
   pg_data:
@@ -8,21 +8,25 @@ volumes:
 services:
   db:
     image: postgres:13.10
-    env_file: 
+    env_file:
       - .env
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    build: 
+    build:
       context: ../backend/
       dockerfile: Dockerfile
-    env_file: 
+    env_file:
       - .env
     depends_on:
       - db
+      - redis
     volumes:
       - static:/app/static/
       - media:/app/static/media/
+    command: >
+      bash -c "celery -A backend worker -l info -P eventlet &
+                celery -A backend beat --loglevel=info"
   frontend:
     build:
       context: ../frontend
@@ -40,3 +44,5 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static:/var/html/static/
       - media:/var/html/media/
+  redis:
+    image: redis:latest
