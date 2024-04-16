@@ -38,7 +38,9 @@ class EventSerializer(serializers.ModelSerializer):
     def get_user_application_status(self, obj):
         request = self.context.get('request')
         if request.user.is_authenticated:
-            user_profile = UserProfile.objects.filter(user=request.user).first()
+            user_profile = UserProfile.objects.filter(
+                user=request.user
+                ).first()
             if user_profile:
                 user_event = UserEvent.objects.filter(
                     user_profile=user_profile, event=obj

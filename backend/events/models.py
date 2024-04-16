@@ -102,6 +102,10 @@ class Event(models.Model):
         verbose_name=_("Онлайн"),
         default=False,
     )
+    offline = models.BooleanField(
+        verbose_name=_("Офлайн"),
+        default=False,
+    )
     form_template = models.OneToOneField(
         FormTemplate,
         on_delete=models.CASCADE,
@@ -109,6 +113,7 @@ class Event(models.Model):
         null=True,
         blank=True
     )
+    record_link = models.URLField(blank=True, null=True,)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
