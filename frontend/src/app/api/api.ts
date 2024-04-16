@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { TCard, TLoginResponse, TUser } from "../types/types";
 import { BASE_URL, LOGIN_API_ENDPOINT, USERS_API_ENDPOINT } from "./constants";
-import { useDispatch, useSelector } from "../types/hooks";
+
 type TServerResponse<T> = {
   success: boolean;
   data: T;
