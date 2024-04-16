@@ -99,13 +99,6 @@ class UserProfileViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    # def test_invalid_password(self):
-    #     response = self.client.patch(
-    #         reverse('user-me'),
-    #         data={'password': 'invalid'}
-    #     )
-    #     self.assertEqual(response.status_code, 400)
-
     def test_activate_account(self):
         """
         Тест на активацию аккаунта. Проверяет, что сервер возвращает
