@@ -13,11 +13,11 @@ environ.Env.read_env(BASE_DIR / '.env')
 SECRET_KEY = env('SECRET_KEY', default="secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 AUTH_USER_MODEL = 'users.User'
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='localhost').split()
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='').split()
 
 # Application definition
 
@@ -90,6 +90,7 @@ if DEBUG:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'
 else:
     DATABASES = {
         'default': {
@@ -97,10 +98,13 @@ else:
             'NAME': env('POSTGRES_DB', default='postgres'),
             'USER': env('POSTGRES_USER', default='postgres'),
             'PASSWORD': env('POSTGRES_PASSWORD', default='postgres'),
-            'HOST': env('POSTGRES_HOST', default='localhost'),
+            'HOST': env('POSTGRES_HOST', default='db'), 
             'PORT': env('POSTGRES_PORT', default='5432'),
         }
     }
+    CELERY_BROKER_URL = 'redis://redis:6379/0'
+
+
 
 
 # Password validation
@@ -218,6 +222,3 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_BROKER_URL = 'redis://redis:6379/0'

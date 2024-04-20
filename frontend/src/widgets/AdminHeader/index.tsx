@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./index.module.scss";
 
 import headerImage from "../../app/assets/image/other/headerImage.png";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation} from "react-router-dom";
 export const AdminHeader = () => {
   const [open, setOpen] = useState<boolean>(false);
   const handleClick = () => {

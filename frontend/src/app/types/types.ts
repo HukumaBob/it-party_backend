@@ -136,6 +136,7 @@ export type TAuthorizationInitialState = {
   checked: boolean;
   error?: string | null;
   ok: boolean;
+  authorizationUser:boolean
   data: {
     email: string;
     password: string;

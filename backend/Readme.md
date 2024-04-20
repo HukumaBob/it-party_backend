@@ -137,7 +137,15 @@ docker compose up
 docker compose exec backend python manage.py migrate
 docker compose exec backend python manage.py collectstatic
 docker compose exec backend cp -r /app/static/. /static/
+docker compose exec backend python manage.py generate_initial_data
+# Если хотите добавить тестовые данные запустите и это:
+docker compose exec backend python manage.py generate_initial_users
+docker compose exec backend python manage.py generate_initial_data_users_profile
+docker compose exec backend python manage.py generate_initial_events
+# ___________________________________________________________
 docker compose exec backend python manage.py createsuperuser
+docker compose exec celery -A backend beat --loglevel=info
+docker compose exec celery -A backend worker -l info -P eventlet
 ```
 
 ## Документация API

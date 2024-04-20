@@ -1,11 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import {
-  TAuthorizationInitialState,
-  TFormAuthorization,
-  TLoginResponse,
-  TResponseReg,
-} from "../../types/types";
-import { registerUsers } from "../actions/authorization";
+import { TAuthorizationInitialState } from "../../types/types";
+import { loginUser, registerUsers } from "../actions/authorization";
 
 export const initialState: TAuthorizationInitialState = {
   openModal: false,
@@ -14,6 +9,7 @@ export const initialState: TAuthorizationInitialState = {
   checked: false,
   error: null,
   ok: false,
+  authorizationUser: false,
   data: { email: "", password: "" },
 };
 export const authorizationSlice = createSlice({
@@ -38,6 +34,9 @@ export const authorizationSlice = createSlice({
     setOk: (state, action: PayloadAction<boolean>) => {
       state.ok = action.payload;
     },
+    setAuth: (state, action: PayloadAction<boolean>) => {
+      state.authorizationUser = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -50,6 +49,17 @@ export const authorizationSlice = createSlice({
       })
       .addCase(registerUsers.rejected, (state, action) => {
         state.error = action.error.message;
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state) => {
+        state.error = null;
+        state.authorizationUser = true;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.authorizationUser = false;
       });
   },
 });
@@ -61,6 +71,7 @@ export const {
   setCheked,
   setError,
   setOk,
+  setAuth
 } = authorizationSlice.actions;
 
 export default authorizationSlice.reducer;
