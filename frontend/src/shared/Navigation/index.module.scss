@@ -1,0 +1,38 @@
+@import "../../app/styles/vars.scss";
+.section {
+  max-width: 328px;
+  min-height: 296px;
+  .navigateContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 4px;
+    padding: 16px;
+    border: 1px solid $c-str-light;
+    border-radius: 24px;
+    .navigateContainer_link{
+      border-radius: 8px;
+      background-color: $c-def-bg;
+      text-decoration: none;
+      padding: 12px;
+      font-family: "YS-T-Medium";
+      font-size: $sp-16;
+      font-weight: 500;
+      color: #065CF3;
+      background-color: $c-def-white;
+      margin: 0;
+    }
+    .navigateContainer_linkActive{
+      border-radius: 8px;
+      background-color: #065CF3;
+      text-decoration: none;
+      padding: 12px;
+      font-family: "YS-Text-Medium";
+      font-size: $sp-16;
+      font-weight: 500;
+      color: $c-def-white;
+      line-height: $sp-20;
+      margin: 0;
+    }
+  }
+}

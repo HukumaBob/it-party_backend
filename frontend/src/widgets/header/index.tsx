@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import style from "./index.module.scss";
 import logo from "../../app/assets/icons/logo_black.svg";
 import avatar from "../../app/assets/icons/avatar.svg";
@@ -8,12 +9,18 @@ import { useDispatch } from "../../app/types/hooks";
 import { setOpenModal } from "../../app/services/slices/authorization";
 export const Header = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
   const handleClick = () => {
     setOpen(!open);
   };
   const dispatch = useDispatch();
   const handleOpenModal = () => {
-    dispatch(setOpenModal(true));
+    const accessToken = localStorage.getItem("accessToken");
+    if(accessToken) {
+      navigate("/account", {replace: true});
+    } else { 
+      dispatch(setOpenModal(true));
+    }
   };
   return (
     <header className={style.container}>

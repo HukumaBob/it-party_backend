@@ -82,6 +82,10 @@ export type TForm = {
   children: React.ReactNode;
 };
 
+export type TSelectData = {
+  id: string;
+}
+
 export type TSelectInput = {
   title: string;
 };
@@ -114,6 +118,10 @@ export type TFormErrors = {
   FieldErrors: TFormValues;
 };
 
+export type TFormDataPersonalErrors = {
+  FieldErrors: TFormDataPersonalValues;
+};
+
 export type TInitialStateBannerSlide = {
   activeIndex: number;
 };
@@ -125,8 +133,33 @@ export type TInitialStateForm = {
   selectedDirection: string;
   onlineChecked: boolean;
   offlineChecked: boolean;
+  onlineCheckedFormAboutMe: boolean;
+  offlineCheckedFormAboutMe: boolean;
   agreementChecked: boolean;
   agreementPersonInfoChecked: boolean;
+  clickMaritalStatus: boolean;
+  selectedMaritalStatus: number;
+  clickProfileExperience: boolean,
+  selectedProfileExperience: number,
+  clickProfileSpecialization: boolean,
+  selectedProfileSpecialization: number,
+  clickIncome: boolean,
+  selectedIncome: number,
+  clickEducation: boolean,
+  selectedEducation: number,
+  clickTimeInterval: boolean,
+  smsChecked: boolean,
+  emailChecked: boolean,
+  approvalApplicationChecked: boolean,
+  newEventsChecked: boolean,
+  selectedTimeInterval: number,
+  selectedNavDataPersonal: boolean,
+  selectedNavCareerAndEducation: boolean,
+  selectedNavAboutMe: boolean,
+  selectedNavConfidentiality: boolean,
+  selectedNavNotification: boolean,
+  selectedNavMain: boolean,
+  openModalAvatar: boolean,
 };
 
 export type TAuthorizationInitialState = {
@@ -151,6 +184,82 @@ export type TUser = {
   workplace: string;
   post: string;
 };
+
+export type TNavigation = {
+  id: string;
+}
+
+export type TUserProfileValues = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  user_photo: string;
+  phone: string;
+  place_of_work: string;
+  position: string;
+  online: boolean;
+  agreement_optional: boolean;
+  date_of_birth: string;
+  hobby: string;
+  values: string;
+  aims: string;
+  cv: string;
+  motivation: string;
+  user: number;
+  specialization: number;
+  experience: number;
+  familystatus: number;
+  education: number;
+  income: number;
+  notification: number;
+  country: string;
+  city: number;
+}
+
+export type TFormDataPersonalValues = {
+  first_name: string;
+  last_name: string;
+  date_of_birth?: string;
+  familystatus?: number;
+  country?: string;
+}
+
+export type TFormCareerAndEducationValues = {
+  place_of_work: string;
+  position: string;
+  experience: number;
+  specialization: number;
+  income?: number;
+  education?: number;
+}
+
+export type TFormAboutMeValues = {
+  hobby?: string;
+  values?: string;
+  aims?: string;
+  cv?: string;
+  motivation?: string;
+  online?: boolean;
+  offline?: boolean;
+}
+
+export type TFormConfidentialityValues = {
+  email: string;
+  phone: string;
+  new_password:	string;
+  current_password:	string;
+}
+
+export type TFormProfileAvatar = {
+  user_photo: string;
+}
+
+export type TFormConfidentiality = {
+  email: string;
+  phone: string;
+  new_password:	string;
+  current_password:	string;
+}
 
 export type TLoginResponse = {
   user: TFormAuthorization;
@@ -188,3 +297,12 @@ export type TResponseReg = {
     password: string;
     ok: boolean;
 };
+
+export function setItem<T>(key: string, value: T): void {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function getItem<T>(key: string): T | null {
+  const item = localStorage.getItem(key);
+  return item ? JSON.parse(item) as T : null;
+}

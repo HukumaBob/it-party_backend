@@ -13,7 +13,7 @@ environ.Env.read_env(BASE_DIR / '.env')
 SECRET_KEY = env('SECRET_KEY', default="secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -55,7 +55,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React app address
+    "http://197.0.0.1:3000",  # Also add this if you are using Docker
+    "http://197.0.0.1:8000",     
+]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -85,10 +89,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 if DEBUG:
     DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.sqlite3',
+    #         'NAME': BASE_DIR / 'db.sqlite3',
+    #     }
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': 'localhost', 
+            'PORT': '5432',
+        }    
     }
     CELERY_BROKER_URL = 'redis://localhost:6379/0'
 else:

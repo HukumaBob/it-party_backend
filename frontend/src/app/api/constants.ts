@@ -15,6 +15,14 @@ export const SUBMIT_APPLICATION_API_ENDPOINT = "api/v1/submit_application/"; // 
 export const LIST_EVENT_VIEW_STAFF_API_ENDPOINT =
   "api/v1/list_event_viev_staff/"; // Эндпоинт для просмотра списка ивентов персоналом
 export const USER_EVENT_STATUS_API_ENDPOINT = "api/v1/user_event_status/"; // Эндпоинт для проверки статуса участия пользователя в ивенте
+export const FETCH_UPDATEURL = `${BASE_URL}${USER_PROFILES_API_ENDPOINT}`; // для PATH запроса обновления данных профиля
+export const FETCH_METHOD_AND_HEADERS = {
+  method: "PATCH",
+  headers: {
+    "Content-Type": "application/json;charset=utf-8",
+    "authorization": `Bearer ${localStorage.getItem("accesToken")}`,
+  }
+} // загаловки для PATH запроса обновления данных профиля
 
 // Количество элементов на странице
 export const PAGE_SIZE = 15; // Количество элементов, отображаемых на одной странице

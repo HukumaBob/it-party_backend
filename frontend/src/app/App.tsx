@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { Layout } from "./Layout";
 import { MainPage } from "../pages/MainPage";
 import { EventPage } from "../pages/EventPage";
+import { AccountPage } from "../pages/AccountPage";
 import { useDispatch, useSelector } from "./types/hooks";
 import { setOpenModal } from "./services/slices/authorization";
 import { Modal } from "../shared/modal";
@@ -28,7 +29,8 @@ function App() {
         <Route element={<Layout />}>
           <Route path='/' element={<MainPage />} />
           <Route path='/event/:id' element={<EventPage />} />
-
+          <Route path='/account' element={<AccountPage />} />
+          {/* <Route path='/myEvent' element={<MyEventPage />} /> */}
         </Route>
       </Routes>
       {openModal && (
