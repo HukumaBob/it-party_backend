@@ -4,10 +4,10 @@
 *.pyc
 __pycache__
 db.sqlite3
-media
+# media
 # Игнорировать папку media/user_photo
-media/user_photo/
-media/animals/
+media/user_photo/*
+media/images/*
 
 # Backup files
 *.bak
