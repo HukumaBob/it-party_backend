@@ -1,15 +1,20 @@
 @import "../../app/styles/vars.scss";
 .form {
-  width: 100%;
+  min-width: calc(100% - 2*20px);
   display: flex;
   flex-direction: column;
   gap: $sp-24;
-  align-items: center;
   visibility: visible;
   opacity: 1;
+  .form_container {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-16;
+  }
   .name_form {
     display: flex;
     flex-direction: column;
+    min-width: 100%;
     gap: 4px;
     label {
       font-weight: 500;
@@ -19,16 +24,22 @@
       }
     }
     .inputBlock {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      border-radius: $sp-12;
+      border: 1px solid $c-str-medium;
       input {
-        padding: $sp-16;
-        border: 1px solid $c-str-medium;
+        width: calc(100% - 40px);
+        padding: $sp-16 0 $sp-16 $sp-16;
         outline: none;
+        border: none;
         border-radius: $sp-12;
       }
       .errorInput {
         border: 1px solid $c-er-red;
       }
-      .button {
+      .buttonInput {
         width: 24px;
         height: 24px;
         background-color: $c-def-white;
@@ -36,8 +47,9 @@
         justify-content: center;
         background-position: 50% 50%;
         background-size: 100%;
-        border-radius: 0;
+        border-radius: none;
         margin: 0;
+        border: none;
       }
     }
     .message {
@@ -65,13 +77,14 @@
   max-width: 100%;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   .submit {
     max-width: 300px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    line-height: 1.25;
     padding: $sp-12 0;
     border: none;
     border-radius: 8px;
@@ -90,7 +103,6 @@
   position: relative;
   display: flex;
   width: 100%;
-
   flex-direction: column;
   gap: 4px;
   .star {
@@ -115,11 +127,12 @@
   border-radius: $sp-12;
   gap: 8px;
   max-height: 52px;
+  background-color: $c-def-white;
 }
 
 .options {
   position: absolute;
-  top: 70%;
+  top: 90%;
   left: 0;
   width: 100%;
   background-color: #fff;
@@ -132,6 +145,12 @@
 .option {
   padding: 8px $sp-16;
   cursor: pointer;
+}
+
+.optionHide {
+  position: absolute;
+  visibility: hidden;
+  z-index: -1;
 }
 
 .option:hover {

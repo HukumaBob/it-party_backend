@@ -160,6 +160,7 @@ export type TInitialStateForm = {
   selectedNavNotification: boolean,
   selectedNavMain: boolean,
   openModalAvatar: boolean,
+  changeDateOfBirth: string,
 };
 
 export type TAuthorizationInitialState = {
@@ -263,8 +264,8 @@ export type TFormConfidentiality = {
 
 export type TLoginResponse = {
   user: TFormAuthorization;
-  accessToken: string;
-  refreshToken: string;
+  access: string;
+  refresh: string;
 };
 
 export type TEventsInitialState = {

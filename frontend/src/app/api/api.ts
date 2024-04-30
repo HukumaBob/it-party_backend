@@ -8,7 +8,7 @@ import { TLoginResponse,
          TFormAboutMeValues,
          TFormConfidentialityValues,
          TFormProfileAvatar } from "../types/types";
-import { BASE_URL, LOGIN_API_ENDPOINT, USERS_API_ENDPOINT, USER_PROFILES_API_ENDPOINT, FETCH_UPDATEURL, FETCH_METHOD_AND_HEADERS } from "./constants";
+import { BASE_URL, LOGIN_API_ENDPOINT, USERS_API_ENDPOINT, USER_PROFILES_API_ENDPOINT, USER_PROFILE_GET_AND_PATCH_API_ENDPOINT, FETCH_UPDATEURL, FETCH_METHOD_AND_HEADERS } from "./constants";
 
 type TServerResponse<T> = {
   success: boolean;
@@ -90,27 +90,40 @@ export const logout = (): Promise<TUser> => {
     });
 };
 
-export const getUserProfile = (): Promise<TUser> => {
+export const postUserProfile = (): Promise<TUserProfileValues> => {
   const accessToken = localStorage.getItem("accessToken");
-
   if (!accessToken) {
     return Promise.reject("No accessToken available");
   }
 
-  return fetch(``, {
-    method: "GET",
+  return fetch(`${BASE_URL}${USER_PROFILES_API_ENDPOINT}`, {
+    method: "POST",
     headers: {
-      Authorization: accessToken,
+      "Content-Type": "application/json;charset=utf-8",
+      "Authorization": `Bearer ${accessToken}`,
     },
   })
-    .then(checkResponse<TServerResponse<TUser>>)
+    .then(checkResponse<TServerResponse<TUserProfileValues>>)
     .then((data) => {
-      if (data?.success) {
-        return data;
-      }
-      console.log(data);
+      if (data) return data;
       return Promise.reject(data);
     });
+};
+
+export const getUserProfile = (): Promise<TUserProfileValues> => {
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    return Promise.reject("No accessToken available");
+  }
+
+  return fetch(`${BASE_URL}${USER_PROFILE_GET_AND_PATCH_API_ENDPOINT}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${accessToken}`,
+    },
+  })
+    .then(checkResponse<TServerResponse<TUserProfileValues>>)
 };
 
 export const getEvents = createAsyncThunk("asyncIngredient", async () => {

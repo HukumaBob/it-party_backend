@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { TFormDataPersonalValues, TUserProfileValues, getItem } from "../../app/types/types";
-import { editingDataPersonal, getFormProfile } from "../../app/api/api";
+import { editingDataPersonal, getFormProfile, getUserProfile, postUserProfile } from "../../app/api/api";
 import style from "./index.module.scss";
 import { SelectDate } from "../../shared/selectDate/index";
 import arrow_down from "../../app/assets/icons/arrow_down.svg";
@@ -19,7 +19,33 @@ export const FormDataPersonal = () => {
     selectedMaritalStatus,
     clickMaritalStatus,
     selectedNavDataPersonal,
+    changeDateOfBirth,
   } = useSelector((state) => state.form);
+
+  React.useEffect(() => {
+    const tokenCheck = () => {
+      const accessToken = localStorage.getItem("accessToken");
+      const profile = localStorage.getItem("updateInfo");
+      if (accessToken) {
+        if (profile === undefined || profile === null) {
+          getUserProfile()
+            .then((data: TUserProfileValues) => {
+              localStorage.setItem('updateInfo', JSON.stringify(data));
+            })
+            .catch((err) => {
+              postUserProfile()
+                .then((data: TUserProfileValues) => {
+                  localStorage.setItem('updateInfo', JSON.stringify(data));
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
+            })
+        }
+      }
+    }
+    tokenCheck();
+  }, []);
 
   const handleClickMaritalStatus = () => {
     dispatch(setClickMaritalStatus(!clickMaritalStatus));
@@ -87,7 +113,8 @@ export const FormDataPersonal = () => {
   });
 
   const onSubmit = (data: TFormDataPersonalValues) => {
-    editingDataPersonal(data)
+    const dataNew = {...data, date_of_birth: changeDateOfBirth}
+    editingDataPersonal(dataNew)
       .then(() => {
         getFormProfile()
           .then((data: TUserProfileValues) => {
@@ -109,8 +136,7 @@ export const FormDataPersonal = () => {
 
   return (
     <form className={selectedNavDataPersonal ? style.form : style.formHide} id="formDataPersonal" onSubmit={handleSubmit(onSubmit)}>
-      <div className="style.form_container">
-        <h3 className={style.form_title}>Персональные данные</h3>
+      <div className={style.form_container}>
         <div className={style.name_form}>
           <label>
             Имя <span>*</span>
@@ -132,7 +158,7 @@ export const FormDataPersonal = () => {
                 },
               })}
             />
-            <button type="button" className="style.button" onClick={handleClickResetValueFirstName}></button>
+            <button type="button" className={style.buttonInput} onClick={handleClickResetValueFirstName}></button>
           </div>
 
           <span className={`${errors.first_name ? style.error : style.message}`}>
@@ -162,7 +188,7 @@ export const FormDataPersonal = () => {
                 },
               })}
             />
-            <button type="button" className="style.button" onClick={handleClickResetValueLastName}></button>
+            <button type="button" className={style.buttonInput} onClick={handleClickResetValueLastName}></button>
           </div>
           
           <span
@@ -187,7 +213,7 @@ export const FormDataPersonal = () => {
                 },
               })}
             />
-            <button type="button" className="style.button" onClick={handleClickResetValueCountry}></button>
+            <button type="button" className={style.buttonInput} onClick={handleClickResetValueCountry}></button>
           </div>
           
         </div>
@@ -195,17 +221,6 @@ export const FormDataPersonal = () => {
           <label>
             Дата рождения
           </label>
-          <input
-            className={`${errors.date_of_birth ? style.errorInput : ""}`}
-            type='text'
-            placeholder='_ _._ _._ _ _ _'
-            {...register("date_of_birth", {
-              pattern: {
-                value: /^\d{2}-\d{2}-\d{4}$/,
-                message: "Некорректная дата",
-              }
-            })}
-          />
           <SelectDate id='2'/>
         </div>
         <div className={style.container_selectInput}>

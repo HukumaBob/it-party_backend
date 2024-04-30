@@ -35,6 +35,7 @@ export const initialState: TInitialStateForm = {
   selectedNavNotification: false,
   selectedNavMain: false,
   openModalAvatar: false,
+  changeDateOfBirth: "",
 };
 export const formSlice = createSlice({
   name: "form",
@@ -139,6 +140,9 @@ export const formSlice = createSlice({
     setOpenModalAvatar: (state, action: PayloadAction<boolean>) => {
       state.openModalAvatar = action.payload;
     },
+    setChangeDateOfBirth: (state, action: PayloadAction<string>) => {
+      state.changeDateOfBirth = action.payload;
+    }
   },
 });
 
@@ -176,6 +180,7 @@ export const {
   setSelectedNavNotification,
   setSelectedNavMain,
   setOpenModalAvatar,
+  setChangeDateOfBirth
 } = formSlice.actions;
 
 export default formSlice.reducer;

@@ -5,6 +5,7 @@
   .navigateContainer {
     display: flex;
     flex-direction: column;
+    background-color: $c-def-bg;
     width: 100%;
     gap: 4px;
     padding: 16px;
@@ -12,14 +13,12 @@
     border-radius: 24px;
     .navigateContainer_link{
       border-radius: 8px;
-      background-color: $c-def-bg;
       text-decoration: none;
       padding: 12px;
       font-family: "YS-T-Medium";
       font-size: $sp-16;
       font-weight: 500;
       color: #065CF3;
-      background-color: $c-def-white;
       margin: 0;
     }
     .navigateContainer_linkActive{
