@@ -1,0 +1,100 @@
+@import "../../app/styles/vars.scss";
+.container {
+  display: flex;
+  padding: $sp-36 $sp-24;
+  background-color: $c-def-white;
+  border: 1px solid $c-gray;
+  box-shadow: 2px 2px 12px 0px rgba(36, 47, 123, 0.15);
+  border-radius: 20px;
+  flex-direction: column;
+  max-width: 384px;
+  width: 100%;
+  position: relative;
+  gap: $sp-16;
+  .form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $sp-24;
+    align-items: center;
+    .name_form {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      label {
+        font-weight: 500;
+        font-family: "YS-T-Medium";
+      }
+      span {
+        color: $c-def-blue;
+      }
+    }
+    .inputBlock {
+      input {
+        padding: $sp-16;
+        border: 1px solid $c-str-medium;
+        outline: none;
+        border-radius: $sp-12;
+      }
+      .errorInput {
+        border: 1px solid $c-er-red;
+      }
+      .button {
+        width: 24px;
+        height: 24px;
+        background-color: $c-def-white;
+        background-image: url("../../app/assets/icons/close_form-profile.svg");
+        justify-content: center;
+        background-position: 50% 50%;
+        background-size: 100%;
+        border: none;
+        margin: 0;
+        text-decoration: none;
+      }
+    }
+    .message {
+      font-family: "YS-T-Regular";
+      font-size: $sp-13;
+      color: $c-black-500;
+    }
+  }
+    
+  .element {
+    display: flex;
+    height: $sp-24;
+    width: 130px;
+    gap: $sp-12;
+    align-items: center;
+  }
+}
+.buttonBlock {
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .submit {
+    max-width: 300px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $sp-12 0;
+    border: none;
+    border-radius: 8px;
+    background-color: $c-def-blue;
+    color: $c-def-white;
+    cursor: pointer;
+  }
+  .disabled {
+    @extend .submit;
+    background-color: $c-black-300;
+    color: $c-def-white;
+    cursor: not-allowed;
+  }
+}
+
+.error {
+  font-family: "YS-T-Regular";
+  font-size: $sp-13;
+  color: $c-er-red;
+}

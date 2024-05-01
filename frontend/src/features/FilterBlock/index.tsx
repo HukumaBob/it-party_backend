@@ -15,7 +15,7 @@ export const FilterBlock = () => {
           <img src={settings} alt='settings' />
         </div>
         <div className={style.rightPart}>
-          <SelectDate />
+          <SelectDate id='1'/>
           <SelectCity />
           <span className={style.rightPart_element_checkbox}>
             <CheckBox /> Online

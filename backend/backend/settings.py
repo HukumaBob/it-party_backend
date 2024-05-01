@@ -17,8 +17,7 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'users.User'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='').split()
 
 # Application definition
 
@@ -56,7 +55,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React app address
+    "http://197.0.0.1:3000",  # Also add this if you are using Docker
+    "http://197.0.0.1:8000",     
+]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -84,12 +87,36 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.postgresql',
+        #     'NAME': 'postgres',
+        #     'USER': 'postgres',
+        #     'PASSWORD': 'postgres',
+        #     'HOST': 'localhost', 
+        #     'PORT': '5432',
+        # }    
     }
-}
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': env('POSTGRES_ENGINE', default='django.db.backends.postgresql'),
+            'NAME': env('POSTGRES_DB', default='postgres'),
+            'USER': env('POSTGRES_USER', default='postgres'),
+            'PASSWORD': env('POSTGRES_PASSWORD', default='postgres'),
+            'HOST': env('POSTGRES_HOST', default='db'), 
+            'PORT': env('POSTGRES_PORT', default='5432'),
+        }
+    }
+    CELERY_BROKER_URL = 'redis://redis:6379/0'
+
+
 
 
 # Password validation
@@ -207,5 +234,3 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-CELERY_BROKER_URL = 'redis://localhost:6379/0'

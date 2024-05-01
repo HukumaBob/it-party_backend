@@ -1,0 +1,21 @@
+@import "../../app/styles/vars.scss";
+.wrapper {
+  display: flex;
+  max-width: 1032px;
+  justify-content: center;
+
+  .container {
+    display: flex;
+    gap: 28px;
+    .containerForm {
+      width: 680px;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 20px 0 20px;
+      box-sizing: border-box;
+      border-radius: 24px;
+      border: 1px solid #e3ebff;
+      background-color: $c-def-bg;
+    }
+  }
+}

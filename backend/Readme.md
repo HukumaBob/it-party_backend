@@ -107,9 +107,44 @@ itParty - это веб-приложение, разработанное на Dj
    python manage.py runserver
    ```
 
+10. **Настройка Celery**
+
+Установите Redis (для Windows потребуется WSL), запустите его
+
+```bash
+redis-server
+redis-cli
+```
+
+Запустите Celery:
+
+```bash
+celery -A backend worker -l info -P eventlet
+celery -A backend beat --loglevel=info
+```
+
 После выполнения этих шагов вы должны иметь работающий экземпляр hackathon, доступный по адресу `http://localhost:8000`.
 
 Заполните нужные начальные данные через админку Django: `http://localhost:8000/admin`
+
+11. **Запуск приложения через Docker Compose**
+
+Запуск приложения через Docker Compose на стандартном порту 8000:
+
+```bash
+cd infra/
+docker compose up
+docker compose exec backend python manage.py migrate
+docker compose exec backend python manage.py collectstatic
+docker compose exec backend cp -r /app/static/. /static/
+docker compose exec backend python manage.py generate_initial_data
+# Если хотите добавить тестовые данные запустите и это:
+docker compose exec backend python manage.py generate_initial_users
+docker compose exec backend python manage.py generate_initial_data_users_profile
+docker compose exec backend python manage.py generate_initial_events
+# ___________________________________________________________
+docker compose exec backend python manage.py createsuperuser
+```
 
 ## Документация API
 

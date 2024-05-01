@@ -16,9 +16,13 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-    'say-hello-every-10-seconds': {
-        'task': 'userevents.tasks.say_hello',
-        'schedule': timedelta(seconds=10),
+    'check-user-subscriptions-every-10-minutes': {
+        'task': 'userevents.tasks.check_user_subscriptions',
+        'schedule': timedelta(minutes=2),
+    },
+    'random-coffee-every-10-minutes': {
+        'task': 'users.tasks.random_coffee',
+        'schedule': timedelta(minutes=1),
     },
 }
 

@@ -6,8 +6,9 @@ __pycache__
 db.sqlite3
 media
 # Игнорировать папку media/user_photo
-media/user_photo/
-media/animal/
+
+media/user_photo/*
+media/images/*
 
 # Backup files
 *.bak

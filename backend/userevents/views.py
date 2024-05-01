@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 from rest_framework import viewsets, status
@@ -29,6 +30,7 @@ class SubmitApplicationView(APIView):
 
     def post(self, request, user_event_id, format=None):
         user_event = UserEvent.objects.get(id=user_event_id)
+        event = user_event.event
         user_profile = user_event.user_profile
         form_template = user_event.event.form_template
         if form_template is None:
@@ -54,6 +56,16 @@ class SubmitApplicationView(APIView):
                     related_instance = get_object_or_404(model, id=value)
                     getattr(user_profile, field).set(related_instance)
         user_profile.save()
+        # Получаем данные уведомления из профиля пользователя
+        notification = user_profile.notification
+        if notification:
+            # Вычисляем дату и время уведомления
+            event_datetime = datetime.combine(event.data, event.time)
+            notification_time = event_datetime - timedelta(
+                minutes=notification.minutes_before_notification
+                )
+            user_event.data_of_notification = notification_time
+            user_event.save()
         # Создаем "снимок" обновленной анкеты пользователя
         UserProfileSnapshot.objects.create(
             user_event=user_event, snapshot_data=form_data

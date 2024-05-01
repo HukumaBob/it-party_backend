@@ -11,7 +11,9 @@ from django.core.files import File
 def set_random_user_photo(sender, instance, created, **kwargs):
     if created:
         # Путь к папке с изображениями
-        path = Path(settings.MEDIA_ROOT) / 'animal'
+
+        path = Path(settings.MEDIA_ROOT) / 'animals'
+
         # Получаем список всех файлов в папке
         files = list(path.glob('*'))
         # Выбираем случайный файл

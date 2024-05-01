@@ -1,0 +1,98 @@
+@import "../../app/styles/vars.scss";
+
+.section {
+  display: flex;
+  justify-content: flex-start;
+  min-width: calc(100% - 2*20px);
+  padding: 0 0 16px;
+  column-gap: 16px;
+  background-color: $c-def-bg;
+  box-sizing: border-box;
+  .container {
+    position: fixed;
+    visibility: visible;
+    opacity: 1;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: visibility 0s, opacity 0.5s linear;
+  }
+  .popupBlock {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: fixed;
+    visibility: hidden;
+    transition: 0.5s linear;
+    opacity: 0;
+  }
+  .formBlockProfile{
+    display: flex;
+    flex-direction: column;
+    column-gap: 16px;
+    .formBlockProfile_avatar {
+      width: 140px;
+      height: 140px;
+      background-size: cover;
+      border-radius: 50%;
+    }
+    .formBlockProfile_button {
+      width: 140px;
+      height: 140px;
+      border: none;
+      border-radius: 50%;
+      background-color:  rgba(255, 255, 255, .5);
+      color: #000;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      cursor: pointer;
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity .2s;
+      font-family: "YS-T-Medium";
+    }
+
+    .formBlockProfile_button:hover {
+      opacity: 1;
+    }
+  }
+  .formBlockProfile{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .formBlockName {
+    display: flex;
+    flex-direction: column;
+    font-family: "YS-Di-Medium";
+    width: 100%;
+    color: $c-def-black;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 40px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  .formBlockTitle {
+    display: flex;
+    max-width: 220px;
+    .formBlock_title {
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 40px;
+      font-family: "YS-Di-Medium";
+      color: $c-def-black;
+      margin: 0;
+      padding: 22px 0;
+    }
+  }
+}

@@ -18,6 +18,11 @@ class UserEvent(models.Model):
         choices=APPLICATION_STATUS_CHOICES,
         default='none',
     )
+    data_of_notification = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_("Время уведомления"),
+    )
 
     class Meta:
         unique_together = ("user_profile", "event")
