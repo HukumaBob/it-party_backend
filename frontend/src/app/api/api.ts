@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import { TLoginResponse, 
          TUser,
          TCard,
@@ -9,6 +10,7 @@ import { TLoginResponse,
          TFormConfidentialityValues,
          TFormProfileAvatar } from "../types/types";
 import { BASE_URL, LOGIN_API_ENDPOINT, USERS_API_ENDPOINT, USER_PROFILES_API_ENDPOINT, USER_PROFILE_GET_AND_PATCH_API_ENDPOINT, FETCH_UPDATEURL, FETCH_METHOD_AND_HEADERS } from "./constants";
+
 
 type TServerResponse<T> = {
   success: boolean;
@@ -105,7 +107,9 @@ export const postUserProfile = (): Promise<TUserProfileValues> => {
   })
     .then(checkResponse<TServerResponse<TUserProfileValues>>)
     .then((data) => {
+
       if (data) return data;
+
       return Promise.reject(data);
     });
 };

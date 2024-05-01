@@ -29,8 +29,10 @@ function App() {
         <Route element={<Layout />}>
           <Route path='/' element={<MainPage />} />
           <Route path='/event/:id' element={<EventPage />} />
+
           <Route path='/account' element={<AccountPage />} />
           {/* <Route path='/myEvent' element={<MyEventPage />} /> */}
+
         </Route>
       </Routes>
       {openModal && (
