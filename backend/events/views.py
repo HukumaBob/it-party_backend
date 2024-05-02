@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from .models import Event, Speaker, FormTemplate
 from additions.models import City
+from .filters import EventFilter
 from .permissions import IsStaffOrReadOnly
 from .serializers import EventSerializer, EventDetailSerializer
 
@@ -13,9 +14,7 @@ class EventViewSet(viewsets.ModelViewSet):
     Главная страница эвентов, с возможностью просмотреть подробную информацию.
     """
     queryset = Event.objects.all()
-    filterset_fields = ('city',)
-    search_fields = ('name',)
-    ordering_fields = ('data',)
+    filterset_class = EventFilter
     permission_classes_by_action = {
         'create': [IsStaffOrReadOnly],
         'update': [IsStaffOrReadOnly],

@@ -32,7 +32,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = (
             'id', 'logo', 'name', 'description',
-            'data', 'time', 'user_application_status',
+            'date', 'time', 'user_application_status',
             )
 
     def get_user_application_status(self, obj):

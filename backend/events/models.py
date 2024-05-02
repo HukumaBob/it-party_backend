@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from additions.models import City
+from users.models import Specialization
 
 
 class Speaker(models.Model):
@@ -16,7 +17,7 @@ class Speaker(models.Model):
         blank=False,
     )
     specialization = models.CharField(
-        verbose_name=_("Специлизация"),
+        verbose_name=_("Специализация"),
         max_length=200,
         blank=False,
     )
@@ -63,7 +64,7 @@ class Event(models.Model):
         max_length=200,
         blank=False,
     )
-    data = models.DateField(
+    date = models.DateField(
         verbose_name=_("Дата проведения"),
         blank=False,
     )
@@ -75,6 +76,13 @@ class Event(models.Model):
         City,
         on_delete=models.CASCADE,
         blank=False,
+        null=True,
+    )
+    specializations = models.ManyToManyField(
+        Specialization,
+        related_name="events",
+        verbose_name=_("Специализации на эвенте"),
+        blank=True,
         null=True,
     )
     address = models.CharField(
