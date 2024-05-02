@@ -83,7 +83,6 @@ class Event(models.Model):
         related_name="events",
         verbose_name=_("Специализации на эвенте"),
         blank=True,
-        null=True,
     )
     address = models.CharField(
         verbose_name=_("Адрес места проведения"),
