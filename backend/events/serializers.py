@@ -6,7 +6,7 @@ from .models import (
     FormTemplate,
     )
 from userevents.models import UserEvent
-from users.models import UserProfile
+from users.models import UserProfile, Specialization
 
 
 class FormTemplateSerializer(serializers.ModelSerializer):
@@ -23,16 +23,24 @@ class SpeakerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SpecializationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialization
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
     """Главная страница списка эвентов."""
     description = serializers.CharField(max_length=100)
     user_application_status = serializers.SerializerMethodField()
+    specializations = SpecializationSerializer(many=True)
 
     class Meta:
         model = Event
         fields = (
             'id', 'logo', 'name', 'description',
             'date', 'time', 'user_application_status',
+            'specializations',
             )
 
     def get_user_application_status(self, obj):
@@ -54,6 +62,8 @@ class EventDetailSerializer(serializers.ModelSerializer):
     """Сериализатор для подробной информации от эвенте."""
     speakers = SpeakerSerializer(read_only=True, many=True)
     form_template = FormTemplateSerializer(read_only=True)
+    specializations = SpecializationSerializer(read_only=True, many=True)
+    
 
     class Meta:
         model = Event

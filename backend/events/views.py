@@ -7,6 +7,7 @@ from additions.models import City
 from .filters import EventFilter
 from .permissions import IsStaffOrReadOnly
 from .serializers import EventSerializer, EventDetailSerializer
+from users.models import Specialization
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -55,13 +56,18 @@ class EventViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         data = request.data
 
-        # Создаем список спикеров
+        # Создаем список спикеров и ивентов
         speakers_data = data.pop('speakers')
         speakers = [
             Speaker.objects.create(**speaker_data)
             for speaker_data in speakers_data
             ]
-
+        
+        specializations_data = data.pop('specializations')
+        specializations = [
+            Specialization.objects.create(**specialization_data)
+            for specialization_data in specializations_data
+        ]        
         # Создаем form_template
         form_template_data = data.pop('form_template')
         form_template = FormTemplate.objects.create(**form_template_data)
@@ -81,6 +87,9 @@ class EventViewSet(viewsets.ModelViewSet):
         # Добавляем спикеров к ивенту
         event.speakers.set(speakers)
 
+        # Добавляем специализации к ивенту
+        event.specializations.set(specializations)
+        
         serializer = self.get_serializer(event)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
