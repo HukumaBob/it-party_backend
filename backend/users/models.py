@@ -15,8 +15,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    first_name = models.CharField(max_length=30, blank=True, null=True, )
+    last_name = models.CharField(max_length=30, blank=True, null=True,)
     date_joined = models.DateTimeField(auto_now_add=True)
     user_photo = models.ImageField(
         blank=True, upload_to='user_photo/', verbose_name=_("User Photo")
@@ -49,13 +49,13 @@ class UserProfile(models.Model):
         User, on_delete=models.CASCADE, verbose_name=_("User")
         )
     phone = models.CharField(
-        max_length=255, blank=True, verbose_name=_("Phone")
+        max_length=255, blank=True, null=True, verbose_name=_("Phone")
         )
     place_of_work = models.CharField(
-        max_length=255, blank=True, verbose_name=_("Place of Work")
+        max_length=255, blank=True, null=True, verbose_name=_("Place of Work")
         )
     position = models.CharField(
-        max_length=255, blank=True, verbose_name=_("Position")
+        max_length=255, blank=True, null=True, verbose_name=_("Position")
         )
     online = models.BooleanField(default=False, verbose_name=_("Online"))
     agreement_optional = models.BooleanField(
