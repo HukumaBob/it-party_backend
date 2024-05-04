@@ -18,6 +18,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path("chat/", include("event_chat.urls")),
     path('api/v1/', include('events.urls', namespace='events')),
     path('api/v1/', include('organaizer.urls', namespace='organaizer')),
     path('api/v1/', include('users.urls', namespace='users')),
