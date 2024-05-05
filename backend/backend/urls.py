@@ -18,6 +18,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path("chat/", include("event_chat.urls")),
     path('api/v1/', include('events.urls', namespace='events')),
     path('api/v1/', include('organaizer.urls', namespace='organaizer')),
     path('api/v1/', include('users.urls', namespace='users')),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    # path('auth/', include('django_channels_jwt.urls')),
     path('', include('social_django.urls', namespace='social')),
     path(
         'swagger<format>/', schema_view.without_ui(cache_timeout=0),

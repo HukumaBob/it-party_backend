@@ -147,6 +147,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class SpecializationSerializer(serializers.ModelSerializer):
     class Meta:
+        ref_name = 'SpecializationSerializer1'
         model = Specialization
         fields = '__all__'
 

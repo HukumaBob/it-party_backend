@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+    <!-- Подключаем Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-group">
+            <label for="chat-log">Chat Log:</label>
+            <textarea id="chat-log" class="form-control" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="chat-message-input">Message:</label>
+            <input id="chat-message-input" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="user-id-input">User ID:</label>
+            <input id="user-id-input" type="number" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="event-id-input">Event ID:</label>
+            <input id="event-id-input" type="number" class="form-control">
+        </div>
+        <button id="chat-message-submit" class="btn btn-primary">Send</button>
+    </div>
+    {{ room_name|json_script:"room-name" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.message + '\n');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.key === 'Enter') {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const userIdInputDom = document.querySelector('#user-id-input');
+            const eventIdInputDom = document.querySelector('#event-id-input');
+            const message = messageInputDom.value;
+            const userId = userIdInputDom.value;
+            const eventId = eventIdInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'user_id': userId,
+                'event_id': eventId
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+    <!-- Подключаем Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
