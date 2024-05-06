@@ -95,6 +95,10 @@ if DEBUG:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
+            # тест для проверки event_chat
+            "TEST": {
+                "NAME": BASE_DIR / "db_test.sqlite3",
+            },            
         }
         # 'default': {
         #     'ENGINE': 'django.db.backends.postgresql',
