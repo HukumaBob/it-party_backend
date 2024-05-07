@@ -60,7 +60,7 @@ class SubmitApplicationView(APIView):
         notification = user_profile.notification
         if notification:
             # Вычисляем дату и время уведомления
-            event_datetime = datetime.combine(event.data, event.time)
+            event_datetime = datetime.combine(event.date, event.time)
             notification_time = event_datetime - timedelta(
                 minutes=notification.minutes_before_notification
                 )
