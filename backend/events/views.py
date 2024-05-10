@@ -54,7 +54,7 @@ class EventViewSet(viewsets.ModelViewSet):
         return context
     
     def create(self, request, *args, **kwargs):
-        data = request.data
+        data = request.data.copy()
 
         # Создаем список спикеров и ивентов
         speakers_data = data.pop('speakers')

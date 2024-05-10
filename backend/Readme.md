@@ -37,7 +37,7 @@ itParty - это веб-приложение, разработанное на Dj
    - На Windows:
 
      ```bash
-     .\venv\Scripts\activate
+     . \venv\Scripts\activate
      ```
 
    - На Unix или MacOS:

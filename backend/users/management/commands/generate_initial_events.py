@@ -20,7 +20,7 @@ class Command(BaseCommand):
             event = Event.objects.create(
                 logo=self.create_image_file(),
                 name=fake.sentence(),
-                data=fake.date_between(start_date='-1y', end_date='+1y'),
+                date=fake.date_between(start_date='-1y', end_date='+1y'),
                 time=fake.time(),
                 city=City.objects.order_by('?').first(),
                 address=fake.address(),

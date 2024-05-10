@@ -8,6 +8,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
+
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -23,15 +24,25 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, user_id, event_id, message):
-        user = User.objects.get(id=user_id)
-        event = Event.objects.get(id=event_id)
-        ChatMessage.objects.create(user=user, event=event, message=message)
+        try:
+            user = User.objects.get(id=user_id)
+            event = Event.objects.get(id=event_id)
+            ChatMessage.objects.create(user=user, event=event, message=message)
+        except User.DoesNotExist:
+            print(f"User with id {user_id} does not exist.")
+        except Event.DoesNotExist:
+            print(f"Event with id {event_id} does not exist.")
+        except Exception as e:
+            print(f"Unexpected error: {e}")
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         event_id = text_data_json['event_id']   
         user_id = text_data_json['user_id']    
+        if user_id is None or event_id is None:
+            print(f"Missing user_id or event_id. user_id: {user_id}, event_id: {event_id}")
+            return
         # Получаем текущего пользователя, когда настроим аутентификацию
         # user = self.scope["user"]
         # Сохраняем сообщение в базе данных
@@ -51,3 +62,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'message': message
         }))
+
+
