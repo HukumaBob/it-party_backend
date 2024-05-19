@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import style from "./index.module.scss";
 import { useForm } from "react-hook-form";
-import { TFormProfileAvatar, TUserProfileValues } from "../../app/types/types";
-import { editingProfileAvatar, getFormProfile } from "../../app/api/api";
+import { TFormDataPersonalValues, TUserProfileValues } from "../../app/types/types";
+import { editingDataPersonal, getFormProfile } from "../../app/api/api";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import closeIcon from "../../app/assets/icons/close_mini.svg";
 import {
@@ -23,12 +23,12 @@ export const FormEditAvatar = () => {
     formState: { errors, isValid },
     reset,
     setValue,
-  } = useForm<TFormProfileAvatar>({
+  } = useForm<TFormDataPersonalValues>({
     mode: "onTouched",
   });
 
-  const onSubmit = (data: TFormProfileAvatar) => {
-    editingProfileAvatar(data)
+  const onSubmit = (data: TFormDataPersonalValues) => {
+    editingDataPersonal(data)
       .then(() => {
         getFormProfile()
           .then((data: TUserProfileValues) => {

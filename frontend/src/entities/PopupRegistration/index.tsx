@@ -2,10 +2,10 @@ import React from "react";
 import style from "./index.module.scss";
 import close from "../../app/assets/icons/close_mini.svg";
 
-import {TPopupRegistration } from "../../app/types/types";
+import { TPopupRegistration } from "../../app/types/types";
 import { FormBlock } from "../../widgets/FormBlock";
 
-export const PopupRegistration = ({ onClose }: TPopupRegistration) => {
+export const PopupRegistration = ({ onClose, id }: TPopupRegistration) => {
   return (
     <div className={style.wrapper}>
       <img
@@ -26,7 +26,7 @@ export const PopupRegistration = ({ onClose }: TPopupRegistration) => {
           </span>
           <span> Пожалуйста, заполните поля имя и фамилия кириллицей.</span>
         </p>
-        <FormBlock />
+        <FormBlock id={id} />
       </div>
     </div>
   );

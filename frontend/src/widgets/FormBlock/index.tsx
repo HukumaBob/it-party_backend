@@ -18,11 +18,9 @@ import {
   setSelectedDirection,
   setSelectedExperience,
 } from "../../app/services/slices/formSlice";
-import {
-  BASE_URL,
-  SUBMIT_APPLICATION_API_ENDPOINT,
-} from "../../app/api/constants";
-export const FormBlock = () => {
+
+import { postEvent } from "../../app/api/api";
+export const FormBlock = ({ id }: { id: number }) => {
   const dispatch = useDispatch();
   const {
     clickDirection,
@@ -85,29 +83,7 @@ export const FormBlock = () => {
       onlineChecked: onlineChecked,
       offlineChecked: offlineChecked,
     };
-    fetch(`${BASE_URL}${SUBMIT_APPLICATION_API_ENDPOINT}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Ошибка отправки данных на сервер");
-      })
-      .then((responseData) => {
-        alert(
-          "Ваша форма успешно отправлена. Ожидайте подтверждения регистрации.",
-        );
-        reset();
-      })
-      .catch((error) => {
-        console.error("Ошибка:", error);
-        alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-      });
+    dispatch(postEvent({ id, data: formData }));
     reset();
     dispatch(setOnlineChecked(false));
     dispatch(setOfflineChecked(false));

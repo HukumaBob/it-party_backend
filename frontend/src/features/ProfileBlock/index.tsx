@@ -6,6 +6,7 @@ import avatarProfileForm from "../../app/assets/icons/avatarProfileForm.svg";
 import {
   setOpenModalAvatar,
 } from "../../app/services/slices/formSlice";
+import { setName, setSecondName } from "../../app/services/slices/profileSlice";
 
 export const ProfileBlock = () => {
   const profile = localStorage.getItem("updateInfo");
@@ -20,7 +21,10 @@ export const ProfileBlock = () => {
   const handleEditAvatar = () => {
     dispatch(setOpenModalAvatar(true));
   }
-
+  if (profile) {
+    const profileData = JSON.parse(profile!);
+  console.log(profileData)
+  }
   return (
     <section className={style.section}>
       <div className={openModalAvatar === true ? style.container : style.popupBlock}>
@@ -32,8 +36,8 @@ export const ProfileBlock = () => {
       </div>
       {(profile !== undefined && profileData.first_name !== undefined && profileData.last_name !== "") ?
         (<div className={style.formBlockName}>
-          <h2 className={style.formBlock_title}>{titleFirst}</h2>
-          <h2 className={style.formBlock_title}>{titleLast}</h2>
+          <h3 className={style.formBlock_name}>{titleFirst}</h3>
+          <h2 className={style.formBlock_lastName}>{titleLast}</h2>
          </div>) :
         (
           <div className={style.formBlockTitle}>

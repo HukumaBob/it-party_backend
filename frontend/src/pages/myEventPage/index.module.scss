@@ -1,0 +1,38 @@
+@import "../../app/styles/vars.scss";
+.wrapper {
+  display: flex;
+  max-width: 1032px;
+  width: 100%;
+  flex-direction: column;
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-32;
+    .title {
+      text-align: left;
+      h1 {
+        font-family: "YS-D-Medium";
+        font-size: $sp-34;
+      }
+    }
+  }
+
+  .allEvents {
+    display: flex;
+    gap: $sp-24;
+    flex-wrap: wrap;
+    .notApplied {
+      font-size: $sp-32;
+    }
+  }
+  .recomendation {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-32;
+    .title {
+      h2 {
+        font-size: $sp-24;
+      }
+    }
+  }
+}

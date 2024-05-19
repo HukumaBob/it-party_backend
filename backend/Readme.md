@@ -62,6 +62,11 @@ itParty - это веб-приложение, разработанное на Dj
    python manage.py makemigrations
    python manage.py migrate
    ```
+   и соберите статические файлы
+   
+   ```
+   python manage.py collectstatic
+   ```
 
    Создайте суперюзера:
 

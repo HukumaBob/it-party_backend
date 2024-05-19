@@ -2,13 +2,25 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: $sp-32;
-  .filterBlock {
-    height: 88px;
-  }
-  .cardsBlock {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $sp-24;
-  }
+  min-height: 100vh;
+  // padding: 20px;
+  box-sizing: border-box;
+}
+
+.filterBlock {
+  margin-bottom: 20px;
+}
+
+.cardsBlock {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.allEvents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./index.module.scss";
 import { PopupRegistration } from "../../entities/PopupRegistration";
 
-export const RegistrationButton = () => {
+export const RegistrationButton = ({id}:{id?:number}) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleOpen = () => {
@@ -20,7 +20,7 @@ export const RegistrationButton = () => {
       </button>
       {open && (
         <div className={style.popup}>
-          <PopupRegistration onClose={handleClose} />
+          <PopupRegistration onClose={handleClose} id={id!} />
         </div>
       )}
     </div>

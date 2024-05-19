@@ -22,11 +22,10 @@ export const FormConfidentiality = () => {
   } = useSelector((state) => state.form);
 
   const schemaFormAboutMe = yup.object().shape({
-    email: yup.string().required(),
-    phone: yup.string().required(),
-    current_password: yup.string().required(),
-    new_password: yup.string().required(),
-  }).required();
+    phone: yup.string(),
+    current_password: yup.string(),
+    new_password: yup.string(),
+  });
 
   const {
     register,
@@ -82,22 +81,14 @@ export const FormConfidentiality = () => {
             Email <span>*</span>
           </label>
           <input
-            className={`${errors.email ? style.errorInput : style.message}`}
+            className={style.message}
             type='email'
-            placeholder='ivan@ya.ru'
-            {...register("email", {
-              required: "Необходимо для регистрации на мероприятие",
-              pattern: {
-                value: /^[A-ZА-Я0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message:
-                  "Формат адреса электронной почты неверный. Пожалуйста, введите его правильно",
-              },
-            })}
+            value=''
+            disabled
           />
 
-          <span className={`${errors.email ? style.error : style.message}`}>
-            {errors?.email?.message ||
-              "Необходимо для регистрации на мероприятие"}
+          <span className={style.message}>
+            {"Необходимо для регистрации на мероприятие"}
           </span>
         </div>
 
@@ -112,7 +103,6 @@ export const FormConfidentiality = () => {
             type='number'
             placeholder='+79521120101'
             {...register("phone", {
-              required: "Необходимо для регистрации на мероприятие",
               minLength: {
                 value: 11,
                 message: "Введен некорректный номер телефона",

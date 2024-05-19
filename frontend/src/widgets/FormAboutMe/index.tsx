@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { TFormAboutMeValues, TUserProfileValues} from "../../app/types/types";
-import { editingAboutMe, getFormProfile } from "../../app/api/api";
+import { TFormDataPersonalValues, TUserProfileValues} from "../../app/types/types";
+import { editingDataPersonal, getFormProfile } from "../../app/api/api";
 import style from "./index.module.scss";
 import checkIcon from "../../app/assets/icons/check_mini.svg";
 import { useDispatch, useSelector } from "../../app/types/hooks";
@@ -27,7 +27,7 @@ export const FormAboutMe = () => {
     aims: yup.string(),
     cv: yup.string(),
     motivation: yup.string(),
-  }).required();
+  });
 
   const {
     register,
@@ -35,7 +35,7 @@ export const FormAboutMe = () => {
     formState: { errors, isValid },
     reset,
     setValue,
-  } = useForm<TFormAboutMeValues>({
+  } = useForm<TFormDataPersonalValues>({
     mode: "onTouched", resolver: yupResolver(schemaFormAboutMe),
   });
 
@@ -47,13 +47,13 @@ export const FormAboutMe = () => {
     dispatch(setOnlineCheckedFormAboutMe(!onlineCheckedFormAboutMe));
   };
 
-  const onSubmit = (data: TFormAboutMeValues) => {
+  const onSubmit = (data: TFormDataPersonalValues) => {
     const formData = {
       ...data,
       online: onlineCheckedFormAboutMe,
       offline: offlineCheckedFormAboutMe,
     };
-    editingAboutMe(formData)
+    editingDataPersonal(formData)
       .then(() => {
         getFormProfile()
           .then((data: TUserProfileValues) => {

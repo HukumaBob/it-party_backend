@@ -11,7 +11,7 @@ COPY package*.json ./
 COPY node_modules ./node_modules
 
 # Скопируйте остальные файлы проекта
-COPY . .
+COPY . ./
 
 # Запустите сборку вашего приложения
 RUN npm run build
