@@ -12,6 +12,7 @@ import { AuthorizationModal } from "../widgets/Authorization";
 import { AdminPage } from "../pages/AdminPage";
 import { AdminLayout } from "./AdminLayout";
 import { NewApplicationPage } from "../pages/NewApplicationPage";
+import { MyEventPage } from "../pages/myEventPage";
 
 function App() {
   const { openModal } = useSelector((state) => state.authorization);
@@ -29,10 +30,8 @@ function App() {
         <Route element={<Layout />}>
           <Route path='/' element={<MainPage />} />
           <Route path='/event/:id' element={<EventPage />} />
-
           <Route path='/account' element={<AccountPage />} />
-          {/* <Route path='/myEvent' element={<MyEventPage />} /> */}
-
+          <Route path='/myEvent' element={<MyEventPage />} />
         </Route>
       </Routes>
       {openModal && (

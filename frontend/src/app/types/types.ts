@@ -12,6 +12,7 @@ export type TCard = {
   time: string;
   id: number;
   admin?: boolean;
+  myEvent?: boolean;
 };
 
 export type TQuestion = {
@@ -68,6 +69,7 @@ export type TActionCard =
 
 export type TPopupRegistration = {
   onClose: () => void;
+  id: number;
 };
 
 export type TTextInput = {
@@ -84,7 +86,7 @@ export type TForm = {
 
 export type TSelectData = {
   id: string;
-}
+};
 
 export type TSelectInput = {
   title: string;
@@ -139,28 +141,30 @@ export type TInitialStateForm = {
   agreementPersonInfoChecked: boolean;
   clickMaritalStatus: boolean;
   selectedMaritalStatus: number;
-  clickProfileExperience: boolean,
-  selectedProfileExperience: number,
-  clickProfileSpecialization: boolean,
-  selectedProfileSpecialization: number,
-  clickIncome: boolean,
-  selectedIncome: number,
-  clickEducation: boolean,
-  selectedEducation: number,
-  clickTimeInterval: boolean,
-  smsChecked: boolean,
-  emailChecked: boolean,
-  approvalApplicationChecked: boolean,
-  newEventsChecked: boolean,
-  selectedTimeInterval: number,
-  selectedNavDataPersonal: boolean,
-  selectedNavCareerAndEducation: boolean,
-  selectedNavAboutMe: boolean,
-  selectedNavConfidentiality: boolean,
-  selectedNavNotification: boolean,
-  selectedNavMain: boolean,
-  openModalAvatar: boolean,
-  changeDateOfBirth: string,
+  clickProfileExperience: boolean;
+  selectedProfileExperience: number;
+  clickProfileSpecialization: boolean;
+  selectedProfileSpecialization: number;
+  clickIncome: boolean;
+  selectedIncome: number;
+  clickEducation: boolean;
+  selectedEducation: number;
+  clickTimeInterval: boolean;
+  smsChecked: boolean;
+  emailChecked: boolean;
+  approvalApplicationChecked: boolean;
+  newEventsChecked: boolean;
+  selectedTimeInterval: number;
+  selectedNavDataPersonal: boolean;
+  selectedNavCareerAndEducation: boolean;
+  selectedNavAboutMe: boolean;
+  selectedNavConfidentiality: boolean;
+  selectedNavNotification: boolean;
+  selectedNavMain: boolean;
+  openModalAvatar: boolean;
+  changeDateOfBirth: string;
+  selectedCountry: number;
+  clickCountry: boolean;
 };
 
 export type TAuthorizationInitialState = {
@@ -170,7 +174,7 @@ export type TAuthorizationInitialState = {
   checked: boolean;
   error?: string | null;
   ok: boolean;
-  authorizationUser:boolean
+  authorizationUser: boolean;
   data: {
     email: string;
     password: string;
@@ -188,7 +192,7 @@ export type TUser = {
 
 export type TNavigation = {
   id: string;
-}
+};
 
 export type TUserProfileValues = {
   id: number;
@@ -213,28 +217,32 @@ export type TUserProfileValues = {
   education: number;
   income: number;
   notification: number;
-  country: string;
+  country: number;
   city: number;
-}
+};
+
+export type TListCountry = {
+  results: TCountries;
+};
+
+export type TCountries = {
+  id: number;
+  name?: string;
+  country_id: number;
+};
 
 export type TFormDataPersonalValues = {
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
   date_of_birth?: string;
   familystatus?: number;
-  country?: string;
-}
-
-export type TFormCareerAndEducationValues = {
-  place_of_work: string;
-  position: string;
-  experience: number;
-  specialization: number;
+  country?: number;
+  place_of_work?: string;
+  position?: string;
+  experience?: number;
+  specialization?: number;
   income?: number;
   education?: number;
-}
-
-export type TFormAboutMeValues = {
   hobby?: string;
   values?: string;
   aims?: string;
@@ -242,25 +250,22 @@ export type TFormAboutMeValues = {
   motivation?: string;
   online?: boolean;
   offline?: boolean;
-}
+  user_photo?: string;
+  [index: string]: any;
+};
 
 export type TFormConfidentialityValues = {
-  email: string;
-  phone: string;
-  new_password:	string;
-  current_password:	string;
-}
-
-export type TFormProfileAvatar = {
-  user_photo: string;
-}
+  phone?: string;
+  new_password?: string;
+  current_password?: string;
+};
 
 export type TFormConfidentiality = {
   email: string;
   phone: string;
-  new_password:	string;
-  current_password:	string;
-}
+  new_password: string;
+  current_password: string;
+};
 
 export type TLoginResponse = {
   user: TFormAuthorization;
@@ -294,11 +299,10 @@ export type TErrorMessage = {
   email: string;
 };
 export type TResponseReg = {
-    email: string;
-    password: string;
-    ok: boolean;
+  email: string;
+  password: string;
+  ok: boolean;
 };
-
 
 export function setItem<T>(key: string, value: T): void {
   localStorage.setItem(key, JSON.stringify(value));
@@ -306,6 +310,43 @@ export function setItem<T>(key: string, value: T): void {
 
 export function getItem<T>(key: string): T | null {
   const item = localStorage.getItem(key);
-  return item ? JSON.parse(item) as T : null;
+  return item ? (JSON.parse(item) as T) : null;
 }
 
+export type TProfileInitialState = {
+  name: string;
+  secondName: string;
+};
+export type TMyEventsInitialState = {
+  activeTab: string;
+  favouriteEvents: TCard[];
+  active: Record<number, boolean>;
+  myEvent: oneEvent[] | [];
+  loading: boolean;
+  error: string | null;
+};
+export type oneEvent = {
+  id: number;
+  logo: string;
+  name: string;
+  description: string;
+  date: string;
+  time: string;
+  user_application_status: string;
+  specialization?: {
+    id: number;
+    specialization: string;
+    index: number;
+  };
+};
+export type TGetMyEvent = {
+  count: number;
+  next: string;
+  previous: string | null;
+  results: oneEvent[];
+};
+
+export type PostEventPayload = {
+  id: number;
+  data: TFormValues; // или другой тип, соответствующий вашим данным
+};

@@ -13,6 +13,11 @@ import {
   deleteItem,
 } from "../../app/services/slices/adminPageSlice";
 import close_mini from "../../app/assets/icons/close_mini_white.svg";
+import {
+  addToFavourite,
+  deleteFavourite,
+  setActive,
+} from "../../app/services/slices/myEventsSlice";
 export const EventCard = ({
   info,
   title,
@@ -22,12 +27,11 @@ export const EventCard = ({
   time,
   id,
   admin,
+  myEvent,
 }: TCard) => {
-  const [active, setActive] = useState(false);
-  const handleClick = () => {
-    setActive(!active);
-  };
   const { archive, activeTab } = useSelector((store) => store.admin);
+  const { active } = useSelector((store) => store.myEvents);
+
   const dispatch = useDispatch();
   const handleAddToArchive = () => {
     const existingItem = archive.find((item) => item.id === id);
@@ -37,8 +41,30 @@ export const EventCard = ({
       );
     }
   };
+
+  const handleAddToFavourite = () => {
+    dispatch(setActive({ id: id, value: true }));
+    const existingItem = archive.find((item) => item.id === id);
+    if (!existingItem) {
+      dispatch(
+        addToFavourite({
+          info,
+          title,
+          description,
+          img,
+          date,
+          time,
+          id,
+        }),
+      );
+    }
+  };
   const handleDelete = () => {
     dispatch(deleteItem(id));
+  };
+  const handleDeleteEvents = () => {
+    dispatch(deleteFavourite(id));
+    dispatch(setActive({ id: id, value: false }));
   };
 
   return (
@@ -50,18 +76,20 @@ export const EventCard = ({
           </div>
         ) : (
           <>
-            <div className={style.favoriteBackground} onClick={handleClick}>
-              {active ? (
+            <div className={style.favoriteBackground}>
+              {active[id] ? (
                 <img
                   src={favoriteActive}
                   alt='favorite'
                   className={style.favorite}
+                  onClick={handleDeleteEvents}
                 />
               ) : (
                 <img
                   src={inactiveFavorite}
                   alt='favorite'
                   className={style.favorite}
+                  onClick={handleAddToFavourite}
                 />
               )}
             </div>
@@ -77,7 +105,7 @@ export const EventCard = ({
           </>
         )}
 
-        <img src={img || eventCard} alt='eventImage' className={style.image} />
+        <img src={img} alt='eventImage' className={style.image} />
         <span className={style.background}></span>
       </div>
       <Link to={`/event/${id}`}>
@@ -101,8 +129,12 @@ export const EventCard = ({
                 В архив
               </button>
             </div>
+          ) : myEvent ? (
+            <div className={style.buttonBlock}>
+              <RegistrationButton id={id} />
+            </div>
           ) : (
-            <RegistrationButton />
+            <RegistrationButton id={id} />
           )}
         </div>
       </div>

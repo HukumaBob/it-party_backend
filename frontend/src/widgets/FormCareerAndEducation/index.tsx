@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { TFormCareerAndEducationValues, TUserProfileValues } from "../../app/types/types";
-import { editingCareerAndEducation, getFormProfile } from "../../app/api/api";
+import { TFormDataPersonalValues, TUserProfileValues } from "../../app/types/types";
+import { editingDataPersonal, getFormProfile } from "../../app/api/api";
 import style from "./index.module.scss";
 import arrow_down from "../../app/assets/icons/arrow_down.svg";
 import { useDispatch, useSelector } from "../../app/types/hooks";
@@ -74,13 +74,13 @@ export const FormCareerAndEducation = () => {
   }
 
   const schemaCareerAndEducation = yup.object().shape({
-    place_of_work: yup.string().required(),
-    position: yup.string().required(),
-    experience: yup.number().required(),
-    specialization: yup.number().required(),
+    place_of_work: yup.string(),
+    position: yup.string(),
+    experience: yup.number(),
+    specialization: yup.number(),
     income: yup.number(),
     education: yup.number(), 
-  }).required();
+  });
 
   const {
     register,
@@ -88,12 +88,12 @@ export const FormCareerAndEducation = () => {
     formState: { errors, isValid },
     reset,
     setValue,
-  } = useForm<TFormCareerAndEducationValues>({
+  } = useForm<TFormDataPersonalValues>({
     mode: "onTouched", resolver: yupResolver(schemaCareerAndEducation),
   });
 
-  const onSubmit = (data: TFormCareerAndEducationValues) => {
-    editingCareerAndEducation(data)
+  const onSubmit = (data: TFormDataPersonalValues) => {
+    editingDataPersonal(data)
       .then(() => {
         getFormProfile()
           .then((data: TUserProfileValues) => {
@@ -131,7 +131,6 @@ export const FormCareerAndEducation = () => {
             type='text'
             placeholder='Укажите место вашей работы'
             {...register("place_of_work", {
-              required: "Необходимо для регистрации на мероприятие",
               minLength: {
                 value: 2,
                 message: "Слишком короткое название",
@@ -156,7 +155,6 @@ export const FormCareerAndEducation = () => {
             type='text'
             placeholder='Укажите вашу должность'
             {...register("position", {
-              required: "Необходимо для регистрации на мероприятие",
               minLength: {
                 value: 2,
                 message: "Слишком короткое название",

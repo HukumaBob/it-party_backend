@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "./index.module.scss";
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { TNavigation} from "../../app/types/types";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import {
@@ -51,8 +51,13 @@ export const Navigation = ({ id }: TNavigation) => {
     dispatch(setSelectedNavCareerAndEducation(false));
     dispatch(setSelectedNavMain(false));
   }
+
   const handleMain = () => {
     dispatch(setSelectedNavMain(!selectedNavMain));
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('updateInfo');
+    localStorage.removeItem("countries");
     handleInActiveNav();
     dispatch(setSelectedNavDataPersonal(true));
   }
@@ -60,12 +65,12 @@ export const Navigation = ({ id }: TNavigation) => {
   return (
     <section className={style.section}>
       <nav className={style.navigateContainer}>
-        <NavLink to="/account/#formDataPersonal" className={selectedNavDataPersonal ? style.navigateContainer_linkActive : style.navigateContainer_link} onClick={handleNavigationDataPersonal}>Персональные данные</NavLink>
-        <NavLink to="/account/#formCareerAndEducation" className={selectedNavCareerAndEducation? style.navigateContainer_linkActive : style.navigateContainer_link} onClick={handleCareerAndEducation}>Карьера и образование</NavLink>
-        <NavLink to="/account/#formAboutMe" className={selectedNavAboutMe ? style.navigateContainer_linkActive : style.navigateContainer_link } onClick={handleAboutMe}>О себе</NavLink>
-        <NavLink to="/account/#formConfidentiality" className={selectedNavConfidentiality ? style.navigateContainer_linkActive : style.navigateContainer_link} onClick={handleConfidentiality}>Конфиденциальность</NavLink>
-        <NavLink to="/account/#formNotification" className={selectedNavNotification ? style.navigateContainer_linkActive : style.navigateContainer_link} onClick={handleNotification}>Уведомления</NavLink>
-        <NavLink to="/" className={selectedNavMain ? style.navigateContainer_linkActive : style.navigateContainer_link } onClick={handleMain}>Выход</NavLink>
+        <Link to="/account/#formDataPersonal" className={selectedNavDataPersonal ? style.navigateContainer_linkActive : style.navigateContainer_link} onClick={handleNavigationDataPersonal}>Персональные данные</Link>
+        <Link to="/account/#formCareerAndEducation" className={selectedNavCareerAndEducation? style.navigateContainer_linkActive : style.navigateContainer_link} onClick={handleCareerAndEducation}>Карьера и образование</Link>
+        <Link to="/account/#formAboutMe" className={selectedNavAboutMe ? style.navigateContainer_linkActive : style.navigateContainer_link } onClick={handleAboutMe}>О себе</Link>
+        <Link to="/account/#formConfidentiality" className={selectedNavConfidentiality ? style.navigateContainer_linkActive : style.navigateContainer_link} onClick={handleConfidentiality}>Конфиденциальность</Link>
+        <Link to="/account/#formNotification" className={selectedNavNotification ? style.navigateContainer_linkActive : style.navigateContainer_link} onClick={handleNotification}>Уведомления</Link>
+        <Link to="/" className={selectedNavMain ? style.navigateContainer_linkActive : style.navigateContainer_link } onClick={handleMain}>Выйти</Link>
       </nav>
     </section>
   )

@@ -1,16 +1,26 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
-import { TLoginResponse, 
-         TUser,
-         TCard,
-         TUserProfileValues,
-         TFormDataPersonalValues,
-         TFormCareerAndEducationValues,
-         TFormAboutMeValues,
-         TFormConfidentialityValues,
-         TFormProfileAvatar } from "../types/types";
-import { BASE_URL, LOGIN_API_ENDPOINT, USERS_API_ENDPOINT, USER_PROFILES_API_ENDPOINT, USER_PROFILE_GET_AND_PATCH_API_ENDPOINT, FETCH_UPDATEURL, FETCH_METHOD_AND_HEADERS } from "./constants";
-
+import {
+  TLoginResponse,
+  TUser,
+  TCard,
+  TUserProfileValues,
+  TFormDataPersonalValues,
+  TFormConfidentialityValues,
+  TListCountry,
+  TGetMyEvent,
+  PostEventPayload,
+} from "../types/types";
+import {
+  BASE_URL,
+  LOGIN_API_ENDPOINT,
+  USERS_API_ENDPOINT,
+  USER_PROFILES_API_ENDPOINT,
+  USER_PROFILE_GET_AND_PATCH_API_ENDPOINT,
+  FETCH_UPDATEURL,
+  LIST_COUNTRY_GET_API_ENDPOINT,
+  EVENTS_API_ENDPOINT,
+  REGISTER_AND_APPLY_API_ENDPOINT,
+} from "./constants";
 
 type TServerResponse<T> = {
   success: boolean;
@@ -102,14 +112,12 @@ export const postUserProfile = (): Promise<TUserProfileValues> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      "Authorization": `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   })
     .then(checkResponse<TServerResponse<TUserProfileValues>>)
     .then((data) => {
-
       if (data) return data;
-
       return Promise.reject(data);
     });
 };
@@ -124,69 +132,56 @@ export const getUserProfile = (): Promise<TUserProfileValues> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   })
     .then(checkResponse<TServerResponse<TUserProfileValues>>)
+    .then((data) => {
+      if (data) return data;
+      return Promise.reject(data);
+    });
 };
 
-export const getEvents = createAsyncThunk("asyncIngredient", async () => {
+export const getListCountry = (): Promise<TListCountry> => {
+  return fetch(`${BASE_URL}${LIST_COUNTRY_GET_API_ENDPOINT}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then(checkResponse<TServerResponse<TListCountry>>);
+};
+
+export const getEvents = createAsyncThunk("asyncEvents", async () => {
   const response = await fetch(`/api/v1/events/`);
   const data = await checkResponse<TServerResponse<TCard[]>>(response);
   return data.data;
 });
 
+export const editingDataPersonal = (
+  data: TFormDataPersonalValues,
+): Promise<TUserProfileValues> => {
+  return fetch(FETCH_UPDATEURL, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    body: JSON.stringify(data),
+  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
+};
 
-export const editingDataPersonal = (data: TFormDataPersonalValues): Promise<TUserProfileValues> => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
-    return Promise.reject("No accessToken available");
-  }
-
-  return fetch(FETCH_UPDATEURL, {...FETCH_METHOD_AND_HEADERS,  body: JSON.stringify(data)})
-    .then(checkResponse<TServerResponse<TUserProfileValues>>)
-}
-
-export const editingProfileAvatar = (data: TFormProfileAvatar): Promise<TUserProfileValues> => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
-    return Promise.reject("No accessToken available");
-  }
-
-  return fetch(FETCH_UPDATEURL, {...FETCH_METHOD_AND_HEADERS,  body: JSON.stringify(data)})
-    .then(checkResponse<TServerResponse<TUserProfileValues>>)
-}
-
-
-export const editingCareerAndEducation = (data: TFormCareerAndEducationValues ): Promise<TUserProfileValues> => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
-    return Promise.reject("No accessToken available");
-  }
-
-  return fetch(FETCH_UPDATEURL, {...FETCH_METHOD_AND_HEADERS,  body: JSON.stringify(data)})
-    .then(checkResponse<TServerResponse<TUserProfileValues>>)
-}
-
-export const editingAboutMe = (data: TFormAboutMeValues ): Promise<TUserProfileValues> => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
-    return Promise.reject("No accessToken available");
-  }
-
-  return fetch(FETCH_UPDATEURL, {...FETCH_METHOD_AND_HEADERS,  body: JSON.stringify(data)})
-    .then(checkResponse<TServerResponse<TUserProfileValues>>)
-}
-
-export const editingConfidentiality = (data: TFormConfidentialityValues): Promise<TUserProfileValues> => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
-    return Promise.reject("No accessToken available");
-  }
-  
-  return fetch(FETCH_UPDATEURL, {...FETCH_METHOD_AND_HEADERS,  body: JSON.stringify(data)})
-    .then(checkResponse<TServerResponse<TUserProfileValues>>)
-}
+export const editingConfidentiality = (
+  data: TFormConfidentialityValues,
+): Promise<TUserProfileValues> => {
+  return fetch(FETCH_UPDATEURL, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+    body: JSON.stringify(data),
+  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
+};
 
 export const getFormProfile = (): Promise<TUserProfileValues> => {
   const accessToken = localStorage.getItem("accessToken");
@@ -198,8 +193,42 @@ export const getFormProfile = (): Promise<TUserProfileValues> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      "authorization": `Bearer ${accessToken}`,
+      authorization: `Bearer ${accessToken}`,
+    },
+  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
+};
+
+export const getMyEvents = (): Promise<TGetMyEvent> => {
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    return Promise.reject("Токен не найден");
+  }
+
+  return fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      authorization: `Bearer ${accessToken}`,
     },
   })
-  .then(checkResponse<TServerResponse<TUserProfileValues>>)
+    .then(checkResponse<TServerResponse<TGetMyEvent>>)
+    .then((data) => data);
 };
+
+export const postEvent = createAsyncThunk<TCard, PostEventPayload>(
+  "events/postEvent",
+  async ({ data, id }, thunkAPI) => {
+    const response = await fetch(`${BASE_URL}${REGISTER_AND_APPLY_API_ENDPOINT}${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      return thunkAPI.rejectWithValue("Failed to post event");
+    }
+    return (await response.json()) as TCard;
+  },
+);

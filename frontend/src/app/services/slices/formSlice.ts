@@ -5,6 +5,7 @@ export const initialState: TInitialStateForm = {
   clickExperience: false,
   clickDirection: false,
   clickMaritalStatus: false,
+  clickCountry: false,
   clickProfileExperience: false,
   clickProfileSpecialization: false,
   clickIncome: false,
@@ -22,7 +23,8 @@ export const initialState: TInitialStateForm = {
   newEventsChecked: false,
   selectedDirection: "",
   selectedExperience: "",
-  selectedMaritalStatus: 0, 
+  selectedMaritalStatus: 0,
+  selectedCountry: 1,
   selectedProfileExperience: 0,
   selectedProfileSpecialization: 0,
   selectedIncome: 0,
@@ -142,6 +144,12 @@ export const formSlice = createSlice({
     },
     setChangeDateOfBirth: (state, action: PayloadAction<string>) => {
       state.changeDateOfBirth = action.payload;
+    },
+    setClickCountry: (state, action: PayloadAction<boolean>) => {
+      state.clickCountry = action.payload;
+    },
+    setSelectedCountry: (state, action: PayloadAction<number>) => {
+      state.selectedCountry = action.payload;
     }
   },
 });
@@ -180,7 +188,9 @@ export const {
   setSelectedNavNotification,
   setSelectedNavMain,
   setOpenModalAvatar,
-  setChangeDateOfBirth
+  setChangeDateOfBirth,
+  setClickCountry,
+  setSelectedCountry
 } = formSlice.actions;
 
 export default formSlice.reducer;

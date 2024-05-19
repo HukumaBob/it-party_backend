@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./index.module.scss";
 import { useForm } from "react-hook-form";
 import closeIcon from "../../app/assets/icons/close_mini.svg";
@@ -21,8 +21,11 @@ import {
   loginUser,
   registerUsers,
 } from "../../app/services/actions/authorization";
+import { useNavigate } from "react-router-dom";
+import { getUserProfile } from "../../app/api/api";
 
 export const AuthorizationForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleCloseModal = () => {
     dispatch(setOpenModal(false));
@@ -57,7 +60,9 @@ export const AuthorizationForm = () => {
   } = useForm<TFormAuthorization>({
     mode: "onTouched",
   });
+
   const onSubmit = (data: TFormAuthorization) => {
+    
     const formData = {
       ...data,
       agreement_required: checked,
@@ -74,6 +79,8 @@ export const AuthorizationForm = () => {
     } else {
       if (authorizationUser) {
         handleCloseModal();
+        navigate("/account");
+        getUserProfile()
       }
       dispatch(
         loginUser({

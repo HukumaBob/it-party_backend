@@ -1,6 +1,6 @@
 @import "../../app/styles/vars.scss";
 .form {
-  min-width: calc(100% - 2*20px);
+  min-width: calc(100% - 2 * 20px);
   display: flex;
   flex-direction: column;
   gap: $sp-24;
@@ -16,13 +16,6 @@
     flex-direction: column;
     min-width: 100%;
     gap: 4px;
-    label {
-      font-weight: 500;
-      font-family: "YS-T-Medium";
-      span {
-        color: $c-def-blue;
-      }
-    }
     .inputBlock {
       display: flex;
       align-items: center;
@@ -36,27 +29,35 @@
         border: none;
         border-radius: $sp-12;
       }
-      .errorInput {
-        border: 1px solid $c-er-red;
-      }
-      .buttonInput {
-        width: 24px;
-        height: 24px;
-        background-color: $c-def-white;
-        background-image: url("../../app/assets/icons/close_form-profile.svg");
-        justify-content: center;
-        background-position: 50% 50%;
-        background-size: 100%;
-        border-radius: none;
-        margin: 0;
-        border: none;
-      }
+    }
+    .errorInput {
+      @extend .inputBlock;
+      border: 1px solid $c-er-red;
     }
     .message {
       font-family: "YS-T-Regular";
       font-size: $sp-13;
       color: $c-black-500;
     }
+  }
+ 
+  label {
+    font-weight: 500;
+    font-family: "YS-T-Medium";
+    span {
+      color: $c-def-blue;
+    }
+  }
+  .buttonInput {
+    width: 24px;
+    height: 24px;
+    background-color: $c-def-white;
+    background-image: url("../../app/assets/icons/close_form-profile.svg");
+    background-position: 50% 50%;
+    background-size: 100%;
+    margin: 0;
+    cursor: pointer;
+    border: none;
   }
 
   .element {
@@ -114,6 +115,27 @@
     color: $c-black-500;
   }
 }
+.countryBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid $c-str-medium;
+  border-radius: $sp-12;
+  background-color: $c-def-white;
+  max-height: 52px;
+  padding: $sp-16;
+  .countryBlock_select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 24px);
+    cursor: pointer;
+    outline: none;
+    gap: 8px;
+    max-height: 52px;
+    background-color: $c-def-white;
+  }
+}
 
 .customSelect {
   display: flex;
@@ -136,9 +158,8 @@
   left: 0;
   width: 100%;
   background-color: #fff;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
+  border: 1px solid $c-str-medium;
+  border-radius: 0 0 $sp-12 $sp-12;
   z-index: 3;
 }
 
