@@ -1,0 +1,26 @@
+@import "../../app/styles/vars.scss";
+.container {
+  display: flex;
+  max-width: 300px;
+  width: 100%;
+  padding: $sp-12;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-12;
+  box-shadow: 2px 2px 12px 0px #242f7b26;
+  border-radius: $sp-12;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  position: absolute;
+  z-index: 5;
+  top: 10%;
+  background: white;
+  transition: all 1s ease-out;
+  .text {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-family: "YS-D-Medium";
+  }
+}

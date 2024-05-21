@@ -14,7 +14,7 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     Главная страница эвентов, с возможностью просмотреть подробную информацию.
     """
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().order_by('date') 
     filterset_class = EventFilter
     permission_classes_by_action = {
         'create': [IsStaffOrReadOnly],

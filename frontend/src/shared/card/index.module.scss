@@ -112,7 +112,48 @@
     }
   }
 }
-
+.pending {
+  button {
+    max-width: 328px;
+    width: 100%;
+    max-height: 44px;
+    height: 100%;
+    background: $c-opt-orange-l;
+    color: $c-def-white;
+    border: none;
+    padding: $sp-12;
+    border-radius: 8px;
+    cursor: default;
+  }
+}
+.approved {
+  button {
+    max-width: 328px;
+    width: 100%;
+    max-height: 44px;
+    height: 100%;
+    background: $c-def-blue;
+    color: $c-def-white;
+    border: none;
+    padding: $sp-12;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+}
+.reject {
+  button {
+    max-width: 328px;
+    width: 100%;
+    max-height: 44px;
+    height: 100%;
+    background: $c-er-red;
+    color: $c-def-white;
+    border: none;
+    padding: $sp-12;
+    border-radius: 8px;
+    cursor: not-allowed;
+  }
+}
 .buttonBlock {
   display: flex;
   flex-direction: column;

@@ -18,6 +18,11 @@ export const MyEventPage = () => {
   const filteredEvents = myEvent.filter(
     (event) => event.user_application_status === "not_applied",
   );
+  const filteredEventsRegister = myEvent.filter(
+    (event) =>
+      event.user_application_status !== "not_applied" &&
+      event.user_application_status !== "none",
+  );
   return (
     <div className={style.wrapper}>
       <div className={style.container}>
@@ -38,22 +43,19 @@ export const MyEventPage = () => {
                     Вы не зарегистрированы ни на одно мероприятие
                   </span>
                 ) : (
-                  myEvent.map(
-                    (event) =>
-                      event.specialization && (
-                        <EventCard
-                          key={event.id}
-                          title={event.name}
-                          description={event.description}
-                          date={event.date}
-                          id={event.id}
-                          img={event.logo}
-                          info={event.specialization!.specialization}
-                          time={event.time}
-                          myEvent={true}
-                        />
-                      ),
-                  )
+                  filteredEventsRegister.map((event) => (
+                    <EventCard
+                      key={event.id}
+                      title={event.name}
+                      description={event.description}
+                      date={event.date}
+                      id={event.id}
+                      img={event.logo}
+                      // info={event.specialization!.specialization}
+                      time={event.time}
+                      myEventBoolean={true}
+                    />
+                  ))
                 )}
               </div>
             )
@@ -68,7 +70,7 @@ export const MyEventPage = () => {
                   info={card.info}
                   time={card.time}
                   id={card.id}
-                  myEvent={true}
+                  myEventBoolean={true}
                 />
               ))}
             </div>
@@ -79,17 +81,17 @@ export const MyEventPage = () => {
             <h2>Рекомендуем</h2>
           </section>
           <div className={style.allEvents}>
-            {eventCatalogMock.slice(3, 6).map((event) => (
+            {filteredEvents.slice(3, 6).map((event) => (
               <EventCard
                 key={event.id}
-                title={event.title}
+                title={event.name}
                 description={event.description}
                 date={event.date}
                 id={event.id}
-                img={event.img}
-                info={event.info}
+                img={event.logo}
+                info={event.specialization?.specialization}
                 time={event.time}
-                myEvent={true}
+                myEventBoolean={true}
               />
             ))}
           </div>

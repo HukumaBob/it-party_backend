@@ -26,7 +26,7 @@ export const PopupRegistration = ({ onClose, id }: TPopupRegistration) => {
           </span>
           <span> Пожалуйста, заполните поля имя и фамилия кириллицей.</span>
         </p>
-        <FormBlock id={id} />
+        <FormBlock id={id} onClose={onClose} />
       </div>
     </div>
   );

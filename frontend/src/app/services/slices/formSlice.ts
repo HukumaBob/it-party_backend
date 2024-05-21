@@ -38,6 +38,7 @@ export const initialState: TInitialStateForm = {
   selectedNavMain: false,
   openModalAvatar: false,
   changeDateOfBirth: "",
+  alertForm: false,
 };
 export const formSlice = createSlice({
   name: "form",
@@ -94,7 +95,10 @@ export const formSlice = createSlice({
     setSelectedProfileExperience: (state, action: PayloadAction<number>) => {
       state.selectedProfileExperience = action.payload;
     },
-    setSelectedProfileSpecialization: (state, action: PayloadAction<number>) => {
+    setSelectedProfileSpecialization: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
       state.selectedProfileSpecialization = action.payload;
     },
     setSelectedIncome: (state, action: PayloadAction<number>) => {
@@ -124,7 +128,10 @@ export const formSlice = createSlice({
     setSelectedNavDataPersonal: (state, action: PayloadAction<boolean>) => {
       state.selectedNavDataPersonal = action.payload;
     },
-    setSelectedNavCareerAndEducation: (state, action: PayloadAction<boolean>) => {
+    setSelectedNavCareerAndEducation: (
+      state,
+      action: PayloadAction<boolean>,
+    ) => {
       state.selectedNavCareerAndEducation = action.payload;
     },
     setSelectedNavAboutMe: (state, action: PayloadAction<boolean>) => {
@@ -150,7 +157,10 @@ export const formSlice = createSlice({
     },
     setSelectedCountry: (state, action: PayloadAction<number>) => {
       state.selectedCountry = action.payload;
-    }
+    },
+    setAlertForm: (state, action: PayloadAction<boolean>) => {
+      state.alertForm = action.payload;
+    },
   },
 });
 
@@ -169,7 +179,7 @@ export const {
   setAgreementChecked,
   setAgreementPersonInfoChecked,
   setSelectedDirection,
-  setSelectedExperience, 
+  setSelectedExperience,
   setSelectedMaritalStatus,
   setSelectedProfileExperience,
   setSelectedProfileSpecialization,
@@ -190,7 +200,8 @@ export const {
   setOpenModalAvatar,
   setChangeDateOfBirth,
   setClickCountry,
-  setSelectedCountry
+  setSelectedCountry,
+  setAlertForm,
 } = formSlice.actions;
 
 export default formSlice.reducer;

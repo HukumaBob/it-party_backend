@@ -16,3 +16,4 @@ export const getMyEventsList = createAsyncThunk("myEvents", async () => {
   const response = await getMyEvents();
   return response.results;
 });
+

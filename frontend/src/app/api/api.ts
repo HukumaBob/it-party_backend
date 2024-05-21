@@ -9,6 +9,7 @@ import {
   TListCountry,
   TGetMyEvent,
   PostEventPayload,
+  PatchEventPayload,
 } from "../types/types";
 import {
   BASE_URL,
@@ -20,6 +21,7 @@ import {
   LIST_COUNTRY_GET_API_ENDPOINT,
   EVENTS_API_ENDPOINT,
   REGISTER_AND_APPLY_API_ENDPOINT,
+  USER_EVENT_STATUS_API_ENDPOINT,
 } from "./constants";
 
 type TServerResponse<T> = {
@@ -218,17 +220,47 @@ export const getMyEvents = (): Promise<TGetMyEvent> => {
 export const postEvent = createAsyncThunk<TCard, PostEventPayload>(
   "events/postEvent",
   async ({ data, id }, thunkAPI) => {
-    const response = await fetch(`${BASE_URL}${REGISTER_AND_APPLY_API_ENDPOINT}${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    const response = await fetch(
+      `${BASE_URL}${REGISTER_AND_APPLY_API_ENDPOINT}${id}/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     if (!response.ok) {
       return thunkAPI.rejectWithValue("Failed to post event");
     }
     return (await response.json()) as TCard;
+  },
+);
+
+export const patchEventStatus = createAsyncThunk<TCard, PatchEventPayload>(
+  "events/patchEvent",
+  async ({ data, id }, thunkAPI) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}${USER_EVENT_STATUS_API_ENDPOINT}${id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          body: JSON.stringify(data),
+        },
+      );
+      if (!response.ok) {
+        return thunkAPI.rejectWithValue("Failed to patch event");
+      }
+      return (await response.json()) as TCard;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        "An error occurred while patching the event",
+      );
+    }
   },
 );
