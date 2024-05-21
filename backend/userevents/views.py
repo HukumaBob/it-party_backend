@@ -114,6 +114,8 @@ class ApplyForEventView(APIView):
         form_data = {
             field: serializer.data.get(field, '') for field in fields
             }
+        # Добавляем id user_event в данные формы
+        form_data['user_event_id'] = user_event.id        
         # Отправляем данные на фронт
         return Response(form_data)
 
