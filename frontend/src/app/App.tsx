@@ -13,15 +13,19 @@ import { AdminPage } from "../pages/AdminPage";
 import { AdminLayout } from "./AdminLayout";
 import { NewApplicationPage } from "../pages/NewApplicationPage";
 import { MyEventPage } from "../pages/myEventPage";
+import { AlertForm } from "../shared/alerts";
 
 function App() {
   const { openModal } = useSelector((state) => state.authorization);
+  const { alertForm } = useSelector((state) => state.form);
   const dispatch = useDispatch();
   const handleCloseModal = () => {
     dispatch(setOpenModal(false));
   };
   return (
     <div className={style.wrapper}>
+      {alertForm && <AlertForm />}
+
       <Routes>
         <Route element={<AdminLayout />}>
           <Route path='/admin' element={<AdminPage />} />

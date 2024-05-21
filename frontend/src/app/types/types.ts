@@ -12,7 +12,7 @@ export type TCard = {
   time: string;
   id: number;
   admin?: boolean;
-  myEvent?: boolean;
+  myEventBoolean?: boolean;
 };
 
 export type TQuestion = {
@@ -165,6 +165,7 @@ export type TInitialStateForm = {
   changeDateOfBirth: string;
   selectedCountry: number;
   clickCountry: boolean;
+  alertForm: boolean;
 };
 
 export type TAuthorizationInitialState = {
@@ -349,4 +350,9 @@ export type TGetMyEvent = {
 export type PostEventPayload = {
   id: number;
   data: TFormValues; // или другой тип, соответствующий вашим данным
+};
+
+export type PatchEventPayload = {
+  id: number;
+  data: oneEvent;
 };

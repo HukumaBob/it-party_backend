@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { TFormValues } from "../../app/types/types";
+import { TFormValues, TPopupRegistration } from "../../app/types/types";
 import style from "./index.module.scss";
 import { Form } from "../../features/form";
 
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "../../app/types/hooks";
 import {
   setAgreementChecked,
   setAgreementPersonInfoChecked,
+  setAlertForm,
   setClickDirection,
   setClickExperience,
   setOfflineChecked,
@@ -19,8 +20,9 @@ import {
   setSelectedExperience,
 } from "../../app/services/slices/formSlice";
 
-import { postEvent } from "../../app/api/api";
-export const FormBlock = ({ id }: { id: number }) => {
+import { patchEventStatus, postEvent } from "../../app/api/api";
+
+export const FormBlock = ({ id, onClose }: TPopupRegistration) => {
   const dispatch = useDispatch();
   const {
     clickDirection,
@@ -32,6 +34,8 @@ export const FormBlock = ({ id }: { id: number }) => {
     selectedDirection,
     selectedExperience,
   } = useSelector((state) => state.form);
+  const { active, myEvent } = useSelector((store) => store.myEvents);
+  const oneEvent = myEvent.map((el) => el);
 
   const handleOnlineChange = () => {
     dispatch(setOnlineChecked(!onlineChecked));
@@ -66,7 +70,6 @@ export const FormBlock = ({ id }: { id: number }) => {
     dispatch(setClickDirection(false));
     setValue("direction", value);
   };
-
   const {
     register,
     handleSubmit,
@@ -84,6 +87,7 @@ export const FormBlock = ({ id }: { id: number }) => {
       offlineChecked: offlineChecked,
     };
     dispatch(postEvent({ id, data: formData }));
+    dispatch(patchEventStatus({ id, data: oneEvent[id] }));
     reset();
     dispatch(setOnlineChecked(false));
     dispatch(setOfflineChecked(false));
@@ -91,6 +95,11 @@ export const FormBlock = ({ id }: { id: number }) => {
     dispatch(setAgreementPersonInfoChecked(false));
     dispatch(setSelectedExperience(""));
     dispatch(setSelectedDirection(""));
+    dispatch(setAlertForm(true));
+    setTimeout(() => {
+      dispatch(setAlertForm(false));
+    }, 3000);
+    onClose();
   };
 
   return (

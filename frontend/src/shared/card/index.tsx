@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./index.module.scss";
 import eventCard from "../../app/assets/image/EventCardImage/Photo.png";
 import calendar from "../../app/assets/icons/calendar.svg";
@@ -27,10 +27,21 @@ export const EventCard = ({
   time,
   id,
   admin,
-  myEvent,
+  myEventBoolean,
 }: TCard) => {
   const { archive, activeTab } = useSelector((store) => store.admin);
-  const { active } = useSelector((store) => store.myEvents);
+  const { active, myEvent } = useSelector((store) => store.myEvents);
+
+  const pending = myEvent.some(
+    (event) => event.id === id && event.user_application_status === "pending",
+  );
+  const approved = myEvent.some(
+    (event) => event.id === id && event.user_application_status === "approved",
+  );
+  const reject = myEvent.some(
+    (event) => event.id === id && event.user_application_status === "rejected",
+  );
+  console.log(pending);
 
   const dispatch = useDispatch();
   const handleAddToArchive = () => {
@@ -129,9 +140,17 @@ export const EventCard = ({
                 В архив
               </button>
             </div>
-          ) : myEvent ? (
-            <div className={style.buttonBlock}>
-              <RegistrationButton id={id} />
+          ) : myEventBoolean && pending ? (
+            <div className={style.pending}>
+              <button>Ожидает подтверждения</button>
+            </div>
+          ) : myEventBoolean && approved ? (
+            <div className={style.approved}>
+              <button>Билет</button>
+            </div>
+          ) : myEventBoolean && reject ? (
+            <div className={style.reject}>
+              <button>Отклонено</button>
             </div>
           ) : (
             <RegistrationButton id={id} />

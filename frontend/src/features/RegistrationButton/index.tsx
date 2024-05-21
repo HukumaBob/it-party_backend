@@ -12,7 +12,7 @@ export const RegistrationButton = ({id}:{id?:number}) => {
   const handleClose = () => {
     setOpen(false);
   };
-
+  
   return (
     <div>
       <button className={style.button} onClick={handleOpen}>

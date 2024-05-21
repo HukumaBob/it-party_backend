@@ -34,7 +34,7 @@ export const EventsCatalog = () => {
                   id={event.id}
                   img={event.logo}
                   time={event.time}
-                  myEvent={true}
+                  myEventBoolean={true}
                 />
               ))
             )}
