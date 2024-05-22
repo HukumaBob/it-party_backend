@@ -10,7 +10,7 @@ import {
   setNewEventsChecked,
   setSelectedTimeInterval,
   setClickTimeInterval,
-} from "../../app/services/slices/formSlice";
+} from "../../app/services/slices/profileSlice";
 
 export const FormNotifications = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ export const FormNotifications = () => {
     newEventsChecked,
     selectedTimeInterval,
     selectedNavNotification,
-  } = useSelector((state) => state.form);
+  } = useSelector((state) => state.profile);
 
   const handleEmailChange = () => {
     dispatch(setEmailChecked(!emailChecked));

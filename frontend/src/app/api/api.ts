@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  TLoginResponse,
+import { 
+  TLoginResponse, 
   TUser,
   TCard,
   TUserProfileValues,
@@ -10,18 +10,22 @@ import {
   TGetMyEvent,
   PostEventPayload,
   PatchEventPayload,
+  profileDataInfo,
+  TsubmitEventForm,
+  TFormValues,
 } from "../types/types";
-import {
-  BASE_URL,
-  LOGIN_API_ENDPOINT,
-  USERS_API_ENDPOINT,
-  USER_PROFILES_API_ENDPOINT,
-  USER_PROFILE_GET_AND_PATCH_API_ENDPOINT,
+import { 
+  BASE_URL, 
+  LOGIN_API_ENDPOINT, 
+  USERS_API_ENDPOINT, 
+  USER_PROFILES_API_ENDPOINT, 
+  USER_PROFILE_GET_AND_PATCH_API_ENDPOINT, 
   FETCH_UPDATEURL,
   LIST_COUNTRY_GET_API_ENDPOINT,
   EVENTS_API_ENDPOINT,
   REGISTER_AND_APPLY_API_ENDPOINT,
   USER_EVENT_STATUS_API_ENDPOINT,
+  SUBMIT_APPLICATION_API_ENDPOINT,
 } from "./constants";
 
 type TServerResponse<T> = {
@@ -83,11 +87,7 @@ export const login = (
       password: password,
     }),
   })
-    .then(checkResponse<TServerResponse<TLoginResponse>>)
-    .then((data) => {
-      if (data) return data;
-      return Promise.reject(data);
-    });
+    .then(checkResponse<TServerResponse<TLoginResponse>>);
 };
 
 export const logout = (): Promise<TUser> => {
@@ -114,14 +114,10 @@ export const postUserProfile = (): Promise<TUserProfileValues> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      Authorization: `Bearer ${accessToken}`,
+      "Authorization": `Bearer ${accessToken}`,
     },
   })
-    .then(checkResponse<TServerResponse<TUserProfileValues>>)
-    .then((data) => {
-      if (data) return data;
-      return Promise.reject(data);
-    });
+    .then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
 export const getUserProfile = (): Promise<TUserProfileValues> => {
@@ -134,14 +130,10 @@ export const getUserProfile = (): Promise<TUserProfileValues> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
+      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
     },
   })
-    .then(checkResponse<TServerResponse<TUserProfileValues>>)
-    .then((data) => {
-      if (data) return data;
-      return Promise.reject(data);
-    });
+    .then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
 export const getListCountry = (): Promise<TListCountry> => {
@@ -150,7 +142,8 @@ export const getListCountry = (): Promise<TListCountry> => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then(checkResponse<TServerResponse<TListCountry>>);
+  })
+    .then(checkResponse<TServerResponse<TListCountry>>);
 };
 
 export const getEvents = createAsyncThunk("asyncEvents", async () => {
@@ -166,10 +159,11 @@ export const editingDataPersonal = (
     method: "PATCH",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
     },
     body: JSON.stringify(data),
-  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
+  })
+    .then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
 export const editingConfidentiality = (
@@ -179,10 +173,11 @@ export const editingConfidentiality = (
     method: "PATCH",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
     },
     body: JSON.stringify(data),
-  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
+    })
+    .then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
 export const getFormProfile = (): Promise<TUserProfileValues> => {
@@ -195,9 +190,10 @@ export const getFormProfile = (): Promise<TUserProfileValues> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      authorization: `Bearer ${accessToken}`,
+      "authorization": `Bearer ${accessToken}`,
     },
-  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
+  })
+  .then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
 export const getMyEvents = (): Promise<TGetMyEvent> => {
@@ -217,9 +213,9 @@ export const getMyEvents = (): Promise<TGetMyEvent> => {
     .then((data) => data);
 };
 
-export const postEvent = createAsyncThunk<TCard, PostEventPayload>(
+export const postEvent = createAsyncThunk<profileDataInfo, PostEventPayload>(
   "events/postEvent",
-  async ({ data, id }, thunkAPI) => {
+  async ({ id }, thunkAPI) => {
     const response = await fetch(
       `${BASE_URL}${REGISTER_AND_APPLY_API_ENDPOINT}${id}/`,
       {
@@ -228,19 +224,40 @@ export const postEvent = createAsyncThunk<TCard, PostEventPayload>(
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ apply: true }),
       },
     );
     if (!response.ok) {
       return thunkAPI.rejectWithValue("Failed to post event");
     }
-    return (await response.json()) as TCard;
+    return (await response.json()) as profileDataInfo;
   },
 );
 
+export const submitEventForm = createAsyncThunk<
+  profileDataInfo,
+  TsubmitEventForm
+>("events/submitEventForm", async ({ id, data }, thunkAPI) => {
+  const response = await fetch(
+    `${BASE_URL}${SUBMIT_APPLICATION_API_ENDPOINT}${id}/`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify({ data }),
+    },
+  );
+  if (!response.ok) {
+    return thunkAPI.rejectWithValue("Failed to post event");
+  }
+  return (await response.json()) as profileDataInfo;
+});
+
 export const patchEventStatus = createAsyncThunk<TCard, PatchEventPayload>(
   "events/patchEvent",
-  async ({ data, id }, thunkAPI) => {
+  async ({ id }, thunkAPI) => {
     try {
       const response = await fetch(
         `${BASE_URL}${USER_EVENT_STATUS_API_ENDPOINT}${id}/`,
@@ -250,7 +267,7 @@ export const patchEventStatus = createAsyncThunk<TCard, PatchEventPayload>(
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify(id),
         },
       );
       if (!response.ok) {

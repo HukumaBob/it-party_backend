@@ -1,7 +1,7 @@
 @import "../../app/styles/vars.scss";
 .section {
-  max-width: 328px;
-  min-height: 296px;
+  width: 328px;
+  height: 296px;
   .navigateContainer {
     display: flex;
     flex-direction: column;

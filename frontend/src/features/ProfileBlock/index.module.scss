@@ -3,12 +3,11 @@
 .section {
   display: flex;
   justify-content: flex-start;
-  min-width: calc(100% - 2 * 20px);
+  min-width: calc(100% - 2*20px);
   padding: 0 0 16px;
   column-gap: 16px;
   background-color: $c-def-bg;
   box-sizing: border-box;
-  align-items: center;
   .container {
     position: fixed;
     visibility: visible;
@@ -24,16 +23,16 @@
     top: 0;
     right: 0;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     position: fixed;
     visibility: hidden;
     transition: 0.5s linear;
     opacity: 0;
   }
-  .formBlockProfile {
+  .formBlockProfile{
     display: flex;
     flex-direction: column;
-    align-items: center;
     column-gap: 16px;
     .formBlockProfile_avatar {
       width: 140px;
@@ -46,7 +45,7 @@
       height: 140px;
       border: none;
       border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.5);
+      background-color:  rgba(255, 255, 255, .5);
       color: #000;
       background-repeat: no-repeat;
       background-position: center;
@@ -54,7 +53,7 @@
       cursor: pointer;
       box-sizing: border-box;
       opacity: 0;
-      transition: opacity 0.2s;
+      transition: opacity .2s;
       font-family: "YS-T-Medium";
     }
 
@@ -62,7 +61,7 @@
       opacity: 1;
     }
   }
-  .formBlockProfile {
+  .formBlockProfile{
     display: flex;
     flex-direction: column;
   }
@@ -81,18 +80,22 @@
     overflow: hidden;
     margin: 0;
     padding: 0;
-    .formBlock_name {
-      font-size: 24px;
-    }
-    .formBlock_lastName {
-      font-size: 48px;
-    }
   }
 
   .formBlockTitle {
     display: flex;
-    max-width: 220px;
-    .formBlock_title {
+    min-width: calc(100% - 140px);
+    flex-direction: column;
+    .formBlockTitle_title {
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 40px;
+      font-family: "YS-Di-Medium";
+      color: $c-def-black;
+      margin: 0;
+      padding: 22px 0;
+    }
+    .formBlockTitle_subtitle {
       font-size: 34px;
       font-weight: 500;
       line-height: 40px;

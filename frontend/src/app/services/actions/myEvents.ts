@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getMyEvents, login, registerUser } from "../../api/api";
-import { TFormAuthorization } from "../../types/types";
+import { getMyEvents, login, postEvent, registerUser } from "../../api/api";
+import { TCard, TFormAuthorization } from "../../types/types";
 
 export const registerUsers = createAsyncThunk(
   "user/register",
@@ -16,4 +16,5 @@ export const getMyEventsList = createAsyncThunk("myEvents", async () => {
   const response = await getMyEvents();
   return response.results;
 });
+
 

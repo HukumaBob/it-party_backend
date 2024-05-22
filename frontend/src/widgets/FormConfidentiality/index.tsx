@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "../../app/types/hooks";
 import {
   setOfflineCheckedFormAboutMe,
   setOnlineCheckedFormAboutMe,
-} from "../../app/services/slices/formSlice";
+} from "../../app/services/slices/profileSlice";
 export const FormConfidentiality = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState<string>('');
@@ -19,7 +19,7 @@ export const FormConfidentiality = () => {
     onlineCheckedFormAboutMe,
     offlineCheckedFormAboutMe,
     selectedNavConfidentiality,
-  } = useSelector((state) => state.form);
+  } = useSelector((state) => state.profile);
 
   const schemaFormAboutMe = yup.object().shape({
     phone: yup.string(),
