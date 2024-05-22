@@ -14,8 +14,9 @@ class EventFilter(django_filters.FilterSet):
         conjoined=False,  # измените на False, если хотите использовать OR вместо AND
     )
     city = django_filters.ModelChoiceFilter(queryset=City.objects.all())  # фильтрация по городу
+    online = django_filters.BooleanFilter()  # фильтрация по полю online
  
 
     class Meta:
         model = Event
-        fields = ['name', 'date', 'specializations', 'city']
+        fields = ['name', 'date', 'specializations', 'city', 'online']
