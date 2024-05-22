@@ -19,6 +19,7 @@ class CountryViewSet(
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = None
 
 
 class CityViewSet(
@@ -27,6 +28,7 @@ class CityViewSet(
     queryset = City.objects.all()
     serializer_class = CitySerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = None
 
 
 class FamilyStatusViewSet(
@@ -35,6 +37,7 @@ class FamilyStatusViewSet(
     queryset = FamilyStatus.objects.all()
     serializer_class = FamilyStatusSerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = None
 
 
 class IncomeViewSet(
@@ -43,6 +46,7 @@ class IncomeViewSet(
     queryset = Income.objects.all()
     serializer_class = IncomeSerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = None
 
 
 class EducationViewSet(
@@ -51,6 +55,7 @@ class EducationViewSet(
     queryset = Education.objects.all()
     serializer_class = EducationSerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = None
 
 
 class NotificationViewSet(
@@ -59,3 +64,4 @@ class NotificationViewSet(
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = None

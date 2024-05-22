@@ -1,6 +1,7 @@
 import django_filters
 from events.models import Event
 from users.models import Specialization
+from additions.models import City
 
 
 class EventFilter(django_filters.FilterSet):
@@ -12,7 +13,9 @@ class EventFilter(django_filters.FilterSet):
         queryset=Specialization.objects.all(),
         conjoined=False,  # измените на False, если хотите использовать OR вместо AND
     )
+    city = django_filters.ModelChoiceFilter(queryset=City.objects.all())  # фильтрация по городу
+ 
 
     class Meta:
         model = Event
-        fields = ['name', 'date', 'specializations']
+        fields = ['name', 'date', 'specializations', 'city']
