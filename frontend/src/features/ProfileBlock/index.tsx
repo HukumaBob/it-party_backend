@@ -5,23 +5,26 @@ import { useDispatch, useSelector } from "../../app/types/hooks";
 import avatarProfileForm from "../../app/assets/icons/avatarProfileForm.svg";
 import {
   setOpenModalAvatar,
-} from "../../app/services/slices/profileSlice";
+} from "../../app/services/slices/formSlice";
+import { setName, setSecondName } from "../../app/services/slices/profileSlice";
 
 export const ProfileBlock = () => {
-  const {
-    name,
-    secondName,
-    avatar
-  } = useSelector((state) => state.profile);
+  const profile = localStorage.getItem("updateInfo");
+  const profileData = profile ? JSON.parse(profile) : {};
+  const titleFirst: string = profile !== undefined ? profileData.first_name : "";
+  const titleLast: string = profile !== undefined ? profileData.last_name : "";
+  const avatarProfile: string = avatarProfileForm;
   const dispatch = useDispatch();
   const {
     openModalAvatar,
-  } = useSelector((state) => state.profile);
-
+  } = useSelector((state) => state.form);
   const handleEditAvatar = () => {
     dispatch(setOpenModalAvatar(true));
   }
-
+  if (profile) {
+    const profileData = JSON.parse(profile!);
+  console.log(profileData)
+  }
   return (
     <section className={style.section}>
       <div className={openModalAvatar === true ? style.container : style.popupBlock}>
@@ -29,16 +32,16 @@ export const ProfileBlock = () => {
       </div>
       <div className={style.formBlockProfile}>
         <button type="button" onClick={handleEditAvatar} className={style.formBlockProfile_button}>Изменить фото</button>
-        <img className={style.formBlockProfile_avatar} src={(avatar !== "") ? avatar : avatarProfileForm} alt="Фотография пользователя" />    
+        <img className={style.formBlockProfile_avatar} src={avatarProfile} alt="Фотография пользователя" />    
       </div>
-      {(name !== "" && secondName !== "") ?
-        (<div className={style.formBlockTitle}>
-          <h2 className={style.formBlockTitle_title}>{name !== "" ? name : ""}</h2>
-          <h2 className={style.formBlockTitle_subtitle}>{secondName !== "" ? secondName : ""}</h2>
+      {(profile !== undefined && profileData.first_name !== undefined && profileData.last_name !== "") ?
+        (<div className={style.formBlockName}>
+          <h3 className={style.formBlock_name}>{titleFirst}</h3>
+          <h2 className={style.formBlock_lastName}>{titleLast}</h2>
          </div>) :
         (
           <div className={style.formBlockTitle}>
-            <h2 className={style.formBlockTitle_title}>Давайте познакомимся</h2>
+            <h2 className={style.formBlock_title}>Давайте познакомимся</h2>
           </div>
         )
       }

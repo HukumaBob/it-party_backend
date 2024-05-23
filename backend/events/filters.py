@@ -15,8 +15,9 @@ class EventFilter(django_filters.FilterSet):
     )
     city = django_filters.ModelChoiceFilter(queryset=City.objects.all())  # фильтрация по городу
     online = django_filters.BooleanFilter()  # фильтрация по полю online
+    offline = django_filters.BooleanFilter()  # фильтрация по полю offline
  
 
     class Meta:
         model = Event
-        fields = ['name', 'date', 'specializations', 'city', 'online']
+        fields = ['name', 'date', 'specializations', 'city', 'online', 'offline']

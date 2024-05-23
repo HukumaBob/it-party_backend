@@ -1,12 +1,8 @@
-import React from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
 import style from "./index.module.scss";
 import { useForm } from "react-hook-form";
-import useProfileState from '../../shared/useProfileState/index';
 import closeIcon from "../../app/assets/icons/close_mini.svg";
 import checkIcon from "../../app/assets/icons/check_mini.svg";
-import Preloader from "../../shared/Preloader";
-import { getListCountry } from "../../app/api/api";
 import {
   setAuth,
   setCheked,
@@ -16,7 +12,6 @@ import {
   setOpenRegistration,
   setShowPassword,
 } from "../../app/services/slices/authorization";
-import { setUser } from "../../app/services/slices/profileSlice";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import { TFormAuthorization } from "../../app/types/types";
 import yandex from "../../app/assets/icons/Yandex.svg";
@@ -26,17 +21,12 @@ import {
   loginUser,
   registerUsers,
 } from "../../app/services/actions/authorization";
-import {
-  receiveProfile,
-  createProfile
-} from "../../app/services/actions/profile";
+import { useNavigate } from "react-router-dom";
+import { getUserProfile } from "../../app/api/api";
 
 export const AuthorizationForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const { handleChange } = useProfileState();
-
   const handleCloseModal = () => {
     dispatch(setOpenModal(false));
     dispatch(setOpenRegistration(false));
@@ -50,9 +40,8 @@ export const AuthorizationForm = () => {
     error,
     ok,
     data,
-    authorizationUser
+    authorizationUser,
   } = useSelector((state) => state.authorization);
-  const { receiveProfileUser } = useSelector((state) => state.profile);
   const handleClick = () => {
     dispatch(setShowPassword(!showPassword));
   };
@@ -62,18 +51,6 @@ export const AuthorizationForm = () => {
   };
   const handleCheked = () => {
     dispatch(setCheked(!checked));
-  };
-  const handleUserInfo = () => {
-    const dataStorage = localStorage.getItem("updateInfo");
-    const data = dataStorage ? JSON.parse(dataStorage) : {};
-    if(dataStorage !== undefined && dataStorage !== null) {
-      handleChange(data);
-      handleRedirectProfile();
-    }
-  };
-  const handleRedirectProfile = () => {
-    setLoading(false);
-    handleCloseModal();
   };
   const {
     register,
@@ -85,6 +62,7 @@ export const AuthorizationForm = () => {
   });
 
   const onSubmit = (data: TFormAuthorization) => {
+    
     const formData = {
       ...data,
       agreement_required: checked,
@@ -99,55 +77,20 @@ export const AuthorizationForm = () => {
       );
       reset();
     } else {
-      setLoading(true);
+      if (authorizationUser) {
+        handleCloseModal();
+        navigate("/account");
+        getUserProfile()
+      }
       dispatch(
         loginUser({
           email: data.email,
           password: data.password,
-        })
-      )
-      .then((item) => {
-        getListCountry()
-        .then((countries) => {
-          localStorage.setItem('countries', JSON.stringify(countries.results));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        if(item.payload && authorizationUser) {
-          dispatch(
-            receiveProfile()
-          )
-          .then((data) => {
-            if(data.payload && receiveProfileUser) {
-              navigate("/account");
-              handleUserInfo();
-            } else {
-              dispatch(
-                createProfile()
-              )
-              .then((data) => {
-                if(data.payload && receiveProfileUser) {
-                  navigate("/account");
-                  handleUserInfo();
-                }
-              })
-              .catch((err) => {
-                console.log(err)
-              });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        }),
+      );
+      reset();
     }
   };
-
   return (
     <div className={`${ok ? style.containerCenter : style.container}`}>
       <section className={style.titleBlock}>
@@ -251,14 +194,8 @@ export const AuthorizationForm = () => {
             <button
               type='submit'
               className={style.button}
-              onClick={() => {
-                dispatch(setAuth(true));
-                dispatch(setUser(true));
-              }}
-              disabled={loading}>
-              {loading === false ? (openRegistration ? "Зарегистрироваться" : "Войти")
-              : <Preloader />
-              }
+              onClick={() => dispatch(setAuth(true))}>
+              {openRegistration ? "Зарегистрироваться" : "Войти"}
             </button>
             {openRegistration && (
               <div className={style.element}>

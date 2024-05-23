@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { 
-  TLoginResponse, 
+import {
+  TLoginResponse,
   TUser,
   TCard,
   TUserProfileValues,
@@ -14,12 +14,12 @@ import {
   TsubmitEventForm,
   TFormValues,
 } from "../types/types";
-import { 
-  BASE_URL, 
-  LOGIN_API_ENDPOINT, 
-  USERS_API_ENDPOINT, 
-  USER_PROFILES_API_ENDPOINT, 
-  USER_PROFILE_GET_AND_PATCH_API_ENDPOINT, 
+import {
+  BASE_URL,
+  LOGIN_API_ENDPOINT,
+  USERS_API_ENDPOINT,
+  USER_PROFILES_API_ENDPOINT,
+  USER_PROFILE_GET_AND_PATCH_API_ENDPOINT,
   FETCH_UPDATEURL,
   LIST_COUNTRY_GET_API_ENDPOINT,
   EVENTS_API_ENDPOINT,
@@ -87,7 +87,11 @@ export const login = (
       password: password,
     }),
   })
-    .then(checkResponse<TServerResponse<TLoginResponse>>);
+    .then(checkResponse<TServerResponse<TLoginResponse>>)
+    .then((data) => {
+      if (data) return data;
+      return Promise.reject(data);
+    });
 };
 
 export const logout = (): Promise<TUser> => {
@@ -114,10 +118,14 @@ export const postUserProfile = (): Promise<TUserProfileValues> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      "Authorization": `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   })
-    .then(checkResponse<TServerResponse<TUserProfileValues>>);
+    .then(checkResponse<TServerResponse<TUserProfileValues>>)
+    .then((data) => {
+      if (data) return data;
+      return Promise.reject(data);
+    });
 };
 
 export const getUserProfile = (): Promise<TUserProfileValues> => {
@@ -130,10 +138,14 @@ export const getUserProfile = (): Promise<TUserProfileValues> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   })
-    .then(checkResponse<TServerResponse<TUserProfileValues>>);
+    .then(checkResponse<TServerResponse<TUserProfileValues>>)
+    .then((data) => {
+      if (data) return data;
+      return Promise.reject(data);
+    });
 };
 
 export const getListCountry = (): Promise<TListCountry> => {
@@ -142,8 +154,7 @@ export const getListCountry = (): Promise<TListCountry> => {
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then(checkResponse<TServerResponse<TListCountry>>);
+  }).then(checkResponse<TServerResponse<TListCountry>>);
 };
 
 export const getEvents = createAsyncThunk("asyncEvents", async () => {
@@ -159,11 +170,10 @@ export const editingDataPersonal = (
     method: "PATCH",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
     body: JSON.stringify(data),
-  })
-    .then(checkResponse<TServerResponse<TUserProfileValues>>);
+  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
 export const editingConfidentiality = (
@@ -173,11 +183,10 @@ export const editingConfidentiality = (
     method: "PATCH",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
     body: JSON.stringify(data),
-    })
-    .then(checkResponse<TServerResponse<TUserProfileValues>>);
+  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
 export const getFormProfile = (): Promise<TUserProfileValues> => {
@@ -190,10 +199,9 @@ export const getFormProfile = (): Promise<TUserProfileValues> => {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      "authorization": `Bearer ${accessToken}`,
+      authorization: `Bearer ${accessToken}`,
     },
-  })
-  .then(checkResponse<TServerResponse<TUserProfileValues>>);
+  }).then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
 export const getMyEvents = (): Promise<TGetMyEvent> => {
@@ -233,7 +241,6 @@ export const postEvent = createAsyncThunk<profileDataInfo, PostEventPayload>(
     return (await response.json()) as profileDataInfo;
   },
 );
-
 export const submitEventForm = createAsyncThunk<
   profileDataInfo,
   TsubmitEventForm

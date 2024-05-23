@@ -9,21 +9,20 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Box } from '@mui/material';
 import dayjs, { Dayjs } from "dayjs";
 import { TSelectData } from "../../app/types/types";
-import { useDispatch, useSelector } from "../../app/types/hooks";
+import { useDispatch } from "../../app/types/hooks";
 import {
-  setChangeDateOfBirth
-} from "../../app/services/slices/profileSlice";
+  setChangeDateOfBirth,
+} from "../../app/services/slices/formSlice";
 
 export const SelectDate = ({ id }: TSelectData) => {
-  const {
-    changeDateOfBirth
-  } = useSelector((state) => state.profile);
-  const dateOfBirth = (changeDateOfBirth !== "" ? changeDateOfBirth : "");
-  const defaultDay = dayjs('0000-00-00T00:00:00.000');
-  const dateOfBirthCurrent = (dateOfBirth !== null && dateOfBirth !== "" ? dayjs(`${dateOfBirth }T00:00:00.000`) : null);
+  const profileStorage = localStorage.getItem("updateInfo");
+  const profileData = profileStorage ? JSON.parse(profileStorage) : {};
+  const dateOfBirth = (profileData.date_of_birth !== "" ? profileData.date_of_birth : "");
   const [click, setClick] = useState<boolean>(false);
-  const [value, setValue] = React.useState<Dayjs | null >(dateOfBirthCurrent);
+  const [value, setValue] = React.useState<Dayjs | null >(null);
   const dispatch = useDispatch();
+  const defaultDay = dayjs('0000-00-00T00:00:00.000');
+  const dateOfBirthCurrent = dayjs(`${dateOfBirth !== "" ? dateOfBirth : ""}T00:00:00.000`);
   const title: string = "Выбор даты";
   const century = dayjs('1924-01-01T00:00:00.000');
   const endOf2006 = dayjs('2006-04-30T23:59:59.999');
@@ -61,9 +60,10 @@ export const SelectDate = ({ id }: TSelectData) => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Box className={style.boxDataPicker}>
             <DatePicker
+              defaultValue={dateOfBirth !== "" ? dateOfBirthCurrent : defaultDay}
               minDate={century}
               maxDate={endOf2006}
-              views={['day', 'month', 'year']}
+              views={['year', 'month', 'day']}
               format='DD.MM.YYYY'
               className={style.dataPicker}
               value={value}
@@ -71,7 +71,7 @@ export const SelectDate = ({ id }: TSelectData) => {
                 setValue(newValue); 
                 handleChangeDateOfBirth(newValue);
               }}
-              slotProps={{ textField: { placeholder: String('_ _._ _._ _ _ _') } }}
+              slotProps={{ textField: { placeholder: dateOfBirth !== "" ? dateOfBirth : '_ _._ _._ _ _ _'} }}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {

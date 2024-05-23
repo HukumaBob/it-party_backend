@@ -1,6 +1,6 @@
 @import "../../app/styles/vars.scss";
 .form {
-  min-width: calc(100% - 2*20px);
+  min-width: calc(100% - 2 * 20px);
   display: flex;
   flex-direction: column;
   gap: $sp-24;
@@ -29,9 +29,10 @@
         border: none;
         border-radius: $sp-12;
       }
-      .errorInput {
-        border: 1px solid $c-er-red;
-      }
+    }
+    .errorInput {
+      @extend .inputBlock;
+      border: 1px solid $c-er-red;
     }
     .message {
       font-family: "YS-T-Regular";
@@ -39,6 +40,7 @@
       color: $c-black-500;
     }
   }
+ 
   label {
     font-weight: 500;
     font-family: "YS-T-Medium";
@@ -66,7 +68,6 @@
     align-items: center;
   }
 }
-
 .formHide {
   visibility: hidden;
   display: block;
@@ -176,7 +177,19 @@
 .option:hover {
   background-color: #f0f0f0;
 }
-
+.technology {
+  display: flex;
+  flex-direction: column;
+  margin-top: $sp-16;
+  gap: $sp-16;
+  .element {
+    display: flex;
+    height: 24px;
+    width: 130px;
+    gap: 12px;
+    align-items: center;
+  }
+}
 .container_checkbox {
   max-width: $sp-24;
   max-height: $sp-24;
@@ -200,4 +213,30 @@
   font-family: "YS-T-Regular";
   font-size: $sp-13;
   color: $c-er-red;
+}
+
+.agreementBlock {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+  margin: 8px 0px;
+  .agreement {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    .agreement_text {
+      gap: $sp-12;
+      display: flex;
+      p {
+        max-width: 538px;
+        width: 100%;
+      }
+    }
+    span {
+      font-family: "YS-T-Regular";
+      font-size: $sp-13;
+      color: $c-black-500;
+    }
+  }
 }

@@ -21,6 +21,3 @@ export const FETCH_UPDATEURL = `${BASE_URL}${USER_PROFILE_GET_AND_PATCH_API_ENDP
 
 // Количество элементов на странице
 export const PAGE_SIZE = 15; // Количество элементов, отображаемых на одной странице
-
-// Ошибка при загрузке аватара из файла с компьютера
-export const errorDownloadImage = "Анализ изображения не прошел";

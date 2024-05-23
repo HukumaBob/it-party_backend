@@ -10,7 +10,7 @@ import {
   setSelectedNavConfidentiality,
   setSelectedNavNotification,
   setSelectedNavMain,
-} from "../../app/services/slices/profileSlice";
+} from "../../app/services/slices/formSlice";
 
 export const Navigation = ({ id }: TNavigation) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export const Navigation = ({ id }: TNavigation) => {
     selectedNavConfidentiality,
     selectedNavNotification,
     selectedNavMain,
-  } = useSelector((state) => state.profile);
+  } = useSelector((state) => state.form);
 
   const handleNavigationDataPersonal = () => {
     handleInActiveNav();

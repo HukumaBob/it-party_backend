@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import style from "./index.module.scss";
 import { useForm } from "react-hook-form";
-import { TFormDataPersonalValues, TUserProfileValues, TFormEditAvatar } from "../../app/types/types";
+import { TFormDataPersonalValues, TUserProfileValues } from "../../app/types/types";
 import { editingDataPersonal, getFormProfile } from "../../app/api/api";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import closeIcon from "../../app/assets/icons/close_mini.svg";
-import { errorDownloadImage } from "../../app/api/constants";
 import {
   setOpenModalAvatar,
-  setAvatar
-} from "../../app/services/slices/profileSlice";
+} from "../../app/services/slices/formSlice";
 
 export const FormEditAvatar = () => {
   const dispatch = useDispatch();
@@ -18,81 +16,66 @@ export const FormEditAvatar = () => {
   };
   const {
     openModalAvatar,
-  } = useSelector((state) => state.profile);
+  } = useSelector((state) => state.form);
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
     setValue,
-  } = useForm<TFormEditAvatar>({
+  } = useForm<TFormDataPersonalValues>({
     mode: "onTouched",
   });
 
-  function getBase64(item: File) {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(item);
-      reader.onload = function () {
-        const result:string = String(reader.result ? reader.result : "")
-        resolve(result)
-      };
-      reader.onerror = () => {
-        reject(new Error(errorDownloadImage))
-      }
-    })
-  }
-
-  const onSubmit = (data: TFormEditAvatar ) => {
-    let promise = new Promise<string>((resolve) => {
-      const fileBase64 = getBase64(data.user_photo[0]);
-      resolve(fileBase64);
-    })
-    promise.then((data) => {
-      const dataNew:TFormDataPersonalValues = {user_photo: data};
-      editingDataPersonal(dataNew)
-      .then((data: TUserProfileValues) => {
-        localStorage.setItem("updateInfo", JSON.stringify(data));
-        dispatch(setAvatar(data.user_photo));
-        alert(
-          "Данные успешно обновлены.",
-        );
-        handleCloseModal(); 
-      })
+  const onSubmit = (data: TFormDataPersonalValues) => {
+    editingDataPersonal(data)
+      .then(() => {
+        getFormProfile()
+          .then((data: TUserProfileValues) => {
+            localStorage.setItem("updateInfo", JSON.stringify(data));
+            alert(
+              "Данные успешно обновлены.",
+            );
+            reset();
+            dispatch(setOpenModalAvatar(false));
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+        })
       .catch((error) => {
-        console.log(error);
-        alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже."); 
+        alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
       })
       .finally(() => {
-        reset();
       });
-    })
   };
 
   return (
     <div className={style.container} id="formEditAvatar">
+      <section className={style.titleBlock}>
+        <img
+          src={closeIcon}
+          alt='CloseIcon'
+          className={style.icon}
+          onClick={handleCloseModal}
+        />
+        <h2 className={style.form_title}>Изменить фотографию</h2>
+      </section>
       <form className={style.form} id="formProfileAvatar" onSubmit={handleSubmit(onSubmit)}>
-        <div className={style.titleBlock}>
-          <img
-            src={closeIcon}
-            alt='CloseIcon'
-            className={style.icon}
-            onClick={handleCloseModal}
-          />
-          <h2 className={style.form_title}>Изменить фотографию</h2>
-        </div>
         <div className={style.name_form}>
           <label>
-            Аватар 
+            Url 
           </label>
           <div className={style.inputBlock}>
             <input
               className={`${errors.user_photo ? style.errorInput : style.message}`}
-              type='file'
-              placeholder='Выберите файл для загрузки'
-              accept="image/*"
+              type='url'
+              placeholder='Введите url-адрес картинки'
               {...register("user_photo", {
-                required: "Обязательное поле",
+                pattern: {
+                  value: /^https?:\/\/(www\.)?([0-9a-zA-Z.-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.?(?:jpe?g|gif|png|bmp|webp)?$/i,
+                  message: "Некорректная ссылка",
+                },
               })}
             />
             <span
