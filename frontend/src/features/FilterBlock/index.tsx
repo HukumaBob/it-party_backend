@@ -1,33 +1,30 @@
 import React from "react";
 import style from "./index.module.scss";
-import { SearchInput } from "../../shared/inputs/searchInput";
-import settings from "../../app/assets/icons/settings.svg";
+import { SearchInputFilters } from "../../shared/inputs/searchInputFilters";
 import { SelectDate } from "../../shared/selectDate";
 import { SelectCity } from "../../shared/selectCity";
-import { CheckBox } from "../../shared/checkbox";
 import { Chip } from "../../shared/chip";
+import { useSelector } from '../../app/types/hooks';
+import { SelectOnline } from '../../shared/selectOnline';
+
 export const FilterBlock = () => {
+  const specializations = useSelector(state => state.events.specializations)
+
   return (
     <div className={style.wrapper}>
       <div className={style.containerTop}>
-        <div className={style.leftPart}>
-          <SearchInput />
-          <img src={settings} alt='settings' />
+        <div className={style.searchContainer}>
+          <SearchInputFilters />
         </div>
         <div className={style.rightPart}>
-          <SelectDate id='1'/>
+          <SelectDate id='1' />
           <SelectCity />
-          <span className={style.rightPart_element_checkbox}>
-            <CheckBox /> Online
-          </span>
+          <SelectOnline />
         </div>
       </div>
-      <div className={style.filterButton}>
-        <Chip background='blue' title='Backend' />
-        <Chip background='purple' title='Frontend' />
-        <Chip background='pink' title='Mobile' />
-        <Chip background='green' title='QA' />
-        <Chip background='orange' title='ML' />
+      <div className={style.containerButtons}>
+        <Chip key={0} specialization='Все специализации' id={0} />
+        {specializations.map(item => <Chip key={item.id} specialization={item.specialization} id={item.id} />)}
       </div>
     </div>
   );

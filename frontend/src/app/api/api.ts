@@ -22,6 +22,8 @@ import {
   EVENTS_API_ENDPOINT,
   REGISTER_AND_APPLY_API_ENDPOINT,
   USER_EVENT_STATUS_API_ENDPOINT,
+  CITIES,
+  SPECIALIZATIONS
 } from "./constants";
 
 type TServerResponse<T> = {
@@ -153,11 +155,76 @@ export const getListCountry = (): Promise<TListCountry> => {
   }).then(checkResponse<TServerResponse<TListCountry>>);
 };
 
-export const getEvents = createAsyncThunk("asyncEvents", async () => {
-  const response = await fetch(`/api/v1/events/`);
-  const data = await checkResponse<TServerResponse<TCard[]>>(response);
-  return data.data;
-});
+export const getEventsList = createAsyncThunk(
+  "events/getEventsList",
+  async (_, thunkAPI) => {
+    // @ts-ignore
+    const { events: state } = thunkAPI.getState();
+
+    const searchParams = new URLSearchParams(state.filters)
+    if (!state.specializationsFilters["0"]) {
+      Object
+        .values(state.specializationsFilters)
+        .forEach(
+          id => searchParams.append("specializations", String(id))
+        )
+    }
+    const queryParams = searchParams.toString()
+    const searchString = queryParams ? "?" + queryParams : ""
+
+    const EVENTS = EVENTS_API_ENDPOINT + searchString
+    const urls = [EVENTS]
+
+    if (!state.cities.length) urls.push(CITIES)
+    if (!state.specializations.length) urls.push(SPECIALIZATIONS)
+
+    const endpoints = urls.map(url => BASE_URL + url)
+
+    const promises = endpoints.map(
+      url => fetch(url, { method: 'GET', headers: { "Content-Type": "application/json" } })
+    )
+    // <TServerResponse<Tcard>>
+    return Promise.all(promises)
+      .then(results => Promise.all(results.map(checkResponse)))
+      // @ts-ignore
+      .then((data) => {
+        if (data) return {
+          // @ts-ignore
+          cards: data[0]?.results,
+          // @ts-ignore
+          cities: data[1]?.results,
+          // @ts-ignore
+          specializations: data[2]?.results
+        }
+        return Promise.reject(data);
+      });
+  },
+);
+
+// Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
+//   .then(([user, moviesSaved]) => {
+//     setCurrentUser(user);
+//     localStorage.setItem('userName', user.name);
+//     setMoviesSaved(moviesSaved);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//     checkErrorAuthorization(err, pathname);
+//   })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const editingDataPersonal = (
   data: TFormDataPersonalValues,

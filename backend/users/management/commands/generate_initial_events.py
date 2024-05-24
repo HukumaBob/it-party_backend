@@ -1,10 +1,9 @@
-# management/commands/generate_events.py
 from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
 from PIL import Image
 from io import BytesIO
 from faker import Faker
-from events.models import Event, Speaker
+from events.models import Event, Speaker, Specialization
 from additions.models import City
 import random
 
@@ -29,12 +28,16 @@ class Command(BaseCommand):
                 online=fake.boolean()
             )
 
+            # Generate 1-4 specializations and attach them to the event
+            specializations = Specialization.objects.order_by('?')[:random.randint(1, 4)]
+            event.specializations.set(specializations)
+
             # Generate 4-5 speakers and attach them to the event
             for _ in range(random.randint(4, 5)):
                 speaker = Speaker.objects.create(
                     foto=self.create_image_file(),
                     name=fake.name(),
-                    specialization=fake.job(),
+                    specialization=random.choice(specializations),  # Выберите специализацию из списка специализаций события
                     info=fake.text()
                 )
                 event.speakers.add(speaker)
@@ -46,8 +49,11 @@ class Command(BaseCommand):
                 )
 
     def create_image_file(self):
+        # Generate a random color
+        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+
         # Create a new image with PIL
-        image = Image.new('RGB', (50, 50))
+        image = Image.new('RGB', (50, 50), color=color)
 
         # Save the image to a BytesIO object
         image_io = BytesIO()

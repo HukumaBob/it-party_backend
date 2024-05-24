@@ -1,6 +1,6 @@
 export type TChip = {
-  background: string;
-  title: string;
+  id: number
+  specialization: string;
 };
 
 export type TCard = {
@@ -274,10 +274,44 @@ export type TLoginResponse = {
   refresh: string;
 };
 
+export type Tspecialization = {
+  id: number,
+  specialization: string,
+  countryid: string
+}
+
+export type Tcity = {
+  id: number,
+  name: string,
+  countryid: string
+}
+
+export type TEventCard = {
+  info?: string;
+  name: string;
+  description?: string;
+  logo: string;
+  date: string;
+  time: string;
+  id: number;
+  admin?: boolean;
+  myEventBoolean?: boolean;
+};
+
+type TFilters = {
+  city?: number,
+  online?: boolean,
+  name?: string,
+}
+
 export type TEventsInitialState = {
-  cards: TCard[];
+  cards: TEventCard[];
+  cities: Tcity[];
+  specializations: Tspecialization[];
   loading: boolean;
   error?: string | null;
+  filters: TFilters
+  specializationsFilters: Record<string, number | boolean>;
 };
 
 export type TApplication = {

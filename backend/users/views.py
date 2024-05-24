@@ -129,6 +129,7 @@ class SpecializationViewSet(
     queryset = Specialization.objects.all()
     serializer_class = SpecializationSerializer
     permission_classes = [permissions.AllowAny]
+    # pagination_class = None
 
 
 class StackViewSet(
@@ -137,6 +138,7 @@ class StackViewSet(
     queryset = Stack.objects.all()
     serializer_class = StackSerializer
     permission_classes = [permissions.AllowAny]
+    # pagination_class = None
 
 
 class ExperienceViewSet(
@@ -145,3 +147,4 @@ class ExperienceViewSet(
     queryset = Experience.objects.all()
     serializer_class = ExperienceSerializer
     permission_classes = [permissions.AllowAny]
+    # pagination_class = None
