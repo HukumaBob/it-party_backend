@@ -51,7 +51,7 @@ export const MyEventPage = () => {
                       date={event.date}
                       id={event.id}
                       img={event.logo}
-                      info={event.specialization!.specialization}
+                      // info={event.specialization!.specialization}
                       time={event.time}
                       myEventBoolean={true}
                     />

@@ -1,12 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import {
-  TCard,
-  TGetMyEvent,
-  TMyEventsInitialState,
-  profileDataInfo,
-} from "../../types/types";
+import { TCard, TGetMyEvent, TMyEventsInitialState } from "../../types/types";
 import { getMyEventsList } from "../actions/myEvents";
-import { postEvent } from "../../api/api";
 
 const saveDataToLocalStorage = <T>(key: string, data: T) => {
   localStorage.setItem(key, JSON.stringify(data));
@@ -25,7 +19,6 @@ export const initialState: TMyEventsInitialState = {
   myEvent: [],
   loading: false,
   error: null,
-  eventInfo: null,
 };
 export const myEventsSlice = createSlice({
   name: "myEvents",
@@ -68,14 +61,7 @@ export const myEventsSlice = createSlice({
       .addCase(getMyEventsList.rejected, (state, action) => {
         state.error =
           action.error.message !== undefined ? action.error.message : null;
-      })
-
-      .addCase(
-        postEvent.fulfilled,
-        (state, action: PayloadAction<profileDataInfo>) => {
-          state.eventInfo = action.payload;
-        },
-      );
+      });
   },
 });
 

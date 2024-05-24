@@ -3,13 +3,13 @@ import { FilterBlock } from "../../features/FilterBlock";
 import style from "./index.module.scss";
 import { EventCard } from "../../shared/card";
 import { useDispatch, useSelector } from "../../app/types/hooks";
-import { getMyEventsList } from "../../app/services/actions/myEvents";
+import { getEventsList } from "../../app/api/api";
 
 export const EventsCatalog = () => {
   const dispatch = useDispatch();
-  const { myEvent, loading } = useSelector((store) => store.myEvents);
+  const { cards, loading } = useSelector((store) => store.events);
   useEffect(() => {
-    dispatch(getMyEventsList());
+    dispatch(getEventsList());
   }, [dispatch]);
 
   return (
@@ -18,28 +18,23 @@ export const EventsCatalog = () => {
         <FilterBlock />
       </div>
       <div className={style.cardsBlock}>
-        {loading ? (
-          <span>Загрузка данных....</span>
-        ) : (
-          <div className={style.allEvents}>
-            {myEvent.length === 0 ? (
-              <span>Нет зарегистрированных мероприятий</span>
-            ) : (
-              myEvent.map((event) => (
-                <EventCard
-                  key={event.id}
-                  title={event.name}
-                  description={event.description}
-                  date={event.date}
-                  id={event.id}
-                  img={event.logo}
-                  time={event.time}
-                  myEventBoolean={true}
-                />
-              ))
-            )}
-          </div>
-        )}
+        <div className={style.allEvents}>
+          {loading && <span>Загрузка данных....</span>}
+          {!cards && <span>Нет зарегистрированных мероприятий</span>}
+          {cards.map(card => (
+            <EventCard
+              key={card.id}
+              id={card.id}
+              title={card.name}
+              description={card.description}
+              date={card.date}
+              img={card.logo}
+              time={card.time}
+              myEventBoolean={true}
+            />
+          ))}
+
+        </div>
       </div>
     </div>
   );

@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import style from "./index.module.scss";
+import { useDispatch, useSelector } from '../../app/types/hooks';
 import arrow_down from "../../app/assets/icons/arrow_down.svg";
+import style from "./index.module.scss";
+import { getEventsList } from "../../app/api/api"
+import { searchCity } from '../../app/services/slices/eventsSlice';
 
 export const SelectCity = () => {
-  const [click, setClick] = useState<boolean>(false);
-  const handleClick = () => {
-    setClick(!click);
-  };
+  const dispatch = useDispatch()
+  const { cities, loading, filters: { city = 0 } } = useSelector(state => state.events)
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(searchCity(e.target.value))
+    dispatch(getEventsList())
+  }
+
   return (
     <div className={style.container}>
-      <div className={style.customSelect} onClick={handleClick}>
-        <img src={arrow_down} alt='arrow' />
-        <span>Москва</span>
-      </div>
-      {click && (
-        <div className={style.options}>
-          <div className={style.option}>Москва</div>
-          <div className={style.option}>Питер</div>
-          <div className={style.option}>Казань</div>
-        </div>
-      )}
+      <img className={style.arrow} src={arrow_down} alt='arrow' />
+      <select onChange={handleOnChange} disabled={loading} className={style.select} value={city}>
+        <option value={0}>Все Города</option>
+        {cities.map(({ id, name }) => <option value={id}>{name}</option>)}
+      </select>
     </div>
-  );
+  )
 };

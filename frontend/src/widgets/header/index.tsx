@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import { setOpenModal } from "../../app/services/slices/authorization";
 import noAuthUser from "../../app/assets/icons/NoAuthUser.svg";
+
 export const Header = () => {
   const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export const Header = () => {
   };
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-  const { name,secondName } = useSelector((store) => store.profile);
+  const { name, secondName } = useSelector((store) => store.profile);
   const handleOpenModal = () => {
     dispatch(setOpenModal(true));
   };

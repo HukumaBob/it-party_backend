@@ -18,6 +18,7 @@ import {
   deleteFavourite,
   setActive,
 } from "../../app/services/slices/myEventsSlice";
+
 export const EventCard = ({
   info,
   title,
@@ -41,7 +42,6 @@ export const EventCard = ({
   const reject = myEvent.some(
     (event) => event.id === id && event.user_application_status === "rejected",
   );
-  console.log(pending);
 
   const dispatch = useDispatch();
   const handleAddToArchive = () => {

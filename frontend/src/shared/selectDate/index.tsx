@@ -19,7 +19,7 @@ export const SelectDate = ({ id }: TSelectData) => {
   const profileData = profileStorage ? JSON.parse(profileStorage) : {};
   const dateOfBirth = (profileData.date_of_birth !== "" ? profileData.date_of_birth : "");
   const [click, setClick] = useState<boolean>(false);
-  const [value, setValue] = React.useState<Dayjs | null >(null);
+  const [value, setValue] = React.useState<Dayjs | null>(null);
   const dispatch = useDispatch();
   const defaultDay = dayjs('0000-00-00T00:00:00.000');
   const dateOfBirthCurrent = dayjs(`${dateOfBirth !== "" ? dateOfBirth : ""}T00:00:00.000`);
@@ -32,7 +32,7 @@ export const SelectDate = ({ id }: TSelectData) => {
   const handleOpen = () => {
     setClick(!click);
   };
-  const handleChangeDateOfBirth = (value: Dayjs | null ) => {
+  const handleChangeDateOfBirth = (value: Dayjs | null) => {
     const valueFormatNew = dayjs(value).format('YYYY-MM-DD');
     dispatch(setChangeDateOfBirth(String(valueFormatNew)));
   };
@@ -41,7 +41,7 @@ export const SelectDate = ({ id }: TSelectData) => {
     (Number(id) === 1) ? (
       <div className={style.container} onClick={handleOpen}>
         <span className={style.selectDate} >
-          <img src={ calendar } alt='calendar' /> {title}
+          <img src={calendar} alt='calendar' /> {title}
           <div className={style.calendarBlock}>
             {click && (
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -68,10 +68,10 @@ export const SelectDate = ({ id }: TSelectData) => {
               className={style.dataPicker}
               value={value}
               onChange={(newValue) => {
-                setValue(newValue); 
+                setValue(newValue);
                 handleChangeDateOfBirth(newValue);
               }}
-              slotProps={{ textField: { placeholder: dateOfBirth !== "" ? dateOfBirth : '_ _._ _._ _ _ _'} }}
+              slotProps={{ textField: { placeholder: dateOfBirth !== "" ? dateOfBirth : '_ _._ _._ _ _ _' } }}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {
@@ -84,7 +84,7 @@ export const SelectDate = ({ id }: TSelectData) => {
                 },
               }}
               slots={{ openPickerIcon: CalendarIcon }}
-            /> 
+            />
           </Box>
         </LocalizationProvider>
       </div>
