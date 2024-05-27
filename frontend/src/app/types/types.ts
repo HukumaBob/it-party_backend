@@ -1,6 +1,6 @@
 export type TChip = {
-  id: number
-  specialization: string;
+  background: string;
+  title: string;
 };
 
 export type TCard = {
@@ -98,8 +98,8 @@ export type TSpeaker = {
 };
 
 export type TFormValues = {
-  name: string;
-  secondName: string;
+  first_name: string;
+  second_name: string;
   email: string;
   phoneNumber: string;
   workplace: string;
@@ -274,44 +274,10 @@ export type TLoginResponse = {
   refresh: string;
 };
 
-export type Tspecialization = {
-  id: number,
-  specialization: string,
-  countryid: string
-}
-
-export type Tcity = {
-  id: number,
-  name: string,
-  countryid: string
-}
-
-export type TEventCard = {
-  info?: string;
-  name: string;
-  description?: string;
-  logo: string;
-  date: string;
-  time: string;
-  id: number;
-  admin?: boolean;
-  myEventBoolean?: boolean;
-};
-
-type TFilters = {
-  city?: number,
-  online?: boolean,
-  name?: string,
-}
-
 export type TEventsInitialState = {
-  cards: TEventCard[];
-  cities: Tcity[];
-  specializations: Tspecialization[];
+  cards: TCard[];
   loading: boolean;
   error?: string | null;
-  filters: TFilters
-  specializationsFilters: Record<string, number | boolean>;
 };
 
 export type TApplication = {
@@ -359,6 +325,7 @@ export type TMyEventsInitialState = {
   myEvent: oneEvent[] | [];
   loading: boolean;
   error: string | null;
+  eventInfo: profileDataInfo | null;
 };
 export type oneEvent = {
   id: number;
@@ -383,10 +350,25 @@ export type TGetMyEvent = {
 
 export type PostEventPayload = {
   id: number;
-  data: TFormValues; // или другой тип, соответствующий вашим данным
 };
 
 export type PatchEventPayload = {
   id: number;
-  data: oneEvent;
+};
+export type TsubmitEventForm = {
+  id: number;
+  data: profileDataInfo;
+};
+export type profileDataInfo = {
+  id?: number;
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  place_of_work: string;
+  position: string;
+  specialization: number;
+  experience: number;
+  phone: string;
+  online: boolean;
+  user_event_id: number;
 };

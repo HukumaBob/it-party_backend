@@ -23,7 +23,7 @@ export const ProfileBlock = () => {
   }
   if (profile) {
     const profileData = JSON.parse(profile!);
-  console.log(profileData)
+ 
   }
   return (
     <section className={style.section}>

@@ -1,40 +1,61 @@
 @import "../../app/styles/vars.scss";
-
 .wrapper {
   display: flex;
   flex-direction: column;
-
+  width: 100%;
+  max-height: 88px;
+  height: 100%;
   .containerTop {
     display: flex;
-    justify-content: space-between;
-    column-gap: 50px;
-  }
-
-  .searchContainer {
-    max-width: 450px;
-    flex-grow: 1;
-
-    img {
-      cursor: pointer;
+    gap: 64px;
+    margin-bottom: $sp-20;
+    max-height: 44px;
+    height: 100%;
+    .leftPart {
+      display: flex;
+      max-width: 552px;
+      width: 100%;
+      gap: $sp-24;
+      align-items: center;
+      img {
+        cursor: pointer;
+      }
     }
-  }
-
-  .rightPart {
-    display: flex;
-    align-items: center;
-    column-gap: 50px;
-
-    .rightPart_element_checkbox {
+    .rightPart {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 64px;
+      max-width: 416px;
+      width: 100%;
+
+      .rightPart_element_checkbox {
+        .customCheckBox {
+          max-width: $sp-24;
+          max-height: $sp-24;
+          width: 100%;
+          height: 100%;
+          background: $c-def-white;
+          border: 1px solid $c-str-dark;
+          border-radius: 4px;
+        }
+        display: flex;
+        max-width: 80px;
+        width: 100%;
+        max-height: 44px;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
     }
   }
-
-  .containerButtons {
-    margin-top: $sp-20;
+  .filterButton {
+    max-width: 398px;
+    width: 100%;
+    max-height: $sp-24;
+    height: 100%;
     display: flex;
-    flex-wrap: wrap;
-    gap: $sp-12 $sp-20;
+    gap: $sp-20;
+    justify-content: space-between;
   }
 }

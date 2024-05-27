@@ -20,7 +20,11 @@ import {
   setSelectedExperience,
 } from "../../app/services/slices/formSlice";
 
-import { patchEventStatus, postEvent } from "../../app/api/api";
+import {
+  patchEventStatus,
+  postEvent,
+  submitEventForm,
+} from "../../app/api/api";
 
 export const FormBlock = ({ id, onClose }: TPopupRegistration) => {
   const dispatch = useDispatch();
@@ -34,9 +38,9 @@ export const FormBlock = ({ id, onClose }: TPopupRegistration) => {
     selectedDirection,
     selectedExperience,
   } = useSelector((state) => state.form);
-  const { active, myEvent } = useSelector((store) => store.myEvents);
+  const { active, myEvent, eventInfo } = useSelector((store) => store.myEvents);
   const oneEvent = myEvent.map((el) => el);
-
+  const idEvent = eventInfo?.user_event_id;
   const handleOnlineChange = () => {
     dispatch(setOnlineChecked(!onlineChecked));
   };
@@ -86,9 +90,15 @@ export const FormBlock = ({ id, onClose }: TPopupRegistration) => {
       onlineChecked: onlineChecked,
       offlineChecked: offlineChecked,
     };
-    dispatch(postEvent({ id, data: formData }));
-    dispatch(patchEventStatus({ id, data: oneEvent[id] }));
+
+    if (eventInfo !== null) {
+      
+      dispatch(submitEventForm({ data: eventInfo, id: idEvent! }));
+    } else {
+      console.error("eventInfo is null");
+    }
     reset();
+    dispatch(patchEventStatus({ id: idEvent! }));
     dispatch(setOnlineChecked(false));
     dispatch(setOfflineChecked(false));
     dispatch(setAgreementChecked(false));
@@ -110,10 +120,12 @@ export const FormBlock = ({ id, onClose }: TPopupRegistration) => {
             Имя <span>*</span>
           </label>
           <input
-            className={`${errors.name ? style.errorInput : style.message}`}
+            className={`${
+              errors.first_name ? style.errorInput : style.message
+            }`}
             type='text'
             placeholder='Иван'
-            {...register("name", {
+            {...register("first_name", {
               required: "Необходимо для регистрации на мероприятие",
               minLength: {
                 value: 2,
@@ -126,8 +138,9 @@ export const FormBlock = ({ id, onClose }: TPopupRegistration) => {
             })}
           />
 
-          <span className={`${errors.name ? style.error : style.message}`}>
-            {errors?.name?.message ||
+          <span
+            className={`${errors.first_name ? style.error : style.message}`}>
+            {errors?.first_name?.message ||
               "Необходимо для регистрации на мероприятие"}
           </span>
         </div>
@@ -137,10 +150,10 @@ export const FormBlock = ({ id, onClose }: TPopupRegistration) => {
             Фамилия <span>*</span>
           </label>
           <input
-            className={`${errors.secondName ? style.errorInput : ""}`}
+            className={`${errors.second_name ? style.errorInput : ""}`}
             type='text'
             placeholder='Иван'
-            {...register("secondName", {
+            {...register("second_name", {
               required: "Необходимо для регистрации на мероприятие",
               minLength: {
                 value: 2,
@@ -153,8 +166,8 @@ export const FormBlock = ({ id, onClose }: TPopupRegistration) => {
             })}
           />
           <span
-            className={`${errors.secondName ? style.error : style.message}`}>
-            {errors?.secondName?.message ||
+            className={`${errors.second_name ? style.error : style.message}`}>
+            {errors?.second_name?.message ||
               "Необходимо для регистрации на мероприятие"}
           </span>
         </div>

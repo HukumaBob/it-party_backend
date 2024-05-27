@@ -9,7 +9,7 @@ export const AdminHeader = () => {
     setOpen(!open);
   };
   const location = useLocation();
-  console.log(location.pathname === "/newApplication");
+ 
   return (
     <header
       className={`${

@@ -2,14 +2,11 @@ from django.conf import settings
 from django.core.mail import EmailMessage, send_mail
 from rest_framework import viewsets
 from pathlib import Path
-from rest_framework import status
 from rest_framework.response import Response
 from userevents.models import UserEvent
-from .models import Organizator
 from userevents.models import UserProfileSnapshot
 from .permissions import IsStaff
 from .serializers import (
-    OrganizatorSerializer,
     UserEventApplicationStatusSerializer
     )
 from .utils import questionnaire_in_qr_code
@@ -86,21 +83,3 @@ class UserEventApplicationStatusViewSet(viewsets.GenericViewSet):
                 subject, message, settings.EMAIL_HOST_USER,
                 [instance.user_profile.user.email]
                 )
-
-
-class OrganizatorViewSet(viewsets.ModelViewSet):
-    """Представление для работы организатора"""
-    queryset = Organizator.objects.all()
-    serializer_class = OrganizatorSerializer
-    permission_classes = [IsStaff]
-
-    def list(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return Response(
-                {
-                    "detail": "Authentication credentials were not provided."
-                    }, status=status.HTTP_401_UNAUTHORIZED)
-        return super().list(request, *args, **kwargs)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)

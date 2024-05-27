@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load widget_tweaks %}
+  <h2>Create a new event</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12 form-group mb-3">  
+          {{ form.name.label_tag }}  
+          {{ form.name|add_class:"form-control" }}
+        </div>      
+      </div>
+      <div class="row">
+        <div class="col-sm-3 form-group mb-3">
+          {{ form.logo.label_tag }} {{ form.logo|add_class:"form-control" }}
+          {{ form.gallery.label_tag }} {{ form.gallery|add_class:"form-control" }}
+        </div>
+        <div class="col-sm-3 form-group mb-3">
+          {{ form.date.label_tag }} 
+          <input type="date" name="{{ form.date.name }}" class="form-control" value="{{ form.date.value|date:'Y-m-d' }}" required>
+          {{ form.time.label_tag }} 
+          <input type="time" name="{{ form.time.name }}" class="form-control" value="{{ form.time.value|time:'H:i' }}" required>
+        </div>
+        <div class="col-sm-3 form-group mb-3">
+          {{ form.city.label_tag }} {{ form.city|add_class:"form-control" }}        
+          {{ form.address.label_tag }} {{ form.address|add_class:"form-control" }}
+        </div>
+        <div class="col-sm-3 form-group mb-3">
+          {{ form.online.label_tag }} {{ form.online}}
+          {{ form.offline.label_tag }} {{ form.offline }}
+          {{ form.record_link|add_class:"form-control" }}
+          {{ form.form_template.label_tag }} {{ form.form_template|add_class:"form-control" }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group mb-3">
+          {{ form.description.label_tag }} {{ form.description|add_class:"form-control" }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 form-group mb-3">
+          {{ form.specializations.label_tag }}
+          <select name="{{ form.specializations.name }}" class="custom-select custom-select-sm" multiple>
+            {% for specialization in form.specializations.field.queryset %}
+                <option value="{{ specialization.id }}">{{ specialization }}</option>
+            {% endfor %}
+        </select>
+        </div>
+        <div class="col-sm-6 form-group mb-3">
+          {{ form.speakers.label_tag }}
+          <select name="{{ form.speakers.name }}" class="custom-select custom-select-sm" multiple>
+              {% for speaker in form.speakers.field.queryset %}
+                  <option value="{{ speaker.id }}">{{ speaker }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Создать</button>
+  </form>
+{% endblock %}

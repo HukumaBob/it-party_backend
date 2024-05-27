@@ -10,6 +10,9 @@ import {
   TGetMyEvent,
   PostEventPayload,
   PatchEventPayload,
+  profileDataInfo,
+  TsubmitEventForm,
+  TFormValues,
 } from "../types/types";
 import {
   BASE_URL,
@@ -22,8 +25,7 @@ import {
   EVENTS_API_ENDPOINT,
   REGISTER_AND_APPLY_API_ENDPOINT,
   USER_EVENT_STATUS_API_ENDPOINT,
-  CITIES,
-  SPECIALIZATIONS
+  SUBMIT_APPLICATION_API_ENDPOINT,
 } from "./constants";
 
 type TServerResponse<T> = {
@@ -155,76 +157,11 @@ export const getListCountry = (): Promise<TListCountry> => {
   }).then(checkResponse<TServerResponse<TListCountry>>);
 };
 
-export const getEventsList = createAsyncThunk(
-  "events/getEventsList",
-  async (_, thunkAPI) => {
-    // @ts-ignore
-    const { events: state } = thunkAPI.getState();
-
-    const searchParams = new URLSearchParams(state.filters)
-    if (!state.specializationsFilters["0"]) {
-      Object
-        .values(state.specializationsFilters)
-        .forEach(
-          id => searchParams.append("specializations", String(id))
-        )
-    }
-    const queryParams = searchParams.toString()
-    const searchString = queryParams ? "?" + queryParams : ""
-
-    const EVENTS = EVENTS_API_ENDPOINT + searchString
-    const urls = [EVENTS]
-
-    if (!state.cities.length) urls.push(CITIES)
-    if (!state.specializations.length) urls.push(SPECIALIZATIONS)
-
-    const endpoints = urls.map(url => BASE_URL + url)
-
-    const promises = endpoints.map(
-      url => fetch(url, { method: 'GET', headers: { "Content-Type": "application/json" } })
-    )
-    // <TServerResponse<Tcard>>
-    return Promise.all(promises)
-      .then(results => Promise.all(results.map(checkResponse)))
-      // @ts-ignore
-      .then((data) => {
-        if (data) return {
-          // @ts-ignore
-          cards: data[0]?.results,
-          // @ts-ignore
-          cities: data[1]?.results,
-          // @ts-ignore
-          specializations: data[2]?.results
-        }
-        return Promise.reject(data);
-      });
-  },
-);
-
-// Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
-//   .then(([user, moviesSaved]) => {
-//     setCurrentUser(user);
-//     localStorage.setItem('userName', user.name);
-//     setMoviesSaved(moviesSaved);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//     checkErrorAuthorization(err, pathname);
-//   })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const getEvents = createAsyncThunk("asyncEvents", async () => {
+  const response = await fetch(`/api/v1/events/`);
+  const data = await checkResponse<TServerResponse<TCard[]>>(response);
+  return data.data;
+});
 
 export const editingDataPersonal = (
   data: TFormDataPersonalValues,
@@ -284,9 +221,9 @@ export const getMyEvents = (): Promise<TGetMyEvent> => {
     .then((data) => data);
 };
 
-export const postEvent = createAsyncThunk<TCard, PostEventPayload>(
+export const postEvent = createAsyncThunk<profileDataInfo, PostEventPayload>(
   "events/postEvent",
-  async ({ data, id }, thunkAPI) => {
+  async ({ id }, thunkAPI) => {
     const response = await fetch(
       `${BASE_URL}${REGISTER_AND_APPLY_API_ENDPOINT}${id}/`,
       {
@@ -295,19 +232,39 @@ export const postEvent = createAsyncThunk<TCard, PostEventPayload>(
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ apply: true }),
       },
     );
     if (!response.ok) {
       return thunkAPI.rejectWithValue("Failed to post event");
     }
-    return (await response.json()) as TCard;
+    return (await response.json()) as profileDataInfo;
   },
 );
+export const submitEventForm = createAsyncThunk<
+  profileDataInfo,
+  TsubmitEventForm
+>("events/submitEventForm", async ({ id, data }, thunkAPI) => {
+  const response = await fetch(
+    `${BASE_URL}${SUBMIT_APPLICATION_API_ENDPOINT}${id}/`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify({ data }),
+    },
+  );
+  if (!response.ok) {
+    return thunkAPI.rejectWithValue("Failed to post event");
+  }
+  return (await response.json()) as profileDataInfo;
+});
 
 export const patchEventStatus = createAsyncThunk<TCard, PatchEventPayload>(
   "events/patchEvent",
-  async ({ data, id }, thunkAPI) => {
+  async ({ id }, thunkAPI) => {
     try {
       const response = await fetch(
         `${BASE_URL}${USER_EVENT_STATUS_API_ENDPOINT}${id}/`,
@@ -317,7 +274,7 @@ export const patchEventStatus = createAsyncThunk<TCard, PatchEventPayload>(
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify(id),
         },
       );
       if (!response.ok) {
