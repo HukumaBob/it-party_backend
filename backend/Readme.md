@@ -111,7 +111,10 @@ itParty - это веб-приложение, разработанное на Dj
    ```bash
    python manage.py runserver
    ```
-
+   Админка на MVT Django работает по адресу
+   ```
+   http://localhost:8000/mvt_admin/
+   ```
 10. **Настройка Celery**
 
 Установите Redis (для Windows потребуется WSL), запустите его
