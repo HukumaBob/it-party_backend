@@ -42,15 +42,17 @@
       <div class="row">
         <div class="col-sm-6 form-group mb-3">
           {{ form.specializations.label_tag }}
-          <select name="{{ form.specializations.name }}" class="custom-select custom-select-sm" multiple>
-            {% for specialization in form.specializations.field.queryset %}
-                <option value="{{ specialization.id }}">{{ specialization }}</option>
-            {% endfor %}
-        </select>
-        </div>
+          <select name="{{ form.specializations.name }}" class="custom-select custom-select-sm" multiple id="id_specializations">
+              {% for specialization in form.specializations.field.queryset %}
+                  <option value="{{ specialization.id }}">{{ specialization }}</option>
+              {% endfor %}
+          </select>
+      </div>      
+
+      
         <div class="col-sm-6 form-group mb-3">
           {{ form.speakers.label_tag }}
-          <select name="{{ form.speakers.name }}" class="custom-select custom-select-sm" multiple>
+          <select name="{{ form.speakers.name }}" class="custom-select custom-select-sm" multiple  id="id_speakers">
               {% for speaker in form.speakers.field.queryset %}
                   <option value="{{ speaker.id }}">{{ speaker }}</option>
               {% endfor %}
@@ -60,4 +62,12 @@
     </div>
     <button type="submit" class="btn btn-primary">Создать</button>
   </form>
+  <script>
+    $(document).ready(function() {
+        $('#id_specializations').select2();
+    });
+    $(document).ready(function() {
+            $('#id_speakers').select2();
+        });
+    </script>
 {% endblock %}
