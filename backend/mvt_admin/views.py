@@ -3,8 +3,12 @@ from django.shortcuts import get_object_or_404, render, redirect
 from additions.models import City
 from events.models import Event, Speaker, FormTemplate
 from users.models import Specialization
-from .forms import EventForm
+from .forms import (
+    EventForm, SpeakerForm,
+    SpecializationForm, FormTemplateForm
+)
 
+# Ивенты
 def event_list(request):
     events = Event.objects.all()
     return render(request, 'events/event_list.html', {'events': events})
@@ -60,3 +64,41 @@ def event_create(request):
         form = EventForm()
         
     return render(request, 'events/event_create.html', {'form': form})
+
+# Спикеры
+def speaker_list(request):
+    speakers = Speaker.objects.all()
+    return render(request, 'events/speaker_list.html', {'speakers': speakers})
+
+def speaker_detail(request, pk):
+    speaker = get_object_or_404(Speaker, pk=pk)
+    return render(request, 'events/speaker_detail.html', {'speaker': speaker})
+
+def speaker_create(request):
+    if request.method == 'POST':
+        form = SpeakerForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Спикер успешно создан!')
+            return redirect('mvt_admin:speaker_list')
+    else:
+        form = SpeakerForm()
+    return render(request, 'events/speaker_form.html', {'form': form})
+
+def speaker_update(request, pk):
+    speaker = get_object_or_404(Speaker, pk=pk)
+    if request.method == 'POST':
+        form = SpeakerForm(request.POST, instance=speaker)
+        if form.is_valid():
+            form.save()
+            return redirect('speaker_list')
+    else:
+        form = SpeakerForm(instance=speaker)
+    return render(request, 'events/speaker_form.html', {'form': form})
+
+def speaker_delete(request, pk):
+    speaker = get_object_or_404(Speaker, pk=pk)
+    if request.method == 'POST':
+        speaker.delete()
+        return redirect('speaker_list')
+    return render(request, 'events/speaker_confirm_delete.html', {'speaker': speaker})

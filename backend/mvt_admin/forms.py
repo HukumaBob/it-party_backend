@@ -6,7 +6,7 @@ from users.models import Specialization
 class SpeakerForm(forms.ModelForm):
     class Meta:
         model = Speaker
-        fields = ['foto', 'name', 'specialization', 'info']  
+        fields = ['foto', 'name', 'specializations', 'info']  
 
 class SpecializationForm(forms.ModelForm):
     class Meta:
@@ -16,7 +16,7 @@ class SpecializationForm(forms.ModelForm):
 class FormTemplateForm(forms.ModelForm):
     class Meta:
         model = FormTemplate
-        fields = ['name', 'fields']  # Замените на поля вашей модели FormTemplate
+        fields = ['name', 'fields']  
 
 class EventForm(forms.ModelForm):
     speakers = forms.ModelMultipleChoiceField(

@@ -29,7 +29,13 @@
           <a class="nav-link 
           {% if request.resolver_match.view_name  == 'posts:post_create' %}
           active
-          {% endif %}" href="">Новая запись </a>
+          {% endif %}" href="{% url 'mvt_admin:speaker_create' %}">Спикер </a>
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link 
+          {% if request.resolver_match.view_name  == 'posts:post_create' %}
+          active
+          {% endif %}" href="{% url 'mvt_admin:speaker_list' %}">Спикеры </a>
         </li>
         <li class="nav-item"> 
           <a class="nav-link link-light
