@@ -7,7 +7,7 @@ app_name = 'mvt_admin'
 
 urlpatterns = [
     path('mvt_admin/', views.event_list, name='event_list'),
-    path('mvt_admin/<int:event_id>/', views.event_detail, name='event_detail'),
+    path('mvt_admin/<int:event_id>/', views.event_create, name='event_detail'),
     path('mvt_admin/create/', views.event_create, name='event_create'),
     path('mvt_admin/speakers/', views.speaker_list, name='speaker_list'),
     path('mvt_admin/speakers/<int:pk>/', views.speaker_detail, name='speaker_detail'),
