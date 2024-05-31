@@ -194,7 +194,7 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    #  'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    #  'PASSWORD_RESET_CONFIRM_URL': '#api/v1/password/reset/confirm/{uid}/{token}',
     'PASSWORD_RESET_CONFIRM_URL': 'api/v1/password/reset/confirm/{uid}/{token}',
     #  'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': 'api/v1/username/reset/confirm/{uid}/{token}',
