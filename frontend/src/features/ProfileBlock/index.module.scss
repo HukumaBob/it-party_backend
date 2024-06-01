@@ -91,15 +91,30 @@
 
   .formBlockTitle {
     display: flex;
-    max-width: 220px;
-    .formBlock_title {
+    min-width: calc(100% - 140px);
+    flex-direction: column;
+    .formBlockTitle_title {
       font-size: 34px;
       font-weight: 500;
       line-height: 40px;
       font-family: "YS-Di-Medium";
       color: $c-def-black;
       margin: 0;
-      padding: 22px 0;
+      padding: 16px 0 0;
+    }
+    .formBlockTitle_subtitle {
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 40px;
+      font-family: "YS-Di-Medium";
+      color: $c-def-black;
+      margin: 0;
+      padding: 16px 0 0;
     }
   }
+};
+.section_hide {
+  display: block;
+  position: absolute;
+  visibility: hidden;
 }

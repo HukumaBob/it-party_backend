@@ -37,9 +37,9 @@ class Command(BaseCommand):
                 speaker = Speaker.objects.create(
                     foto=self.create_image_file(),
                     name=fake.name(),
-                    specialization=random.choice(specializations),  # Выберите специализацию из списка специализаций события
                     info=fake.text()
                 )
+                speaker.specializations.set([random.choice(specializations)])  # Используйте set() для специализаций
                 event.speakers.add(speaker)
 
             self.stdout.write(

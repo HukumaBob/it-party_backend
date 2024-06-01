@@ -3,10 +3,12 @@ import { Outlet } from "react-router-dom";
 import { Header } from "../widgets/header";
 import { Footer } from "../widgets/footer";
 import style from "./styles/layout.module.scss";
-export const Layout = () => {
+import { TLogout } from "./types/types";
+
+export const Layout = ({ onLogout }: TLogout) => {
   return (
     <div className={style.container}>
-      <Header />
+      <Header onLogout={onLogout} />
       <main className={style.main}>
         <Outlet />
       </main>

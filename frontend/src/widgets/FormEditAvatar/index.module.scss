@@ -1,26 +1,52 @@
 @import "../../app/styles/vars.scss";
 .container {
   display: flex;
-  padding: $sp-36 $sp-24;
-  background-color: $c-def-white;
-  border: 1px solid $c-gray;
-  box-shadow: 2px 2px 12px 0px rgba(36, 47, 123, 0.15);
-  border-radius: 20px;
-  flex-direction: column;
-  max-width: 384px;
   width: 100%;
-  position: relative;
-  gap: $sp-16;
+  height: 100%;
+  top: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.20);
   .form {
-    width: 100%;
     display: flex;
+    position: fixed;
+    padding: $sp-36 $sp-24;
+    background-color: $c-def-white;
+    border: 1px solid $c-gray;
+    box-shadow: 2px 2px 12px 0px rgba(36, 47, 123, 0.35);
+    border-radius: 20px;
     flex-direction: column;
+    max-width: 400px;
+    width: 100%;
     gap: $sp-24;
     align-items: center;
+    .titleBlock {
+      .icon {
+        position: absolute;
+        top: -25px;
+        right: -25px;
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 2px 2px 12px 0px rgba(36, 47, 123, 0.35);
+      }
+      .form_title {
+        font-family: "YS-D-Medium";
+        font-size: 34px;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+    }
     .name_form {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
       label {
         font-weight: 500;
         font-family: "YS-T-Medium";
@@ -35,21 +61,10 @@
         border: 1px solid $c-str-medium;
         outline: none;
         border-radius: $sp-12;
+        margin-bottom: 4px;
       }
       .errorInput {
         border: 1px solid $c-er-red;
-      }
-      .button {
-        width: 24px;
-        height: 24px;
-        background-color: $c-def-white;
-        background-image: url("../../app/assets/icons/close_form-profile.svg");
-        justify-content: center;
-        background-position: 50% 50%;
-        background-size: 100%;
-        border: none;
-        margin: 0;
-        text-decoration: none;
       }
     }
     .message {
@@ -72,6 +87,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  padding-top: 30px;
   .submit {
     max-width: 300px;
     width: 100%;

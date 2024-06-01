@@ -14,5 +14,5 @@ export const rootReducer = combineReducers({
   events: eventsSlice,
   admin: adminSlice,
   profile: profileSlice,
-  myEvents:myEventsSlice
+  myEvents: myEventsSlice
 });

@@ -1,47 +1,22 @@
 @import "../../app/styles/vars.scss";
+
 .chip {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 111px;
-  font-size:$sp-13;
-  border-radius: $sp-12;
-  max-height: $sp-24;
-  height: 100%;
+  padding: 4px 10px;
+  font-size: $sp-13;
+  color: $c-def-black;
   font-weight: 400;
-  padding: 4px $sp-12;
-  gap: 4px;
-  color: $c-def-white;
-  border: 1px solid transparent;
+  white-space: nowrap;
   cursor: pointer;
-  &.blue {
-    &:hover {
-      border: 1px solid $c-ch-act-blue;
-    }
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background-color: #4989f940;
+
+  &.active {
+    background-color: #4989f9;
+    color: $c-def-white;
   }
-  &.purple {
-    &:hover {
-      border: 1px solid $c-ch-act-purple;
-    }
-  }
-  &.pink {
-    &:hover {
-      border: 1px solid $c-ch-act-pink;
-    }
-  }
-  &.green {
-    &:hover {
-      border: 1px solid $c-ch-act-green;
-    }
-  }
-  &.orange {
-    &:hover {
-      border: 1px solid $c-ch-act-orange;
-    }
-  }
-  &.yellow {
-    &:hover {
-      border: 1px solid $c-ch-act-yellow;
-    }
+
+  &:hover {
+    border: 1px solid $c-ch-act-blue;
   }
 }

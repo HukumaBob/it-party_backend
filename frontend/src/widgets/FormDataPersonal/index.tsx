@@ -2,20 +2,11 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  TFormDataPersonalValues,
-  TUserProfileValues,
-  getItem,
-  TListCountry,
-  TCountries,
-} from "../../app/types/types";
-import {
-  editingDataPersonal,
-  getFormProfile,
-  getUserProfile,
-  postUserProfile,
-  getListCountry,
-} from "../../app/api/api";
+import { TFormDataPersonalValues, 
+         TUserProfileValues, 
+         getItem,
+         TCountries } from "../../app/types/types";
+import { editingDataPersonal } from "../../app/api/api";
 import style from "./index.module.scss";
 import { SelectDate } from "../../shared/selectDate/index";
 import arrow_down from "../../app/assets/icons/arrow_down.svg";
@@ -25,13 +16,13 @@ import {
   setSelectedMaritalStatus,
   setClickCountry,
   setSelectedCountry,
-  setChangeDateOfBirth,
-} from "../../app/services/slices/formSlice";
-import { setName, setSecondName } from "../../app/services/slices/profileSlice";
+  setName,
+  setSecondName
+} from "../../app/services/slices/profileSlice";
+
 export const FormDataPersonal = () => {
   const countriesStorage = localStorage.getItem("countries");
   const countryList = countriesStorage && JSON.parse(countriesStorage);
-  const profileStorage = localStorage.getItem("updateInfo");
   const dispatch = useDispatch();
   const {
     selectedMaritalStatus,
@@ -40,106 +31,18 @@ export const FormDataPersonal = () => {
     changeDateOfBirth,
     clickCountry,
     selectedCountry,
-  } = useSelector((state) => state.form);
-  const profile = localStorage.getItem("updateInfo");
-  if (profile) {
-    const profileData = JSON.parse(profile!);
-    dispatch(setSecondName(profileData.last_name));
-    dispatch(setName(profileData.first_name));
-  }
-  useEffect(() => {
-    const tokenCheck = () => {
-      const accessToken = localStorage.getItem("accessToken");
-      const profile = localStorage.getItem("updateInfo");
-      const listCountry = localStorage.getItem("countries");
-      if (accessToken) {
-        if (profile === undefined || profile === null) {
-          getUserProfile()
-            .then((data: TUserProfileValues) => {
-              localStorage.setItem("updateInfo", JSON.stringify(data));
-              if (data.country !== null) {
-                setValue("country", data.country);
-                dispatch(setSelectedCountry(data.country));
-              }
-              if (data.first_name !== null) {
-                setValue("first_name", data.first_name);
-              }
-              if (data.last_name !== null) {
-                setValue("last_name", data.last_name);
-              }
-              if (data.date_of_birth !== "") {
-                setChangeDateOfBirth(data.date_of_birth);
-              }
-              if (data.familystatus !== null) {
-                setValue("familystatus", data.familystatus);
-                dispatch(setSelectedMaritalStatus(data.familystatus));
-              }
-            })
-            .catch((err) => {
-              postUserProfile()
-                .then((data: TUserProfileValues) => {
-                  localStorage.setItem("updateInfo", JSON.stringify(data));
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            });
-        }
-        if (listCountry === undefined || listCountry === null) {
-          getListCountry()
-            .then((data: TListCountry) => {
-              localStorage.setItem("countries", JSON.stringify(data.results));
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      }
+    name,
+    secondName
+  } = useSelector((state) => state.profile);
+  
+  React.useEffect(() => {
+    if (name !== "") {
+      setValue("first_name", name);
     };
-    tokenCheck();
+    if(secondName !== "") {
+      setValue("last_name", secondName);
+    };
   }, []);
-
-  useEffect(() => {
-    const profileStorage = localStorage.getItem("updateInfo");
-    const countriesStorage = localStorage.getItem("countries");
-    if (profileStorage === undefined || countriesStorage === undefined) {
-      Promise.all([
-        profileStorage === undefined && getUserProfile(),
-        countriesStorage === undefined && getListCountry(),
-      ])
-        .then(([profile, countries]) => {
-          if (profile) {
-            localStorage.setItem("updateInfo", JSON.stringify(profile));
-            if (profile.country !== null) {
-              setValue("country", profile.country);
-              dispatch(setSelectedCountry(profile.country));
-            }
-            if (profile.first_name !== null) {
-              setValue("first_name", profile.first_name);
-            }
-            if (profile.last_name !== null) {
-              setValue("last_name", profile.last_name);
-            }
-            if (profile.date_of_birth !== "") {
-              setChangeDateOfBirth(profile.date_of_birth);
-            }
-            if (profile.familystatus !== null) {
-              setValue("familystatus", profile.familystatus);
-              dispatch(setSelectedMaritalStatus(profile.familystatus));
-            }
-          }
-          if (countries) {
-            localStorage.setItem(
-              "countries",
-              JSON.stringify(countries.results),
-            );
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [profileStorage, countriesStorage]);
 
   const handleClickMaritalStatus = () => {
     dispatch(setClickMaritalStatus(!clickMaritalStatus));
@@ -150,6 +53,7 @@ export const FormDataPersonal = () => {
   };
 
   const handleClickResetValueFirstName = () => {
+    reset();
     const profileStorage = getItem("updateInfo");
     if (profileStorage !== null && profileStorage !== undefined) {
       const profile = localStorage.getItem("updateInfo");
@@ -162,6 +66,7 @@ export const FormDataPersonal = () => {
   };
 
   const handleClickResetValueLastName = () => {
+    reset();
     const profileStorage = getItem("updateInfo");
     if (profileStorage !== null && profileStorage !== undefined) {
       const profile = localStorage.getItem("updateInfo");
@@ -201,27 +106,19 @@ export const FormDataPersonal = () => {
     setValue("familystatus", value);
   };
 
-  /*const schemaDataPersonal = yup.object().shape({
-    first_name: yup.string(),
-    last_name: yup.string(),
-    date_of_birth: yup.string(),
-    familystatus: yup.number(),
-    country: yup.number(),
-  });*/
-
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     setValue,
+    reset
   } = useForm<TFormDataPersonalValues>({
-    mode: "onTouched" /*resolver: yupResolver(schemaDataPersonal),*/,
+    mode: "onTouched",
   });
 
   const onSubmit = (data: TFormDataPersonalValues) => {
-    console.log(errors, isValid);
-    const dataNew = { ...data, date_of_birth: changeDateOfBirth };
-    const elements: TFormDataPersonalValues = dataNew;
+    const dataNew = {...data, date_of_birth: changeDateOfBirth}
+    const elements:TFormDataPersonalValues = dataNew;
     let promise = new Promise<TFormDataPersonalValues>((resolve) => {
       let objectData: TFormDataPersonalValues = {};
       for (const key in elements) {
@@ -238,15 +135,17 @@ export const FormDataPersonal = () => {
       editingDataPersonal(objectData)
         .then((data: TUserProfileValues) => {
           localStorage.setItem("updateInfo", JSON.stringify(data));
-          alert("Данные успешно обновлены.");
+          dispatch(setName(data.first_name));
+          dispatch(setSecondName(data.last_name));
+          alert(
+            "Данные успешно обновлены.",
+          );
         })
         .catch((error) => {
           console.log(error);
-          alert(
-            "Произошла ошибка при отправке формы. Попробуйте еще раз позже.",
-          );
-        });
-    });
+          alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
+        })
+    })
   };
 
   return (
@@ -260,14 +159,12 @@ export const FormDataPersonal = () => {
             Имя <span>*</span>
           </label>
           <div
-            className={`${
-              errors.first_name ? style.errorInput : style.inputBlock
-            }`}>
+            className={`${errors.first_name ? style.errorInput : style.inputBlock
+              }`}>
             <input
-              className={`${errors.first_name ? style.errorInput : ""}`}
+              className={errors.first_name ? style.errorInput : ''}
               type='text'
               placeholder='Имя'
-              // defaultValue={profileData.first_name}
               {...register("first_name", {
                 required: "Обязательное поле",
                 minLength: {
@@ -286,8 +183,7 @@ export const FormDataPersonal = () => {
               onClick={handleClickResetValueFirstName}></button>
           </div>
 
-          <span
-            className={`${errors.first_name ? style.error : style.message}`}>
+          <span className={errors.first_name ? style.error : style.message}>
             {errors?.first_name?.message ||
               "Необходимо для регистрации на мероприятие"}
           </span>
@@ -298,11 +194,10 @@ export const FormDataPersonal = () => {
             Фамилия <span>*</span>
           </label>
           <div
-            className={`${
-              errors.last_name ? style.errorInput : style.inputBlock
-            }`}>
+            className={`${errors.last_name ? style.errorInput : style.inputBlock
+              }`}>
             <input
-              className={`${errors.last_name ? style.errorInput : ""}`}
+              className={errors.last_name ? style.errorInput : ""}
               type='text'
               placeholder='Фамилия'
               // defaultValue={profileData.last_name}
@@ -323,8 +218,9 @@ export const FormDataPersonal = () => {
               className={style.buttonInput}
               onClick={handleClickResetValueLastName}></button>
           </div>
-
-          <span className={`${errors.last_name ? style.error : style.message}`}>
+          
+          <span
+            className={errors.last_name ? style.error : style.message}>
             {errors?.last_name?.message ||
               "Необходимо для регистрации на мероприятие"}
           </span>
@@ -332,16 +228,9 @@ export const FormDataPersonal = () => {
         <div className={style.container_selectInput}>
           <label>Страна</label>
           <div className={style.countryBlock}>
-            <div
-              className={style.countryBlock_select}
-              onClick={handleClickCountry}>
-              <span>
-                {countryList &&
-                  countryList.find(
-                    (country: TCountries) =>
-                      Number(country.id) === selectedCountry,
-                  ).name}
-              </span>
+            <div className={style.countryBlock_select} onClick={handleClickCountry}>
+              <span>{countryList && (countryList.find((country: TCountries) => 
+                (Number(country.id) === selectedCountry))).name}</span>
             </div>
             {clickCountry && (
               <div className={style.options}>
@@ -369,7 +258,7 @@ export const FormDataPersonal = () => {
         </div>
         <div className={style.name_form}>
           <label>Дата рождения</label>
-          <SelectDate id='2' />
+          <SelectDate type='dob' />
         </div>
         <div className={style.container_selectInput}>
           <label>Семейное положение</label>

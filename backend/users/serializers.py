@@ -84,8 +84,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     UserPassportSerializer и метод to_representation
     """
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    first_name = serializers.CharField(write_only=True, required=False)
-    last_name = serializers.CharField(write_only=True, required=False)
+    first_name = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    last_name = serializers.CharField(write_only=True, required=False, allow_blank=True)
     user_photo = serializers.ImageField(write_only=True, required=False)
 
     class Meta:

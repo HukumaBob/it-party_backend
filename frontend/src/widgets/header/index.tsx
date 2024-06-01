@@ -1,30 +1,28 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import style from "./index.module.scss";
 import logo from "../../app/assets/icons/logo_black.svg";
-import avatar from "../../app/assets/icons/avatar.svg";
 import { SearchInput } from "../../shared/inputs/searchInput";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import { setOpenModal } from "../../app/services/slices/authorization";
 import noAuthUser from "../../app/assets/icons/NoAuthUser.svg";
-export const Header = () => {
+import { TLogout } from "../../app/types/types";
+
+export const Header = ({ onLogout }: TLogout) => {
   const [open, setOpen] = useState<boolean>(false);
-  const navigate = useNavigate();
   const handleClick = () => {
     setOpen(!open);
   };
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-  const { name,secondName } = useSelector((store) => store.profile);
+  const { name, secondName, avatar } = useSelector((store) => store.profile);
   const handleOpenModal = () => {
+    setOpen(false);
     dispatch(setOpenModal(true));
   };
   const logout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("updateInfo");
-    localStorage.removeItem("countries");
+    onLogout();
+    setOpen(false);
   };
 
   return (
@@ -35,7 +33,7 @@ export const Header = () => {
             <img src={logo} alt='logo' />
           </Link>
         </div>
-        <SearchInput />
+        <SearchInput type="header" />
         <div className={style.avatar} onClick={handleClick}>
           {accessToken ? (
             <img src={avatar} alt='avatar' />

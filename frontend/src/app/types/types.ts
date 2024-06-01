@@ -1,6 +1,6 @@
 export type TChip = {
-  background: string;
-  title: string;
+  id: number
+  specialization: string;
 };
 
 export type TCard = {
@@ -38,6 +38,7 @@ export type TSlideSwitcher = {
   handleClick?: (index: number) => void;
   length: number;
 };
+
 export type TActiveIndex = {
   activeIndex: number;
 };
@@ -82,10 +83,6 @@ export type TTextInput = {
 export type TForm = {
   nameForm: string;
   children: React.ReactNode;
-};
-
-export type TSelectData = {
-  id: string;
 };
 
 export type TSelectInput = {
@@ -135,36 +132,8 @@ export type TInitialStateForm = {
   selectedDirection: string;
   onlineChecked: boolean;
   offlineChecked: boolean;
-  onlineCheckedFormAboutMe: boolean;
-  offlineCheckedFormAboutMe: boolean;
   agreementChecked: boolean;
   agreementPersonInfoChecked: boolean;
-  clickMaritalStatus: boolean;
-  selectedMaritalStatus: number;
-  clickProfileExperience: boolean;
-  selectedProfileExperience: number;
-  clickProfileSpecialization: boolean;
-  selectedProfileSpecialization: number;
-  clickIncome: boolean;
-  selectedIncome: number;
-  clickEducation: boolean;
-  selectedEducation: number;
-  clickTimeInterval: boolean;
-  smsChecked: boolean;
-  emailChecked: boolean;
-  approvalApplicationChecked: boolean;
-  newEventsChecked: boolean;
-  selectedTimeInterval: number;
-  selectedNavDataPersonal: boolean;
-  selectedNavCareerAndEducation: boolean;
-  selectedNavAboutMe: boolean;
-  selectedNavConfidentiality: boolean;
-  selectedNavNotification: boolean;
-  selectedNavMain: boolean;
-  openModalAvatar: boolean;
-  changeDateOfBirth: string;
-  selectedCountry: number;
-  clickCountry: boolean;
   alertForm: boolean;
 };
 
@@ -191,8 +160,19 @@ export type TUser = {
   post: string;
 };
 
+export type TLogout = {
+  onLogout: () => void;
+};
+
+export type TImageAvatar = {
+  src: string;
+  onload: () => void;
+  onerror?: () => void;
+};
+
 export type TNavigation = {
   id: string;
+  onLogout: () => void;
 };
 
 export type TUserProfileValues = {
@@ -204,6 +184,7 @@ export type TUserProfileValues = {
   place_of_work: string;
   position: string;
   online: boolean;
+  offline: boolean;
   agreement_optional: boolean;
   date_of_birth: string;
   hobby: string;
@@ -220,6 +201,7 @@ export type TUserProfileValues = {
   notification: number;
   country: number;
   city: number;
+  [index: string]: any;
 };
 
 export type TListCountry = {
@@ -255,29 +237,68 @@ export type TFormDataPersonalValues = {
   [index: string]: any;
 };
 
+export type TFormEditAvatar = {
+  user_photo: FileList;
+}
+
 export type TFormConfidentialityValues = {
   phone?: string;
-  new_password?: string;
-  current_password?: string;
+  password?: string;
+  password_confirm?: string;
+  [index: string]: any;
 };
 
 export type TFormConfidentiality = {
   email: string;
   phone: string;
-  new_password: string;
-  current_password: string;
 };
 
 export type TLoginResponse = {
-  user: TFormAuthorization;
+  user?: TFormAuthorization;
   access: string;
   refresh: string;
+  error?: string | null;
 };
 
+export type Tspecialization = {
+  id: number,
+  specialization: string,
+  countryid: string
+}
+
+export type Tcity = {
+  id: number,
+  name: string,
+  countryid: string
+}
+
+export type TEventCard = {
+  info?: string;
+  name: string;
+  description?: string;
+  logo: string;
+  date: string;
+  time: string;
+  id: number;
+  admin?: boolean;
+  myEventBoolean?: boolean;
+};
+
+type TFilters = {
+  city?: number,
+  online?: boolean,
+  name?: string,
+  date_after?: string | undefined,
+}
+
 export type TEventsInitialState = {
-  cards: TCard[];
+  cards: TEventCard[];
+  cities: Tcity[];
+  specializations: Tspecialization[];
   loading: boolean;
   error?: string | null;
+  filters: TFilters
+  specializationsFilters: Record<string, number | boolean>;
 };
 
 export type TApplication = {
@@ -288,6 +309,7 @@ export type TApplication = {
   status: string;
   id: number;
 };
+
 export type TAdminPageInitialState = {
   activeTab: string;
   archive: TCard[];
@@ -296,9 +318,11 @@ export type TAdminPageInitialState = {
   inputValues: Record<number, string>;
   status: Record<number, string>;
 };
+
 export type TErrorMessage = {
   email: string;
 };
+
 export type TResponseReg = {
   email: string;
   password: string;
@@ -307,17 +331,62 @@ export type TResponseReg = {
 
 export function setItem<T>(key: string, value: T): void {
   localStorage.setItem(key, JSON.stringify(value));
-}
+};
 
 export function getItem<T>(key: string): T | null {
   const item = localStorage.getItem(key);
   return item ? (JSON.parse(item) as T) : null;
-}
+};
 
 export type TProfileInitialState = {
   name: string;
   secondName: string;
+  errorProfile?: string | null;
+  receiveProfileUser: boolean;
+  avatar: string;
+  place_of_work: string;
+  position: string;
+  hobby: string;
+  values: string;
+  aims: string;
+  cv: string;
+  phone: string;
+  email: string;
+  motivation: string;
+  notification: number;
+  selectedMaritalStatus: number;
+  selectedCountry: number;
+  selectedProfileExperience: number;
+  selectedProfileSpecialization: number;
+  selectedIncome: number;
+  selectedEducation: number;
+  selectedTimeInterval: number;
+  selectedNavDataPersonal: boolean;
+  selectedNavCareerAndEducation: boolean;
+  selectedNavAboutMe: boolean;
+  selectedNavConfidentiality: boolean;
+  selectedNavNotification: boolean;
+  selectedNavMain: boolean;
+  openModalAvatar: boolean;
+  changeDateOfBirth: string;
+  clickMaritalStatus: boolean;
+  clickCountry: boolean;
+  clickProfileExperience: boolean; 
+  clickProfileSpecialization: boolean;
+  clickIncome: boolean; 
+  clickEducation: boolean;
+  onlineCheckedFormAboutMe: boolean;
+  offlineCheckedFormAboutMe: boolean;
+  clickTimeInterval: boolean;
+  smsChecked: boolean;
+  emailChecked: boolean;
+  approvalApplicationChecked: boolean;
+  newEventsChecked: boolean;
+  profileBlock: boolean;
+  showPassword: boolean;
+  showPasswordConfirm: boolean;
 };
+
 export type TMyEventsInitialState = {
   activeTab: string;
   favouriteEvents: TCard[];
@@ -327,6 +396,7 @@ export type TMyEventsInitialState = {
   error: string | null;
   eventInfo: profileDataInfo | null;
 };
+
 export type oneEvent = {
   id: number;
   logo: string;
@@ -341,6 +411,7 @@ export type oneEvent = {
     index: number;
   };
 };
+
 export type TGetMyEvent = {
   count: number;
   next: string;
@@ -355,10 +426,12 @@ export type PostEventPayload = {
 export type PatchEventPayload = {
   id: number;
 };
+
 export type TsubmitEventForm = {
   id: number;
   data: profileDataInfo;
 };
+
 export type profileDataInfo = {
   id?: number;
   first_name: string;

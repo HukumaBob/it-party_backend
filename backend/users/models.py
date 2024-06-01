@@ -58,6 +58,7 @@ class UserProfile(models.Model):
         max_length=255, blank=True, null=True, verbose_name=_("Position")
         )
     online = models.BooleanField(default=False, verbose_name=_("Online"))
+    offline = models.BooleanField(default=False, verbose_name=_("Offline"))
     agreement_optional = models.BooleanField(
         default=False, verbose_name=_("Agreement Optional")
         )
