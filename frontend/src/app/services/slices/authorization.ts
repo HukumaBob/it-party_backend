@@ -1,6 +1,8 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice, createAction } from "@reduxjs/toolkit";
 import { TAuthorizationInitialState } from "../../types/types";
 import { loginUser, registerUsers } from "../actions/authorization";
+
+export const resetState = createAction('resetState');
 
 export const initialState: TAuthorizationInitialState = {
   openModal: false,
@@ -40,6 +42,7 @@ export const authorizationSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(resetState, () => initialState)
       .addCase(registerUsers.pending, (state) => {
         state.error = null;
       })
@@ -75,4 +78,3 @@ export const {
 } = authorizationSlice.actions;
 
 export default authorizationSlice.reducer;
-

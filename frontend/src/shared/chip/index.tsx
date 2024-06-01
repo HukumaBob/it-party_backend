@@ -5,7 +5,6 @@ import { searchSpecialization } from '../../app/services/slices/eventsSlice';
 import { useSelector, useDispatch } from '../../app/types/hooks';
 import { getEventsList } from '../../app/api/api';
 
-
 export const Chip = ({ specialization, id }: TChip) => {
   const dispatch = useDispatch()
   const isActive = useSelector(state => state.events.specializationsFilters[String(id)])

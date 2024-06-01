@@ -1,12 +1,13 @@
-from django.urls import include, path
+from django.urls import include, path, reverse_lazy
 from rest_framework import routers
 from .views import (
     ActivateAccountView,
-    PasswordResetConfirmView,
+    CustomPasswordResetConfirmView,
     UserProfileViewSet,
     SpecializationViewSet,
     StackViewSet,
     ExperienceViewSet,
+    SuccessView,
     )
 
 
@@ -36,7 +37,8 @@ urlpatterns = [
         ),
     path(
         'password/reset/confirm/<uidb64>/<token>/',
-        PasswordResetConfirmView.as_view(),
-        name='reset'
+        CustomPasswordResetConfirmView.as_view(),
+        name='password_reset_confirm'
         ),
+    path('success/', SuccessView.as_view(), name='success'),        
 ]

@@ -9,22 +9,19 @@ class Speaker(models.Model):
     foto = models.ImageField(
         verbose_name=_("Фото спикера"),
         upload_to='images/',
-        blank=False, null=True,
+        blank=True, null=True,
     )
     name = models.CharField(
         verbose_name=_("Фамилия Имя"),
         max_length=200,
         blank=False,
     )
-    specialization = models.CharField(
-        verbose_name=_("Специализация"),
-        max_length=200,
-        blank=False,
-    )
+    specializations = models.ManyToManyField(Specialization) 
     info = models.TextField(
         verbose_name=_("Дополнительная информация"),
         max_length=500,
-        blank=False,
+        blank=True,
+        null=False
     )
 
     def __str__(self):

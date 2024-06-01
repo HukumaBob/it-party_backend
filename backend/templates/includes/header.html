@@ -1,0 +1,68 @@
+{% load static %}
+
+  <nav class="navbar navbar-light" style="background-color: lightskyblue">
+    <div class="container">
+      <a class="navbar-brand" href="">
+
+        <img src="{% static 'img/logo.svg' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        <span style="color:red">It</span>Party
+      </a>
+      
+      <ul class="nav nav-pills">
+        <li class="nav-item"> 
+          
+          <a class="nav-link 
+          {% if request.resolver_match.view_name  == 'about:author' %}
+          active
+          {% endif %}" href="{% url 'mvt_admin:event_create' %}">
+        Создание ивента
+        </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link 
+          {% if request.resolver_match.view_name  == 'about:tech' %}
+          active
+          {% endif %}" href="{% url 'mvt_admin:event_list' %}">Ивенты</a>
+        </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item"> 
+          <a class="nav-link 
+          {% if request.resolver_match.view_name  == 'posts:post_create' %}
+          active
+          {% endif %}" href="{% url 'mvt_admin:speaker_create' %}">Спикер </a>
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link 
+          {% if request.resolver_match.view_name  == 'posts:post_create' %}
+          active
+          {% endif %}" href="{% url 'mvt_admin:speaker_list' %}">Спикеры </a>
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link link-light
+          {% if request.resolver_match.view_name  == 'users:logout' %}
+          active
+          {% endif %}" href="">Выйти</a>
+        </li>
+        <li>
+          Пользователь: {{ request.user.username }}
+        </li>
+        
+        {% else %}
+        <li class="nav-item"> 
+          <a class="nav-link link-light
+          {% if request.resolver_match.view_name  == 'users:login' %}
+          active
+          {% endif %}" href="">Войти</a>
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link link-light
+          {% if request.resolver_match.view_name  == 'users:signup' %}
+          active
+          {% endif %}" href="">Регистрация</a>
+        </li>
+        {% endif %}  
+        
+      </ul>
+      
+    </div>
+  </nav>      

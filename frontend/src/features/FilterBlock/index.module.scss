@@ -1,40 +1,5 @@
-@import "../../app/styles/vars.scss";
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-
-  .containerTop {
-    display: flex;
-    justify-content: space-between;
-    column-gap: 50px;
-  }
-
-  .searchContainer {
-    max-width: 450px;
-    flex-grow: 1;
-
-    img {
-      cursor: pointer;
-    }
-  }
-
-  .rightPart {
-    display: flex;
-    align-items: center;
-    column-gap: 50px;
-
-    .rightPart_element_checkbox {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-  }
-
-  .containerButtons {
-    margin-top: $sp-20;
-    display: flex;
-    flex-wrap: wrap;
-    gap: $sp-12 $sp-20;
-  }
+.container {
+  display: grid;
+  grid-template: 45px auto / 1fr 45px 178px 200px 110px;
+  gap: 20px 5px;
 }

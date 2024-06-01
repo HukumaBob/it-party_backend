@@ -9,7 +9,6 @@ export const ActiveTabMyEvents = () => {
   const handleSetActive = (tab: string) => {
     dispatch(setActiveTab(tab));
   };
-  console.log(favouriteEvents);
   return (
     <ul className={style.list}>
       <li

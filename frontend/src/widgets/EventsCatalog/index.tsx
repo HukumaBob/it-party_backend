@@ -8,9 +8,7 @@ import { getEventsList } from "../../app/api/api";
 export const EventsCatalog = () => {
   const dispatch = useDispatch();
   const { cards, loading } = useSelector((store) => store.events);
-  useEffect(() => {
-    dispatch(getEventsList());
-  }, [dispatch]);
+  useEffect(() => { dispatch(getEventsList()) }, [dispatch]);
 
   return (
     <div className={style.wrapper}>
@@ -19,8 +17,10 @@ export const EventsCatalog = () => {
       </div>
       <div className={style.cardsBlock}>
         <div className={style.allEvents}>
+
           {loading && <span>Загрузка данных....</span>}
-          {!cards && <span>Нет зарегистрированных мероприятий</span>}
+          {!cards.length && <span>Нет зарегистрированных мероприятий</span>}
+
           {cards.map(card => (
             <EventCard
               key={card.id}
@@ -33,7 +33,6 @@ export const EventsCatalog = () => {
               myEventBoolean={true}
             />
           ))}
-
         </div>
       </div>
     </div>

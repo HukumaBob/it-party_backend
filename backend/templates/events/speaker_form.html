@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load widget_tweaks %}
+  <h2>Create a new speaker</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4 form-group mb-3">  
+          {{ form.name.label_tag }}  
+          {{ form.name|add_class:"form-control" }}
+        </div>      
+        <div class="col-sm-2 form-group mb-3">
+          {{ form.foto.label_tag }} {{ form.foto|add_class:"form-control" }}
+        </div>
+        <div class="col-sm-6 form-group mb-3">
+          {{ form.specializations.label_tag }}
+          <select name="{{ form.specializations.name }}" class="custom-select custom-select-sm" multiple id="id_specializations">
+              {% for specialization in form.specializations.field.queryset %}
+                  <option value="{{ specialization.id }}">{{ specialization }}</option>
+              {% endfor %}
+          </select>
+      </div>      
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group mb-3">
+          {{ form.info.label_tag }} {{ form.info|add_class:"form-control" }}        
+        </div>
+      </div>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Создать</button>
+  </form>
+  <script>
+    $(document).ready(function() {
+        $('#id_specializations').select2();
+    });
+    </script>
+{% endblock %}

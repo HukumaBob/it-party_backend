@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "./index.module.scss";
 import { Link } from 'react-router-dom';
-import { TNavigation} from "../../app/types/types";
+import { TNavigation } from "../../app/types/types";
 import { useDispatch, useSelector } from "../../app/types/hooks";
 import {
   setSelectedNavDataPersonal,
@@ -10,9 +10,10 @@ import {
   setSelectedNavConfidentiality,
   setSelectedNavNotification,
   setSelectedNavMain,
-} from "../../app/services/slices/formSlice";
+  setProfileBlock,
+} from "../../app/services/slices/profileSlice";
 
-export const Navigation = ({ id }: TNavigation) => {
+export const Navigation = ({ id, onLogout }: TNavigation) => {
   const dispatch = useDispatch();
   const {
     selectedNavDataPersonal,
@@ -21,28 +22,33 @@ export const Navigation = ({ id }: TNavigation) => {
     selectedNavConfidentiality,
     selectedNavNotification,
     selectedNavMain,
-  } = useSelector((state) => state.form);
+  } = useSelector((state) => state.profile);
 
   const handleNavigationDataPersonal = () => {
     handleInActiveNav();
+    dispatch(setProfileBlock(true));
     dispatch(setSelectedNavDataPersonal(true));
-  }
+  };
   const handleCareerAndEducation = () => {
     handleInActiveNav();
+    dispatch(setProfileBlock(true));
     dispatch(setSelectedNavCareerAndEducation(true));
-  }
+  };
   const handleAboutMe = () => {
     handleInActiveNav();
+    dispatch(setProfileBlock(true));
     dispatch(setSelectedNavAboutMe(true));
-  }
+  };
   const handleConfidentiality = () => {
     handleInActiveNav();
+    dispatch(setProfileBlock(false));
     dispatch(setSelectedNavConfidentiality(true));
-  }
+  };
   const handleNotification = () => {
     handleInActiveNav();
+    dispatch(setProfileBlock(false));
     dispatch(setSelectedNavNotification(true));
-  }
+  };
   const handleInActiveNav = () => {
     dispatch(setSelectedNavDataPersonal(false));
     dispatch(setSelectedNavNotification(false));
@@ -50,17 +56,15 @@ export const Navigation = ({ id }: TNavigation) => {
     dispatch(setSelectedNavAboutMe(false));
     dispatch(setSelectedNavCareerAndEducation(false));
     dispatch(setSelectedNavMain(false));
-  }
+  };
 
   const handleMain = () => {
     dispatch(setSelectedNavMain(!selectedNavMain));
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('updateInfo');
-    localStorage.removeItem("countries");
+    onLogout();
     handleInActiveNav();
+    dispatch(setProfileBlock(true));
     dispatch(setSelectedNavDataPersonal(true));
-  }
+  };
 
   return (
     <section className={style.section}>

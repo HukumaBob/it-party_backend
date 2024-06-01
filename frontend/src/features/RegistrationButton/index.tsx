@@ -1,18 +1,26 @@
 import React, { useState } from "react";
 import style from "./index.module.scss";
 import { PopupRegistration } from "../../entities/PopupRegistration";
+import { useDispatch } from "../../app/types/hooks";
+import { postEvent } from "../../app/api/api";
 
-export const RegistrationButton = ({id}:{id?:number}) => {
+export const RegistrationButton = ({ id }: { id?: number }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const handleOpen = () => {
-    setOpen(true);
-    window.scrollTo({ top: 100, behavior: "smooth" });
+    if (id !== undefined) {
+      setOpen(true);
+      window.scrollTo({ top: 100, behavior: "smooth" });
+      dispatch(postEvent({ id }));
+    } else {
+      console.error("id is undefined");
+    }
   };
   const handleClose = () => {
     setOpen(false);
   };
-  
+
   return (
     <div>
       <button className={style.button} onClick={handleOpen}>

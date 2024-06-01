@@ -9,7 +9,7 @@ export const RESET_PASSWORD_API_ENDPOINT = "auth/users/reset_password/"; // Эн
 export const USER_PROFILES_API_ENDPOINT = "api/v1/userprofiles/"; // Эндпоинт для работы с профилями пользователей
 export const USER_PROFILE_GET_AND_PATCH_API_ENDPOINT = "api/v1/userprofiles/me/"; // Эндпоинт для получения и изменения конкретного пользователя
 export const LIST_COUNTRY_GET_API_ENDPOINT = "api/v1/countries/"; // Эндпоинт для получения списка стран
-export const EVENTS_API_ENDPOINT = "api/v1/events"; // ! не ставить слеш в конце(строка поиска -> ?query=...)
+export const EVENTS_API_ENDPOINT = "api/v1/events"; // Эндпоинт для работы с ивентами
 export const REGISTER_AND_APPLY_API_ENDPOINT = "api/v1/register_and_apply/"; // Эндпоинт для регистрации и подачи заявки на участие в ивенте
 export const REMOVE_EVENT_FROM_FAVORITE_API_ENDPOINT =
   "api/v1/remove_event_from_favorite/"; // Эндпоинт для удаления ивента из избранного
@@ -23,3 +23,6 @@ export const SPECIALIZATIONS = 'api/v1/specialization/'
 
 // Количество элементов на странице
 export const PAGE_SIZE = 15; // Количество элементов, отображаемых на одной странице
+
+// Ошибка при загрузке аватара из файла с компьютера
+export const errorDownloadImage = "Анализ изображения не прошел";

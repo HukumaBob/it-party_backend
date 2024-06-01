@@ -1,29 +1,68 @@
 @import "../../../app/styles/vars.scss";
 
-.inputBlock {
+.inputHeader {
   display: flex;
   max-width: 505px;
   width: 100%;
+  position: relative;
 
-  .input {
+  input {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     background: $c-bg-blue;
     border: 1px solid $c-str-medium;
     border-radius: 8px;
-    padding: $sp-12 45px $sp-12 $sp-12;
+    padding: $sp-12;
     outline: 0px;
   }
 
-  img {
-    height: 45px;
-    padding: 10px 12px 12px 10px;
+  svg {
+    position: absolute;
+    right: 14px;
+    top: $sp-12;
+  }
+}
+
+.inputEvents {
+  display: grid;
+  grid-template-columns: 1fr auto;
+
+  input {
+    grid-area: 1 / 1 / -1 / -1;
+    padding: $sp-12 102px $sp-12 $sp-12;
+    border: 1px solid $c-str-medium;
+    border-radius: 8px;
+    background: $c-bg-blue;
+    outline: none;
   }
 
-  .search {
-    margin-left: -45px;
+  div {
+    grid-area: 1 / 2 / -1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, 45px);
   }
 
-  .hidden {
-    visibility: hidden;
+  button {
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #065cf3;
+
+    &:first-of-type:hover,
+    &.active:hover {
+      background-color: #065cf3;
+      color: $c-def-white;
+      cursor: pointer;
+    }
+
+    &:first-of-type:disabled {
+      visibility: hidden;
+    }
+
+    svg {
+      vertical-align: middle;
+    }
   }
 }

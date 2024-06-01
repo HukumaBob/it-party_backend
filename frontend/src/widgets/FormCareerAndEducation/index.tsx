@@ -16,11 +16,9 @@ import {
   setSelectedIncome,
   setClickEducation,
   setSelectedEducation,
-} from "../../app/services/slices/formSlice";
+} from "../../app/services/slices/profileSlice";
 export const FormCareerAndEducation = () => {
   const dispatch = useDispatch();
-  /*const [error, setError] = useState<string>('');
-  const [isLoad, setLoad] = useState<boolean>(false);*/
   const {
     clickProfileExperience,
     selectedProfileExperience,
@@ -31,7 +29,17 @@ export const FormCareerAndEducation = () => {
     clickEducation,
     selectedEducation,
     selectedNavCareerAndEducation,
-  } = useSelector((state) => state.form);
+  } = useSelector((state) => state.profile);
+  const { place_of_work, position } = useSelector((state) => state.profile);
+  
+  React.useEffect(() => {
+    if (place_of_work !== "") {
+      setValue("place_of_work", place_of_work);
+    }
+    if(position !== "") {
+      setValue("position", position);
+    }
+  }, []);
 
   const handleClickProfileExperience = () => {
     dispatch(setClickProfileExperience(!clickProfileExperience));
@@ -73,75 +81,64 @@ export const FormCareerAndEducation = () => {
     setValue("income", value);
   }
 
-  const schemaCareerAndEducation = yup.object().shape({
-    place_of_work: yup.string(),
-    position: yup.string(),
-    experience: yup.number(),
-    specialization: yup.number(),
-    income: yup.number(),
-    education: yup.number(), 
-  });
-
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-    reset,
     setValue,
   } = useForm<TFormDataPersonalValues>({
-    mode: "onTouched", resolver: yupResolver(schemaCareerAndEducation),
+    mode: "onTouched",
   });
 
   const onSubmit = (data: TFormDataPersonalValues) => {
-    editingDataPersonal(data)
-      .then(() => {
-        getFormProfile()
-          .then((data: TUserProfileValues) => {
-            localStorage.setItem("updateInfo", JSON.stringify(data));
-            alert(
-              "Данные успешно обновлены.",
-            );
-            reset();
-            /*dispatch(setSelectedProfileExperience(0));
-            dispatch(setSelectedProfileSpecialization(0));
-            dispatch(setSelectedIncome(0));
-            dispatch(setSelectedEducation(0));*/
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-      })
-      .catch((error) => {
-        alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-      })
-      .finally(() => {
-      });
+    let promise = new Promise<TFormDataPersonalValues>((resolve) => {
+      let objectData: TFormDataPersonalValues = {};
+      for(const key in data) {
+        const keyCurrent = key;
+        if(data[key] !== undefined && data[key] !== "") {
+          objectData[keyCurrent] = data[keyCurrent];
+        } else {
+          continue;
+        }
+      }
+      resolve (objectData);
+    })
+    promise.then((objectData: TFormDataPersonalValues) => {
+      editingDataPersonal(objectData)
+        .then((data: TUserProfileValues) => {
+          localStorage.setItem("updateInfo", JSON.stringify(data));
+          alert(
+            "Данные успешно обновлены.",
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
+        })
+    })
   };
 
   return (
     <form className={selectedNavCareerAndEducation ? style.form : style.formHide} onSubmit={handleSubmit(onSubmit)} id="#formCareerAndEducation">
-      <div className="style.form_container">
+      <div className={style.form_container}>
         <h3 className={style.form_title}>Карьера и образование</h3>
         <div className={style.name_form}>
           <label>
             Место работы <span>*</span>
           </label>
           <input
-            className={`${errors.place_of_work ? style.errorInput : style.message}`}
+            className={errors.place_of_work ? style.errorInput : ''}
             type='text'
             placeholder='Укажите место вашей работы'
             {...register("place_of_work", {
+              required: "Обязательное поле",
               minLength: {
                 value: 2,
                 message: "Слишком короткое название",
-              },
-              pattern: {
-                value: /^\w+(\s+\w+)*$/i,
-                message: "Некорректное название",
-              },
+              }
             })}
           />
-          <span className={`${errors.place_of_work ? style.error : style.message}`}>
+          <span className={errors.place_of_work ? style.error : style.message}>
             {errors?.place_of_work?.message ||
               "Необходимо для регистрации на мероприятие"}
           </span>
@@ -151,21 +148,18 @@ export const FormCareerAndEducation = () => {
             Должность <span>*</span>
           </label>
           <input
-            className={`${errors.position ? style.errorInput : style.message}`}
+            className={errors.position ? style.errorInput : ''}
             type='text'
             placeholder='Укажите вашу должность'
             {...register("position", {
+              required: "Обязательное поле",
               minLength: {
                 value: 2,
                 message: "Слишком короткое название",
-              },
-              pattern: {
-                value: /^\w+(\s+\w+)*$/i,
-                message: "Некорректное название",
-              },
+              }
             })}
           />
-          <span className={`${errors.position ? style.error : style.message}`}>
+          <span className={errors.position ? style.error : style.message}>
             {errors?.position?.message ||
               "Необходимо для регистрации на мероприятие"}
           </span>
@@ -185,9 +179,7 @@ export const FormCareerAndEducation = () => {
             }</span>
             <img src={arrow_down} alt='arrow' />
           </div>
-          <span className={`${
-              selectedProfileExperience === 0 && clickProfileExperience === true ? style.error : style.required
-            }`}>
+          <span className={style.message}>
             Необходимо для регистрации на мероприятие
           </span>
           {clickProfileExperience && (
@@ -235,9 +227,7 @@ export const FormCareerAndEducation = () => {
             <img src={arrow_down} alt='arrow' />
           </div>
           <span
-            className={`${
-              selectedProfileSpecialization === 0 && clickProfileSpecialization === true ? style.error : style.required
-            }`}>
+            className={style.message}>
             Необходимо для регистрации на мероприятие
           </span>
           {clickProfileSpecialization && (
@@ -386,18 +376,14 @@ export const FormCareerAndEducation = () => {
           type='submit'
           className={
             !(
-              isValid &&
-              selectedProfileExperience &&
-              selectedProfileSpecialization
+              isValid
             )
               ? style.disabled
               : style.submit
           }
           disabled={
             !(
-              isValid &&
-              selectedProfileExperience &&
-              selectedProfileSpecialization
+              isValid
             )
           }>
           Сохранить

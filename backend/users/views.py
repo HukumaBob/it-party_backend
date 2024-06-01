@@ -1,4 +1,9 @@
-# Импорт необходимых модулей и классов
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.views.generic import TemplateView
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.views import View
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework import mixins, viewsets, permissions
 from django.contrib.auth import get_user_model
@@ -63,46 +68,19 @@ class ActivateAccountView(APIView):
 
 
 # Аналогичный класс для восстановления пароля
-class PasswordResetConfirmView(APIView):
-    def post(self, request, uidb64, token):
-        User = get_user_model()
-        try:
-            uid = urlsafe_base64_decode(uidb64).decode()
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return Response(
-                {
-                    'detail': _(
-                        'Ссылка для восстановления пароля недействительна!'
-                        )
-                    },
-                status=status.HTTP_400_BAD_REQUEST
-            )
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    # template_name = 'users/password_reset_form.html'
 
-        if not default_token_generator.check_token(user, token):
-            return Response(
-                {
-                    'detail': _(
-                        'Ссылка для восстановления пароля недействительна!'
-                        )
-                        },
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        new_password = request.data.get('new_password')
-        if new_password is None:
-            return Response(
-                {'detail': _('Необходимо указать новый пароль')},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        user.set_password(new_password)
-        user.save()
-
-        return Response(
-            {'detail': _('Пароль успешно обновлен')},
-            status=status.HTTP_200_OK
-        )
+    def form_valid(self, form):
+        """
+        Обработка формы после успешного ввода нового пароля.
+        """
+        form.save()
+        messages.success(self.request, _('Пароль успешно обновлен.'))
+        return redirect('users:success')
+    
+class SuccessView(TemplateView):
+    template_name = 'users/success.html'    
 
 
 # Класс для работы с профилем пользователя через API

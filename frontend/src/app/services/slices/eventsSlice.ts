@@ -20,10 +20,9 @@ const eventsSlice = createSlice({
       state.filters.name = action.payload
     },
     searchCity(state, action) {
-      if (action.payload === "0") {
-        delete state.filters.city
-      } else {
-        state.filters.city = action.payload
+      switch (action.payload) {
+        case 0: delete state.filters.city; break;
+        default: state.filters.city = action.payload
       }
     },
     searchSpecialization(state, action) {
@@ -43,6 +42,9 @@ const eventsSlice = createSlice({
         case "offline": state.filters.online = false; break;
         default: delete state.filters?.online;
       }
+    },
+    searchDate(state, action) {
+      state.filters.date_after = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -67,5 +69,5 @@ const eventsSlice = createSlice({
   },
 });
 
-export const { searchCity, searchSpecialization, searchName, searchOnline } = eventsSlice.actions;
+export const { searchCity, searchSpecialization, searchName, searchOnline, searchDate } = eventsSlice.actions;
 export default eventsSlice.reducer;

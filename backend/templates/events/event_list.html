@@ -1,0 +1,56 @@
+<!-- event_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+{% load widget_tweaks %}
+    <div class="container-fluid">
+        <h1 class="mt-4">Список ивентов</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Ивент</th>
+                    <th>Город</th>
+                    <th>Дата</th>
+                    <th>specializations</th>
+                    <th>online</th>
+                    <th>Заявки</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for event in events %}
+                    <tr>
+                        <td>
+                          <a href="{% url 'mvt_admin:event_detail' event.id %}" class="btn btn-primary btn-block" >{{ event.name }}</a>
+                        </td>
+                        <td>{{ event.city }}</td>
+                        <td>{{ event.date }}</td>
+                        <td>
+                          {% for specialization_name in event.specializations.all %}
+                          {{ specialization_name.specialization }}{% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                      </td>
+                        <td>{{ event.online }}</td>
+                        <td>
+                          {% if event.none_count > 0 %}
+                          <button type="button" class="btn btn-primary btn-block">Избранное: {{ event.none_count }}</button>
+                          {% endif %}
+                          {% if event.pending_count > 0 %}
+                          <button type="button" class="btn btn-warning btn-block">Ожидание: {{ event.pending_count }}</button>
+                          {% endif %}
+                          {% if event.approved_count > 0 %}
+                          <button type="button" class="btn btn-success btn-block">Одобрена: {{ event.approved_count }}</button>
+                          {% endif %}
+                          {% if event.rejected_count > 0 %}
+                          <button type="button" class="btn btn-danger btn-block">Отклонена: {{ event.rejected_count }}</button>
+                              {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">Нет доступных ивентов.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
