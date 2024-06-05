@@ -144,7 +144,7 @@ cd infra/
 docker compose up # sudo service redis-server stop - если занят порт 
 docker compose exec backend python manage.py migrate
 docker compose exec backend python manage.py collectstatic
-docker compose exec backend cp -r /app/static/. /staticfiles/
+docker compose exec backend cp -r /app/static/. /static/
 docker compose exec backend python manage.py generate_initial_data
 # Если хотите добавить тестовые данные запустите и это:
 docker compose exec backend python manage.py generate_initial_users

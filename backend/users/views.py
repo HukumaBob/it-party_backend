@@ -2,8 +2,7 @@ from django.contrib.auth.views import PasswordResetConfirmView
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.views import View
-from django.contrib.auth.forms import SetPasswordForm
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework import mixins, viewsets, permissions
 from django.contrib.auth import get_user_model
@@ -82,6 +81,14 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 class SuccessView(TemplateView):
     template_name = 'users/success.html'    
 
+# Если надо удалить пользователя полностью...
+class DeleteUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        user.delete()
+        return Response({"result": _('Пользователь удален')})
 
 # Класс для работы с профилем пользователя через API
 class UserProfileViewSet(viewsets.ModelViewSet):
