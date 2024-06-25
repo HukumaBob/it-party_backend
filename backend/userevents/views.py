@@ -133,20 +133,29 @@ class UnfavoriteEventView(APIView):
         # Находим UserEvent для данного пользователя и события
         user_event = UserEvent.objects.filter(
             user_profile=user_profile, event=event
-            )
-        if user_event.exists():
-            user_event.delete()
-            return Response(
-                {
-                    "message": "Событие успешно удалено из списка 'Избранное'"
-                }, status=status.HTTP_200_OK
-            )
+        ).first()  # Используем .first() вместо .exists(), чтобы получить объект или None
+
+        if user_event:
+            if user_event.application_status == 'none':
+                user_event.delete()
+                return Response(
+                    {
+                        "message": "Событие успешно удалено из списка 'Избранное'"
+                    }, status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {
+                        "message": "Предупреждение: Событие не может быть удалено, так как application_status не равен 'none'"
+                    }, status=status.HTTP_400_BAD_REQUEST
+                )
         else:
             return Response(
                 {
                     "message": "Событие не найдено в списке 'Избранное'"
                 }, status=status.HTTP_400_BAD_REQUEST
             )
+
 
 
 class StaffUserEventView(APIView):
