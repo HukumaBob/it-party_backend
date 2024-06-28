@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             name='UserEvent',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('application_status', models.CharField(choices=[('none', 'Не подана'), ('pending', 'На рассмотрении'), ('approved', 'Одобрена'), ('rejected', 'Отклонена')], default='none', max_length=20)),
+                ('application_status', models.CharField(choices=[('is_favorite', 'Не подана'), ('pending', 'На рассмотрении'), ('approved', 'Одобрена'), ('rejected', 'Отклонена')], default='is_favorite', max_length=20)),
                 ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='events.event')),
             ],
         ),

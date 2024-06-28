@@ -31,7 +31,7 @@ class SubmitApplicationView(APIView):
     def post(self, request, user_event_id, format=None):
         user_event = UserEvent.objects.get(id=user_event_id)
         application_status=user_event.application_status
-        if application_status=='none':
+        if application_status=='is_favorite':
             event = user_event.event
             user_profile = user_event.user_profile
             form_template = user_event.event.form_template
@@ -87,7 +87,7 @@ class SubmitApplicationView(APIView):
         else:
             return Response(
                 {
-                    "message": "Анкета уже в обработке"
+                    "message": f"Анкета уже в обработке ({user_event.get_application_status_display()})"
                 }, status=status.HTTP_200_OK
             )                            
 
@@ -144,7 +144,7 @@ class UnfavoriteEventView(APIView):
         ).first()  # Используем .first() вместо .exists(), чтобы получить объект или None
 
         if user_event:
-            if user_event.application_status == 'none':
+            if user_event.application_status == 'is_favorite':
                 user_event.delete()
                 return Response(
                     {
@@ -154,7 +154,7 @@ class UnfavoriteEventView(APIView):
             else:
                 return Response(
                     {
-                        "message": "Предупреждение: Событие не может быть удалено, так как application_status не равен 'none'"
+                        "message": "Предупреждение: Событие не может быть удалено, так как application_status не равен 'is_favorite'"
                     }, status=status.HTTP_400_BAD_REQUEST
                 )
         else:

@@ -8,7 +8,7 @@ class UserEvent(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     APPLICATION_STATUS_CHOICES = [
-        ('none', _('Не подана')),
+        ('is_favorite', _('В избранном')),
         ('pending', _('На рассмотрении')),
         ('approved', _('Одобрена')),
         ('rejected', _('Отклонена')),
@@ -16,7 +16,7 @@ class UserEvent(models.Model):
     application_status = models.CharField(
         max_length=20,
         choices=APPLICATION_STATUS_CHOICES,
-        default='none',
+        default='is_favorite',
     )
     data_of_notification = models.DateTimeField(
         null=True,
