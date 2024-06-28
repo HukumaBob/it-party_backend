@@ -30,51 +30,66 @@ class SubmitApplicationView(APIView):
 
     def post(self, request, user_event_id, format=None):
         user_event = UserEvent.objects.get(id=user_event_id)
-        event = user_event.event
-        user_profile = user_event.user_profile
-        form_template = user_event.event.form_template
-        if form_template is None:
-            fields = get_default_fields()
-        else:
-            fields = form_template.fields
-        # Получаем обновленные данные анкеты из запроса
-        form_data = request.data
-        # Проверяем, что все необходимые поля заполнены
-        for field in fields:
-            if field not in form_data:
-                return Response(
-                    {
-                        "message": f"Поле {field} обязательно для заполнения"
-                        }, status=status.HTTP_400_BAD_REQUEST
+        application_status=user_event.application_status
+        if application_status=='none':
+            event = user_event.event
+            user_profile = user_event.user_profile
+            form_template = user_event.event.form_template
+            if form_template is None:
+                fields = get_default_fields()
+            else:
+                fields = form_template.fields
+            # Получаем обновленные данные анкеты из запроса
+            form_data = request.data
+            # Проверяем, что все необходимые поля заполнены
+            for field in fields:
+                if field not in form_data:
+                    return Response(
+                        {
+                            "message": f"Поле {field} обязательно для заполнения"
+                            }, status=status.HTTP_400_BAD_REQUEST
+                        )
+            # Обновляем профиль пользователя
+            for field, value in form_data.items():
+                if hasattr(user_profile, field):
+                    field_instance = getattr(user_profile, field)
+                    if field_instance.__class__.__name__ == 'ForeignKey':
+                        model = field_instance.field.related_model
+                        related_instance = get_object_or_404(model, id=value)
+                        getattr(user_profile, field).set(related_instance)
+            user_profile.save()
+            # Получаем данные уведомления из профиля пользователя
+            notification = user_profile.notification
+            if notification:
+                # Вычисляем дату и время уведомления
+                event_datetime = datetime.combine(event.date, event.time)
+                notification_time = event_datetime - timedelta(
+                    minutes=notification.minutes_before_notification
                     )
-        # Обновляем профиль пользователя
-        for field, value in form_data.items():
-            if hasattr(user_profile, field):
-                field_instance = getattr(user_profile, field)
-                if field_instance.__class__.__name__ == 'ForeignKey':
-                    model = field_instance.field.related_model
-                    related_instance = get_object_or_404(model, id=value)
-                    getattr(user_profile, field).set(related_instance)
-        user_profile.save()
-        # Получаем данные уведомления из профиля пользователя
-        notification = user_profile.notification
-        if notification:
-            # Вычисляем дату и время уведомления
-            event_datetime = datetime.combine(event.date, event.time)
-            notification_time = event_datetime - timedelta(
-                minutes=notification.minutes_before_notification
-                )
-            user_event.data_of_notification = notification_time
-            user_event.save()
-        # Создаем "снимок" обновленной анкеты пользователя
-        UserProfileSnapshot.objects.create(
-            user_event=user_event, snapshot_data=form_data
-            )
-        return Response(
-            {
-                "message": "Анкета успешно отправлена"
+                user_event.data_of_notification = notification_time
+                user_event.application_status = 'pending' 
+                user_event.save()
+            # Создаем "снимок" обновленной анкеты пользователя
+            try:
+                existing_snapshot = UserProfileSnapshot.objects.get(user_event=user_event)
+                # Если снимок уже существует, обновляем его данные
+                existing_snapshot.snapshot_data = form_data
+                existing_snapshot.save()
+            except UserProfileSnapshot.DoesNotExist:
+                # Если снимка еще нет, создаем новый
+                UserProfileSnapshot.objects.create(user_event=user_event, snapshot_data=form_data)
+
+            return Response(
+                {
+                    "message": "Анкета успешно отправлена"
                 }, status=status.HTTP_200_OK
             )
+        else:
+            return Response(
+                {
+                    "message": "Анкета уже в обработке"
+                }, status=status.HTTP_200_OK
+            )                            
 
 
 class ApplyForEventView(APIView):
@@ -95,19 +110,12 @@ class ApplyForEventView(APIView):
             fields = get_default_fields()
         else:
             fields = form_template.fields
-        # Получаем параметр запроса
-        apply = request.data.get('apply', False)
-        # Устанавливаем статус заявки в зависимости от параметра запроса
-        application_status = 'pending' if apply else 'none'
         # Проверяем, существует ли уже
         # UserEvent для этого пользователя и ивента
         user_event, created = UserEvent.objects.get_or_create(
-            user_profile=user_profile, event=event, defaults={
-                'application_status': application_status
-                }
+            user_profile=user_profile, event=event,
                 )
-        if not created and apply:
-            user_event.application_status = 'pending'
+        if not created:
             user_event.save()
         # Используем сериализатор для извлечения данных из профиля пользователя
         serializer = UserProfileSerializer(user_profile)
