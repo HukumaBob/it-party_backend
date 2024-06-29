@@ -38,7 +38,8 @@ def get_default_fields():
         "specialization": "",
         "experience": "",
         "phone": "",
-        "online": False
+        "online": False,
+        "offline": False,
         }
 
 
