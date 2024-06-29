@@ -127,7 +127,7 @@ class Specialization(models.Model):
     specialization = models.CharField(
         max_length=255, verbose_name=_("Specialization")
         )
-    index = models.IntegerField(verbose_name=_("Index"))
+    index = models.IntegerField(unique=True, verbose_name=_("Index"))
 
     def __str__(self):
         return f'{self.specialization}'
@@ -136,11 +136,12 @@ class Specialization(models.Model):
 class Stack(models.Model):
     name = models.CharField(
         max_length=255, verbose_name=_("Stack Name")
-        )
-    specialization_id = models.ForeignKey(
+    )
+    specialization = models.ForeignKey(
         Specialization,
         on_delete=models.CASCADE,
-        verbose_name=_("Stack ID")
+        verbose_name=_("Specialization"),
+        to_field="index",
     )
 
     def __str__(self):

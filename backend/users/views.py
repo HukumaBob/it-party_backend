@@ -125,6 +125,40 @@ class StackViewSet(
     permission_classes = [permissions.AllowAny]
     pagination_class = None
 
+class SpecializationStackView(APIView):
+    # Список специализаций с принадлежащими им стеками
+    permission_classes = [permissions.AllowAny]  # Add the desired permissions here
+    pagination_class = None  # Remove this if you want to enable pagination    
+    def get(self, request):
+        # Получаем список специализаций и связанных с ними стеков
+        specializations = Specialization.objects.all()
+        data = []
+        for spec in specializations:
+            stacks = Stack.objects.filter(specialization=spec)
+            serialized_stacks = StackSerializer(stacks, many=True).data
+            data.append({
+                'specialization': SpecializationSerializer(spec).data,
+                'stacks': serialized_stacks
+            })
+        return Response(data, status=status.HTTP_200_OK)
+    
+class SpecializationStackDetailView(APIView):
+    # Детальное описание специализации по ID
+    permission_classes = [permissions.AllowAny]  # Add the desired permissions here
+    pagination_class = None  # Remove this if you want to enable pagination    
+    def get(self, request, pk):
+        try:
+            specialization = Specialization.objects.get(pk=pk)
+            stacks = Stack.objects.filter(specialization=specialization)
+            serialized_stacks = StackSerializer(stacks, many=True).data
+            data = {
+                'specialization': SpecializationSerializer(specialization).data,
+                'stacks': serialized_stacks
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        except Specialization.DoesNotExist:
+            return Response({'message': 'Specialization not found'}, status=status.HTTP_404_NOT_FOUND)    
+
 
 class ExperienceViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
