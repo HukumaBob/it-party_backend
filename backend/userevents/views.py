@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
+from django.db.models import ForeignKey
 from rest_framework import permissions
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
@@ -50,14 +51,11 @@ class SubmitApplicationView(APIView):
                             }, status=status.HTTP_400_BAD_REQUEST
                         )
             # Обновляем профиль пользователя
-            for field, value in form_data.items():
-                if hasattr(user_profile, field):
-                    field_instance = getattr(user_profile, field)
-                    if field_instance.__class__.__name__ == 'ForeignKey':
-                        model = field_instance.field.related_model
-                        related_instance = get_object_or_404(model, id=value)
-                        getattr(user_profile, field).set(related_instance)
-            user_profile.save()
+            serializer = UserProfileSerializer(user_profile, data=form_data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             # Получаем данные уведомления из профиля пользователя
             notification = user_profile.notification
             if notification:
@@ -67,8 +65,8 @@ class SubmitApplicationView(APIView):
                     minutes=notification.minutes_before_notification
                     )
                 user_event.data_of_notification = notification_time
-                user_event.application_status = 'pending' 
-                user_event.save()
+            user_event.application_status = 'pending'
+            user_event.save()
             # Создаем "снимок" обновленной анкеты пользователя
             try:
                 existing_snapshot = UserProfileSnapshot.objects.get(user_event=user_event)

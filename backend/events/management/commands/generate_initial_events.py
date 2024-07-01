@@ -3,7 +3,7 @@ from django.core.files.base import ContentFile
 from PIL import Image
 from io import BytesIO
 from faker import Faker
-from events.models import Event, Speaker, Specialization
+from events.models import Event, Speaker, Specialization, EventGallery
 from additions.models import City
 import random
 
@@ -24,7 +24,7 @@ class Command(BaseCommand):
                 city=City.objects.order_by('?').first(),
                 address=fake.address(),
                 description=fake.text(),
-                gallery=self.create_image_file(),
+                # gallery=self.create_image_file(),
                 online=fake.boolean()
             )
 
@@ -41,6 +41,14 @@ class Command(BaseCommand):
                 )
                 speaker.specializations.set([random.choice(specializations)])  # Используйте set() для специализаций
                 event.speakers.add(speaker)
+
+            for _ in range(random.randint(4, 5)):
+                event_gallery = EventGallery.objects.create(
+                    event_photo=self.create_image_file(),
+                    caption=fake.name(),
+                )
+                # speaker.specializations.set([random.choice(specializations)])  # Используйте set() для специализаций
+                event.gallery.add(event_gallery)
 
             self.stdout.write(
                 self.style.SUCCESS(

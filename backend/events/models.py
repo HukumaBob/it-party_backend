@@ -92,11 +92,12 @@ class Event(models.Model):
         max_length=1000,
         blank=False,
     )
-    gallery = models.ImageField(
+    gallery = models.ManyToManyField(
+        'EventGallery',
+        related_name='events_gallery',
         verbose_name=_("Галерея"),
-        upload_to='images/',
-        blank=False, null=True,
-    )
+        blank=True,
+    )    
     speakers = models.ManyToManyField(
         Speaker,
         related_name="event_speaker",
@@ -142,3 +143,12 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+class EventGallery(models.Model):
+        event_photo = models.ImageField(
+        verbose_name=_("Галерея"),
+        upload_to='images/',
+        blank=False, null=True,
+        )
+        caption = models.TextField(verbose_name=_("Описание"),
+        max_length=250,
+        blank=True, null=True)

@@ -19,10 +19,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30, blank=True, null=True,)
     date_joined = models.DateTimeField(auto_now_add=True)
     user_photo = models.ImageField(
-        blank=True, upload_to='user_photo/', verbose_name=_("User Photo")
+        blank=True, upload_to='user_photo/', verbose_name=_("Фотография пользователя")
         )
     agreement_required = models.BooleanField(
-        default=True, verbose_name=_("Agreement Required")
+        default=True, verbose_name=_("Обязательное согласие")
         )
 
     objects = CustomUserManager()
@@ -46,68 +46,71 @@ class UserProfile(models.Model):
     """
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, verbose_name=_("User")
+        User, on_delete=models.CASCADE, verbose_name=_("Юзер")
         )
     phone = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name=_("Phone")
+        max_length=255, blank=True, null=True, verbose_name=_("Телефон")
         )
     place_of_work = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name=_("Place of Work")
+        max_length=255, blank=True, null=True, verbose_name=_("Место работы")
         )
     position = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name=_("Position")
+        max_length=255, blank=True, null=True, verbose_name=_("Должность")
         )
-    online = models.BooleanField(default=False, verbose_name=_("Online"))
-    offline = models.BooleanField(default=False, verbose_name=_("Offline"))
+    online = models.BooleanField(default=False, verbose_name=_("Онлайн"))
+    offline = models.BooleanField(default=False, verbose_name=_("Офлайн"))
     agreement_optional = models.BooleanField(
         default=False, verbose_name=_("Agreement Optional")
         )
     specialization = models.ForeignKey(
         'Specialization', on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name=_("Specialization")
+        blank=True, null=True, verbose_name=_("Специализация")
+    )
+    stacks = models.ManyToManyField(
+        'Stack', blank=True, verbose_name=_("Стеки")
     )
     experience = models.ForeignKey(
         'Experience', on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name=_("Experience")
+        blank=True, null=True, verbose_name=_("Опыт")
     )
     #  необязательные поля:
     date_of_birth = models.DateField(
-        blank=True, null=True, verbose_name=_("Date of Birth")
+        blank=True, null=True, verbose_name=_("Дата рождения")
         )
     familystatus = models.ForeignKey(
         FamilyStatus, on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name=_("Family Status")
+        blank=True, null=True, verbose_name=_("Семейное положение")
     )
     education = models.ForeignKey(
         Education, on_delete=models.CASCADE, blank=True,
-        null=True, verbose_name=_("Education")
+        null=True, verbose_name=_("Образование")
     )
     income = models.ForeignKey(
         Income, on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name=_("Income")
+        blank=True, null=True, verbose_name=_("Доход")
     )
     notification = models.ForeignKey(
         Notification, on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name=_("Notification")
+        blank=True, null=True, verbose_name=_("Уведомление")
     )
     country = models.ForeignKey(
         Country, on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name=_("Country")
+        blank=True, null=True, verbose_name=_("Страна")
     )
     hobby = models.TextField(
-        blank=True, null=True, verbose_name=_("Hobby")
+        blank=True, null=True, verbose_name=_("Хобби")
         )
     values = models.TextField(
-        blank=True, null=True, verbose_name=_("Values")
+        blank=True, null=True, verbose_name=_("Жизненные ценности")
         )
     aims = models.TextField(
-        blank=True, null=True, verbose_name=_("Aims")
+        blank=True, null=True, verbose_name=_("Жизненные цели")
         )
     cv = models.TextField(
-        blank=True, null=True, verbose_name=_("CV")
+        blank=True, null=True, verbose_name=_("Автобиография")
         )
     motivation = models.TextField(
-        blank=True, null=True, verbose_name=_("Motivation")
+        blank=True, null=True, verbose_name=_("Мотивации")
         )
 
     def __str__(self):
@@ -116,7 +119,7 @@ class UserProfile(models.Model):
 
 class Experience(models.Model):
     experience = models.CharField(
-        max_length=255, verbose_name=_("Experience")
+        max_length=255, verbose_name=_("Опыт")
         )
 
     def __str__(self):
@@ -125,7 +128,7 @@ class Experience(models.Model):
 
 class Specialization(models.Model):
     specialization = models.CharField(
-        max_length=255, verbose_name=_("Specialization")
+        max_length=255, verbose_name=_("Направление")
         )
     index = models.IntegerField(unique=True, verbose_name=_("Index"))
 
@@ -135,12 +138,12 @@ class Specialization(models.Model):
 
 class Stack(models.Model):
     name = models.CharField(
-        max_length=255, verbose_name=_("Stack Name")
+        max_length=255, verbose_name=_("Стек")
     )
     specialization = models.ForeignKey(
         Specialization,
         on_delete=models.CASCADE,
-        verbose_name=_("Specialization"),
+        verbose_name=_("Направление"),
         to_field="index",
     )
 

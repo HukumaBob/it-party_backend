@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import (
     Event,
+    EventGallery,
     Speaker,
     FormTemplate,
     )
@@ -21,6 +22,13 @@ class SpeakerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Speaker
         fields = '__all__'
+
+class EventGallerySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EventGallery
+        fields = '__all__'
+
 
 
 class SpecializationSerializer(serializers.ModelSerializer):
@@ -61,6 +69,7 @@ class EventSerializer(serializers.ModelSerializer):
 class EventDetailSerializer(serializers.ModelSerializer):
     """Сериализатор для подробной информации от эвенте."""
     speakers = SpeakerSerializer(read_only=True, many=True)
+    gallery = EventGallerySerializer(read_only=True, many=True)
     form_template = FormTemplateSerializer(read_only=True)
     specializations = SpecializationSerializer(read_only=True, many=True)
     

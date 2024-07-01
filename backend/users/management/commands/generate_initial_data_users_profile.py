@@ -1,13 +1,12 @@
-from users.models import User, UserProfile, Experience, Specialization
+from users.models import User, UserProfile, Experience, Specialization, Stack
 from additions.models import (
     Country, FamilyStatus, Education, Income, Notification
-    )
+)
 from django.core.management.base import BaseCommand
 from mixer.backend.django import mixer
 from faker import Faker
 
 fake = Faker()
-
 
 class Command(BaseCommand):
     help = 'Generate test users and their profiles'
@@ -27,15 +26,16 @@ class Command(BaseCommand):
             user.set_password("Bobobo67")
             user.save()
 
+            specialization_instance = Specialization.objects.order_by('?').first()
             # Генерация профиля пользователя
-            _ = UserProfile.objects.create(
+            profile = UserProfile.objects.create(
                 user=user,
                 phone=fake.phone_number(),
                 place_of_work=fake.company(),
                 position=fake.job(),
                 online=fake.boolean(),
                 agreement_optional=fake.boolean(),
-                specialization=Specialization.objects.order_by('?').first(),
+                specialization=specialization_instance,
                 experience=Experience.objects.order_by('?').first(),
                 date_of_birth=fake.date_of_birth(),
                 familystatus=FamilyStatus.objects.order_by('?').first(),
@@ -50,10 +50,16 @@ class Command(BaseCommand):
                 motivation=fake.text()
             )
 
+            # Получаем случайное количество стеков (от 1 до 3)
+            num_stacks = fake.random.randint(1, 3)
+            random_stacks = Stack.objects.filter(specialization=specialization_instance.index).order_by('?')[:num_stacks]
+
+            for stack in random_stacks:
+                profile.stacks.add(stack)  # Добавляем стеки к профилю пользователя
+
             self.stdout.write(
                 self.style.SUCCESS(
                     f'Successfully created user '
                     f'"{user.email}" and their profile'
                 )
             )
-
