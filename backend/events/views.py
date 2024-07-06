@@ -1,12 +1,14 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from userevents.serializers import UserEventSerializer
+from userevents.models import UserEvent
 from .models import Event, Speaker, FormTemplate
 from additions.models import City
 from .filters import EventFilter
 from .permissions import IsStaffOrReadOnly
-from .serializers import EventSerializer, EventDetailSerializer
+from .serializers import AdminEventSerializer, AdminUserEventSerializer, EventSerializer, EventDetailSerializer
 from users.models import Specialization
 
 
@@ -93,3 +95,23 @@ class EventViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(event)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+class AdminEventListView(generics.ListAPIView):
+    queryset = Event.objects.all().order_by('date') 
+    serializer_class = AdminEventSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        # Фильтрация по администратору
+        user = self.request.user
+        events = Event.objects.filter(event_admin=user)
+        return events
+    
+class AdminUserEventView(generics.ListAPIView):
+    serializer_class = AdminUserEventSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        event_id = self.kwargs.get('event_id')  # Получаем ID ивента из URL
+        user_events = UserEvent.objects.filter(event_id=event_id)
+        return user_events

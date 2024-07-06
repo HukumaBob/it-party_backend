@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from additions.models import City
-from users.models import Specialization
+from users.models import Specialization, User
 
 
 class Speaker(models.Model):
@@ -119,14 +119,24 @@ class Event(models.Model):
         null=True,
         blank=True
     )
-    record_link = models.URLField(blank=True, null=True,)
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
+    record_link = models.URLField(
+         blank=True, null=True,
+         verbose_name=_("Ссылка на запись"),
+         )
+    stream = models.URLField(
+         blank=True, null=True,
+         verbose_name=_("Ссылка на стрим"),
+         )
+    is_archive = models.BooleanField(
+         default=False,
+         verbose_name=_("Архив"),
+         )
+    event_admin = models.ManyToManyField(
+        User,
         null=True,
         blank=True,
-        related_name='created_events',
-        verbose_name=_("Создатель ивента"),
+        related_name='event_admins',
+        verbose_name=_("Администратор ивента"),
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -143,6 +153,7 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
 class EventGallery(models.Model):
         event_photo = models.ImageField(
         verbose_name=_("Галерея"),

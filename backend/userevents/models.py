@@ -5,8 +5,8 @@ from events.models import Event
 
 
 class UserEvent(models.Model):
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user_events')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='user_events')
     APPLICATION_STATUS_CHOICES = [
         ('is_favorite', _('В избранном')),
         ('pending', _('На рассмотрении')),

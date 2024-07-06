@@ -1,5 +1,8 @@
 from rest_framework import serializers
 
+from users.serializers import UserProfileSerializer
+from userevents.serializers import UserEventSerializer
+
 from .models import (
     Event,
     EventGallery,
@@ -77,3 +80,47 @@ class EventDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = '__all__'
+
+class AdminEventSerializer(serializers.ModelSerializer):
+    application_status_counts = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Event
+        fields = ('id', 'name', 'application_status_counts',)
+
+    def get_application_status_counts(self, obj):
+        # Получаем все связанные инстансы UserEvent для данного ивента
+        user_events = obj.user_events.all()
+
+        # Создаем словарь для подсчета статусов
+        status_counts = {
+            'is_favorite': 0,
+            'pending': 0,
+            'approved': 0,
+            'rejected': 0,
+        }
+
+        # Подсчитываем количество инстансов для каждого статуса
+        for user_event in user_events:
+            status_counts[user_event.application_status] += 1
+
+        return status_counts
+
+class AdminUserEventSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = ('id',)
+     
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Получите данные профиля пользователя по айди
+        profile_events_data = UserProfileSerializer(instance.user_profile).data
+
+        # Объедините данные профиля пользователя и айди связи user-event
+        representation['profile_events'] = profile_events_data
+        representation['application_status'] = instance.application_status
+
+
+        return representation
+
