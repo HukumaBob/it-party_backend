@@ -121,6 +121,5 @@ class AdminUserEventSerializer(serializers.ModelSerializer):
         representation['profile_events'] = profile_events_data
         representation['application_status'] = instance.application_status
 
-
         return representation
 

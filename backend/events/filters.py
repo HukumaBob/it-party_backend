@@ -40,12 +40,12 @@ class EventFilter(django_filters.FilterSet):
         if value:
             # Получаем события, у которых есть связанный userevent
             return queryset.filter(
-                Exists(Event.objects.filter(id=OuterRef('id'), userevent__isnull=False))
+                Exists(Event.objects.filter(id=OuterRef('id'), user_events__isnull=False))
             )
         else:
             # Получаем события, у которых нет связанного userevent
             return queryset.exclude(
-                Exists(Event.objects.filter(id=OuterRef('id'), userevent__isnull=False))
+                Exists(Event.objects.filter(id=OuterRef('id'), user_events__isnull=False))
             )
  
 
