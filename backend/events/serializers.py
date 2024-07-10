@@ -86,7 +86,7 @@ class AdminEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'name', 'application_status_counts',)
+        fields = ('id', 'logo', 'name', 'date', 'time', 'application_status_counts',)
 
     def get_application_status_counts(self, obj):
         # Получаем все связанные инстансы UserEvent для данного ивента
@@ -107,10 +107,24 @@ class AdminEventSerializer(serializers.ModelSerializer):
         return status_counts
 
 class AdminUserEventSerializer(serializers.ModelSerializer):
+    logo = serializers.ImageField(source='event.logo')
+    event_name = serializers.CharField(source='event.name')
+    event_date = serializers.DateField(source='event.date')
+    city_id = serializers.IntegerField(source='event.city.id')
+    city_name = serializers.CharField(source='event.city.name')
+    experience = serializers.CharField(source='user_profile.experience')
 
     class Meta:
-        model = Event
-        fields = ('id',)
+        model = UserEvent
+        fields = (
+            'id', 
+            'logo', 
+            'event_name', 
+            'event_date', 
+            'city_id', 
+            'city_name',
+            'experience',
+            )
      
     def to_representation(self, instance):
         representation = super().to_representation(instance)

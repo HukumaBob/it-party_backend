@@ -73,27 +73,7 @@ class EventViewSet(viewsets.ModelViewSet):
         # Создаем form_template
         form_template_data = data.pop('form_template')
         form_template = FormTemplate.objects.create(**form_template_data)
-
-        # Получаем город по идентификатору
-        city_id = data.pop('city')
-        city = City.objects.get(id=city_id)
-
-        # Получаем пользователя, сделавшего запрос
-        user = request.user
-
-        # Создаем ивент
-        event = Event.objects.create(
-            created_by=user, form_template=form_template, city=city, **data
-            )
-
-        # Добавляем спикеров к ивенту
-        event.speakers.set(speakers)
-
-        # Добавляем специализации к ивенту
-        event.specializations.set(specializations)
-        
-        serializer = self.get_serializer(event)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+ 
 
 
 class AdminEventListView(generics.ListAPIView):

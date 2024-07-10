@@ -133,7 +133,6 @@ class Event(models.Model):
          )
     event_admin = models.ManyToManyField(
         User,
-        null=True,
         blank=True,
         related_name='event_admins',
         verbose_name=_("Администратор ивента"),
