@@ -134,7 +134,7 @@ class Event(models.Model):
     event_admin = models.ManyToManyField(
         User,
         blank=True,
-        related_name='event_admins',
+        related_name='events',
         verbose_name=_("Администратор ивента"),
     )
     created_at = models.DateTimeField(

@@ -58,21 +58,30 @@ class EventViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
 
-        # Создаем список спикеров и ивентов
-        speakers_data = data.pop('speakers')
-        speakers = [
-            Speaker.objects.create(**speaker_data)
-            for speaker_data in speakers_data
-            ]
-        
-        specializations_data = data.pop('specializations')
-        specializations = [
-            Specialization.objects.create(**specialization_data)
-            for specialization_data in specializations_data
-        ]        
+        # Получаем список идентификаторов спикеров, специализаций и админов
+        speaker_ids = data.pop('speakers')
+        specialization_ids = data.pop('specializations')
+        event_admin_ids = data.pop('event_admin')
+
+
         # Создаем form_template
         form_template_data = data.pop('form_template')
         form_template = FormTemplate.objects.create(**form_template_data)
+
+        # Получаем экземпляр City по его ID
+        city_id = data.pop('city')['id']
+        city = City.objects.get(id=city_id)
+
+        # Создаем событие и присваиваем ему город
+        event = Event.objects.create(city=city, **data)
+
+        # Связываем спикеров и специализации и организаторов с созданным событием
+        event.speakers.set(speaker_ids)
+        event.specializations.set(specialization_ids)
+        event.event_admin.set(event_admin_ids)
+
+        return Response(EventDetailSerializer(event).data, status=status.HTTP_201_CREATED)
+
  
 
 

@@ -10,7 +10,7 @@ from .models import (
     FormTemplate,
     )
 from userevents.models import UserEvent
-from users.models import UserProfile, Specialization
+from users.models import User, UserProfile, Specialization
 
 
 class FormTemplateSerializer(serializers.ModelSerializer):
@@ -32,13 +32,15 @@ class EventGallerySerializer(serializers.ModelSerializer):
         model = EventGallery
         fields = '__all__'
 
-
-
 class SpecializationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialization
         fields = '__all__'
 
+class EventAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 class EventSerializer(serializers.ModelSerializer):
     """Главная страница списка эвентов."""
@@ -75,7 +77,8 @@ class EventDetailSerializer(serializers.ModelSerializer):
     gallery = EventGallerySerializer(read_only=True, many=True)
     form_template = FormTemplateSerializer(read_only=True)
     specializations = SpecializationSerializer(read_only=True, many=True)
-    
+    event_admin = EventAdminSerializer(read_only=True, many=True)
+        
 
     class Meta:
         model = Event
@@ -86,7 +89,7 @@ class AdminEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'logo', 'name', 'date', 'time', 'application_status_counts',)
+        fields = ('id', 'logo', 'name', 'date', 'time', 'application_status_counts', 'event_admin')
 
     def get_application_status_counts(self, obj):
         # Получаем все связанные инстансы UserEvent для данного ивента
