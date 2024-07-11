@@ -162,3 +162,14 @@ class EventGallery(models.Model):
         caption = models.TextField(verbose_name=_("Описание"),
         max_length=250,
         blank=True, null=True)
+
+class RejectionReason(models.Model):
+     rejection_reason = models.CharField(
+        verbose_name=_("Причина отказа"),          
+        max_length=255, 
+        blank=False, 
+        null=True,
+        )
+     
+     def __str__(self):
+         return self.rejection_reason     

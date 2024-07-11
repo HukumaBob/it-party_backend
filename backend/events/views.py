@@ -3,11 +3,19 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from userevents.models import UserEvent
-from .models import Event, Speaker, FormTemplate
+from .models import Event, RejectionReason, Speaker, FormTemplate
 from additions.models import City
 from .filters import EventFilter, SpeakerFilter
 from .permissions import IsStaffOrReadOnly
-from .serializers import AdminEventSerializer, AdminUserEventSerializer, EventSerializer, EventDetailSerializer, SpeakerDetailSerializer, SpeakerSerializer
+from .serializers import (
+    AdminEventSerializer, 
+    AdminUserEventSerializer, 
+    EventSerializer, 
+    EventDetailSerializer, 
+    RejectionReasonSerializer, 
+    SpeakerDetailSerializer, 
+    SpeakerSerializer,
+    )
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -172,3 +180,8 @@ class AdminUserEventView(generics.ListAPIView):
         event_id = self.kwargs.get('event_id')  # Получаем ID ивента из URL
         user_events = UserEvent.objects.filter(event_id=event_id)
         return user_events
+    
+class RejectionReasonView(viewsets.ModelViewSet):
+    queryset = RejectionReason.objects.all()
+    serializer_class = RejectionReasonSerializer
+    pagination_class = None

@@ -6,6 +6,7 @@ from userevents.serializers import UserEventSerializer
 from .models import (
     Event,
     EventGallery,
+    RejectionReason,
     Speaker,
     FormTemplate,
     )
@@ -46,6 +47,11 @@ class SpecializationSerializer(serializers.ModelSerializer):
 class EventAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = '__all__'
+
+class RejectionReasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RejectionReason
         fields = '__all__'
 
 class EventSerializer(serializers.ModelSerializer):
