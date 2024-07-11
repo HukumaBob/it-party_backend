@@ -1,6 +1,6 @@
 import django_filters
 from django.db.models import Exists, OuterRef
-from events.models import Event
+from events.models import Event, Speaker
 from users.models import Specialization
 from additions.models import City
 
@@ -14,6 +14,18 @@ class EventApplicationStatusFilter(django_filters.Filter):
             # Получить только ивенты, у которых application_status равен 'not_applied'
             return queryset.filter(user_event__application_status='not_applied')
         return queryset
+
+class SpeakerFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')  # фильтрация по части названия
+    specializations = django_filters.ModelMultipleChoiceFilter(
+        field_name='specializations__id',
+        to_field_name='id',
+        queryset=Specialization.objects.all(),
+        conjoined=False,  # измените на False, если хотите использовать OR вместо AND
+    )
+    class Meta:
+        model = Speaker
+        fields = ['name', 'specializations']
 
 class EventFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains')  # фильтрация по части названия

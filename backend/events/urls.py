@@ -4,6 +4,7 @@ from .views import (
     AdminEventListView,
     AdminUserEventView,
     EventViewSet,
+    SpeakerViewSet
     )
 
 
@@ -15,6 +16,12 @@ router_v1.register(
     r'events',
     EventViewSet,
     basename='events'
+)
+
+router_v1.register(
+    r'speaker',
+    SpeakerViewSet,
+    basename='speaker'
 )
 
 urlpatterns = [
