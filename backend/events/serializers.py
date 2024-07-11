@@ -24,6 +24,12 @@ class SpeakerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Speaker
+        fields = ['id', 'name']
+
+class SpeakerDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Speaker
         fields = '__all__'
 
 class EventGallerySerializer(serializers.ModelSerializer):

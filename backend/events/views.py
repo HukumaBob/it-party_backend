@@ -7,7 +7,7 @@ from .models import Event, Speaker, FormTemplate
 from additions.models import City
 from .filters import EventFilter, SpeakerFilter
 from .permissions import IsStaffOrReadOnly
-from .serializers import AdminEventSerializer, AdminUserEventSerializer, EventSerializer, EventDetailSerializer, SpeakerSerializer
+from .serializers import AdminEventSerializer, AdminUserEventSerializer, EventSerializer, EventDetailSerializer, SpeakerDetailSerializer, SpeakerSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -114,7 +114,7 @@ class SpeakerViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return SpeakerSerializer
-        return SpeakerSerializer
+        return SpeakerDetailSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -134,11 +134,11 @@ class SpeakerViewSet(viewsets.ModelViewSet):
         # Связываем специализации с созданным спикером
         speaker.specializations.set(specialization_ids)
 
-        return Response(SpeakerSerializer(speaker).data, status=status.HTTP_201_CREATED)
+        return Response(SpeakerDetailSerializer(speaker).data, status=status.HTTP_201_CREATED)
     
     def patch(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = SpeakerSerializer(instance, data=request.data, partial=True)
+        serializer = SpeakerDetailSerializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -146,7 +146,7 @@ class SpeakerViewSet(viewsets.ModelViewSet):
 
     def put(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = SpeakerSerializer(instance, data=request.data)
+        serializer = SpeakerDetailSerializer(instance, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
