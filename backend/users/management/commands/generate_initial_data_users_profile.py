@@ -6,14 +6,15 @@ from django.core.management.base import BaseCommand
 from mixer.backend.django import mixer
 from faker import Faker
 
-fake = Faker()
+fake = Faker(locale='ru_RU')  # Генерация данных на русском языке
+RANGE = 50
 
 class Command(BaseCommand):
     help = 'Generate test users and their profiles'
 
     def handle(self, *args, **options):
         # Генерация пользователей и их профилей
-        for _ in range(20):
+        for _ in range(RANGE):
             user = mixer.blend(
                 User,
                 first_name=fake.first_name(),
@@ -63,3 +64,4 @@ class Command(BaseCommand):
                     f'"{user.email}" and their profile'
                 )
             )
+            

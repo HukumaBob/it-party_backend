@@ -3,8 +3,7 @@ import pandas as pd
 import os
 from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
-from PIL import Image
-from io import BytesIO
+
 from backend import settings
 from faker import Faker
 from events.models import Event, Speaker, Specialization, EventGallery
