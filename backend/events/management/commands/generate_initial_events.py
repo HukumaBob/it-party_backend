@@ -1,30 +1,35 @@
+import glob
+import pandas as pd
+import os
 from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
 from PIL import Image
 from io import BytesIO
+from backend import settings
 from faker import Faker
 from events.models import Event, Speaker, Specialization, EventGallery
 from additions.models import City
 import random
 
-fake = Faker()
-
+fake = Faker(locale='ru_RU')  # Генерация данных на русском языке
+RANGE = 50
 
 class Command(BaseCommand):
+    
     help = 'Generate test events'
+    current_index = None
 
     def handle(self, *args, **options):
-        for _ in range(50):
+        for _ in range(RANGE):
             # Generate an event
             event = Event.objects.create(
-                logo=self.create_image_file(),
-                name=fake.sentence(),
+                logo=self.get_real_image('test_logo'),  # Замена логотипа на реальный файл
+                name=self.get_csv_value('events', 'name'),
                 date=fake.date_between(start_date='-1y', end_date='+1y'),
                 time=fake.time(),
                 city=City.objects.order_by('?').first(),
-                address=fake.address(),
-                description=fake.text(),
-                # gallery=self.create_image_file(),
+                address=self.get_csv_value('events', 'address'),
+                description=self.get_csv_value('events', 'description'),
                 online=fake.boolean()
             )
 
@@ -35,39 +40,66 @@ class Command(BaseCommand):
             # Generate 4-5 speakers and attach them to the event
             for _ in range(random.randint(4, 5)):
                 speaker = Speaker.objects.create(
-                    foto=self.create_image_file(),
+                    foto=self.get_real_image('test_users'),  # Замена фото спикера на реальное изображение
                     name=fake.name(),
                     info=fake.text()
                 )
-                speaker.specializations.set([random.choice(specializations)])  # Используйте set() для специализаций
+                speaker.specializations.set([random.choice(specializations)])
                 event.speakers.add(speaker)
 
             for _ in range(random.randint(4, 5)):
                 event_gallery = EventGallery.objects.create(
-                    event_photo=self.create_image_file(),
+                    event_photo=self.get_real_image('test_gallery'),  # Замена фото галереи на реальное изображение
                     caption=fake.name(),
                 )
-                # speaker.specializations.set([random.choice(specializations)])  # Используйте set() для специализаций
                 event.gallery.add(event_gallery)
 
             self.stdout.write(
                 self.style.SUCCESS(
                     f'Successfully created event "{event.name}"'
-                    )
                 )
+            )
 
-    def create_image_file(self):
-        # Generate a random color
-        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    def get_real_image(self, folder_name):
+        # Получение списка всех файлов из указанной директории
+        image_files = glob.glob(f'media/{folder_name}/*.jpg') 
 
-        # Create a new image with PIL
-        image = Image.new('RGB', (50, 50), color=color)
+        if image_files:
+            # Выбор случайного файла из списка
+            random_image_path = random.choice(image_files)
 
-        # Save the image to a BytesIO object
-        image_io = BytesIO()
-        image.save(image_io, format='JPEG')
+            # Чтение содержимого файла
+            with open(random_image_path, 'rb') as image_file:
+                image_content = image_file.read()
 
-        # Create a Django ContentFile from the BytesIO object
-        image_content_file = ContentFile(image_io.getvalue(), 'example.jpg')
+            # Возвращение объекта ContentFile с содержимым файла
+            return ContentFile(image_content, os.path.basename(random_image_path))
+        else:
+            # Если файлов нет, вернуть None или другое значение по вашему усмотрению
+            return None
 
-        return image_content_file
+    def get_csv_value(self, file_name, field_name):
+        # Предполагается, что у вас есть файл events.csv в папке media
+        csv_path = settings.BASE_DIR / f'data/{file_name}.csv'
+        try:
+            # Чтение CSV файла в DataFrame
+            df = pd.read_csv(csv_path)
+
+            # Если текущий индекс не установлен, выбираем случайный индекс
+            if self.current_index is None:
+                self.current_index = 0
+
+            self.current_index = self.current_index % RANGE
+            # Получение значения из текущей строки
+            value = df.loc[self.current_index, field_name]
+
+            # Увеличиваем индекс для следующего вызова
+            self.current_index = (self.current_index + 1) % len(df)
+
+            return value
+        except FileNotFoundError:
+            # Обработка случая, если файл не найден
+            return None
+        except KeyError:
+            # Обработка случая, если поле не существует в файле
+            return None
