@@ -1,7 +1,11 @@
 from django.urls import include, path
 from rest_framework import routers
 from .views import (
+    AdminEventListView,
+    AdminUserEventView,
     EventViewSet,
+    RejectionReasonView,
+    SpeakerViewSet
     )
 
 
@@ -15,6 +19,20 @@ router_v1.register(
     basename='events'
 )
 
+router_v1.register(
+    r'speaker',
+    SpeakerViewSet,
+    basename='speaker'
+)
+
+router_v1.register(
+    r'rejection_reason',
+    RejectionReasonView,
+    basename='rejection_reason'
+)
+
 urlpatterns = [
     path('', include(router_v1.urls)),
+    path('admin_events', AdminEventListView.as_view(), name='admin_events-list'), 
+    path('admin_events/<int:event_id>/user_events/', AdminUserEventView.as_view(), name='admin-user-event'),
 ]

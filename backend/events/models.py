@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from additions.models import City
-from users.models import Specialization
+from users.models import Specialization, User
 
 
 class Speaker(models.Model):
@@ -38,7 +38,8 @@ def get_default_fields():
         "specialization": "",
         "experience": "",
         "phone": "",
-        "online": False
+        "online": False,
+        "offline": False,
         }
 
 
@@ -91,11 +92,12 @@ class Event(models.Model):
         max_length=1000,
         blank=False,
     )
-    gallery = models.ImageField(
+    gallery = models.ManyToManyField(
+        'EventGallery',
+        related_name='events_gallery',
         verbose_name=_("Галерея"),
-        upload_to='images/',
-        blank=False, null=True,
-    )
+        blank=True,
+    )    
     speakers = models.ManyToManyField(
         Speaker,
         related_name="event_speaker",
@@ -117,14 +119,23 @@ class Event(models.Model):
         null=True,
         blank=True
     )
-    record_link = models.URLField(blank=True, null=True,)
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
+    record_link = models.URLField(
+         blank=True, null=True,
+         verbose_name=_("Ссылка на запись"),
+         )
+    stream = models.URLField(
+         blank=True, null=True,
+         verbose_name=_("Ссылка на стрим"),
+         )
+    is_archive = models.BooleanField(
+         default=False,
+         verbose_name=_("Архив"),
+         )
+    event_admin = models.ManyToManyField(
+        User,
         blank=True,
-        related_name='created_events',
-        verbose_name=_("Создатель ивента"),
+        related_name='events',
+        verbose_name=_("Администратор ивента"),
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -141,3 +152,24 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+class EventGallery(models.Model):
+        event_photo = models.ImageField(
+        verbose_name=_("Галерея"),
+        upload_to='images/',
+        blank=False, null=True,
+        )
+        caption = models.TextField(verbose_name=_("Описание"),
+        max_length=250,
+        blank=True, null=True)
+
+class RejectionReason(models.Model):
+     rejection_reason = models.CharField(
+        verbose_name=_("Причина отказа"),          
+        max_length=255, 
+        blank=False, 
+        null=True,
+        )
+     
+     def __str__(self):
+         return self.rejection_reason     

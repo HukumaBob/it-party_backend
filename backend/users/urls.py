@@ -8,6 +8,9 @@ from .views import (
     StackViewSet,
     ExperienceViewSet,
     SuccessView,
+    DeleteUser,
+    SpecializationStackView,
+    SpecializationStackDetailView,
     )
 
 
@@ -40,5 +43,15 @@ urlpatterns = [
         CustomPasswordResetConfirmView.as_view(),
         name='password_reset_confirm'
         ),
-    path('success/', SuccessView.as_view(), name='success'),        
+    path('success/', SuccessView.as_view(), name='success'), 
+    path('delete-user/', DeleteUser.as_view(), name='delete-user'),
+    path(
+        'specialization_stacks/',
+        SpecializationStackView.as_view(),
+        name='specialization-stack'
+        ),
+    path('specialization_stacks/<int:pk>/',
+         SpecializationStackDetailView.as_view(),
+         name='specialization-stack-detail'
+         ),
 ]

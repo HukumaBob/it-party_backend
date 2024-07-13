@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='userevent',
             name='application_status',
-            field=models.CharField(choices=[('none', 'Не подана'), ('pending', 'На рассмотрении'), ('approved', 'Одобрена'), ('rejected', 'Отклонена')], default='none', max_length=20),
+            field=models.CharField(choices=[('is_favorite', 'Не подана'), ('pending', 'На рассмотрении'), ('approved', 'Одобрена'), ('rejected', 'Отклонена')], default='is_favorite', max_length=20),
         ),
     ]

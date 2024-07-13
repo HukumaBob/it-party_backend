@@ -2,8 +2,7 @@ from django.contrib.auth.views import PasswordResetConfirmView
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.views import View
-from django.contrib.auth.forms import SetPasswordForm
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework import mixins, viewsets, permissions
 from django.contrib.auth import get_user_model
@@ -82,6 +81,14 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 class SuccessView(TemplateView):
     template_name = 'users/success.html'    
 
+# Если надо удалить пользователя полностью...
+class DeleteUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        user.delete()
+        return Response({"result": _('Пользователь удален')})
 
 # Класс для работы с профилем пользователя через API
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -107,7 +114,7 @@ class SpecializationViewSet(
     queryset = Specialization.objects.all()
     serializer_class = SpecializationSerializer
     permission_classes = [permissions.AllowAny]
-    # pagination_class = None
+    pagination_class = None
 
 
 class StackViewSet(
@@ -116,7 +123,41 @@ class StackViewSet(
     queryset = Stack.objects.all()
     serializer_class = StackSerializer
     permission_classes = [permissions.AllowAny]
-    # pagination_class = None
+    pagination_class = None
+
+class SpecializationStackView(APIView):
+    # Список специализаций с принадлежащими им стеками
+    permission_classes = [permissions.AllowAny]  # Add the desired permissions here
+    pagination_class = None  # Remove this if you want to enable pagination    
+    def get(self, request):
+        # Получаем список специализаций и связанных с ними стеков
+        specializations = Specialization.objects.all()
+        data = []
+        for spec in specializations:
+            stacks = Stack.objects.filter(specialization=spec)
+            serialized_stacks = StackSerializer(stacks, many=True).data
+            data.append({
+                'specialization': SpecializationSerializer(spec).data,
+                'stacks': serialized_stacks
+            })
+        return Response(data, status=status.HTTP_200_OK)
+    
+class SpecializationStackDetailView(APIView):
+    # Детальное описание специализации по ID
+    permission_classes = [permissions.AllowAny]  # Add the desired permissions here
+    pagination_class = None  # Remove this if you want to enable pagination    
+    def get(self, request, pk):
+        try:
+            specialization = Specialization.objects.get(pk=pk)
+            stacks = Stack.objects.filter(specialization=specialization)
+            serialized_stacks = StackSerializer(stacks, many=True).data
+            data = {
+                'specialization': SpecializationSerializer(specialization).data,
+                'stacks': serialized_stacks
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        except Specialization.DoesNotExist:
+            return Response({'message': 'Specialization not found'}, status=status.HTTP_404_NOT_FOUND)    
 
 
 class ExperienceViewSet(
@@ -125,4 +166,4 @@ class ExperienceViewSet(
     queryset = Experience.objects.all()
     serializer_class = ExperienceSerializer
     permission_classes = [permissions.AllowAny]
-    # pagination_class = None
+    pagination_class = None
