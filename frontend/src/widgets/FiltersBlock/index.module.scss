@@ -1,0 +1,75 @@
+.container {
+  width: 100%;
+  display: inline-grid;
+  grid-template: 45px / 1fr 45px auto 210px auto;
+  gap: 15px 5px;
+}
+
+.disabled {
+  cursor: not-allowed;
+
+  .container {
+    pointer-events: none;
+  }
+}
+
+.clearButtons {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+
+  button {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 34px;
+    padding: 0 14px;
+    font-size: 16px;
+    color: var(--c-def-white);
+    border-radius: 8px;
+    background-color: var(--c-def-blue);
+
+    &:hover {
+      background: var(--c-str-medium);
+    }
+  }
+
+  svg {
+    width: 18px;
+    height: auto;
+  }
+
+  .dateAfter {
+    padding: 0 7px 0 16px;
+
+    svg:last-of-type {
+      width: 20px;
+    }
+  }
+
+  .dateBefore {
+    padding: 0 16px 0 7px;
+
+    svg:first-of-type {
+      width: 20px;
+    }
+  }
+}
+
+@media (max-width: 991.98px) {
+  .container {
+    grid-template: repeat(2, 45px) / 45px auto 1fr auto;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .container {
+    grid-template: repeat(3, 45px) / 1fr 1fr 1fr;
+  }
+
+  .clearButtons button {
+    padding: 4px 10px;
+    font-size: 14px;
+  }
+}

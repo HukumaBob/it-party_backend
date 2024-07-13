@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  gap: 28px;
+  position: relative;
+}
+
+.navigateContainer {
+  align-self: start;
+  padding: 16px;
+  width: 328px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background-color: var(--c-def-bg);
+  border-radius: 24px;
+  border: 1px solid var(--c-str-light);
+  position: sticky;
+  top: 0;
+
+  a,
+  button {
+    border-radius: 8px;
+    padding: 13px 12px;
+    color: var(--c-def-blue);
+  }
+
+  button {
+    text-align: left;
+    font-family: YS-Text, sans-serif;
+    font-size: var(--sp-16);
+  }
+
+  .active {
+    background-color: var(--c-def-blue);
+    color: var(--c-def-white);
+  }
+}
+
+.formContainer {
+  width: 680px;
+  padding: 20px 20px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  border: 1px solid var(--c-str-light);
+  background-color: var(--c-def-bg);
+  position: relative;
+}

@@ -13,10 +13,10 @@ from .forms import (
 # Ивенты
 def event_list(request):
     events = Event.objects.annotate(
-        none_count=Count(Case(When(userevent__application_status='is_favorite', then=1), output_field=IntegerField())),
-        pending_count=Count(Case(When(userevent__application_status='pending', then=1), output_field=IntegerField())),
-        approved_count=Count(Case(When(userevent__application_status='approved', then=1), output_field=IntegerField())),
-        rejected_count=Count(Case(When(userevent__application_status='rejected', then=1), output_field=IntegerField())),
+        none_count=Count(Case(When(user_events__application_status='is_favorite', then=1), output_field=IntegerField())),
+        pending_count=Count(Case(When(user_events__application_status='pending', then=1), output_field=IntegerField())),
+        approved_count=Count(Case(When(user_events__application_status='approved', then=1), output_field=IntegerField())),
+        rejected_count=Count(Case(When(user_events__application_status='rejected', then=1), output_field=IntegerField())),
     )
     return render(request, 'events/event_list.html', {'events': events})
 

@@ -1,0 +1,99 @@
+// FONTS:
+// 1: YS-Display, style:normal, weight: 100 300 400 500 700 900
+// 2: YS-Text, style:normal, weight: 300 400 500
+// 3: YS-Text, style:italic, weight: 300 400 500 900
+
+
+// --------------------------------------- YS-Display, normal
+@font-face {
+  font-family: "YS-Display";
+  font-weight: 100;
+  font-style: normal;
+  src: url("../fonts/YS-Display-Thin.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Display";
+  font-weight: 300;
+  font-style: normal;
+  src: url("../fonts/YS-Display-Light.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Display";
+  font-weight: 400;
+  font-style: normal;
+  src: url("../fonts/YS-Display-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Display";
+  font-weight: 500;
+  font-style: normal;
+  src: url("../fonts/YS-Display-Medium.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Display";
+  font-weight: 700;
+  font-style: normal;
+  src: url("../fonts/YS-Display-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Display";
+  font-weight: 900;
+  font-style: normal;
+  src: url("../fonts/YS-Display-Heavy.woff") format("woff");
+}
+
+// --------------------------------------- YS-Text, normal
+@font-face {
+  font-family: "YS-Text";
+  font-weight: 300;
+  font-style: normal;
+  src: url("../fonts/YS-Text-Light.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Text";
+  font-weight: 400;
+  font-style: normal;
+  src: url("../fonts/YS-Text-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Text";
+  font-weight: 500;
+  font-style: normal;
+  src: url("../fonts/YS-Text-Medium.woff") format("woff");
+}
+
+// --------------------------------------- YS-Text, italic
+@font-face {
+  font-family: "YS-Text";
+  font-weight: 300;
+  font-style: italic;
+  src: url("../fonts/YS-Text-Light-Italic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Text";
+  font-weight: 400;
+  font-style: italic;
+  src: url("../fonts/YS-Text-Regular-Italic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Text";
+  font-weight: 500;
+  font-style: italic;
+  src: url("../fonts/YS-Text-Medium-Italic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "YS-Text";
+  font-weight: 900;
+  font-style: italic;
+  src: url("../fonts/YS-Text-Bold-Italic.woff") format("woff");
+}

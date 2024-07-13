@@ -1,0 +1,26 @@
+.container {
+  margin-top: 60px;
+}
+
+.heading {
+  margin-bottom: var(--sp-32);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-12) var(--sp-32);
+}
+
+.title {
+  font-size: var(--sp-34);
+  font-weight: 500;
+}
+
+.linkNewEvent {
+  width: 328px;
+  padding: var(--sp-12);
+  color: var(--c-def-white);
+  border: none;
+  border-radius: 8px;
+  background: var(--c-def-blue);
+  text-align: center;
+}

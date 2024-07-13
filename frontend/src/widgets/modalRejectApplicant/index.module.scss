@@ -1,0 +1,81 @@
+.wrapper {
+  height: 100vh;
+  overflow: auto;
+}
+
+.container {
+  height: 100%;
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  margin: 0 15px;
+  width: 850px;
+  padding: 65px 50px 45px;
+  border-radius: var(--sp-28);
+  background-color: var(--c-def-white);
+  position: relative;
+  outline: none;
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: var(--sp-24);
+    font-weight: 500;
+  }
+
+  button:first-of-type {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    padding: 5px;
+    align-self: end;
+    border-radius: 4px;
+    border: 1px solid transparent;
+
+    &:hover {
+      border-color: var(--c-black-100);
+    }
+  }
+
+  button:last-of-type {
+    display: block;
+    margin: 20px auto 0;
+    width: 100%;
+    max-width: 300px;
+    padding: 14px;
+    color: var(--c-def-white);
+    background-color: var(--c-def-blue);
+    border-radius: 8px;
+  }
+}
+
+.errorMessage {
+  font-size: var(--sp-13);
+  color: var(--c-er-red);
+}
+
+@media (max-width: 991.98px) {
+  .form {
+    width: 100%;
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .form {
+    padding: 60px 25px 45px;
+
+    h2 {
+      font-size: var(--sp-20);
+      font-weight: 500;
+    }
+
+    button:first-of-type {
+      right: 15px;
+      top: 15px;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+.button {
+  padding: 7px 10px;
+  font-size: var(--sp-14);
+  text-align: left;
+  color: var(--c-def-black);
+  white-space: nowrap;
+  border-radius: 3px;
+  background-color: var(--c-gray);
+
+  &:hover {
+    background-color: var(--c-black-100);
+  }
+
+  &.active {
+    background-color: var(--c-str-medium);
+    color: var(--c-def-white);
+  }
+}

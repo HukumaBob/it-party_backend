@@ -1,0 +1,60 @@
+.menuButton {
+  padding: 0 15px;
+  height: 45px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: var(--sp-16);
+  color: var(--c-black-500);
+  border-radius: 8px;
+  border: 1px solid var(--c-str-medium);
+
+  &.active {
+    color: var(--c-def-black);
+
+    svg {
+      color: var(--c-def-blue);
+    }
+  }
+}
+
+.dateButton {
+  width: 180px;
+  padding: 8px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--sp-16);
+  border-radius: 8px;
+  border: 1px solid var(--c-str-medium);
+
+  svg {
+    color: var(--c-def-blue);
+  }
+
+  &.active {
+    border-color: var(--c-def-blue);
+    background-color: var(--c-bg-blue);
+  }
+
+  &.default {
+    color: var(--c-black-500);
+    font-size: var(--sp-13);
+  }
+
+  &:hover {
+    outline: 1px solid var(--c-def-blue);
+  }
+}
+
+.menuContainer {
+  padding: 20px 10px 0;
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+}

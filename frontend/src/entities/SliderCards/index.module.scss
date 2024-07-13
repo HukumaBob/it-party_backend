@@ -1,0 +1,12 @@
+:global {
+  .event-cards-slider {
+    display: flex; // ! slide height fix
+
+    @media (max-width: 575.98px) {
+      .swiper-slide > div {
+        max-width: 360px;
+        margin: 0 auto;
+      }
+    }
+  }
+}
