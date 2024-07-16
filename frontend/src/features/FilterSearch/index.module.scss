@@ -1,0 +1,48 @@
+.inputEvents {
+  flex-grow: 1;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+
+  input {
+    grid-area: 1 / 1 / -1 / -1;
+    padding: var(--sp-12) 102px var(--sp-12) var(--sp-12);
+    border: 1px solid var(--c-str-medium);
+    border-radius: 8px;
+    background: var(--c-bg-blue);
+    outline: none;
+    font-size: 16px;
+  }
+
+  div {
+    grid-area: 1 / 2 / -1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, 45px);
+  }
+
+  button {
+    border-radius: 8px;
+    color: #065cf3;
+    cursor: default;
+
+    &:first-of-type:hover,
+    &.active:hover {
+      background-color: #065cf3;
+      color: var(--c-def-white);
+      cursor: pointer;
+    }
+
+    &:first-of-type:disabled {
+      visibility: hidden;
+    }
+
+    svg {
+      vertical-align: middle;
+      margin: 0 auto;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    grid-area: 1 / 1 / 2 / -1;
+  }
+}

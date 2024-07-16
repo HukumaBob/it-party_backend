@@ -1,9 +1,10 @@
+from backend import settings
 from users.models import User
 from django.core.management.base import BaseCommand
 from mixer.backend.django import mixer
 from faker import Faker
 
-fake = Faker()
+fake = Faker(locale= settings.LANGUAGE_CODE)
 
 
 class Command(BaseCommand):

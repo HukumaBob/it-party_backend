@@ -10,7 +10,7 @@ from events.models import Event, Speaker, Specialization, EventGallery
 from additions.models import City
 import random
 
-fake = Faker(locale='ru_RU')  # Генерация данных на русском языке
+fake = Faker(locale= settings.LANGUAGE_CODE)
 RANGE = 50
 
 class Command(BaseCommand):

@@ -1,0 +1,105 @@
+.title {
+  font-weight: 500;
+  font-size: var(--sp-24);
+
+  &:first-of-type {
+    margin-top: 40px;
+  }
+
+  &:nth-of-type(2) {
+    margin-top: 80px;
+    margin-bottom: 20px;
+    font-size: var(--sp-22);
+  }
+
+  &:last-of-type {
+    margin-top: 80px;
+  }
+}
+
+.table {
+  padding: 0 5px;
+  border-radius: 4px;
+  background-color: var(--c-gray);
+}
+
+.tableHeader,
+.tableRow {
+  display: grid;
+  grid-template: minmax(55px, auto) / 200px 1.5fr 2fr 150px 120px 100px;
+  align-items: center;
+}
+
+.tableHeader {
+  h3 {
+    padding: 0 8px;
+    font-weight: 500;
+    font-size: var(--sp-18);
+
+    &:nth-of-type(5),
+    &:nth-of-type(6) {
+      text-align: center;
+    }
+  }
+}
+
+.tableRow {
+  padding: 8px 0;
+  border-top: 1px solid var(--c-black-100);
+
+  > p {
+    padding: 0 8px;
+  }
+
+  .status {
+    justify-self: center;
+    width: 100px;
+    padding: 9.5px;
+    text-align: center;
+    border-radius: 4px;
+
+    &.pending {
+      background-color: var(--c-ch-act-yellow);
+    }
+
+    &.approved {
+      background-color: var(--c-ch-act-green);
+    }
+
+    &.rejected {
+      background-color: var(--c-er-red);
+      color: var(--c-def-white);
+    }
+  }
+}
+
+.buttonsBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.button {
+  width: 40px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px solid var(--c-black-100);
+  background-color: var(--c-def-white);
+
+  &:first-of-type {
+    color: var(--c-er-red);
+  }
+
+  &:last-of-type {
+    color: var(--c-opt-green);
+  }
+
+  &:hover {
+    background-color: var(--c-def-blue);
+    color: var(--c-def-white);
+  }
+}

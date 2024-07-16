@@ -1,3 +1,4 @@
+from backend import settings
 from users.models import User, UserProfile, Experience, Specialization, Stack
 from additions.models import (
     Country, FamilyStatus, Education, Income, Notification
@@ -6,7 +7,7 @@ from django.core.management.base import BaseCommand
 from mixer.backend.django import mixer
 from faker import Faker
 
-fake = Faker(locale='ru_RU')  # Генерация данных на русском языке
+fake = Faker(locale= settings.LANGUAGE_CODE)  # Генерация данных на русском языке
 RANGE = 50
 
 class Command(BaseCommand):

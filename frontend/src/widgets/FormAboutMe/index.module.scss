@@ -1,0 +1,190 @@
+.form {
+  min-width: calc(100% - 2*20px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-24);
+  align-items: center;
+  visibility: visible;
+  opacity: 1;
+  .form_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .form_title {
+    font-family: "YS-Display";
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.33;
+    margin-bottom: 16px;
+  }
+  .name_form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    textarea {
+      display: flex;
+      align-items: start;
+      width: 100%;
+      height: 112px;
+      border: 1px solid var(--c-str-medium);
+      padding: var(--sp-12) var(--sp-12) var(--sp-16);
+      outline: none;
+      border-radius: var(--sp-12);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+      resize: none;
+      margin-bottom: 16px;
+    }
+    .errorInput {
+      border: 1px solid var(--c-er-red);
+    }
+    .message {
+      font-family: "YS-Text";
+      font-size: var(--sp-13);
+      color: var(--c-black-500);
+    }
+    label {
+      font-family: "YS-Text";
+      font-weight: 500;
+      margin-bottom: 4px;
+      span {
+        color: var(--c-def-blue);
+      }
+    }
+  }
+  
+  .element {
+    display: flex;
+    width: 100%;
+    gap: var(--sp-12);
+    align-items: center;
+    .element_checkboxBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .element_title {
+      font-family: "YS-Display";
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 1.33;
+    }
+    .element_subtitle {
+      font-family: "YS-Text";
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.33;
+    }
+  }
+}
+.container_checkbox {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  .customCheckBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    background: var(--c-def-white);
+    border: 1px solid var(--c-str-dark);
+    border-radius: 4px;
+  }
+  span {
+    font-family: "YS-Text";
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.25;
+  }
+}
+.buttonBlock {
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .submit {
+    max-width: 300px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--sp-12) 0;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--c-def-blue);
+    color: var(--c-def-white);
+    cursor: pointer;
+  }
+  .disabled {
+    @extend .submit;
+    background-color: var(--c-black-300);
+    color: var(--c-def-white);
+    cursor: not-allowed;
+  }
+}
+.container_selectInput {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 4px;
+  .star {
+    color: var(--c-def-blue);
+  }
+  .required {
+    font-family: "YS-Text";
+    font-size: var(--sp-13);
+    color: var(--c-black-500);
+  }
+}
+
+.customSelect {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--sp-16);
+  cursor: pointer;
+  outline: none;
+  border: 1px solid var(--c-str-medium);
+  border-radius: var(--sp-12);
+  gap: 8px;
+  max-height: 52px;
+}
+
+.options {
+  position: absolute;
+  top: 70%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 3;
+}
+
+.option {
+  padding: 8px var(--sp-16);
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: #f0f0f0;
+}
+
+.error {
+  font-family: "YS-Text";
+  font-size: var(--sp-13);
+  color: var(--c-er-red);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
