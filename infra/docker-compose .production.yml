@@ -1,0 +1,60 @@
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  db:
+    image: postgres:13.10
+    env_file:
+        - ../.env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+  backend:
+    image: hukumabob/backend
+    env_file:
+        - ../.env
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - static:/app/static/
+      - media:/app/media/
+  frontend:
+    image: hukumabob/frontend
+    volumes:
+      - static:/app/result_build/
+  nginx:
+    env_file:
+        - ../.env  
+    image: hukumabob/nginx
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - static:/var/html/static/
+      - media:/var/html/media/
+  celery:
+    image: hukumabob/celery
+    command: celery -A backend worker -l info
+    env_file:
+        - ../.env
+    depends_on:
+      - db
+      - redis
+  celerybeat:
+    image: hukumabob/celerybeat
+    command: celery -A backend beat --loglevel=info
+    env_file:
+        - ../.env
+    depends_on:
+      - db
+      - redis         
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
