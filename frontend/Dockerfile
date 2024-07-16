@@ -7,11 +7,11 @@ WORKDIR /app
 # Скопируйте package.json и package-lock.json
 COPY package*.json ./
 
-# Скопируйте предварительно собранные зависимости
-COPY node_modules ./node_modules
-
 # Скопируйте остальные файлы проекта
 COPY . ./
+
+# устанавливаем зависимости
+RUN npm install
 
 # Запустите сборку вашего приложения
 RUN npm run build
