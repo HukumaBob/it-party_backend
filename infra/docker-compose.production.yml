@@ -38,7 +38,7 @@ services:
       - static:/var/html/static/
       - media:/var/html/media/
   celery:
-    image: hukumabob/celery
+    image: hukumabob/backend
     command: celery -A backend worker -l info
     env_file:
         - ../.env
@@ -46,7 +46,7 @@ services:
       - db
       - redis
   celerybeat:
-    image: hukumabob/celerybeat
+    image: hukumabob/backend
     command: celery -A backend beat --loglevel=info
     env_file:
         - ../.env
