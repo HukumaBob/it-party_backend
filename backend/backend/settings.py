@@ -59,11 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React app address
-    "http://197.0.0.1:3000",  # Also add this if you are using Docker
-    "http://197.0.0.1:8000",     
-]
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'backend.urls'
 TEMPLATES_DIR = BASE_DIR / 'templates'

@@ -21,7 +21,7 @@ class EventViewSetTestCase(APITestCase):
         )
         self.speaker = Speaker.objects.create(
             name='Test Speaker',
-            specialization='Test Specialization',
+            # specialization='Test Specialization',
             info='Test Info'
         )
         self.form_template = FormTemplate.objects.create(
@@ -50,8 +50,9 @@ class EventViewSetTestCase(APITestCase):
             online=True,
             offline=False,
             form_template=self.form_template,
-            created_by=self.user
         )
+        user = self.user
+        self.event.event_admin.set([user])
         self.event.speakers.add(self.speaker)
         self.event.specializations.add(self.specialization)
 
