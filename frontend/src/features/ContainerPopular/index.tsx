@@ -2,8 +2,8 @@ import {useDispatch, useSelector} from "../../app/types/hooks";
 import {SliderCards} from '../../entities/SliderCards'
 import {useEffect} from "react";
 import {getSliderList} from "../../app/services/slices/sliderSlice";
-import {ReactComponent as LoadingIcon} from "../../app/assets/icons/loading.svg";
-import {ReactComponent as ErrorIcon} from "../../app/assets/icons/error.svg";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
 
 export const ContainerPopular = () => {
   const {popular, statusPopular} = useSelector((store) => store.slider);

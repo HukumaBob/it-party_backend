@@ -28,7 +28,7 @@ export const getFavoriteList = createAsyncThunk<TResponse, undefined, {
   state: { favorite: TInitialState }
 }>(
   "fetch_favorite_list",
-  async (type, {rejectWithValue, getState}) => {
+  async (_, {rejectWithValue, getState}) => {
     const favoriteIdList = getState().favorite.favorite;
 
     if (Object.keys(favoriteIdList).length === 0) {
@@ -77,7 +77,7 @@ const favoriteSlice = createSlice({
     },
     extraReducers: (builder) => {
       builder
-        .addCase(getFavoriteList.pending, (state, action) => {
+        .addCase(getFavoriteList.pending, (state) => {
           state.loading = true;
           state.error = null;
         })

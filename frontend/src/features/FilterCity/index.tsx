@@ -1,6 +1,6 @@
 import {useMemo} from "react";
 import Select, {StylesConfig, components, DropdownIndicatorProps, SingleValue} from 'react-select';
-import {ReactComponent as ArrowIcon} from '../../app/assets/icons/arrow_down.svg';
+import ArrowIcon from '../../app/assets/icons/arrow_down.svg?react';
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {setCityFilter} from "../../app/services/slices/eventListSlice";
 
@@ -10,7 +10,7 @@ type TOption = {
 }
 
 const customStyles: StylesConfig<TOption, false> = {
-  container: (provided, state) => ({
+  container: (provided) => ({
     ...provided,
     '@media (max-width: 575.98px)': {
       gridColumn: '1 / -1',
@@ -29,7 +29,7 @@ const customStyles: StylesConfig<TOption, false> = {
     },
   }),
   indicatorSeparator: () => ({display: 'none'}),
-  menu: (provided, state) => ({
+  menu: (provided) => ({
     ...provided,
     marginTop: '3px',
     borderRadius: '6px',
@@ -46,7 +46,7 @@ const customStyles: StylesConfig<TOption, false> = {
       backgroundColor: 'var(--c-black-100)',
     },
   }),
-  placeholder: (provided, state) => ({
+  placeholder: (provided) => ({
     ...provided,
     color: 'var(--c-black-500)',
   }),

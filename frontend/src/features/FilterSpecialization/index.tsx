@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Popover} from "@mui/material";
-import {ReactComponent as SettingsIcon} from "../../app/assets/icons/settings.svg";
+import SettingsIcon from "../../app/assets/icons/settings.svg?react";
 import {ButtonSpecialization} from '../../entities/ButtonSpecialization';
 import {useSelector} from '../../app/types/hooks';
 import cn from 'classnames';

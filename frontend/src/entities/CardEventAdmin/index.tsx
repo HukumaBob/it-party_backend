@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import dayjs from 'dayjs';
-import {ReactComponent as CalendarIcon} from "../../app/assets/icons/calendar.svg";
+import CalendarIcon from "../../app/assets/icons/calendar.svg?react";
 import style from "./index.module.scss";
 
 type TApplicationCounts = {

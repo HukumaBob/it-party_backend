@@ -7,8 +7,8 @@ import {getFavoriteList} from "../../app/services/slices/favoriteSlice";
 import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
 import {CardEvent} from "../../entities/CardEvent";
 import {ContainerRecommended} from "../../features/ContainerRecomended";
-import {ReactComponent as LoadingIcon} from "../../app/assets/icons/loading.svg";
-import {ReactComponent as ErrorIcon} from "../../app/assets/icons/error.svg";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import style from './index.module.scss'
 
 type TabPanelProps = {
@@ -60,7 +60,7 @@ export const ProfileEvents = () => {
   } = useSelector((state) => state.myEvents);
 
   const [activeTab, setActiveTab] = React.useState(0);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: any, newValue: number) => {
     setActiveTab(newValue);
   };
 

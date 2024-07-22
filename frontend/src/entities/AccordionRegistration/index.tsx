@@ -2,7 +2,7 @@ import React from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import {ReactComponent as ArrowIcon} from "../../app/assets/icons/arrow_open.svg";
+import ArrowIcon from "../../app/assets/icons/arrow_open.svg?react";
 
 type TProps = {
   title: string;

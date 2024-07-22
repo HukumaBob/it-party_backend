@@ -1,7 +1,8 @@
+import dayjs from "dayjs";
 import {useSelector, useDispatch} from "../../app/types/hooks";
 import {openModalRejectApplicant, patchAdminApplicantStatus} from "../../app/services/slices/adminApplicantsSlice";
-import {ReactComponent as IconCross} from "../../app/assets/icons/close.svg";
-import {ReactComponent as IconCheckMark} from "../../app/assets/icons/check_mark.svg";
+import IconCross from "../../app/assets/icons/close.svg?react";
+import IconCheckMark from "../../app/assets/icons/check_mark.svg?react";
 import cn from "classnames";
 import style from "./index.module.scss";
 
@@ -22,7 +23,8 @@ export const AdminApplicants = () => {
 
   return (
     <>
-      <h2 className={style.title}>Cloud Security Meetup, 4 апреля 2024, Москва, Мулен Руж</h2>
+      <h2
+        className={style.title}>{data[0].event_name}, {dayjs(data[0].event_date).format('D MMMM YYYY')}, {data[0].city_name}</h2>
       <h2 className={style.title}>Заявки на участие в мероприятии</h2>
 
       <div className={style.table}>

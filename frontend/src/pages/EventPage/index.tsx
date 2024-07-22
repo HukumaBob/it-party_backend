@@ -4,8 +4,8 @@ import {useDispatch, useSelector} from "../../app/types/hooks";
 import {getEvent} from "../../app/services/slices/eventSlice";
 import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
 import {EventPageView} from "../../entities/EventPageView";
-import {ReactComponent as LoadingIcon} from "../../app/assets/icons/loading.svg";
-import {ReactComponent as ErrorIcon} from "../../app/assets/icons/error.svg";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import {getCityList} from "../../app/services/slices/citySlice";
 
 export const EventPage = () => {

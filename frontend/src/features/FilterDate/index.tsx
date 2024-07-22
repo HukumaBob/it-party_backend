@@ -4,8 +4,8 @@ import dayjs, {Dayjs} from "dayjs";
 import {DateCalendar} from "@mui/x-date-pickers";
 import {useDispatch, useSelector} from '../../app/types/hooks';
 import {setDateBeforeFilter, setDateAfterFilter} from "../../app/services/slices/eventListSlice";
-import {ReactComponent as CalendarIcon} from "../../app/assets/icons/calendar.svg";
-import {ReactComponent as ArrowIcon} from "../../app/assets/icons/arrow_right.svg";
+import CalendarIcon from "../../app/assets/icons/calendar.svg?react";
+import ArrowIcon from "../../app/assets/icons/arrow_right.svg?react";
 import cn from 'classnames';
 import style from "./index.module.scss";
 

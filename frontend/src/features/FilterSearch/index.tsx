@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {ReactComponent as SearchIcon} from "../../app/assets/icons/search.svg";
-import {ReactComponent as ResetIcon} from "../../app/assets/icons/close.svg";
+import SearchIcon from "../../app/assets/icons/search.svg?react";
+import ResetIcon from "../../app/assets/icons/close.svg?react";
 import {useDispatch, useSelector} from '../../app/types/hooks';
 import {setNameFilter} from '../../app/services/slices/eventListSlice';
 import style from "./index.module.scss";

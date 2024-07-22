@@ -1,7 +1,7 @@
 import React from "react";
 import {TimePicker as MuiTimePicker} from "@mui/x-date-pickers";
 import {Controller} from 'react-hook-form';
-import {ReactComponent as TimeIcon} from "../../../app/assets/icons/time.svg"
+import TimeIcon from "../../../app/assets/icons/time.svg?react"
 
 type TProps = {
   name: string;
@@ -15,7 +15,7 @@ export const TimePicker: React.FC<TProps> = ({name, control, rules}) => {
       name={name}
       control={control}
       rules={rules}
-      render={({field, fieldState: {error}}) => (
+      render={({field}) => (
         <MuiTimePicker
           {...field}
           format="hh : mm"

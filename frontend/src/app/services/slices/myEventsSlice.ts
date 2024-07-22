@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, CITIES, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
 
 type TEvent = {
   id: number;
@@ -59,7 +59,7 @@ const myEventsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
       builder
-        .addCase(getMyEventsList.pending, (state, action) => {
+        .addCase(getMyEventsList.pending, (state) => {
           state.loading = true;
           state.error = null;
         })

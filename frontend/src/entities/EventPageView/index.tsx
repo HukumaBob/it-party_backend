@@ -73,11 +73,11 @@ export const EventPageView = () => {
               <img className={style.image} src={foto} alt='speaker avatar'/>
               <div className={style.infoContainer}>
                 <div className={style.info}>
-                  <h3 className={style.name}>{name.split(' ').map((item, i) => <span key={item}>{item}</span>)}</h3>
+                  <h3 className={style.name}>{name.split(' ').map((item) => <span key={item}>{item}</span>)}</h3>
                   <p>{info}</p>
                 </div>
                 <div className={style.specializations}>
-                  <span className={style.name}>{name.split(' ').map((item, i) => <span key={item}>{item}</span>)}</span>
+                  <span className={style.name}>{name.split(' ').map((item) => <span key={item}>{item}</span>)}</span>
                   <p>{specializations}</p>
                 </div>
               </div>

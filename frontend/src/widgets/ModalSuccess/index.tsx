@@ -1,8 +1,8 @@
 import Modal from "@mui/material/Modal";
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
-import {ReactComponent as CloseIcon} from "../../app/assets/icons/close.svg";
-import {ReactComponent as SuccessIcon} from "../../app/assets/icons/successForm.svg";
+import CloseIcon from "../../app/assets/icons/close.svg?react";
+import SuccessIcon from "../../app/assets/icons/successForm.svg?react";
 import style from "./index.module.scss";
 
 export const ModalSuccess = () => {

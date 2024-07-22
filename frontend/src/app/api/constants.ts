@@ -1,5 +1,7 @@
 // export const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
+// export const BASE_URL = "http://localhost:8000/";
 export const BASE_URL = "https://itparty.ddns.net/";
+
 
 // Эндпоинты API
 export const LOGIN_API_ENDPOINT = "auth/jwt/create/"; // аутентификация пользователя
@@ -21,5 +23,6 @@ export const EXPERIENCE = 'api/v1/experience/'; // GET, список опыт р
 export const STACK = 'api/v1/specialization_stacks/'; // GET, список специализаций с языками по каждой специализации
 export const ADMIN_EVENT_LIST = 'api/v1/admin_events'; // GET, список ивентов администратора
 export const USER_EVENT_STATUS = "api/v1/user_event_status"; // PATCH, статус участия пользователя в ивенте
+export const REJECT_REASON = "api/v1/rejection_reason" // GET, список причин отказа
 
 export const errorDownloadImage = "Анализ изображения не прошел";

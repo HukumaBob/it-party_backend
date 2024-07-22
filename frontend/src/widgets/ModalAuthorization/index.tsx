@@ -2,7 +2,7 @@ import Modal from "@mui/material/Modal";
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {setOpenModal} from "../../app/services/slices/authorization";
 import {FormAuthorization} from "../FormAuthorization";
-import {ReactComponent as LogoIcon} from "../../app/assets/icons/logo_text.svg";
+import LogoIcon from "../../app/assets/icons/logo_text.svg?react";
 import style from "./index.module.scss";
 
 export const ModalAuthorization = () => {

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
-import {ReactComponent as CalendarIcon} from "../../app/assets/icons/calendar_date.svg";
+import CalendarIcon from "../../app/assets/icons/calendar_date.svg?react";
 import dayjs, {Dayjs} from "dayjs";
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {setChangeDateOfBirth} from "../../app/services/slices/profileSlice";

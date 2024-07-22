@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import Modal from '@mui/material/Modal';
 import {useSelector} from "../../app/types/hooks";
 import {ContainerFormRegistration} from "../../features/ContainerFormRegistration";
-import {ReactComponent as CloseIcon} from "../../app/assets/icons/close.svg";
+import CloseIcon from "../../app/assets/icons/close.svg?react";
 import style from "./index.module.scss";
 
 export const ModalRegistration = ({id}: { id: number }) => {

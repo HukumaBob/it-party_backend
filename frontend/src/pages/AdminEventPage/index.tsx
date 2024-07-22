@@ -30,12 +30,8 @@ export const AdminEventPage = () => {
 
   const {
     register,
-    handleSubmit,
     formState: {errors},
-    reset,
-    watch,
     control,
-    trigger,
   } = useForm<TFormValues>({mode: 'onTouched'});
 
   return (

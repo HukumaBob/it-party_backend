@@ -1,10 +1,10 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
 import dayjs from "dayjs";
-import banner_orange from "../../assets/image/banners/banner_orange.png";
-import banner_green from "../../assets/image/banners/banner_green.png";
-import banner_blue from "../../assets/image/banners/banner_blue.png";
-import banner_purple from "../../assets/image/banners/banner_purple.png";
+import banner_orange from "../../assets/image/banners/banner_1.webp";
+import banner_green from "../../assets/image/banners/banner_2.webp";
+import banner_blue from "../../assets/image/banners/banner_3.webp";
+import banner_purple from "../../assets/image/banners/banner_4.webp";
 
 type TCubeSlide = {
   date: string;
@@ -44,7 +44,7 @@ type TType = 'recommended' | 'popular';
 export const getSliderList =
   createAsyncThunk<TEvent[], TType, { rejectValue: string; }>
   ("fetch_slider_list",
-    async (type, {rejectWithValue, getState}) => {
+    async (type, {rejectWithValue}) => {
 
       const search = new URLSearchParams()
       search.append("limit", "10")

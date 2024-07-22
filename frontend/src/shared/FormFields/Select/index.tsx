@@ -1,7 +1,7 @@
 import React from 'react';
 import {Controller} from 'react-hook-form';
 import ReactSelect, {StylesConfig, components} from 'react-select';
-import {ReactComponent as ArrowIcon} from "../../../app/assets/icons/arrow_down.svg";
+import ArrowIcon from "../../../app/assets/icons/arrow_down.svg?react";
 
 type TOption = {
   value: string | number;
@@ -28,7 +28,7 @@ const customStyles: (hasError: boolean) => StylesConfig<TOption, false> = (isErr
     },
   }),
   indicatorSeparator: () => ({display: 'none'}),
-  menu: (provided, state) => ({
+  menu: (provided) => ({
     ...provided,
     marginTop: '3px',
     borderRadius: '6px',
@@ -43,7 +43,7 @@ const customStyles: (hasError: boolean) => StylesConfig<TOption, false> = (isErr
       backgroundColor: 'var(--c-black-100)',
     },
   }),
-  placeholder: (provided, state) => ({
+  placeholder: (provided) => ({
     ...provided,
     fontFamily: 'YS-Text',
     color: 'var(--c-black-500)',

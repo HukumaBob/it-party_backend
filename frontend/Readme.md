@@ -1,46 +1,71 @@
-# Getting Started with Create React App
+Проект, создан с использованием [Vite](https://vitejs.dev/) и [React](https://reactjs.org/).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Начало работы
 
-## Available Scripts
+### Системные требования:
 
-In the project directory, you can run:
+- [Node.js](https://nodejs.org/) (версия 18)
+- [npm](https://www.npmjs.com/)
 
-### `npm start`
+### Установка пакетов:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+   ```sh
+   npm install
+   ```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Запуск сервера для разработки:
 
-### `npm test`
+```sh
+npm start
+# or
+npm run start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The application will be available at `http://localhost:3000`.
 
-### `npm run build`
+### Изменение порта
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Файл vite.config.js в корневом каталоге:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```js
+export default defineConfig({
+  server: {
+    port: 3000, // Change this to your desired port
+  },
+})
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Сборка проекта для Production:
 
-### `npm run eject`
+```sh
+npm run build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Выходные файлы сборки будут находиться в директории build.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Просмотр Production сборки(в папке build)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```sh
+npm run preview
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Это запустит локальный сервер для просмотра собранных файлов.
+
+### Линтинг и форматирование
+
+В этом проекте используются ESLint и Prettier для линтинга и форматирования. Чтобы запустить ESLint:
+
+```sh
+npm run lint
+```
+
+Чтобы автоматически исправить ошибки линтинга и форматирования, выполните:
+
+```sh
+npm run lint:fix
+```
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Vite Documentation](https://vitejs.dev/)
+- [React Documentation](https://reactjs.org/)

@@ -4,7 +4,7 @@ import {Link, useMatch, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {setOpenModal} from "../../app/services/slices/authorization";
 import {resetProfile} from "../../app/services/slices/profileSlice";
-import {ReactComponent as LogoIcon} from "../../app/assets/icons/logo.svg";
+import LogoIcon from "../../app/assets/icons/logo.svg?react";
 import login_avatar from '../../app/assets/image/other/login_avatar.webp'
 import style from "./index.module.scss";
 

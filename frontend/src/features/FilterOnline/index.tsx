@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "../../app/types/hooks";
 import cn from "classnames";
 import style from "./index.module.scss";
 
-export const FilterOnline = (props: any) => {
+export const FilterOnline = () => {
   const dispatch = useDispatch();
   const {online} = useSelector(state => state.eventList.filters)
 
