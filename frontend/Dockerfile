@@ -1,19 +1,18 @@
-# Используйте базовый образ Node.js
 FROM node:lts-alpine as build
 
-# Установите рабочий каталог
+# создание рабочего каталога
 WORKDIR /app
 
-# Скопируйте package.json и package-lock.json
+# копируются файлы package.json & package-lock.json
 COPY package*.json ./
 
-# Скопируйте предварительно собранные зависимости
-COPY node_modules ./node_modules
+# установка зависимостей
+RUN npm install
 
-# Скопируйте остальные файлы проекта
-COPY . ./
+# копируются остальные файлы проекта
+COPY . .
 
-# Запустите сборку вашего приложения
+# сборка приложения в build для production
 RUN npm run build
 
 # Скопируйте результаты сборки в новый каталог
