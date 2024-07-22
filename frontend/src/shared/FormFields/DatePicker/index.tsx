@@ -1,7 +1,7 @@
 import React from "react";
 import {Dayjs} from "dayjs";
 import {DatePicker as MuiDatePicker} from '@mui/x-date-pickers/DatePicker';
-import {ReactComponent as CalendarIcon} from "../../../app/assets/icons/calendar_date.svg";
+import CalendarIcon from "../../../app/assets/icons/calendar_date.svg?react";
 import {Controller} from 'react-hook-form';
 
 type TProps = {

@@ -4,9 +4,9 @@ import {FilterSpecialization} from '../../features/FilterSpecialization';
 import {FilterDate} from "../../features/FilterDate";
 import {FilterCity} from "../../features/FilterCity";
 import {FilterOnline} from "../../features/FilterOnline";
-import {ReactComponent as CalendarIcon} from "../../app/assets/icons/calendar.svg";
-import {ReactComponent as ArrowRightIcon} from "../../app/assets/icons/arrow_right.svg";
-import {ReactComponent as ArrowLeftIcon} from "../../app/assets/icons/arrow_left.svg";
+import CalendarIcon from "../../app/assets/icons/calendar.svg?react";
+import ArrowRightIcon from "../../app/assets/icons/arrow_right.svg?react";
+import ArrowLeftIcon from "../../app/assets/icons/arrow_left.svg?react";
 import {
   clearCityFilter,
   clearDateBeforeFilter,
@@ -18,7 +18,7 @@ import style from "./index.module.scss";
 
 export const FiltersBlock = () => {
   const dispatch = useDispatch()
-  const {city, online, date_before, date_after, specializations} = useSelector(state => state.eventList.filters)
+  const {city, date_before, date_after, specializations} = useSelector(state => state.eventList.filters)
   const {status: cityStatus} = useSelector(state => state.city)
   const specializationError = useSelector(state => state.specializations.error)
   const eventsError = useSelector(state => state.eventList.error)

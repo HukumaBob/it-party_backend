@@ -41,26 +41,26 @@ services:
     volumes:
       - static:/var/html/static/
       - media:/var/html/media/
-  celery:
-    build:
-      context: ../backend/
-      dockerfile: Dockerfile
-    command: celery -A backend worker -l info
-    env_file:
-        - ../.env
-    depends_on:
-      - db
-      - redis
-  celerybeat:
-    build:
-      context: ../backend/
-      dockerfile: Dockerfile
-    command: celery -A backend beat --loglevel=info
-    env_file:
-        - ../.env
-    depends_on:
-      - db
-      - redis         
+  # celery:
+  #   build:
+  #     context: ../backend/
+  #     dockerfile: Dockerfile
+  #   command: celery -A backend worker -l info
+  #   env_file:
+  #       - ../.env
+  #   depends_on:
+  #     - db
+  #     - redis
+  # celerybeat:
+  #   build:
+  #     context: ../backend/
+  #     dockerfile: Dockerfile
+  #   command: celery -A backend beat --loglevel=info
+  #   env_file:
+  #       - ../.env
+  #   depends_on:
+  #     - db
+  #     - redis         
   redis:
     image: redis:latest
     restart: always

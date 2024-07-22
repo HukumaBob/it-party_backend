@@ -96,6 +96,7 @@
     }
   }
   .buttonBlock {
+    margin-bottom: 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -119,7 +120,6 @@
       font-family: "YS-Text";
       font-weight: 500;
     }
-    margin-bottom: 8px;
   }
   .loginProblem {
     font-family: "YS-Text";

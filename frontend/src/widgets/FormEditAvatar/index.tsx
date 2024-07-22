@@ -1,4 +1,3 @@
-import React from "react";
 import style from "./index.module.scss";
 import { useForm } from "react-hook-form";
 import { TUserProfileValues, TFormEditAvatar } from "../../app/types/types";

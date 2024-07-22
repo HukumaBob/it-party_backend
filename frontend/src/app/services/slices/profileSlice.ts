@@ -167,7 +167,7 @@ export const profileSlice = createSlice({
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('updateInfo');
       localStorage.removeItem("countries");
-      state = initialState;
+      Object.assign(state, {});
     }
   },
   extraReducers: (builder) => {

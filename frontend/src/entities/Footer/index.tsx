@@ -1,8 +1,8 @@
 import {NavLink} from "react-router-dom";
-import {ReactComponent as LogoIcon} from "../../app/assets/icons/logo_text.svg";
-import {ReactComponent as VKIcon} from "../../app/assets/icons/vkontakte.svg";
-import {ReactComponent as RutubeIcon} from "../../app/assets/icons/rutube.svg";
-import {ReactComponent as TelegramIcon} from "../../app/assets/icons/telegram.svg";
+import LogoIcon from "../../app/assets/icons/logo_text.svg?react";
+import VKIcon from "../../app/assets/icons/vkontakte.svg?react";
+import RutubeIcon from "../../app/assets/icons/rutube.svg?react";
+import TelegramIcon from "../../app/assets/icons/telegram.svg?react";
 import style from "./index.module.scss";
 
 export const Footer = () => {

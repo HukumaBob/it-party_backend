@@ -69,7 +69,7 @@ const adminEventListSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
       builder
-        .addCase(getAdminEventList.pending, (state, action) => {
+        .addCase(getAdminEventList.pending, (state) => {
           state.loading = true;
           state.error = null;
         })

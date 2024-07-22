@@ -3,8 +3,8 @@ import {useSelector} from "../../app/types/hooks";
 import {useDispatch} from "../../app/types/hooks";
 import {getSliderList} from "../../app/services/slices/sliderSlice";
 import {SliderCards} from '../../entities/SliderCards'
-import {ReactComponent as LoadingIcon} from "../../app/assets/icons/loading.svg";
-import {ReactComponent as ErrorIcon} from "../../app/assets/icons/error.svg";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
 
 export const ContainerRecommended = () => {
   const {recommended, statusRecommended} = useSelector((store) => store.slider);

@@ -13,6 +13,9 @@ type TUser = {
 
 type TApplicant = {
   id: number;
+  event_name: string;
+  event_date: string;
+  city_name: string;
   profile_events: TUser;
   application_status: 'pending' | 'approved' | 'rejected';
 }
@@ -27,6 +30,7 @@ type TInitialState = {
   data: TApplicant[];
   loading: boolean;
   error: string | null | undefined;
+  patchSuccess: boolean | null;
   patchLoading: boolean;
   patchError: string | null | undefined;
   isModalRejectApplicantOpen: boolean;
@@ -34,18 +38,7 @@ type TInitialState = {
   applicantFullName: string | undefined;
 };
 
-// const applicantsTest = [
-//   {
-//     id: 1,
-//     name: "Владимир Белоголовцев",
-//     company: "Sony Lorem ipsum dolor sit amet quo sit suscipit. Blanditiis",
-//     post: "Designer Lorem ipsum dolor sit amet, consectetur",
-//     experience: "Более 6 лет",
-//     status: "Ожидает",
-//   },
-// ];
-
-export const patchAdminApplicantStatus = createAsyncThunk<string, TPatchData, { rejectValue: string }>(
+export const patchAdminApplicantStatus = createAsyncThunk<undefined, TPatchData, { rejectValue: string }>(
   "patch_admin_applicantStatus",
   async (patch_data, {rejectWithValue}) => {
     const {id, application_status, explanation} = patch_data
@@ -64,11 +57,6 @@ export const patchAdminApplicantStatus = createAsyncThunk<string, TPatchData, { 
         body: JSON.stringify(body)
       });
       if (!response.ok) return rejectWithValue(response.statusText);
-      // const data = await response.json();
-      ////////////////////////////////////
-      ////////////////////////////////////
-      ////////////////////////////////////
-      return 'data'
     } catch (err) {
       return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
     }
@@ -100,6 +88,7 @@ const initialState: TInitialState = {
   data: [],
   loading: true,
   error: null,
+  patchSuccess: null,
   patchLoading: false,
   patchError: null,
   isModalRejectApplicantOpen: false,
@@ -125,7 +114,7 @@ const adminApplicantsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAdminApplicantsList.pending, (state, action) => {
+      .addCase(getAdminApplicantsList.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -138,16 +127,18 @@ const adminApplicantsSlice = createSlice({
         state.loading = false;
       })
 
-      .addCase(patchAdminApplicantStatus.pending, (state, action) => {
+      .addCase(patchAdminApplicantStatus.pending, (state) => {
         state.patchLoading = true;
+        state.patchSuccess = null;
         state.patchError = null;
       })
-      .addCase(patchAdminApplicantStatus.fulfilled, (state, action) => {
-        // state.data = action.payload;
+      .addCase(patchAdminApplicantStatus.fulfilled, (state) => {
+        state.patchSuccess = true;
         state.patchLoading = false
       })
       .addCase(patchAdminApplicantStatus.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.patchError = action.payload;
+        state.patchSuccess = false;
         state.patchLoading = false;
       })
   },

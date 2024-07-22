@@ -160,25 +160,3 @@ export type TProfileInitialState = {
   openModalResetPassword: boolean;
   resetOk: boolean;
 };
-
-export type oneEvent = {
-  id: number;
-  logo: string;
-  name: string;
-  description: string;
-  date: string;
-  time: string;
-  user_application_status: string;
-  specialization?: {
-    id: number;
-    specialization: string;
-    index: number;
-  };
-};
-
-export type TGetMyEvent = {
-  count: number;
-  next: string;
-  previous: string | null;
-  results: oneEvent[];
-};

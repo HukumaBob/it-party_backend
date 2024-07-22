@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Swiper, SwiperProps, SwiperSlide} from 'swiper/react';
+import {Swiper, SwiperSlide} from 'swiper/react';
 import {EffectCube, Pagination, A11y, Autoplay, Keyboard} from 'swiper/modules'
 import {useSelector} from "../../app/types/hooks";
 import cn from "classnames";
@@ -33,7 +33,7 @@ export const SliderCube = () => {
           enabled: true,
           onlyInViewport: true,
         }}
-        onTransitionStart={(swiper: SwiperProps) => setIndex(swiper.realIndex)}
+        onTransitionStart={(swiper) => setIndex(swiper.realIndex)}
       >
         {data.map(({image}) => (
           <SwiperSlide key={image} className={style.slide}>

@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {closeModalRejectApplicant, getAdminApplicantsList} from "../../app/services/slices/adminApplicantsSlice";
 import {AdminApplicants} from "../../features/AdminApplicants";
 import banner from "../../app/assets/image/other/admin_banner_applicants.webp";
-import {ReactComponent as LoadingIcon} from "../../app/assets/icons/loading.svg";
-import {ReactComponent as ErrorIcon} from "../../app/assets/icons/error.svg";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import style from "./index.module.scss";
 
 export const AdminApplicantsPage = () => {

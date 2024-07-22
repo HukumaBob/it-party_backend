@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import style from "./index.module.scss";
 import { FormEditAvatar } from "../../widgets/FormEditAvatar";
 import { useDispatch, useSelector } from "../../app/types/hooks";

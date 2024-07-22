@@ -1,4 +1,3 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
 import {
   TLoginResponse,
   TUser,
@@ -6,7 +5,6 @@ import {
   TFormDataPersonalValues,
   TFormConfidentialityValues,
   TListCountry,
-  TGetMyEvent,
   TFormEditAvatar,
   TFormResetPassword,
 } from "../types/types";
@@ -18,7 +16,6 @@ import {
   USER_PROFILE_GET_AND_PATCH_API_ENDPOINT,
   FETCH_UPDATEURL,
   LIST_COUNTRY_GET_API_ENDPOINT,
-  EVENTS_API_ENDPOINT,
   RESET_PASSWORD_API_ENDPOINT,
 } from "./constants";
 

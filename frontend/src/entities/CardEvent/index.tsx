@@ -3,8 +3,8 @@ import {Link} from "react-router-dom";
 import dayjs from 'dayjs';
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {handleFavoriteClick} from "../../app/services/slices/favoriteSlice";
-import {ReactComponent as CalendarIcon} from "../../app/assets/icons/calendar.svg";
-import {ReactComponent as FavoriteIcon} from "../../app/assets/icons/favorite.svg";
+import CalendarIcon from "../../app/assets/icons/calendar.svg?react";
+import FavoriteIcon from "../../app/assets/icons/favorite.svg?react";
 import {ModalRegistration} from "../../widgets/ModalRegistration";
 import cn from 'classnames'
 import style from "./index.module.scss";
