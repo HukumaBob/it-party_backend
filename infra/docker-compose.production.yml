@@ -22,7 +22,7 @@ services:
       - static:/app/static/
       - media:/app/media/
   frontend:
-    image: hukumabob/frontend
+    image: hukumabob/infra-frontend
     volumes:
       - static:/app/result_build/
   nginx:
@@ -36,23 +36,7 @@ services:
       - frontend
     volumes:
       - static:/var/html/static/
-      - media:/var/html/media/
-  # celery:
-  #   image: hukumabob/backend
-  #   command: celery -A backend worker -l info
-  #   env_file:
-  #       - ../.env
-  #   depends_on:
-  #     - db
-  #     - redis
-  # celerybeat:
-  #   image: hukumabob/backend
-  #   command: celery -A backend beat --loglevel=info
-  #   env_file:
-  #       - ../.env
-  #   depends_on:
-  #     - db
-  #     - redis         
+      - media:/var/html/media/      
   redis:
     image: redis:latest
     restart: always
