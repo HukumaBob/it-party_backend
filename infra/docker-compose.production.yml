@@ -22,7 +22,7 @@ services:
       - static:/app/static/
       - media:/app/media/
   frontend:
-    image: hukumabob/frontend
+    image: hukumabob/infra-frontend
     volumes:
       - static:/app/result_build/
   nginx:
