@@ -166,7 +166,7 @@ jobs:
     # Передаём параметры для action appleboy/scp-action:
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
+        username: ${{ secrets.HOST_USER }}
         key: ${{ secrets.SSH_KEY }}
         # passphrase: ${{ secrets.SSH_PASSPHRASE }}
         source: infra/
@@ -176,7 +176,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
+        username: ${{ secrets.HOST_USER }}
         key: ${{ secrets.SSH_KEY }}
         # passphrase: ${{ secrets.SSH_PASSPHRASE }}
         # Параметр script передаёт в action appleboy/ssh-action команды,
