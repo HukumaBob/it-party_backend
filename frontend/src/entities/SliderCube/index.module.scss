@@ -42,6 +42,7 @@
   font-weight: 700;
   letter-spacing: -3px;
   line-height: 120px;
+  text-shadow: 0px -1px 0px var(--c-def-white), -1px 0px 0px var(--c-def-white);
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -60,7 +61,7 @@
   aspect-ratio: 1/1;
   position: absolute;
   transition: all 0.7s ease;
-  box-shadow: 2px 3px 4px 0 #1a1b2244;
+  box-shadow: 2px 3px 2px 0 #1a1b2255;
 }
 
 .subTitle {
@@ -75,7 +76,7 @@
   font-size: 60px;
 
   transition: all 0.7s ease;
-  box-shadow: 2px 3px 4px 0 #1a1b2244;
+  box-shadow: 2px 3px 2px 0 #1a1b2255;
 
   span {
     font-weight: 700;
@@ -90,6 +91,7 @@
 
   font-size: 100px;
   letter-spacing: -3px;
+  text-shadow: 0px -1px 0px var(--c-def-white), -1px 0px 0px var(--c-def-white);
   opacity: 0;
   animation: cube-slider 0.3s ease 0.4s forwards;
 }

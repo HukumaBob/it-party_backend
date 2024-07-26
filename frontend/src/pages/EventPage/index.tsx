@@ -29,7 +29,7 @@ export const EventPage = () => {
     dispatch(closeModalSuccess())
   }, [dispatch]);
 
-  if (loading) return <LoadingIcon className='loading-error-icon'/>
-  if (error) return <ErrorIcon className='loading-error-icon'/>;
+  if (loading || cityStatus === 'loading') return <LoadingIcon className='loading-error-icon'/>
+  if (error || cityStatus === 'error') return <ErrorIcon className='loading-error-icon'/>;
   return <EventPageView/>
 };

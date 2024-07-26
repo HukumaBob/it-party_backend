@@ -9,10 +9,10 @@ type TSpecialization = {
 
 type TSpeaker = {
   id: number;
-  foto: string;
+  foto?: string;
   name: string;
-  info: string;
-  specializations: (number | string)[];
+  info?: string;
+  specializations?: (number | string)[];
 };
 
 type TGallery = {
@@ -24,17 +24,21 @@ type TGallery = {
 type Event = {
   id: number;
   speakers: TSpeaker[];
+  gallery: TGallery[];
   form_template: string | null;
   specializations: TSpecialization[];
+  event_admin: [];
   logo: string;
   name: string;
   date: string;
   time: string;
   address: string;
   description: string;
-  gallery: TGallery[];
   online: boolean;
   offline: boolean;
+  record_link: string | null;
+  stream: string | null;
+  is_archive: boolean;
   city: number;
 }
 
@@ -84,21 +88,20 @@ const eventSlice = createSlice({
         state.error = null;
       })
       .addCase(getEvent.fulfilled, (state, action: PayloadAction<Event>) => {
-        const data = action.payload
+        // const data = action.payload;
 
-        const specializationsObj = data.specializations.reduce((acc: Record<string, string>, current) => {
-          acc[current.id] = current.specialization
-          return acc
-        }, {})
-        data.speakers = data.speakers.map(item => {
-          return {
-            ...item,
-            specializations: item.specializations.map(specializationIndex => specializationsObj[specializationIndex])
-          }
-        })
-        state.data = data;
+        // const specializationsObj = data.specializations.reduce((acc: Record<string, string>, current) => {
+        //   acc[current.id] = current.specialization
+        //   return acc
+        // }, {})
+        // data.speakers = data.speakers.map(item => {
+        //   return {
+        //     ...item,
+        //     specializations: item.specializations.map(specializationIndex => specializationsObj[specializationIndex])
+        //   }
+        // })
+        state.data = action.payload;
         state.loading = false;
-        state.error = null;
       })
       .addCase(getEvent.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.loading = false;

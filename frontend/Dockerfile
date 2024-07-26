@@ -1,19 +1,23 @@
 FROM node:lts-alpine as build
 
-# создание рабочего каталога
+# создается рабочий каталог
 WORKDIR /app
 
-# копируются файлы package.json & package-lock.json
+# Копируется package.json & package-lock.json
 COPY package*.json ./
 
-# установка зависимостей
-RUN npm install
+# Устанавливаются зависимости
+RUN npm i
 
-# копируются остальные файлы проекта
-COPY . .
+# Копируются остальные файлы проекта
+COPY index.html .
+COPY src/ src/
+COPY .eslintrc.cjs .
+COPY tsconfig* .
+COPY vite.config.ts .
 
-# сборка приложения в build для production
+# Сборка проекта в папку build при помощи vite
 RUN npm run build
 
-# Скопируйте результаты сборки в новый каталог
+# Копируется результаты сборки в каталог result_build
 RUN cp -r build result_build
