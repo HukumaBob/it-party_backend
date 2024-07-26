@@ -192,8 +192,8 @@ jobs:
           sudo docker compose -f docker-compose.production.yml up -d
           # Выполняет миграции и сбор статики
           sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
-          sudo docker compose -f docker-compose.production.yml exec backend celery -A backend worker -l info
-          sudo docker compose -f docker-compose.production.yml exec backend celery -A backend beat --loglevel=info
+          # sudo docker compose -f docker-compose.production.yml exec backend celery -A backend worker -l info
+          # sudo docker compose -f docker-compose.production.yml exec backend celery -A backend beat --loglevel=info
           sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
           sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/static/. /static/
           sudo docker compose -f docker-compose.production.yml exec backend python manage.py generate_initial_data
