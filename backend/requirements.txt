@@ -124,6 +124,7 @@ rpds-py==0.18.0
 SecretStorage==3.3.3
 selenium==4.20.0
 service-identity==23.1.0
+setuptools==66.1.1
 shellingham==1.5.4
 simplejson==3.19.2
 six==1.16.0
