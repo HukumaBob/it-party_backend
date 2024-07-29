@@ -27,7 +27,7 @@ jobs:
 
     - name: Upgrade pip, setuptools, and wheel
       run: |
-        python -m pip install setuptools==70.3.0 
+        python -m pip install setuptools==65.5.0 
 
     - name: Install autobahn
       run: |
