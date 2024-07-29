@@ -8,21 +8,15 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    # Блок services аналогичен docker-compose.yml
     services:
       postgres:
         image: postgres:13.10
-        # Указываем имя тестовой базы, имя и пароль пользователя в открытом виде,
-        # ведь эта база будет работать только во время прогона тестов
         env:
           POSTGRES_USER: django_user
           POSTGRES_PASSWORD: django_password
           POSTGRES_DB: django_db
         ports:
           - 5432:5432
-        # Эта конструкция описывает проверку готовности сервиса postgres
-        # Если её не будет, то тесты могут запуститься раньше, чем сервер PostgreSQL
-        # В результате тесты опять решат, что базы нет, — и упадут
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
     - uses: actions/checkout@v3
@@ -31,12 +25,19 @@ jobs:
       with:
         python-version: 3.11
 
+    - name: Upgrade pip, setuptools, and wheel
+      run: |
+        python -m pip install --upgrade pip setuptools wheel 
+
+    - name: Install autobahn
+      run: |
+        python -m pip install autobahn==23.1.2
+
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip 
         pip install gunicorn==21.2.0
         pip install flake8==6.0.0 flake8-isort==6.0.0
-        pip install -r ./backend/requirements.txt 
+        pip install -r ./backend/requirements.txt
     # Этот шаг дополним переменными для доступа к БД
     - name: Test with flake8 and django tests
       # Добавляем env-переменные для доступа к БД
