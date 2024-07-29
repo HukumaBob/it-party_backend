@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {API} from "../../api/constants";
 import dayjs from "dayjs";
 
 type TOption = {
@@ -81,7 +81,7 @@ export const getEventList =
       }
 
       try {
-        const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}?${search.toString()}`, {
+        const response = await fetch(`${API.EVENT_LIST}?${search.toString()}`, {
           method: "GET",
           headers: headers
         });

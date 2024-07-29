@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk, UnknownAction} from "@reduxjs/toolkit";
-import {BASE_URL, REGISTER_AND_APPLY, SUBMIT_APPLICATION} from "../../api/constants";
+import {API} from "../../api/constants";
 
 type TRegistrationData = {
   first_name: string;
@@ -46,7 +46,7 @@ export const getRegistrationData =
     async (id, {rejectWithValue}) => {
       try {
         const response = await fetch(
-          `${BASE_URL}${REGISTER_AND_APPLY}${id}/`,
+          `${API.REGISTER_AND_APPLY}/${id}/`,
           {
             method: "POST",
             headers: {
@@ -74,7 +74,7 @@ export const applyRegistration =
 
       try {
         const response = await fetch(
-          `${BASE_URL}${SUBMIT_APPLICATION}${id}/`,
+          `${API.SUBMIT_APPLICATION}/${id}/`,
           {
             method: "POST",
             headers: {

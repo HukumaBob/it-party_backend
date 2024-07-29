@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, CITIES} from "../../api/constants";
+import {API} from "../../api/constants";
 
 type TCity = {
   id: number;
@@ -18,7 +18,7 @@ export const getCityList = createAsyncThunk<TCity[], undefined, { rejectValue: s
   'fetch_city_list',
   async function (_, {rejectWithValue}) {
     try {
-      const response = await fetch(`${BASE_URL}${CITIES}`, {
+      const response = await fetch(API.CITY_LIST, {
         method: "GET",
         headers: {"Content-Type": "application/json"},
       })

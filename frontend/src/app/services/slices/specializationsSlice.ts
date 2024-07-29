@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, SPECIALIZATIONS} from "../../api/constants";
+import {API} from "../../api/constants";
 
 type TSpecialization = {
   id: number;
@@ -17,7 +17,7 @@ export const getSpecializationsList = createAsyncThunk<TSpecialization[], undefi
   'fetch_specialization_list',
   async function (_, {rejectWithValue}) {
     try {
-      const response = await fetch(`${BASE_URL}${SPECIALIZATIONS}`, {
+      const response = await fetch(API.SPECIALIZATION_LIST, {
         method: "GET",
         headers: {"Content-Type": "application/json"},
       })

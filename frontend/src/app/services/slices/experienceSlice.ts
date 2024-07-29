@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, EXPERIENCE} from "../../api/constants";
+import {API} from "../../api/constants";
 
 type TExperience = {
   id: number;
@@ -22,7 +22,7 @@ export const getExperienceList = createAsyncThunk<TExperience[], undefined, { re
   'fetch_experience_list',
   async function (_, {rejectWithValue}) {
     try {
-      const response = await fetch(`${BASE_URL}${EXPERIENCE}`, {
+      const response = await fetch(API.EXPERIENCE_LIST, {
         method: "GET",
         headers: {"Content-Type": "application/json"},
       })

@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {API} from "../../api/constants";
 
 type TEvent = {
   id: number;
@@ -42,7 +42,7 @@ export const getFavoriteList = createAsyncThunk<TResponse, undefined, {
     search.append('limit', '2000000')
     search.append('offset', '0')
 
-    const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}?${search.toString()}`, {
+    const response = await fetch(`${API.EVENT_LIST}?${search.toString()}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

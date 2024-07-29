@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {API} from "../../api/constants";
 
 type TEvent = {
   id: number;
@@ -29,7 +29,7 @@ export const getMyEventsList = createAsyncThunk<TResponse, undefined, { rejectVa
   async (_, {rejectWithValue}) => {
 
     try {
-      const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}?applied=true`, {
+      const response = await fetch(`${API.EVENT_LIST}?applied=true`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

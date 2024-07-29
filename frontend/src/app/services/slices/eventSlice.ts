@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {API} from "../../api/constants";
 
 type TSpecialization = {
   id: number;
@@ -59,7 +59,7 @@ export const getEvent = createAsyncThunk<Event, string, { rejectValue: string }>
       headers["Authorization"] = `Bearer ${localStorage.getItem('accessToken')}`;
     }
 
-    const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}/${id}`, {
+    const response = await fetch(`${API.EVENT_LIST}/${id}`, {
       method: "GET",
       headers: headers,
     });
