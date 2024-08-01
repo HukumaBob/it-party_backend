@@ -13,7 +13,7 @@ environ.Env.read_env(BASE_DIR / '..' / '.env')
 SECRET_KEY = env('SECRET_KEY', default="secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 AUTH_USER_MODEL = 'users.User'
 

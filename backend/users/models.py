@@ -128,7 +128,9 @@ class Experience(models.Model):
 
 class Specialization(models.Model):
     specialization = models.CharField(
-        max_length=255, verbose_name=_("Направление")
+        unique=True,
+        max_length=255, 
+        verbose_name=_("Направление")
         )
     index = models.IntegerField(unique=True, verbose_name=_("Index"))
 
