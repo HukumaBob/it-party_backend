@@ -97,14 +97,6 @@ if DEBUG:
                 "NAME": BASE_DIR / "db_test.sqlite3",
             },            
         }
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.postgresql',
-        #     'NAME': 'postgres',
-        #     'USER': 'postgres',
-        #     'PASSWORD': 'postgres',
-        #     'HOST': 'localhost', 
-        #     'PORT': '5432',
-        # }    
     }
     CELERY_BROKER_URL = 'redis://localhost:6379/0'
 else:
@@ -157,11 +149,6 @@ LANGUAGES = [
     ('en', _('English')),
     ('ru', _('Russian')),
 ]
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -236,10 +223,7 @@ SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = env(
     )
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     BASE_DIR / 'static',
-# ]
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'collected_static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

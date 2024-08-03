@@ -20,4 +20,7 @@ COPY vite.config.ts .
 RUN npm run build
 
 # Копируется результаты сборки в каталог result_build
-RUN cp -r build result_build
+# RUN cp -r build result_build
+# Эта команда запустит встроенный сервер на Node.js, который будет раздавать
+# содержимое директории /app/build на порте 8000
+CMD ["npx", "-y", "http-server", "-p", "8000", "/app/build"]

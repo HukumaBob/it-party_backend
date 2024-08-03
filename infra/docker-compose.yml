@@ -21,14 +21,17 @@ services:
       - db
       - redis
     volumes:
-      - static:/app/static/
+      - static:/app/backend_static/
       - media:/app/media/
   frontend:
     build:
       context: ../frontend
       dockerfile: Dockerfile
+    command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static:/app/result_build/
+      - static:/frontend_static
+    depends_on:
+      - backend      
   nginx:
     env_file:
         - ../.env  
@@ -39,8 +42,8 @@ services:
       - backend
       - frontend
     volumes:
-      - static:/var/html/static/
-      - media:/var/html/media/       
+      - static:/staticfiles
+      - media:/var/html/media/   
   redis:
     image: redis:latest
     restart: always
