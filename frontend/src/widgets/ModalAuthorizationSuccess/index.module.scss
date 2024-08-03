@@ -1,0 +1,38 @@
+.title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.paragraph {
+  text-align: center;
+  margin-top: var(--sp-24);
+}
+
+.linkBlock {
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+
+  a {
+    color: var(--c-def-blue);
+  }
+}
+
+.button {
+  margin-top: var(--sp-24);
+  width: 100%;
+  border-radius: 8px;
+  padding: var(--sp-12);
+  color: var(--c-def-white);
+  font-weight: 500;
+  background: var(--c-def-blue);
+}
+
+.buttonOutlined {
+  margin-top: 8px;
+  padding: 11px;
+  background: var(--c-def-white);
+  color: var(--c-def-blue);
+  border: 1px solid var(--c-def-blue);
+}

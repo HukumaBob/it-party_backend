@@ -1,148 +1,44 @@
-.container {
+.form {
   display: flex;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  right: 0;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.20);
-
-  .form {
-    display: flex;
-    position: fixed;
-    padding: var(--sp-36) var(--sp-24);
-    background-color: var(--c-def-white);
-    border: 1px solid var(--c-gray);
-    box-shadow: 2px 2px 12px 0 rgba(36, 47, 123, 0.35);
-    border-radius: 20px;
-    flex-direction: column;
-    max-width: 384px;
-    width: 100%;
-    gap: var(--sp-24);
-    align-items: center;
-
-    .titleBlock {
-      .icon {
-        position: absolute;
-        top: 25px;
-        right: 30px;
-        width: 24px;
-        height: 24px;
-        padding: 5px;
-        cursor: pointer;
-      }
-
-      .form_title {
-        font-family: "YS-D-Medium";
-        font-size: 34px;
-        font-weight: 500;
-        text-align: center;
-        margin-bottom: var(--sp-24);
-      }
-
-      .form_subtitle {
-        font-family: "YS-T-Regular";
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 1.25;
-        text-align: center;
-      }
-    }
-
-    .name_form {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      width: 100%;
-      gap: 4px;
-
-      label {
-        font-weight: 500;
-        font-family: "YS-T-Medium";
-        padding: 0 4px;
-      }
-
-      span {
-        color: var(--c-def-blue);
-      }
-
-      input {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        border: 1px solid var(--c-str-medium);
-        padding: var(--sp-12) var(--sp-16);
-        outline: none;
-        border-radius: var(--sp-12);
-        box-sizing: border-box;
-      }
-
-      .inputHide {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        border: 1px solid var(--c-black-500);
-        background-color: var(--c-black-300);
-        padding: var(--sp-12) var(--sp-16);
-        outline: none;
-        border-radius: var(--sp-12);
-        box-sizing: border-box;
-        margin-bottom: 4px;
-      }
-
-      .errorInput {
-        border: 1px solid var(--c-er-red);
-      }
-    }
-
-    .message {
-      font-family: "YS-T-Regular";
-      font-size: 13px;
-      color: var(--c-black-500);
-    }
-  }
-
-  .element {
-    display: flex;
-    height: var(--sp-24);
-    width: 130px;
-    gap: var(--sp-12);
-    align-items: center;
-  }
+  flex-direction: column;
 }
 
-.buttonBlock {
-  max-width: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.inputBlock {
+  flex-grow: 1;
 
-  .submit {
+  h3 {
+    margin-bottom: 4px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  input {
+    padding: 11px;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: var(--sp-12) 0;
-    border: none;
+    border: 1px solid var(--c-str-medium);
+    outline-color: var(--c-str-medium);
     border-radius: 8px;
-    background-color: var(--c-def-blue);
-    color: var(--c-def-white);
-    cursor: pointer;
-  }
 
-  .disabled {
-    @extend .submit;
-    background-color: var(--c-black-300);
-    color: var(--c-def-white);
-    cursor: not-allowed;
+    &.error {
+      border-color: var(--c-er-red);
+    }
+
+    &:disabled {
+      border: 1px solid var(--c-black-300);
+      background-color: var(--c-black-100);
+    }
   }
 }
 
-.error {
-  font-family: "YS-T-Regular";
+.errorMessage {
   font-size: 13px;
   color: var(--c-er-red);
+}
+
+.buttonSubmit {
+  margin-top: var(--sp-12);;
+  padding: var(--sp-12);
+  color: var(--c-def-white);
+  border-radius: 8px;
+  background-color: var(--c-def-blue);
 }

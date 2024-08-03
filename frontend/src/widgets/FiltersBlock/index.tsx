@@ -20,11 +20,11 @@ export const FiltersBlock = () => {
   const dispatch = useDispatch()
   const {city, date_before, date_after, specializations} = useSelector(state => state.eventList.filters)
   const {status: cityStatus} = useSelector(state => state.city)
-  const specializationError = useSelector(state => state.specializations.error)
+  const {status: specializationStatus} = useSelector(state => state.specializations)
   const eventsError = useSelector(state => state.eventList.error)
 
   return (
-    <div className={cn({[style.disabled]: cityStatus === 'error' || specializationError || eventsError})}>
+    <div className={cn({[style.disabled]: cityStatus === 'error' || specializationStatus === 'error' || eventsError})}>
 
       <div className={style.container}>
         <FilterSearch/>

@@ -15,7 +15,7 @@ const customStyles: StylesConfig<TOption, false> = {
     '@media (max-width: 575.98px)': {
       gridColumn: '1 / -1',
       order: 1
-    }
+    },
   }),
   control: (provided, state) => ({
     ...provided,
@@ -36,7 +36,6 @@ const customStyles: StylesConfig<TOption, false> = {
     border: '1px solid var(--c-str-medium)',
     boxShadow: 'none',
     zIndex: '10',
-
   }),
   option: (provided, state) => ({
     ...provided,

@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {API} from "../../api/constants";
 import dayjs from "dayjs";
 import banner_orange from "../../assets/image/banners/banner_1.webp";
 import banner_green from "../../assets/image/banners/banner_2.webp";
@@ -12,7 +12,6 @@ type TCubeSlide = {
   city: string;
   image: string;
 }
-
 type TEvent = {
   id: number;
   info: string;
@@ -23,7 +22,6 @@ type TEvent = {
   time: string;
   user_application_status: 'not_applied' | 'pending' | 'approved' | 'rejected' | 'is_favorite';
 }
-
 type TInitialState = {
   recommended: TEvent[];
   statusRecommended: 'idle' | 'loading' | 'success' | 'error';
@@ -33,12 +31,10 @@ type TInitialState = {
   errorPopular: string | null;
   cube: TCubeSlide[],
 }
-
 type TResponse = {
   results: TEvent[];
   count: number;
 }
-
 type TType = 'recommended' | 'popular';
 
 export const getSliderList =
@@ -67,7 +63,7 @@ export const getSliderList =
       }
 
       try {
-        const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}?${search.toString()}`, {
+        const response = await fetch(`${API.EVENT_LIST}?${search.toString()}`, {
           method: "GET",
           headers: headers
         });

@@ -1,0 +1,49 @@
+.checkboxContainer {
+  display: grid;
+  justify-items: start;
+
+  label {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-16);
+    cursor: pointer;
+  }
+
+  &.marginBottom label:last-of-type {
+    margin-bottom: 15px;
+  }
+}
+
+.agreement {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 20px;
+  font-size: 13px;
+  text-align: justify;
+  border-radius: 1px;
+
+  span {
+    grid-column: 2;
+  }
+}
+
+.agreementTop {
+  margin-top: 60px;
+}
+
+.submitButton {
+  display: block;
+  margin: 25px auto 0;
+  width: 300px;
+  padding: var(--sp-12) 0;
+  border-radius: 8px;
+  background-color: var(--c-def-blue);
+  color: var(--c-def-white);
+}
+
+.errorOutline {
+  outline: 1px solid var(--c-er-red);
+  outline-offset: 4px;
+}

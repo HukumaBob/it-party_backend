@@ -1,12 +1,12 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {API} from "../../api/constants";
+import {RootState} from "../../../main.tsx";
 
 type TSpecialization = {
   id: number;
   specialization: string;
   index: number;
 };
-
 type TSpeaker = {
   id: number;
   foto?: string;
@@ -14,13 +14,11 @@ type TSpeaker = {
   info?: string;
   specializations?: (number | string)[];
 };
-
 type TGallery = {
   id: number;
   event_photo: string;
   caption: string;
 }
-
 type Event = {
   id: number;
   speakers: TSpeaker[];
@@ -41,35 +39,35 @@ type Event = {
   is_archive: boolean;
   city: number;
 }
-
 type TInitialState = {
   data: Event;
   loading: boolean;
   error: string | null;
 }
 
-export const getEvent = createAsyncThunk<Event, string, { rejectValue: string }>(
-  "fetch_event_data",
-  async (id, {rejectWithValue}) => {
+export const getEvent =
+  createAsyncThunk<Event, string, { rejectValue: string; state: RootState }>(
+    "fetch_event_data",
+    async (id, {rejectWithValue, getState}) => {
+      const {isAuthorized, accessToken} = getState().authorization;
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      }
+      if (isAuthorized) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
+      }
 
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
+      const response = await fetch(`${API.EVENT_LIST}/${id}`, {
+        method: "GET",
+        headers: headers,
+      });
+      if (!response.ok) {
+        rejectWithValue(response.statusText ?? "Unknown error");
+      }
+      const data: Event = await response.json();
+      return data;
     }
-    if (localStorage.getItem('accessToken')) {
-      headers["Authorization"] = `Bearer ${localStorage.getItem('accessToken')}`;
-    }
-
-    const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}/${id}`, {
-      method: "GET",
-      headers: headers,
-    });
-    if (!response.ok) {
-      rejectWithValue(response.statusText ?? "Unknown error");
-    }
-    const data: Event = await response.json();
-    return data;
-  }
-);
+  );
 
 const initialState: TInitialState = {
   data: {} as Event,

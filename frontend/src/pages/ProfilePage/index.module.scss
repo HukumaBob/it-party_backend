@@ -12,10 +12,10 @@
   flex-direction: column;
   gap: 4px;
   background-color: var(--c-def-bg);
-  border-radius: 24px;
+  border-radius: var(--sp-12);
   border: 1px solid var(--c-str-light);
   position: sticky;
-  top: 0;
+  top: 15px;
 
   a,
   button {
@@ -41,7 +41,7 @@
   padding: 20px 20px 24px 20px;
   display: flex;
   flex-direction: column;
-  border-radius: 24px;
+  border-radius: var(--sp-12);
   border: 1px solid var(--c-str-light);
   background-color: var(--c-def-bg);
   position: relative;

@@ -1,5 +1,6 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {RootState} from "../../../main.tsx";
+import {API} from "../../api/constants";
 
 type TEvent = {
   id: number;
@@ -24,26 +25,27 @@ type TResponse = {
   results: TEvent[];
 }
 
-export const getMyEventsList = createAsyncThunk<TResponse, undefined, { rejectValue: string }>(
-  "fetch_my_event_List",
-  async (_, {rejectWithValue}) => {
-
-    try {
-      const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}?applied=true`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      if (!response.ok) return rejectWithValue(response.statusText);
-      const data: TResponse = await response.json();
-      return data
-    } catch (err) {
-      return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
-    }
-  },
-);
+export const getMyEventsList =
+  createAsyncThunk<TResponse, undefined, { rejectValue: string; state: RootState }>(
+    "fetch_my_event_List",
+    async (_, {rejectWithValue, getState}) => {
+      const accessToken = getState().authorization.accessToken
+      try {
+        const response = await fetch(`${API.EVENT_LIST}?applied=true`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${accessToken}`,
+          },
+        });
+        if (!response.ok) return rejectWithValue(response.statusText);
+        const data: TResponse = await response.json();
+        return data
+      } catch (err) {
+        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
+      }
+    },
+  );
 
 const initialState: TInitialState = {
   pastEvents: [],

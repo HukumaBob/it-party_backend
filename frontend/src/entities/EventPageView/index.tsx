@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import Masonry from '@mui/lab/Masonry';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useSelector} from "../../app/types/hooks";
-import {ModalRegistration} from "../../widgets/ModalRegistration";
+import {ModalEventRegistration} from "../../widgets/ModalEventRegistration";
 import map from "../../app/assets/image/other/howToGet.png";
 import dayjs from 'dayjs';
 import cn from "classnames";
@@ -40,7 +40,7 @@ export const EventPageView = () => {
         </div>
 
         <div className={style.buttonContainer}>
-          <ModalRegistration id={Number(id)}/>
+          <ModalEventRegistration id={Number(id)}/>
         </div>
       </div>
 
@@ -59,7 +59,7 @@ export const EventPageView = () => {
         <h2 className={style.title}>{titleText}</h2>
         <p className={style.description}>Регистрация открыта.<br/>Для регистрации необходимо заполнить<br/>форму.</p>
         <div className={style.buttonContainer}>
-          <ModalRegistration id={Number(id)}/>
+          <ModalEventRegistration id={Number(id)}/>
         </div>
       </div>
 

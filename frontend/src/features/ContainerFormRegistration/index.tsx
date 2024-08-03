@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {FormApplyRegistration} from "../../widgets/FormApplyRegistration";
+import {FormEventRegistration} from "../../widgets/FormEventRegistration";
 import {getRegistrationData} from "../../app/services/slices/applyRegistrationSlice";
 import {getExperienceList} from "../../app/services/slices/experienceSlice";
 import {getStackList} from "../../app/services/slices/stackListSlice";
@@ -30,5 +30,5 @@ export const ContainerFormRegistration: React.FC<{ id: number }> = ({id}) => {
     return <img className='loading-error-icon' src={loadingSvg} alt="loading icon"/>
   }
 
-  return <FormApplyRegistration/>
+  return <FormEventRegistration/>
 }

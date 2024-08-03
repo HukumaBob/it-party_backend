@@ -15,7 +15,7 @@ export const TimePicker: React.FC<TProps> = ({name, control, rules}) => {
       name={name}
       control={control}
       rules={rules}
-      render={({field}) => (
+      render={({field, fieldState: {error}}) => (
         <MuiTimePicker
           {...field}
           format="hh : mm"
@@ -23,11 +23,17 @@ export const TimePicker: React.FC<TProps> = ({name, control, rules}) => {
           slots={{openPickerIcon: () => <TimeIcon/>}}
           sx={{
             width: '100%',
-            border: '1px solid var(--c-str-medium)',
-            borderRadius: '12px',
+            '.MuiInputBase-root': {
+              border: '1px solid var(--c-str-medium)',
+              borderColor: error ? 'var(--c-er-red)' : 'var(--c-str-medium)',
+              borderRadius: '8px',
+              '&.Mui-focused': {
+                outline: '1px solid var(--c-str-medium)',
+              },
+            },
             input: {padding: '13px'},
             '.MuiFormLabel-root': {display: 'none'},
-            '.MuiOutlinedInput-notchedOutline ': {display: 'none'},
+            '.MuiOutlinedInput-notchedOutline': {display: 'none'},
           }}
         />
       )}

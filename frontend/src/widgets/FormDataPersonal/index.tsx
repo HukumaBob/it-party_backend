@@ -1,302 +1,160 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { TFormDataPersonalValues, 
-         TUserProfileValues, 
-         getItem,
-         TCountries } from "../../app/types/types";
-import { editingDataPersonal } from "../../app/api/api";
-import style from "./index.module.scss";
-import { SelectDate } from "../../shared/selectDate";
-import arrow_down from "../../app/assets/icons/arrow_down.svg";
-import { useDispatch, useSelector } from "../../app/types/hooks";
-import {
-  setClickMaritalStatus,
-  setSelectedMaritalStatus,
-  setClickCountry,
-  setSelectedCountry,
-  setName,
-  setSecondName
-} from "../../app/services/slices/profileSlice";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "../../app/types/hooks";
+import {updateUserProfile} from "../../app/services/slices/profileUserSlice.ts";
+import {getFamilyStatusList} from "../../app/services/slices/familyStatusSlice.ts";
+import {getCountryList} from "../../app/services/slices/countrySlice.ts";
+import {DatePicker} from "../../shared/FormFields/DatePicker";
+import {Select} from "../../shared/FormFields/Select";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
+import dayjs, {Dayjs} from "dayjs";
+import cn from "classnames";
+
+type TOption = { value: number; label: string };
+type TFormData = {
+  "first_name": string;
+  "last_name": string;
+  "country": TOption;
+  "date_of_birth": Dayjs;
+  "familystatus": TOption;
+};
 
 export const FormDataPersonal = () => {
-  const countriesStorage = localStorage.getItem("countries");
-  const countryList = countriesStorage && JSON.parse(countriesStorage);
   const dispatch = useDispatch();
-  const {
-    selectedMaritalStatus,
-    clickMaritalStatus,
-    changeDateOfBirth,
-    clickCountry,
-    selectedCountry,
-    name,
-    secondName
-  } = useSelector((state) => state.profile);
+  const {data, statusGetProfile} = useSelector((state) => state.profileUser);
+  const {countrySelectOptions, status: countryListStatus} = useSelector((state) => state.country);
+  const {familyStatusSelectOptions, status: familyListStatus} = useSelector((state) => state.familyStatus);
+  const isLoading = [statusGetProfile, countryListStatus, familyListStatus].includes('loading');
+  const isError = [statusGetProfile, countryListStatus, familyListStatus].includes('error');
 
-  React.useEffect(() => {
-    if (name !== "") {
-      setValue("first_name", name);
-    };
-    if(secondName !== "") {
-      setValue("last_name", secondName);
-    };
-  }, []);
-
-  const handleClickMaritalStatus = () => {
-    dispatch(setClickMaritalStatus(!clickMaritalStatus));
-  };
-
-  const handleClickCountry = () => {
-    dispatch(setClickCountry(!clickCountry));
-  };
-
-  const handleClickResetValueFirstName = () => {
-    reset();
-    const profileStorage = getItem("updateInfo");
-    if (profileStorage !== null && profileStorage !== undefined) {
-      const profile = localStorage.getItem("updateInfo");
-      const profileData = profile ? JSON.parse(profile) : {};
-      const value: string = profileData ? profileData.first_name : "";
-      setValue("first_name", value);
-    } else {
-      setValue("first_name", "");
-    }
-  };
-
-  const handleClickResetValueLastName = () => {
-    reset();
-    const profileStorage = getItem("updateInfo");
-    if (profileStorage !== null && profileStorage !== undefined) {
-      const profile = localStorage.getItem("updateInfo");
-      const profileData = profile ? JSON.parse(profile) : {};
-      const value: string = profileData ? profileData.last_name : "";
-      setValue("last_name", value);
-    } else {
-      setValue("last_name", "");
-    }
-  };
-
-  const handleClickResetValueCountry = () => {
-    const profileStorage = getItem("updateInfo");
-    if (profileStorage !== null && profileStorage !== undefined) {
-      const profile = localStorage.getItem("updateInfo");
-      const profileData = profile ? JSON.parse(profile) : {};
-      const value: number =
-        profileData.country !== null ? profileData.country : 1;
-      setValue("country", value);
-      dispatch(setSelectedCountry(value));
-    } else {
-      const value: number = 1;
-      setValue("country", value);
-      dispatch(setSelectedCountry(value));
-    }
-  };
-
-  const handleOptionClickCountry = (value: number) => {
-    dispatch(setSelectedCountry(value));
-    dispatch(setClickCountry(false));
-    setValue("country", value);
-  };
-
-  const handleOptionClickMaritalStatus = (value: number) => {
-    dispatch(setSelectedMaritalStatus(value));
-    dispatch(setClickMaritalStatus(false));
-    setValue("familystatus", value);
-  };
+  useEffect(() => {
+    countryListStatus === 'idle' && dispatch(getCountryList())
+    familyListStatus === 'idle' && dispatch(getFamilyStatusList())
+  }, [countryListStatus, familyListStatus]);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-    setValue,
-    reset
-  } = useForm<TFormDataPersonalValues>({
-    mode: "onTouched",
-  });
+    formState: {errors},
+    reset,
+    control
+  } = useForm<TFormData>({mode: "onTouched"});
 
-  const onSubmit = (data: TFormDataPersonalValues) => {
-    const dataNew = {...data, date_of_birth: changeDateOfBirth}
-    const elements:TFormDataPersonalValues = dataNew;
-    let promise = new Promise<TFormDataPersonalValues>((resolve) => {
-      let objectData: TFormDataPersonalValues = {};
-      const profile = localStorage.getItem("updateInfo");
-      const profileData = profile ? JSON.parse(profile) : {};
-      for (const key in elements) {
-        const keyCurrent = key;
-        for(const keyData in profileData) {
-          const keyProfile = keyData;
-          if (elements[key] !== profileData[keyProfile]) {
-            objectData[keyCurrent] = elements[keyCurrent];
-          } else {
-            continue;
-          }
-        }
-      }
-      resolve(objectData);
-    });
-    promise.then((objectData: TFormDataPersonalValues) => {
-      editingDataPersonal(objectData)
-        .then((data: TUserProfileValues) => {
-          localStorage.setItem("updateInfo", JSON.stringify(data));
-          dispatch(setName(data.first_name));
-          dispatch(setSecondName(data.last_name));
-          alert(
-            "Данные успешно обновлены.",
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-        })
-    })
+  useEffect(() => {
+    if (statusGetProfile === 'success' && countryListStatus === 'success' && familyListStatus == 'success') {
+      const getOption = (data: TOption[], target: number | undefined) =>
+        data.find((option) => option.value === target) || {};
+
+      reset({
+        first_name: data.first_name,
+        last_name: data.last_name,
+        date_of_birth: dayjs(data.date_of_birth),
+        country: getOption(countrySelectOptions, data.country),
+        familystatus: getOption(familyStatusSelectOptions, data.familystatus),
+      });
+    }
+  }, [statusGetProfile, countryListStatus, familyListStatus]);
+
+  const onSubmit = (formData: TFormData) => {
+    dispatch(updateUserProfile({
+      ...formData,
+      date_of_birth: dayjs(formData.date_of_birth).format('YYYY-MM-DD'),
+      country: formData.country?.value,
+      familystatus: formData.familystatus?.value
+    }))
   };
 
-  return (
-    <form
-      className={style.form}
-      id='formDataPersonal'
-      onSubmit={handleSubmit(onSubmit)}>
-      <div className={style.form_container}>
-        <div className={style.name_form}>
-          <label>
-            Имя <span>*</span>
-          </label>
-          <input
-            className={errors.first_name ? style.errorInput : style.input}
-            type='text'
-            placeholder='Имя'
-            {...register("first_name", {
-              minLength: {
-                value: 2,
-                message: "Слишком короткое имя",
-              },
-              pattern: {
-                value: /^[A-ZА-Я]+$/i,
-                message: "Некорректное имя",
-              },
-            })}
-          />
-          <span className={errors.first_name ? style.error : style.message}>
-            {errors?.first_name?.message ||
-              "Необходимо для регистрации на мероприятие"}
-          </span>
-          <button
-            type='button'
-            className={style.buttonInput}
-            onClick={handleClickResetValueFirstName}>
-          </button>
-        </div>
+  const today = dayjs();
+  const minDate = today.subtract(100, 'year');
+  const maxDate = today.subtract(10, 'year');
 
-        <div className={style.name_form}>
-          <label>
-            Фамилия <span>*</span>
-          </label>
-          <input
-            className={errors.last_name ? style.errorInput : style.input}
-            type='text'
-            placeholder='Фамилия'
-            {...register("last_name", {
-              minLength: {
-                value: 2,
-                message: "Слишком короткая фамилия",
-              },
-              pattern: {
-                value: /^[A-ZА-Я]+$/i,
-                message: "Некорректная фамилия",
-              },
-            })}
-          />
-          <span
-            className={errors.last_name ? style.error : style.message}>
-            {errors?.last_name?.message ||
-              "Необходимо для регистрации на мероприятие"}
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className='inputBlock'>
+        <h3>Имя</h3>
+        <input
+          className={cn({'error': errors.first_name})}
+          type='text'
+          placeholder='Иван'
+          {...register("first_name", {
+            minLength: {
+              value: 2,
+              message: "слишком короткое имя",
+            },
+            pattern: {
+              value: /^[A-ZА-Я]+$/i,
+              message: "некорректный формат имени",
+            },
+          })}
+        />
+        <span className='errorMessage'>
+            {errors?.first_name?.message}&nbsp;
           </span>
-          <button
-            type='button'
-            className={style.buttonInput}
-            onClick={handleClickResetValueLastName}>
-          </button>
-        </div>
-        <div className={style.container_selectInput}>
-          <label>Страна</label>
-          <div className={style.countryBlock}>
-            <div className={style.countryBlock_select} onClick={handleClickCountry}>
-              <span>{countryList && (countryList.find((country: TCountries) =>
-                (Number(country.id) === selectedCountry))).name}</span>
-            </div>
-            {clickCountry && (
-              <div className={style.options}>
-                {countryList &&
-                  countryList.map((country: TCountries) => (
-                    <div
-                      className={
-                        selectedCountry !== Number(country.id)
-                          ? style.option
-                          : style.optionHide
-                      }
-                      onClick={() =>
-                        handleOptionClickCountry(Number(country.id))
-                      }>
-                      {country.name}
-                    </div>
-                  ))}
-              </div>
-            )}
-            <button
-              type='button'
-              className={style.buttonInput}
-              onClick={handleClickResetValueCountry}></button>
-          </div>
-        </div>
-        <div className={style.name_form}>
-          <label>Дата рождения</label>
-          <SelectDate/>
-        </div>
-        <div className={style.container_selectInput}>
-          <label>Семейное положение</label>
-          <div
-            className={style.customSelect}
-            onClick={handleClickMaritalStatus}>
-            <span>
-              {(selectedMaritalStatus === 0 && "Не выбран") ||
-                (selectedMaritalStatus === 1 && "Холост / Не замужем") ||
-                (selectedMaritalStatus === 2 && "Женат / Замужем") ||
-                (selectedMaritalStatus === 3 && "Разведен / Разведена")}
-            </span>
-            <img src={arrow_down} alt='arrow'/>
-          </div>
-          {clickMaritalStatus && (
-            <div className={style.options}>
-              <div
-                className={
-                  selectedMaritalStatus !== 1 ? style.option : style.optionHide
-                }
-                onClick={() => handleOptionClickMaritalStatus(1)}>
-                Холост / Не замужем
-              </div>
-              <div
-                className={
-                  selectedMaritalStatus !== 2 ? style.option : style.optionHide
-                }
-                onClick={() => handleOptionClickMaritalStatus(2)}>
-                Женат / Замужем
-              </div>
-              <div
-                className={
-                  selectedMaritalStatus !== 3 ? style.option : style.optionHide
-                }
-                onClick={() => handleOptionClickMaritalStatus(3)}>
-                Разведен / Разведена
-              </div>
-            </div>
-          )}
-        </div>
       </div>
-      <div className={style.buttonBlock}>
-        <button
-          type='submit'
-          className={!isValid ? style.disabled : style.submit}>
-          Сохранить
-        </button>
+
+      <div className='inputBlock mt-sm'>
+        <h3>Фамилия</h3>
+        <input
+          className={cn({'error': errors.last_name})}
+          type='text'
+          placeholder='Иванов'
+          {...register("last_name", {
+            minLength: {
+              value: 2,
+              message: "слишком короткая фамилия",
+            },
+            pattern: {
+              value: /^[A-ZА-Я]+$/i,
+              message: "некорректный формат фамилии",
+            },
+          })}
+        />
+        <span className='errorMessage'>
+            {errors?.last_name?.message}&nbsp;
+          </span>
+      </div>
+
+      <div className='inputBlock mt-sm'>
+        <h3>Страна</h3>
+        <Select
+          name='country'
+          control={control}
+          options={countrySelectOptions}
+          placeholder='не выбрано'
+          rules={{}}
+        />
+      </div>
+
+      <div className='inputBlock mt-lg'>
+        <h3>Дата рождения</h3>
+        <DatePicker
+          name="date_of_birth"
+          control={control}
+          rules={{}}
+          minDate={minDate}
+          maxDate={maxDate}
+        />
+      </div>
+
+      <div className='inputBlock mt-lg'>
+        <h3>Семейное положение</h3>
+        <Select
+          name='familystatus'
+          control={control}
+          options={familyStatusSelectOptions}
+          placeholder='не выбрано'
+          rules={{}}
+        />
+      </div>
+
+      <button className='buttonProfileSubmit' type='submit'>
+        Сохранить
+      </button>
+
+      <div className={cn('modalLoadingErrorMessage', {'visible': isLoading || isError})}>
+        {isLoading && <LoadingIcon/>}
+        {isError && <ErrorIcon/>}
       </div>
     </form>
   );

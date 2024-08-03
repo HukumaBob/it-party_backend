@@ -15,7 +15,7 @@ export const EventsCatalog = () => {
   const dispatch = useDispatch();
   const {data, loading: eventsLoading, error, filters, pageNumber, pageCount} = useSelector((store) => store.eventList);
   const {status: cityStatus} = useSelector((store) => store.city);
-  const {data: specializations, loading: specializationsLoading} = useSelector((store) => store.specializations);
+  const {status: specializationsStatus} = useSelector((store) => store.specializations);
   const isPhoneSM = useMediaQuery('(max-width: 576px)')
   const isTablet = useMediaQuery('(min-width: 991.98px)')
 
@@ -32,10 +32,8 @@ export const EventsCatalog = () => {
   }, [dispatch, filters]);
 
   useEffect(() => {
-    if (cityStatus === 'idle' || cityStatus === 'error') {
-      dispatch(getCityList())
-    }
-    !specializations && !specializationsLoading && dispatch(getSpecializationsList())
+    cityStatus === 'idle' && dispatch(getCityList())
+    specializationsStatus === 'idle' && dispatch(getSpecializationsList())
   }, [dispatch]);
 
   const handlePageChange = (_: any, value: number) => {

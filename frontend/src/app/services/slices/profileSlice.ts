@@ -1,6 +1,7 @@
-import { PayloadAction, createSlice, createAction } from "@reduxjs/toolkit";
-import { TProfileInitialState } from "../../types/types";
-import { receiveProfile, createProfile } from "../actions/profile";
+import {PayloadAction, createSlice, createAction} from "@reduxjs/toolkit";
+import {TProfileInitialState} from "../../types/types";
+import {receiveProfile, createProfile} from "../actions/profile";
+
 const profileStorage = localStorage.getItem("updateInfo");
 const profileInfo = profileStorage ? JSON.parse(profileStorage) : {};
 const avatarStorage = "http://localhost:8000";
@@ -15,7 +16,7 @@ export const initialState: TProfileInitialState = {
   place_of_work: (profileStorage && profileInfo.place_of_work !== "") ? profileInfo.place_of_work : "",
   position: (profileStorage && profileInfo.position !== "") ? profileInfo.position : "",
   hobby: (profileStorage && profileInfo.hobby !== "") ? profileInfo.hobby : "",
-  values: (profileStorage && profileInfo.values !== "") ? profileInfo.values: "",
+  values: (profileStorage && profileInfo.values !== "") ? profileInfo.values : "",
   aims: (profileStorage && profileInfo.aims !== "") ? profileInfo.aims : "",
   cv: (profileStorage && profileInfo.cv !== "") ? profileInfo.cv : "",
   phone: (profileStorage && profileInfo.phone !== "") ? profileInfo.phone : "",
@@ -68,7 +69,7 @@ export const profileSlice = createSlice({
     },
     setHobby: (state, action: PayloadAction<string>) => {
       state.hobby = action.payload;
-    }, 
+    },
     setValues: (state, action: PayloadAction<string>) => {
       state.values = action.payload;
     },
@@ -84,7 +85,7 @@ export const profileSlice = createSlice({
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
-    setMotivation:(state, action: PayloadAction<string>) => {
+    setMotivation: (state, action: PayloadAction<string>) => {
       state.motivation = action.payload;
     },
     setUser: (state, action: PayloadAction<boolean>) => {
@@ -117,24 +118,6 @@ export const profileSlice = createSlice({
     setSelectedCountry: (state, action: PayloadAction<number>) => {
       state.selectedCountry = action.payload;
     },
-    setClickMaritalStatus: (state, action: PayloadAction<boolean>) => {
-      state.clickMaritalStatus = action.payload;
-    },
-    setClickCountry: (state, action: PayloadAction<boolean>) => {
-      state.clickCountry = action.payload;
-    },
-    setClickProfileExperience: (state, action: PayloadAction<boolean>) => {
-      state.clickProfileExperience = action.payload;
-    },
-    setClickProfileSpecialization: (state, action: PayloadAction<boolean>) => {
-      state.clickProfileSpecialization = action.payload;
-    },
-    setClickIncome: (state, action: PayloadAction<boolean>) => {
-      state.clickIncome = action.payload;
-    },
-    setClickEducation: (state, action: PayloadAction<boolean>) => {
-      state.clickEducation = action.payload;
-    },
     setOfflineCheckedFormAboutMe: (state, action: PayloadAction<boolean>) => {
       state.offlineCheckedFormAboutMe = action.payload;
     },
@@ -155,12 +138,6 @@ export const profileSlice = createSlice({
     },
     setClickTimeInterval: (state, action: PayloadAction<boolean>) => {
       state.clickTimeInterval = action.payload;
-    },
-    setOpenModalResetPassword: (state, action: PayloadAction<boolean>) => {
-      state.openModalResetPassword = action.payload;
-    },
-    setResetOk: (state, action: PayloadAction<boolean>) => {
-      state.resetOk = action.payload;
     },
     resetProfile: (state) => {
       localStorage.removeItem('accessToken');
@@ -211,7 +188,6 @@ export const {
   setPhone,
   setEmail,
   setMotivation,
-  setUser,
   setSelectedMaritalStatus,
   setSelectedProfileExperience,
   setSelectedProfileSpecialization,
@@ -221,12 +197,6 @@ export const {
   setOpenModalAvatar,
   setChangeDateOfBirth,
   setSelectedCountry,
-  setClickMaritalStatus,
-  setClickCountry,
-  setClickProfileExperience,
-  setClickProfileSpecialization,
-  setClickIncome,
-  setClickEducation,
   setOfflineCheckedFormAboutMe,
   setOnlineCheckedFormAboutMe,
   setEmailChecked,
@@ -234,8 +204,6 @@ export const {
   setApprovalApplicationChecked,
   setNewEventsChecked,
   setClickTimeInterval,
-  setOpenModalResetPassword,
-  setResetOk,
   resetProfile
 } = profileSlice.actions;
 

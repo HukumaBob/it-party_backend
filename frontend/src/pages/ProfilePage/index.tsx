@@ -1,6 +1,7 @@
 import {NavLink, Route, Routes, useNavigate, Outlet} from "react-router-dom";
 import {useDispatch} from "../../app/types/hooks";
 import {resetProfile} from "../../app/services/slices/profileSlice";
+import {logoutUser} from "../../app/services/slices/authorizationSlice.ts";
 import {ProfileBlock} from "../../features/ProfileBlock";
 import {FormDataPersonal} from "../../widgets/FormDataPersonal";
 import {FormCareerAndEducation} from "../../widgets/FormCareerAndEducation"
@@ -23,6 +24,7 @@ export const ProfilePage = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     dispatch(resetProfile())
+    dispatch(logoutUser())
     navigate('/', {replace: true});
   };
 

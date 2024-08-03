@@ -3,6 +3,7 @@ import {Popover} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {resetProfile} from "../../app/services/slices/profileSlice";
+import {logoutUser} from "../../app/services/slices/authorizationSlice.ts";
 import style from "./index.module.scss";
 
 export const HeaderAdmin = () => {
@@ -21,6 +22,7 @@ export const HeaderAdmin = () => {
   const handleLogout = () => {
     handleCloseMenu()
     dispatch(resetProfile())
+    dispatch(logoutUser())
     navigate('/', {replace: true});
   };
 

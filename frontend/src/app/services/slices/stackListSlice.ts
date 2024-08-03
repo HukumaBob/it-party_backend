@@ -1,28 +1,24 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, STACK} from "../../api/constants";
+import {API} from "../../api/constants";
 
 type TOption = {
   value: number;
   label: string;
 }
-
 type TStack = {
   id: number;
   name: string;
   specialization: number;
 }
-
 type TSpecialization = {
   id: number;
   specialization: string;
   index: number;
 }
-
 type TStackObject = {
   specialization: TSpecialization;
   stacks: TStack[]
 }
-
 type TInitialState = {
   data: TStackObject[];
   optionsSpecialization: Record<string, TOption>;
@@ -31,24 +27,25 @@ type TInitialState = {
   error: string | null;
 }
 
-export const getStackList = createAsyncThunk<TStackObject[], undefined, { rejectValue: string }>(
-  'fetch_stack_list',
-  async function (_, {rejectWithValue}) {
-    try {
-      const response = await fetch(`${BASE_URL}${STACK}`, {
-        method: "GET",
-        headers: {"Content-Type": "application/json"},
-      })
-      if (!response.ok) {
-        return rejectWithValue(response.statusText);
+export const getStackList =
+  createAsyncThunk<TStackObject[], undefined, { rejectValue: string }>(
+    'fetch_stack_list',
+    async function (_, {rejectWithValue}) {
+      try {
+        const response = await fetch(API.STACK_LIST, {
+          method: "GET",
+          headers: {"Content-Type": "application/json"},
+        })
+        if (!response.ok) {
+          return rejectWithValue(response.statusText);
+        }
+        const data: TStackObject[] = await response.json();
+        return data
+      } catch (err) {
+        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
       }
-      const data: TStackObject[] = await response.json();
-      return data
-    } catch (err) {
-      return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
     }
-  }
-);
+  );
 
 const initialState: TInitialState = {
   data: [],
@@ -75,7 +72,7 @@ const stackListSlice = createSlice({
         // data - не используется:
         state.data = action.payload;
         // optionsSpecialization - для селектов в форме:
-        state.optionsSpecialization = data.reduce((acc:Record<string, TOption>, current) => {
+        state.optionsSpecialization = data.reduce((acc: Record<string, TOption>, current) => {
           const specialization = current.specialization
           acc[specialization.id] = {value: specialization.id, label: specialization.specialization}
           return acc;

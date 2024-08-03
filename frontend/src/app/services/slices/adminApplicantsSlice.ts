@@ -1,5 +1,6 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, ADMIN_EVENT_LIST, USER_EVENT_STATUS} from "../../api/constants";
+import {API} from "../../api/constants";
+import {RootState} from "../../../main.tsx";
 
 type TUser = {
   id: number;
@@ -10,7 +11,6 @@ type TUser = {
   experience: string;
   status: string;
 };
-
 type TApplicant = {
   id: number;
   event_name: string;
@@ -19,13 +19,11 @@ type TApplicant = {
   profile_events: TUser;
   application_status: 'pending' | 'approved' | 'rejected';
 }
-
 type TPatchData = {
   id: number;
   application_status: string;
   explanation?: string;
 }
-
 type TInitialState = {
   data: TApplicant[];
   loading: boolean;
@@ -38,51 +36,54 @@ type TInitialState = {
   applicantFullName: string | undefined;
 };
 
-export const patchAdminApplicantStatus = createAsyncThunk<undefined, TPatchData, { rejectValue: string }>(
-  "patch_admin_applicantStatus",
-  async (patch_data, {rejectWithValue}) => {
-    const {id, application_status, explanation} = patch_data
-    const body: Record<string, string> = {application_status}
-    if (explanation) {
-      body.explanation = explanation;
-    }
+export const patchAdminApplicantStatus =
+  createAsyncThunk<undefined, TPatchData, { rejectValue: string; state: RootState }>(
+    "patch_admin_applicantStatus",
+    async (patch_data, {rejectWithValue, getState}) => {
+      const accessToken = getState().authorization.accessToken
+      const {id, application_status, explanation} = patch_data
+      const body: Record<string, string> = {application_status}
+      if (explanation) {
+        body.explanation = explanation;
+      }
 
-    try {
-      const response = await fetch(`${BASE_URL}${USER_EVENT_STATUS}/${id}/`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify(body)
-      });
-      if (!response.ok) return rejectWithValue(response.statusText);
-    } catch (err) {
-      return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
-    }
-  },
-);
+      try {
+        const response = await fetch(`${API.USER_EVENT_STATUS}${id}/`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(body)
+        });
+        if (!response.ok) return rejectWithValue(response.statusText);
+      } catch (err) {
+        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
+      }
+    },
+  );
 
-export const getAdminApplicantsList = createAsyncThunk<TApplicant[], number, { rejectValue: string }>(
-  "fetch_admin_applicants_List",
-  async (id, {rejectWithValue}) => {
+export const getAdminApplicantsList =
+  createAsyncThunk<TApplicant[], number, { rejectValue: string; state: RootState }>(
+    "fetch_admin_applicants_List",
+    async (id, {rejectWithValue}) => {
 
-    try {
-      const response = await fetch(`${BASE_URL}${ADMIN_EVENT_LIST}/${id}/user_events`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      if (!response.ok) return rejectWithValue(response.statusText);
-      const data: TApplicant[] = await response.json();
-      return data
-    } catch (err) {
-      return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
-    }
-  },
-);
+      try {
+        const response = await fetch(`${API.ADMIN_EVENT_LIST}${id}/user_events`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        if (!response.ok) return rejectWithValue(response.statusText);
+        const data: TApplicant[] = await response.json();
+        return data
+      } catch (err) {
+        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
+      }
+    },
+  );
 
 const initialState: TInitialState = {
   data: [],

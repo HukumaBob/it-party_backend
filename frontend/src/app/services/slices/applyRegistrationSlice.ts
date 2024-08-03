@@ -1,5 +1,6 @@
 import {PayloadAction, createSlice, createAsyncThunk, UnknownAction} from "@reduxjs/toolkit";
-import {BASE_URL, REGISTER_AND_APPLY, SUBMIT_APPLICATION} from "../../api/constants";
+import {API} from "../../api/constants";
+import {RootState} from "../../../main.tsx";
 
 type TRegistrationData = {
   first_name: string;
@@ -14,7 +15,6 @@ type TRegistrationData = {
   offline: boolean;
   user_event_id: number;
 };
-
 type TApplyRegistrationFormData = {
   id: number;
   first_name: string;
@@ -29,7 +29,6 @@ type TApplyRegistrationFormData = {
   online: boolean;
   offline: boolean;
 };
-
 type TInitialState = {
   inboundData: TRegistrationData | null;
   loadingGET: boolean;
@@ -41,17 +40,18 @@ type TInitialState = {
 };
 
 export const getRegistrationData =
-  createAsyncThunk<TRegistrationData, number, { rejectValue: string }>
+  createAsyncThunk<TRegistrationData, number, { rejectValue: string; state: RootState }>
   ("fetch_registration_data",
-    async (id, {rejectWithValue}) => {
+    async (id, {rejectWithValue, getState}) => {
+      const accessToken = getState().authorization.accessToken
       try {
         const response = await fetch(
-          `${BASE_URL}${REGISTER_AND_APPLY}${id}/`,
+          `${API.REGISTER_AND_APPLY}/${id}/`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         );
@@ -67,19 +67,20 @@ export const getRegistrationData =
   );
 
 export const applyRegistration =
-  createAsyncThunk<string | undefined, TApplyRegistrationFormData, { rejectValue: string }>
+  createAsyncThunk<string | undefined, TApplyRegistrationFormData, { rejectValue: string; state: RootState }>
   ("post_apply_registration",
-    async (data, {rejectWithValue}) => {
+    async (data, {rejectWithValue, getState}) => {
+      const accessToken = getState().authorization.accessToken
       const {id, ...restData} = data;
 
       try {
         const response = await fetch(
-          `${BASE_URL}${SUBMIT_APPLICATION}${id}/`,
+          `${API.SUBMIT_APPLICATION}/${id}/`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify(restData),
           },

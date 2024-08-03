@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Popover} from "@mui/material";
 import {Link, useMatch, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "../../app/types/hooks";
-import {setOpenModal} from "../../app/services/slices/authorization";
-import {resetProfile} from "../../app/services/slices/profileSlice";
+import {setOpenAuthorizationModal, logoutUser} from "../../app/services/slices/authorizationSlice.ts";
+import {getUserProfile} from "../../app/services/slices/profileUserSlice.ts";
 import LogoIcon from "../../app/assets/icons/logo.svg?react";
 import login_avatar from '../../app/assets/image/other/login_avatar.webp'
 import style from "./index.module.scss";
@@ -11,9 +11,10 @@ import style from "./index.module.scss";
 export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const isMainPage = useMatch('/')
-  const isAuthorized = Boolean(localStorage.getItem("accessToken"));
+  const {isAuthorized} = useSelector(state => state.authorization);
+  const {statusGetProfile} = useSelector(state => state.profileUser);
+  const {first_name, last_name, user_photo} = useSelector(state => state.profileUser.data);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -23,15 +24,19 @@ export const Header = () => {
     setAnchorEl(null);
   };
 
-  const {name, secondName, avatar} = useSelector((store) => store.profile);
   const handleOpenModal = () => {
-    dispatch(setOpenModal(true));
+    dispatch(setOpenAuthorizationModal(true));
   };
   const handleLogout = () => {
     handleCloseMenu()
-    dispatch(resetProfile())
+    dispatch(logoutUser())
     navigate('/', {replace: true});
   };
+  useEffect(() => {
+    if (isAuthorized && statusGetProfile === 'idle') {
+      dispatch(getUserProfile());
+    }
+  }, [isAuthorized, statusGetProfile]);
 
   return (
     <header className={style.header}>
@@ -42,12 +47,12 @@ export const Header = () => {
 
           {isAuthorized
             ? <button className={style.buttonMenu} onClick={handleOpenMenu}>
-              {name}&nbsp;{secondName}
-              <img className={style.avatar} src={avatar} alt='avatar'/>
+              {first_name}&nbsp;{last_name}
+              <img className={style.avatar} src={user_photo} alt='avatar'/>
             </button>
             : <button className={style.buttonEnter} onClick={handleOpenModal}>
               Login
-              <img className={style.avatar} src={login_avatar} alt="avatar icon"/>
+              <img className={style.avatar} src={login_avatar} alt='avatar'/>
             </button>}
         </div>
 

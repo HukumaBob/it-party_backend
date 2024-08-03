@@ -1,61 +1,55 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
-import { useForm } from "react-hook-form";
-import { TFormConfidentialityValues, TUserProfileValues, TFormDataPersonalValues } from "../../app/types/types";
-import { editingDataPersonal, deleteUserProfile } from "../../app/api/api";
+import {useNavigate} from 'react-router-dom';
+import {useForm} from "react-hook-form";
+import {TFormConfidentialityValues, TUserProfileValues, TFormDataPersonalValues} from "../../app/types/types";
+import {editingDataPersonal, deleteUserProfile} from "../../app/api/api";
 import style from "./index.module.scss";
-import { useDispatch, useSelector } from "../../app/types/hooks";
-import {
-  setPhone,
-  setOpenModalResetPassword,
-} from "../../app/services/slices/profileSlice";
+import {useDispatch, useSelector} from "../../app/types/hooks";
+import {setPhone} from "../../app/services/slices/profileSlice";
 import useProfileState from '../../shared/useProfileState/index';
-import { FormResetPassword } from "../../shared/FormResetPassword";
+import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
 
 export const FormConfidentiality = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { resetForm } = useProfileState();
+  const {resetForm} = useProfileState();
   const {
     phone,
     email,
-    openModalResetPassword,
   } = useSelector((state) => state.profile);
 
   React.useEffect(() => {
     if (phone !== "") {
       setValue("phone", phone);
-    };
+    }
   }, []);
 
   function handleResetPassword() {
-    dispatch(setOpenModalResetPassword(true));
-  };
+    dispatch(setModalResetPassword({open: true, formType: 'profile'}));
+  }
 
   function handleDeleteProfile() {
     deleteUserProfile()
-    .then(() => {
-      localStorage.removeItem('updateInfo');
-      resetForm();
-      alert(
-        "Данные успешно удалены.",
-      );
-      navigate("/");
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("Произошла ошибка при удалении профиля. Попробуйте еще раз позже.");
-    })
-
+      .then(() => {
+        localStorage.removeItem('updateInfo');
+        resetForm();
+        alert(
+          "Данные успешно удалены.",
+        );
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Произошла ошибка при удалении профиля. Попробуйте еще раз позже.");
+      })
   }
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: {errors, isValid},
     setValue,
-  } = useForm<TFormConfidentialityValues>({
-    mode: "onTouched",
-  });
+  } = useForm<TFormConfidentialityValues>({mode: "onTouched"});
 
 
   const onSubmit = (data: TFormConfidentialityValues) => {
@@ -65,9 +59,9 @@ export const FormConfidentiality = () => {
       const profileData = profile ? JSON.parse(profile) : {};
       for (const key in data) {
         const keyCurrent = key;
-        for(const keyData in profileData) {
+        for (const keyData in profileData) {
           const keyProfile = keyData;
-          if (data[key] !== profileData[keyProfile] ) {
+          if (data[key] !== profileData[keyProfile]) {
             objectData[keyCurrent] = data[keyCurrent];
           } else {
             continue;
@@ -94,9 +88,6 @@ export const FormConfidentiality = () => {
 
   return (
     <section>
-      <div className={openModalResetPassword === true ? style.container : style.popupBlock}>
-        <FormResetPassword id="resetPasswordProfile" />
-      </div>
       <form className={style.form} onSubmit={handleSubmit(onSubmit)} id="formConfidentiality">
         <div className={style.form_container}>
           <h2 className={style.form_title}>Настройки безопасности</h2>
@@ -110,9 +101,9 @@ export const FormConfidentiality = () => {
               value={email}
               disabled
             />
-            
+
             <span className={style.message}>
-              {"Невозможно изменить. Необходимо для регистрации на мероприятие."}
+              {"Невозможно изменить. Необходимо для регистрации на мероприятие."}
             </span>
           </div>
           <div className={style.name_form}>
@@ -125,12 +116,14 @@ export const FormConfidentiality = () => {
               placeholder='********'
               disabled
             />
+
             <button
               type='button'
               className={style.buttonResetPassword}
               onClick={handleResetPassword}>
               Сбросить пароль
             </button>
+
           </div>
           <div className={style.name_form}>
             <label>
@@ -157,27 +150,18 @@ export const FormConfidentiality = () => {
             />
 
             <span
-              className={`${errors.phone? style.error : style.message}`}>
+              className={`${errors.phone ? style.error : style.message}`}>
               {errors?.phone?.message ||
-                "Необходимо для регистрации на мероприятие"}
+                "Необходимо для регистрации на мероприятие"}
             </span>
           </div>
         </div>
         <div className={style.buttonBlock}>
           <button
             type='submit'
-            className={
-              !(
-                isValid
-              )
-                ? style.disabled
-                : style.submit
-            }
-            disabled={
-              !(
-                isValid
-              )
-            }>
+            className={!isValid ? style.disabled : style.submit}
+            disabled={!isValid}
+          >
             Сохранить
           </button>
           <button

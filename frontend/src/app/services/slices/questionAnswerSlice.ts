@@ -5,7 +5,6 @@ type TQuestionAnswer = {
   question: string;
   answer: string;
 }
-
 type TInitialState = {
   data: TQuestionAnswer[];
 };

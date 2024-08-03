@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "../../app/types/hooks";
 import {handleFavoriteClick} from "../../app/services/slices/favoriteSlice";
 import CalendarIcon from "../../app/assets/icons/calendar.svg?react";
 import FavoriteIcon from "../../app/assets/icons/favorite.svg?react";
-import {ModalRegistration} from "../../widgets/ModalRegistration";
+import {ModalEventRegistration} from "../../widgets/ModalEventRegistration";
 import cn from 'classnames'
 import style from "./index.module.scss";
 
@@ -72,7 +72,7 @@ export const CardEvent: React.FC<TCardEvent> =
         <div className={style.registrationContainer}>
           {
             {
-              not_applied: <ModalRegistration id={id}/>,
+              not_applied: <ModalEventRegistration id={id}/>,
               pending: <div className={cn(style.notification, style.pending)}>Ожидает подтверждения</div>,
               approved: <div className={cn(style.notification, style.approved)}>Билет</div>,
               rejected: <div className={cn(style.notification, style.rejected)}>Отклонено</div>,

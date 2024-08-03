@@ -1,13 +1,10 @@
+import {useForm} from "react-hook-form";
+import {TUserProfileValues, TFormEditAvatar} from "../../app/types/types";
+import {editingAvatar} from "../../app/api/api";
+import {useDispatch} from "../../app/types/hooks";
+import closeIcon from "../../app/assets/icons/close.svg";
+import {setOpenModalAvatar, setAvatar} from "../../app/services/slices/profileSlice";
 import style from "./index.module.scss";
-import { useForm } from "react-hook-form";
-import { TUserProfileValues, TFormEditAvatar } from "../../app/types/types";
-import { editingAvatar } from "../../app/api/api";
-import { useDispatch } from "../../app/types/hooks";
-import closeIcon from "../../app/assets/icons/close_mini.svg";
-import {
-  setOpenModalAvatar,
-  setAvatar
-} from "../../app/services/slices/profileSlice";
 
 export const FormEditAvatar = () => {
   const dispatch = useDispatch();
@@ -19,13 +16,13 @@ export const FormEditAvatar = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: {errors, isValid},
     reset,
   } = useForm<TFormEditAvatar>({
     mode: "onTouched",
   });
 
-  const onSubmit = (data: TFormEditAvatar ) => {
+  const onSubmit = (data: TFormEditAvatar) => {
     editingAvatar(data)
       .then((data: TUserProfileValues) => {
         localStorage.setItem("updateInfo", JSON.stringify(data));
@@ -33,11 +30,11 @@ export const FormEditAvatar = () => {
         alert(
           "Данные успешно обновлены.",
         );
-        handleCloseModal(); 
+        handleCloseModal();
       })
       .catch((error) => {
         console.log(error);
-        alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже."); 
+        alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
       })
       .finally(() => {
         reset();
@@ -58,7 +55,7 @@ export const FormEditAvatar = () => {
         </div>
         <div className={style.name_form}>
           <label>
-            Аватар 
+            Аватар
           </label>
           <div className={style.inputBlock}>
             <input
@@ -78,18 +75,9 @@ export const FormEditAvatar = () => {
           <div className={style.buttonBlock}>
             <button
               type='submit'
-              className={
-                !(
-                  isValid
-                )
-                  ? style.disabled
-                  : style.submit
-              }
-              disabled={
-                !(
-                  isValid
-                )
-              }>
+              className={!isValid ? style.disabled : style.submit}
+              disabled={!isValid}
+            >
               Сохранить
             </button>
           </div>

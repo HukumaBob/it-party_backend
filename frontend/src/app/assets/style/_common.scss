@@ -9,6 +9,7 @@
 
   ::-webkit-scrollbar-track {
     background: var(--c-def-white);
+    border-radius: 5px;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -43,6 +44,7 @@ option {
   color: var(--c-def-black);
 
   &::placeholder {
+    font-family: YS-Text, sans-serif;
     color: var(--c-black-300);
     font-size: 14px;
   }
@@ -146,6 +148,7 @@ main {
   margin: 100px auto 50px;
   width: 150px;
   height: 150px;
+  flex-grow: 1;
   color: var(--c-black-500);
 }
 
@@ -174,5 +177,26 @@ main {
     @media (max-width: 575.98px) {
       display: none;
     }
+  }
+}
+
+.modalLoadingErrorMessage {
+  display: none;
+  position: absolute;
+  inset: 0 0 0 0;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background-color: #ffffffee;
+
+  &.visible {
+    display: flex;
+  }
+
+  svg {
+    width: 180px;
+    height: 180px;
+    color: var(--c-black-500);
   }
 }

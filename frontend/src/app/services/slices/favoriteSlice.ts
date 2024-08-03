@@ -1,5 +1,6 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {API} from "../../api/constants";
+import {RootState} from "../../../main.tsx";
 
 type TEvent = {
   id: number;
@@ -11,53 +12,49 @@ type TEvent = {
   time: string;
   user_application_status: 'not_applied' | 'pending' | 'approved' | 'rejected';
 }
-
 type TInitialState = {
   data: TEvent[];
   loading: boolean;
-  error: string | null;
+  error: string | null | undefined;
   favorite: Record<string, boolean>;
 };
-
 type TResponse = {
   results: TEvent[];
 }
 
-export const getFavoriteList = createAsyncThunk<TResponse, undefined, {
-  rejectValue: string;
-  state: { favorite: TInitialState }
-}>(
-  "fetch_favorite_list",
-  async (_, {rejectWithValue, getState}) => {
-    const favoriteIdList = getState().favorite.favorite;
+export const getFavoriteList =
+  createAsyncThunk<TResponse, undefined, { rejectValue: string; state: RootState }>(
+    "fetch_favorite_list",
+    async (_, {rejectWithValue, getState}) => {
+      const state = getState()
+      const favoriteIdList = state.favorite.favorite;
+      const accessToken = state.authorization.accessToken
 
-    if (Object.keys(favoriteIdList).length === 0) {
-      // если нет favorite - выйти из санки и венуть пустые дынные в fulfilled
-      // иначе api вернет все ивенты
-      return {results: []}
-    }
+      if (Object.keys(favoriteIdList).length === 0) {
+        return {results: []} // если нет favorite - выйти из санки и венуть пустые дынные
+      }
 
-    const search = new URLSearchParams()
-    Object.keys(favoriteIdList).forEach(eventId => search.append('event_id', String(eventId)));
-    search.append('limit', '2000000')
-    search.append('offset', '0')
+      const search = new URLSearchParams()
+      Object.keys(favoriteIdList).forEach(eventId => search.append('event_id', String(eventId)));
+      search.append('limit', '2000000')
+      search.append('offset', '0')
 
-    const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}?${search.toString()}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
-    if (!response.ok) return rejectWithValue(response.statusText);
-    const data: TResponse = await response.json();
-    return data
-  },
-);
+      const response = await fetch(`${API.EVENT_LIST}?${search.toString()}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": `Bearer ${accessToken}`,
+        },
+      });
+      if (!response.ok) return rejectWithValue(response.statusText);
+      const data: TResponse = await response.json();
+      return data
+    },
+  );
 
 const initialState: TInitialState = {
   data: [],
-  loading: true,
+  loading: false,
   error: null,
   favorite: {}
 };
@@ -87,7 +84,7 @@ const favoriteSlice = createSlice({
           state.loading = false
           state.error = null;
         })
-        .addCase(getFavoriteList.rejected, (state: any, action: PayloadAction<string | undefined>) => {
+        .addCase(getFavoriteList.rejected, (state, action: PayloadAction<string | undefined>) => {
           state.error = action.payload;
           state.loading = false;
           state.data = []

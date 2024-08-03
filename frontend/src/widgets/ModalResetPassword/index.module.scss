@@ -1,0 +1,45 @@
+.title {
+  margin-bottom: var(--sp-24);
+  font-size: var(--sp-28);
+  font-weight: 500;
+  text-align: center;
+}
+
+.subtitle {
+  margin-bottom: var(--sp-24);
+  text-align: center;
+}
+
+.successContainer {
+  p {
+    text-align: center;
+
+    &:nth-of-type(1) {
+      margin-top: var(--sp-28);
+    }
+
+    &:nth-of-type(2) {
+      margin-top: 8px;
+    }
+
+    &:nth-of-type(3) {
+      flex-grow: 1;
+      margin-top: var(--sp-24);
+      line-height: 1.4;
+    }
+  }
+
+  span {
+    color: var(--c-def-blue);
+  }
+
+  button {
+    margin-top: var(--sp-24);
+    width: 100%;
+    padding: var(--sp-12);
+    color: var(--c-def-white);
+    font-weight: 500;
+    border-radius: 8px;
+    background-color: var(--c-def-blue);
+  }
+}

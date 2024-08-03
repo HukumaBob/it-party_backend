@@ -1,393 +1,173 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { TFormDataPersonalValues, TUserProfileValues } from "../../app/types/types";
-import { editingDataPersonal } from "../../app/api/api";
-import style from "./index.module.scss";
-import arrow_down from "../../app/assets/icons/arrow_down.svg";
-import { useDispatch, useSelector } from "../../app/types/hooks";
-import {
-  setClickProfileExperience,
-  setSelectedProfileExperience,
-  setClickProfileSpecialization,
-  setSelectedProfileSpecialization,
-  setClickIncome,
-  setSelectedIncome,
-  setClickEducation,
-  setSelectedEducation,
-} from "../../app/services/slices/profileSlice";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "../../app/types/hooks";
+import {getSpecializationsList} from "../../app/services/slices/specializationsSlice.ts";
+import {updateUserProfile} from "../../app/services/slices/profileUserSlice.ts";
+import {getEducationList} from "../../app/services/slices/educationSlice.ts";
+import {getIncomeList} from "../../app/services/slices/incomeSlice.ts";
+import {Select} from "../../shared/FormFields/Select";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
+import cn from "classnames";
+import {getExperienceList} from "../../app/services/slices/experienceSlice.ts";
+
+type TOption = { value: number; label: string };
+type TFormData = {
+  "place_of_work": string;
+  "position": string;
+  "experience": TOption;
+  "specialization": TOption;
+  "income": TOption;
+  "education": TOption;
+};
+
 export const FormCareerAndEducation = () => {
   const dispatch = useDispatch();
-  const {
-    clickProfileExperience,
-    selectedProfileExperience,
-    clickProfileSpecialization,
-    selectedProfileSpecialization,
-    clickIncome,
-    selectedIncome,
-    clickEducation,
-    selectedEducation,
-  } = useSelector((state) => state.profile);
-  const { place_of_work, position } = useSelector((state) => state.profile);
-  
-  React.useEffect(() => {
-    if (place_of_work !== "") {
-      setValue("place_of_work", place_of_work);
-    }
-    if(position !== "") {
-      setValue("position", position);
-    }
-  }, []);
+  const {data, statusGetProfile} = useSelector((state) => state.profileUser);
+  const {specializationsSelectOptions, status: specializationsStatus} = useSelector((state) => state.specializations);
+  const {experienceSelectOptions, status: experienceStatus} = useSelector((state) => state.experience);
+  const {educationSelectOptions, status: educationStatus} = useSelector((state) => state.education);
+  const {incomeSelectOptions, status: incomeStatus} = useSelector((state) => state.income);
+  const isLoading = [statusGetProfile, specializationsStatus, educationStatus, incomeStatus, experienceStatus].includes('loading');
+  const isError = [statusGetProfile, specializationsStatus, educationStatus, incomeStatus, experienceStatus].includes('error');
 
-  const handleClickProfileExperience = () => {
-    dispatch(setClickProfileExperience(!clickProfileExperience));
-  };
-
-  const handleClickIncome = () => {
-    dispatch(setClickIncome(!clickIncome));
-  }
-
-  const handleClickEducation = () => {
-    dispatch(setClickEducation(!clickEducation));
-  }
-
-  const handleClickProfileSpecialization = () => {
-    dispatch(setClickProfileSpecialization(!clickProfileSpecialization));
-  }
-
-  const handleOptionClickEducation = (value: number) => {
-    dispatch(setSelectedEducation(value));
-    dispatch(setClickEducation(false));
-    setValue("education", value);
-  }
-
-  const handleOptionClickProfileExperience = (value: number) => {
-    dispatch(setSelectedProfileExperience(value));
-    dispatch(setClickProfileExperience(false));
-    setValue("experience", value);
-  };
-
-  const handleOptionClickProfileSpecialization = (value: number) => {
-    dispatch(setSelectedProfileSpecialization(value));
-    dispatch(setClickProfileSpecialization(false));
-    setValue("specialization", value);
-  }
-
-  const handleOptionClickIncome = (value: number) => {
-    dispatch(setSelectedIncome(value));
-    dispatch(setClickIncome(false));
-    setValue("income", value);
-  }
+  useEffect(() => {
+    specializationsStatus === 'idle' && dispatch(getSpecializationsList());
+    experienceStatus === 'idle' && dispatch(getExperienceList())
+    educationStatus === 'idle' && dispatch(getEducationList());
+    incomeStatus === 'idle' && dispatch(getIncomeList());
+  }, [specializationsStatus, experienceStatus, educationStatus, incomeStatus]);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-    setValue,
-  } = useForm<TFormDataPersonalValues>({
-    mode: "onTouched",
-  });
+    formState: {errors},
+    control,
+    reset
+  } = useForm<TFormData>({mode: "onTouched"});
 
-  const onSubmit = (data: TFormDataPersonalValues) => {
-    let promise = new Promise<TFormDataPersonalValues>((resolve) => {
-      let objectData: TFormDataPersonalValues = {};
-      const profile = localStorage.getItem("updateInfo");
-      const profileData = profile ? JSON.parse(profile) : {};
-      for (const key in data) {
-        const keyCurrent = key;
-        for(const keyData in profileData) {
-          const keyProfile = keyData;
-          if (data[key] !== profileData[keyProfile] ) {
-            objectData[keyCurrent] = data[keyCurrent];
-          } else {
-            continue;
-          }
-        }
-      }
-      resolve(objectData);
-    })
-    promise.then((objectData: TFormDataPersonalValues) => {
-      editingDataPersonal(objectData)
-        .then((data: TUserProfileValues) => {
-          localStorage.setItem("updateInfo", JSON.stringify(data));
-          alert(
-            "Данные успешно обновлены.",
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-        })
-    })
+  useEffect(() => {
+    if (
+      statusGetProfile === 'success' &&
+      specializationsStatus === 'success' &&
+      educationStatus === 'success' &&
+      incomeStatus === 'success' &&
+      experienceStatus === 'success') {
+      const getOption = (data: TOption[], target: number | undefined) =>
+        data.find((option) => option.value === target) || {};
+
+      reset({
+        place_of_work: data.place_of_work,
+        position: data.position,
+        experience: getOption(experienceSelectOptions, data.experience),
+        specialization: getOption(specializationsSelectOptions, data.specialization),
+        income: getOption(incomeSelectOptions, data.income),
+        education: getOption(educationSelectOptions, data.education),
+      });
+    }
+  }, [statusGetProfile, specializationsStatus, educationStatus, incomeStatus]);
+
+  const onSubmit = (formData: TFormData) => {
+    dispatch(updateUserProfile({
+      ...formData,
+      experience: formData.experience.value,
+      specialization: formData.specialization.value,
+      income: formData.income.value,
+      education: formData.education.value,
+    }))
   };
 
   return (
-    <form className={style.form} onSubmit={handleSubmit(onSubmit)} id="#formCareerAndEducation">
-      <div className={style.form_container}>
-        <h3 className={style.form_title}>Карьера и образование</h3>
-        <div className={style.name_form}>
-          <label>
-            Место работы <span>*</span>
-          </label>
-          <input
-            className={errors.place_of_work ? style.errorInput : ''}
-            type='text'
-            placeholder='Укажите место вашей работы'
-            {...register("place_of_work", {
-              minLength: {
-                value: 2,
-                message: "Слишком короткое название",
-              }
-            })}
-          />
-          <span className={errors.place_of_work ? style.error : style.message}>
-            {errors?.place_of_work?.message ||
-              "Необходимо для регистрации на мероприятие"}
-          </span>
-        </div>
-        <div className={style.name_form}>
-          <label>
-            Должность <span>*</span>
-          </label>
-          <input
-            className={errors.position ? style.errorInput : ''}
-            type='text'
-            placeholder='Укажите вашу должность'
-            {...register("position", {
-              minLength: {
-                value: 2,
-                message: "Слишком короткое название",
-              }
-            })}
-          />
-          <span className={errors.position ? style.error : style.message}>
-            {errors?.position?.message ||
-              "Необходимо для регистрации на мероприятие"}
-          </span>
-        </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <h2 className='profileTitle'>Карьера и образование</h2>
 
-        <div className={style.container_selectInput}>
-          <label>
-            Ваш опыт работы <span className={style.star}>*</span>
-          </label>
-          <div className={style.customSelect} onClick={handleClickProfileExperience}>
-            <span>{(selectedProfileExperience === 0 && "Нет выбрано") ||
-                   (selectedProfileExperience === 1 && "Нет опыта") ||
-                   (selectedProfileExperience === 2 && "От 1 года") ||
-                   (selectedProfileExperience === 3 && "От 3 лет") ||
-                   (selectedProfileExperience === 4 && "От 5 лет") ||
-                   (selectedProfileExperience === 5 && "Другое")
-            }</span>
-            <img src={arrow_down} alt='arrow' />
-          </div>
-          <span className={style.message}>
-            Необходимо для регистрации на мероприятие
+      <div className='inputBlock mt-lg'>
+        <h3>Место работы</h3>
+        <input
+          className={cn({'error': errors.place_of_work})}
+          type='text'
+          placeholder='Укажите место вашей работы'
+          {...register("place_of_work", {
+            minLength: {
+              value: 2,
+              message: "слишком короткое название",
+            }
+          })}
+        />
+        <span className='errorMessage'>
+            {errors?.place_of_work?.message}&nbsp;
           </span>
-          {clickProfileExperience && (
-            <div className={style.options}>
-              <div
-                className={selectedProfileExperience !== 1 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileExperience(1)}>
-                Нет опыта
-              </div>
-              <div
-                className={selectedProfileExperience !== 2 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileExperience(2)}>
-                От 1 года
-              </div>
-              <div
-                className={selectedProfileExperience !== 3 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileExperience(3)}>
-                От 3 лет
-              </div>
-              <div
-                className={selectedProfileExperience !== 4 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileExperience(4)}>
-                От 5 лет
-              </div>
-              <div
-                className={selectedProfileExperience !== 5 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileExperience(5)}>
-                Другое
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={style.container_selectInput}>
-          <label>
-            Ваше направление <span className={style.star}>*</span>
-          </label>
-          <div className={style.customSelect} onClick={handleClickProfileSpecialization}>
-            <span>{(selectedProfileSpecialization === 0 && "Не выбрано") ||
-                   (selectedProfileSpecialization === 1 && "Backend") ||
-                   (selectedProfileSpecialization === 2 && "Frontend") ||
-                   (selectedProfileSpecialization === 3 && "Mobile") ||
-                   (selectedProfileSpecialization === 4 && "QA") ||
-                   (selectedProfileSpecialization === 5 && "ML") ||
-                   (selectedProfileSpecialization === 6 && "Другое")}</span>
-            <img src={arrow_down} alt='arrow' />
-          </div>
-          <span
-            className={style.message}>
-            Необходимо для регистрации на мероприятие
-          </span>
-          {clickProfileSpecialization && (
-            <div className={style.options}>
-              <div
-                className={selectedProfileSpecialization !== 1 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileSpecialization(1)}>
-                Backend
-              </div>
-              <div
-                className={selectedProfileSpecialization !== 2 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileSpecialization(2)}>
-                Frontend
-              </div>
-              <div
-                className={selectedProfileSpecialization !== 3 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileSpecialization(3)}>
-                Mobile
-              </div>
-              <div
-                className={selectedProfileSpecialization !== 4 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileSpecialization(4)}>
-                QA
-              </div>
-              <div
-                className={selectedProfileSpecialization !== 5 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileSpecialization(5)}>
-                ML
-              </div>
-              <div
-                className={selectedProfileSpecialization !== 6 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickProfileSpecialization(6)}>
-                Другое
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={style.container_selectInput}>
-          <label>
-            Доход
-          </label>
-          <div className={style.customSelect} onClick={handleClickIncome}>
-            <span>{(selectedIncome === 0 && "Не выбрано") ||
-                   (selectedIncome === 1 && "до 50 000 рублей в месяц") ||
-                   (selectedIncome === 2 && "50 000 - 100 000 рублей в месяц") ||
-                   (selectedIncome === 3 && "100 000 - 150 000 рублей в месяц") ||
-                   (selectedIncome === 4 && "150 000 - 200 000 рублей в месяц") ||
-                   (selectedIncome === 5 && "Свыше 200 000 рублей в месяц") ||
-                   (selectedIncome === 6 && "Другое")}</span>
-            <img src={arrow_down} alt='arrow' />
-          </div>
-          {clickIncome && (
-            <div className={style.options}>
-              <div
-                className={selectedIncome !== 1 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickIncome(1)}>
-                до 50 000 рублей в месяц
-              </div>
-              <div
-                className={selectedIncome !== 2 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickIncome(2)}>
-                50 000 - 100 000 рублей в месяц
-              </div>
-              <div
-                className={selectedIncome !== 3 ? style.option : style.optionHiden}
-                onClick={() => handleOptionClickIncome(3)}>
-                100 000 - 150 000 рублей в месяц
-              </div>
-              <div
-                className={selectedIncome !== 4 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickIncome(4)}>
-                150 000 - 200 000 рублей в месяц
-              </div>
-              <div
-                className={selectedIncome !== 5 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickIncome(5)}>
-                Свыше 200 000 рублей в месяц
-              </div>
-              <div
-                className={selectedIncome !== 6 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickIncome(6)}>
-                Другое
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={style.container_selectInput}>
-          <label>
-            Образование
-          </label>
-          <div className={style.customSelect} onClick={handleClickEducation}>
-            <span>{(selectedEducation === 0 && "Не выбрано") ||
-                   (selectedEducation === 1 && "Среднее общее образование") ||
-                   (selectedEducation === 2 && "Среднее профессиональное образование") ||
-                   (selectedEducation === 3 && "Неоконченное высшее") ||
-                   (selectedEducation === 4 && "Оконченное высшей бакалавриат/специалитет") ||
-                   (selectedEducation === 5 && "Магистратура") ||
-                   (selectedEducation === 6 && "Аспирантура") ||
-                   (selectedEducation === 7 && "Другое")
-                   }</span>
-            <img src={arrow_down} alt='arrow' />
-          </div>
-          {clickEducation && (
-            <div className={style.options}>
-              <div
-                className={selectedEducation !== 1 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickEducation(1)}>
-                Среднее общее образование
-              </div>
-              <div
-                className={selectedEducation !== 2 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickEducation(2)}>
-                Среднее профессиональное образование
-              </div>
-              <div
-                className={selectedEducation !== 3 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickEducation(3)}>
-                Неоконченное высшее
-              </div>
-              <div
-                className={selectedEducation !== 4 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickEducation(4)}>
-                Оконченное высшей бакалавриат/специалитет
-              </div>
-              <div
-                className={selectedEducation !== 5 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickEducation(5)}>
-                Магистратура
-              </div>
-              <div
-                className={selectedEducation !== 6 ? style.option : style.optionHiden}
-                onClick={() => handleOptionClickEducation(6)}>
-                Аспирантура
-              </div>
-              <div
-                className={selectedEducation !== 7 ? style.option : style.optionHide}
-                onClick={() => handleOptionClickEducation(7)}>
-                Другое
-              </div>
-            </div>
-          )}
-        </div>
       </div>
-      <div className={style.buttonBlock}>
-        <button
-          type='submit'
-          className={
-            !(
-              isValid
-            )
-              ? style.disabled
-              : style.submit
-          }
-          disabled={
-            !(
-              isValid
-            )
-          }>
-          Сохранить
-        </button>
+
+      <div className='inputBlock mt-sm'>
+        <h3>Должность</h3>
+        <input
+          className={cn({'error': errors.position})}
+          type='text'
+          placeholder='Укажите вашу должность'
+          {...register("position", {
+            minLength: {
+              value: 2,
+              message: "слишком короткое название",
+            }
+          })}
+        />
+        <span className='errorMessage'>
+            {errors?.position?.message}&nbsp;
+          </span>
+      </div>
+
+      <div className='inputBlock mt-sm'>
+        <h3>Ваш опыт работы</h3>
+        <Select
+          name='experience'
+          control={control}
+          options={experienceSelectOptions}
+          placeholder='не выбрано'
+          rules={{}}
+        />
+      </div>
+
+      <div className='inputBlock mt-md'>
+        <h3>Ваше направление</h3>
+        <Select
+          name='specialization'
+          control={control}
+          options={specializationsSelectOptions}
+          placeholder='не выбрано'
+          rules={{}}
+        />
+      </div>
+
+      <div className='inputBlock mt-md'>
+        <h3>Доход</h3>
+        <Select
+          name='income'
+          control={control}
+          options={incomeSelectOptions}
+          placeholder='не выбрано'
+          rules={{}}
+        />
+      </div>
+
+      <div className='inputBlock mt-md'>
+        <h3>Образование</h3>
+        <Select
+          name='education'
+          control={control}
+          options={educationSelectOptions}
+          placeholder='не выбрано'
+          rules={{}}
+        />
+      </div>
+
+      <button type='submit' className='buttonProfileSubmit'>
+        Сохранить
+      </button>
+
+      <div className={cn('modalLoadingErrorMessage', {'visible': isLoading || isError})}>
+        {isLoading && <LoadingIcon/>}
+        {isError && <ErrorIcon/>}
       </div>
     </form>
   );

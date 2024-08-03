@@ -19,21 +19,28 @@ type TProps = {
 const customStyles: (hasError: boolean) => StylesConfig<TOption, false> = (isError) => ({
   control: (provided, state) => ({
     ...provided,
-    borderRadius: '12px',
+    borderRadius: '8px',
     height: '49px',
-    boxShadow: 'none',
     borderColor: isError ? 'var(--c-er-red)' : (state.isFocused ? 'var(--c-str-medium)' : 'var(--c-str-medium)'),
+    outline: state.isFocused ? '1px solid var(--c-str-medium)' : 'none',
     '&:hover': {
       borderColor: isError ? 'var(--c-er-red)' : (state.isFocused ? 'var(--c-str-medium)' : 'var(--c-str-medium)'),
     },
   }),
   indicatorSeparator: () => ({display: 'none'}),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    transition: 'none',
+    '&:hover': {
+      color: provided.color,
+    },
+  }),
   menu: (provided) => ({
     ...provided,
-    marginTop: '3px',
-    borderRadius: '6px',
+    marginTop: '2px',
+    borderRadius: '8px',
     border: '1px solid var(--c-str-medium)',
-    boxShadow: 'none',
+    boxShadow: '0px 11px 10px 0 #1a1b2240',
   }),
   option: (provided, state) => ({
     ...provided,
@@ -45,8 +52,8 @@ const customStyles: (hasError: boolean) => StylesConfig<TOption, false> = (isErr
   }),
   placeholder: (provided) => ({
     ...provided,
-    fontFamily: 'YS-Text',
-    color: 'var(--c-black-500)',
+    fontFamily: 'YS-Text, sans-serif',
+    color: 'var(--c-black-300)',
     fontSize: '14px',
   }),
 });

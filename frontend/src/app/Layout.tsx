@@ -4,8 +4,10 @@ import {Header} from "../entities/Header";
 import {Outlet} from "react-router-dom";
 import {Footer} from "../entities/Footer";
 import {ModalAuthorization} from "../widgets/ModalAuthorization";
-import {ModalSuccess} from "../widgets/ModalSuccess";
-import {ModalRejectApplicant} from "../widgets/modalRejectApplicant";
+import {ModalEventRegistrationSuccess} from "../widgets/ModalEventRegistrationSuccess";
+import {ModalRejectApplicant} from "../widgets/МodalRejectApplicant";
+import {ModalResetPassword} from "../widgets/ModalResetPassword";
+import {ModalAuthorizationSuccess} from "../widgets/ModalAuthorizationSuccess";
 
 export const Layout: React.FC<{ type?: 'admin' }> = ({type}) => (
   <div className='appContainer'>
@@ -15,7 +17,9 @@ export const Layout: React.FC<{ type?: 'admin' }> = ({type}) => (
     </main>
     <Footer/>
     <ModalAuthorization/>
-    <ModalSuccess/>
+    <ModalEventRegistrationSuccess/>
     <ModalRejectApplicant/>
+    <ModalResetPassword/>
+    <ModalAuthorizationSuccess/>
   </div>
 );

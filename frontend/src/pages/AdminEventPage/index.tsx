@@ -27,7 +27,6 @@ export type TFormValues = {
 };
 
 export const AdminEventPage = () => {
-
   const {
     register,
     formState: {errors},
@@ -40,13 +39,13 @@ export const AdminEventPage = () => {
 
       <div className='container'>
         <div className={style.container}>
-          <form className={style.form} action="">
+          <form className={style.form}>
             <h1>Создать мероприятие</h1>
 
-            <label>
-              <h3 className={style.required}>Название</h3>
+            <div className='inputBlock'>
+              <h3 className='required'>Название</h3>
               <input
-                className={cn(style.input, {[style.error]: errors.name})}
+                className={cn({'error': errors.name})}
                 type='text'
                 placeholder='введите название мероприятия'
                 {...register('name', {
@@ -57,38 +56,38 @@ export const AdminEventPage = () => {
                   },
                 })}
               />
-              <span className={style.errorMessage}>
-                {errors?.name?.message || '\u200B'}
+              <span className='errorMessage'>
+                {errors?.name?.message}&nbsp;
               </span>
-            </label>
+            </div>
 
             <div className={style.row}>
-              <label>
-                <h3 className={style.required}>Дата</h3>
+              <div className='inputBlock'>
+                <h3 className='required'>Дата</h3>
                 <DatePicker
                   name="date"
                   control={control}
                   rules={{required: 'обязательное поле'}}
                 />
-                <span className={style.error}>
-                  {errors.date?.message || '\u200B'}
+                <span className='errorMessage'>
+                  {errors.date?.message}&nbsp;
                 </span>
-              </label>
+              </div>
 
-              <label>
-                <h3 className={style.required}>Время</h3>
+              <div className='inputBlock'>
+                <h3 className='required'>Время</h3>
                 <TimePicker
                   name='time'
                   control={control}
                   rules={{required: 'обязательное поле'}}
                 />
-                <span className={style.error}>
-                  {errors.time?.message || '\u200B'}
+                <span className='errorMessage'>
+                  {errors.time?.message}&nbsp;
                 </span>
-              </label>
+              </div>
 
-              <label>
-                <h3 className={style.required}>Формат</h3>
+              <div className='inputBlock'>
+                <h3 className='required'>Формат</h3>
                 <Select
                   name='format'
                   control={control}
@@ -96,16 +95,16 @@ export const AdminEventPage = () => {
                   placeholder='не выбран'
                   rules={{required: 'обязательное поле'}}
                 />
-                <span className={style.errorMessage}>
-                  {errors?.format?.message || '\u200B'}
+                <span className='errorMessage'>
+                  {errors?.format?.message}&nbsp;
                 </span>
-              </label>
+              </div>
             </div>
 
-            <label>
-              <h3 className={style.required}>Описание мероприятия</h3>
+            <div className='inputBlock'>
+              <h3 className='required'>Описание мероприятия</h3>
               <textarea
-                className={cn(style.input, {[style.error]: errors.description})}
+                className={cn({'error': errors.description})}
                 placeholder='введите описание мереприятия'
                 {...register('description', {
                   required: 'обязательное поле',
@@ -115,14 +114,14 @@ export const AdminEventPage = () => {
                   },
                 })}
               />
-              <span className={style.errorMessage}>
-                {errors?.description?.message || '\u200B'}
+              <span className='errorMessage'>
+                {errors?.description?.message}&nbsp;
               </span>
-            </label>
+            </div>
 
             <div className={style.addressRow}>
-              <label>
-                <h3 className={style.required}>Страна</h3>
+              <div className='inputBlock'>
+                <h3 className='required'>Страна</h3>
                 <Select
                   name='country'
                   control={control}
@@ -130,13 +129,13 @@ export const AdminEventPage = () => {
                   placeholder='не выбрана'
                   rules={{required: 'обязательное поле'}}
                 />
-                <span className={style.errorMessage}>
-                  {errors?.country?.message || '\u200B'}
+                <span className='errorMessage'>
+                  {errors?.country?.message}&nbsp;
                 </span>
-              </label>
+              </div>
 
-              <label>
-                <h3 className={style.required}>Город</h3>
+              <div className='inputBlock'>
+                <h3 className='required'>Город</h3>
                 <Select
                   name='city'
                   control={control}
@@ -144,15 +143,15 @@ export const AdminEventPage = () => {
                   placeholder='не выбран'
                   rules={{required: 'обязательное поле'}}
                 />
-                <span className={style.errorMessage}>
-                  {errors?.city?.message || '\u200B'}
+                <span className='errorMessage'>
+                  {errors?.city?.message}&nbsp;
                 </span>
-              </label>
+              </div>
 
-              <label>
-                <h3 className={style.required}>Адрес</h3>
+              <div className='inputBlock'>
+                <h3 className='required'>Адрес</h3>
                 <input
-                  className={cn(style.input, {[style.error]: errors.name})}
+                  className={cn({'error': errors.address})}
                   type='text'
                   placeholder='введите адрес'
                   {...register('address', {
@@ -163,10 +162,10 @@ export const AdminEventPage = () => {
                     },
                   })}
                 />
-                <span className={style.errorMessage}>
-                  {errors?.address?.message || '\u200B'}
+                <span className='errorMessage'>
+                  {errors?.address?.message}&nbsp;
                 </span>
-              </label>
+              </div>
             </div>
 
             {/*<label>*/}
@@ -174,10 +173,10 @@ export const AdminEventPage = () => {
             {/*  <input className={style.input} type="text"/>*/}
             {/*</label>*/}
 
-            <label>
+            <div className='inputBlock'>
               <h3>Ссылка на трансляцию мероприятия</h3>
               <input
-                className={cn(style.input, {[style.error]: errors.link_stream})}
+                className={cn({'error': errors.link_stream})}
                 type='text'
                 placeholder='https://...'
                 {...register('link_stream', {
@@ -187,15 +186,15 @@ export const AdminEventPage = () => {
                   },
                 })}
               />
-              <span className={style.errorMessage}>
-                {errors?.link_stream?.message || '\u200B'}
+              <span className='errorMessage'>
+                {errors?.link_stream?.message}&nbsp;
               </span>
-            </label>
+            </div>
 
-            <label>
+            <div className='inputBlock'>
               <h3>Ссылка на запись мероприятия</h3>
               <input
-                className={cn(style.input, {[style.error]: errors.link_record})}
+                className={cn({'error': errors.link_record})}
                 type='text'
                 placeholder='https://...'
                 {...register('link_record', {
@@ -205,10 +204,10 @@ export const AdminEventPage = () => {
                   },
                 })}
               />
-              <span className={style.errorMessage}>
-                {errors?.link_record?.message || '\u200B'}
+              <span className='errorMessage'>
+                {errors?.link_record?.message}&nbsp;
               </span>
-            </label>
+            </div>
 
 
             <button className={style.buttonSubmit} type='submit'>Сохранить</button>

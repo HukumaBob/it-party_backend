@@ -9,7 +9,6 @@ type TReview = {
   text: string;
   image: string;
 }
-
 type TInitialState = {
   data: TReview[];
 }

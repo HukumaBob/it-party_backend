@@ -1,17 +1,17 @@
 import Modal from "@mui/material/Modal";
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
-import CloseIcon from "../../app/assets/icons/close.svg?react";
 import SuccessIcon from "../../app/assets/icons/successForm.svg?react";
+import CloseIcon from "../../app/assets/icons/close.svg?react";
 import style from "./index.module.scss";
 
-export const ModalSuccess = () => {
-  const dispatch = useDispatch()
-  const {isOpenModalSuccess, eventId} = useSelector(state => state.applyRegistration)
+export const ModalEventRegistrationSuccess = () => {
+  const dispatch = useDispatch();
+  const {isOpenModalSuccess, eventId} = useSelector(state => state.applyRegistration);
 
   const handleClose = () => {
     dispatch(closeModalSuccess());
-  }
+  };
 
   const eventList = useSelector(state => state.eventList.data)
   const event = useSelector(state => state.event.data)
@@ -34,7 +34,7 @@ export const ModalSuccess = () => {
         alignItems: 'center',
         justifyContent: 'center',
         '.MuiBackdrop-root': {
-          backdropFilter: 'blur(5px)',
+          backdropFilter: 'blur(3px)',
         }
       }}
     >

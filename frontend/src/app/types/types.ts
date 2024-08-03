@@ -4,29 +4,6 @@ export type TFormAuthorization = {
   agreement_required?: boolean;
 };
 
-export type TAuthorizationInitialState = {
-  openModal: boolean;
-  showPassword: boolean;
-  openRegistration: boolean;
-  checked: boolean;
-  error?: string | null;
-  ok: boolean;
-  authorizationUser: boolean;
-  data: {
-    email: string;
-    password: string;
-  };
-};
-
-export type TUser = {
-  name: string;
-  email: string;
-  phoneNumber: string;
-  surName: string;
-  workplace: string;
-  post: string;
-};
-
 export type TUserProfileValues = {
   id: number;
   first_name: string;
@@ -54,10 +31,6 @@ export type TUserProfileValues = {
   country: number;
   city: number;
   [index: string]: any;
-};
-
-export type TListCountry = {
-  results: TCountries;
 };
 
 export type TCountries = {
@@ -98,14 +71,6 @@ export type TFormConfidentialityValues = {
   phone?: string;
   [index: string]: any;
 };
-
-export type TFormPassword = {
-  id: string;
-}
-
-export type TFormResetPassword = {
-  email: string;
-}
 
 export type TLoginResponse = {
   user?: TFormAuthorization;

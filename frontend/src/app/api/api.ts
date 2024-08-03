@@ -1,23 +1,10 @@
 import {
-  TLoginResponse,
-  TUser,
   TUserProfileValues,
   TFormDataPersonalValues,
   TFormConfidentialityValues,
-  TListCountry,
   TFormEditAvatar,
-  TFormResetPassword,
 } from "../types/types";
-import {
-  BASE_URL,
-  LOGIN_API_ENDPOINT,
-  USERS_API_ENDPOINT,
-  USER_PROFILES_API_ENDPOINT,
-  USER_PROFILE_GET_AND_PATCH_API_ENDPOINT,
-  FETCH_UPDATEURL,
-  LIST_COUNTRY_GET_API_ENDPOINT,
-  RESET_PASSWORD_API_ENDPOINT,
-} from "./constants";
+import {API} from "./constants";
 
 type TServerResponse<T> = {
   success: boolean;
@@ -41,59 +28,22 @@ export const checkResponse = async <T>(res: Response): Promise<T> => {
   }
 };
 
-export const registerUser = (
-  email: string,
-  password: string,
-  agreement_required: boolean,
-): Promise<TLoginResponse> => {
-  return fetch(`${BASE_URL}${USERS_API_ENDPOINT}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify({
-      email: email,
-      password: password,
-      agreement_required: agreement_required,
-    }),
-  })
-    .then(checkResponse<TServerResponse<TLoginResponse>>)
-    .then((data) => {
-      if (data) return data;
-      return Promise.reject(data);
-    });
-};
-
-export const login = (
-  email: string,
-  password: string,
-): Promise<TLoginResponse> => {
-  return fetch(`${BASE_URL}${LOGIN_API_ENDPOINT}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify({
-      email: email,
-      password: password,
-    }),
-  })
-    .then(checkResponse<TServerResponse<TLoginResponse>>);
-};
-
-export const logout = (): Promise<TUser> => {
-  return fetch(``, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-  })
-    .then(checkResponse<TServerResponse<TUser>>)
-    .then((data) => {
-      if (data) return data;
-      return Promise.reject(data);
-    });
-};
+// export const login = (
+//   email: string,
+//   password: string,
+// ): Promise<TLoginResponse> => {
+//   return fetch(API.LOGIN, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json;charset=utf-8",
+//     },
+//     body: JSON.stringify({
+//       email: email,
+//       password: password,
+//     }),
+//   })
+//     .then(checkResponse<TServerResponse<TLoginResponse>>);
+// };
 
 export const postUserProfile = (): Promise<TUserProfileValues> => {
   const accessToken = localStorage.getItem("accessToken");
@@ -101,7 +51,7 @@ export const postUserProfile = (): Promise<TUserProfileValues> => {
     return Promise.reject("No accessToken available");
   }
 
-  return fetch(`${BASE_URL}${USER_PROFILES_API_ENDPOINT}`, {
+  return fetch(API.USERS_PROFILES, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -117,7 +67,7 @@ export const getUserProfile = (): Promise<TUserProfileValues> => {
     return Promise.reject("No accessToken available");
   }
 
-  return fetch(`${BASE_URL}${USER_PROFILE_GET_AND_PATCH_API_ENDPOINT}`, {
+  return fetch(API.USER_PROFILE, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -127,29 +77,13 @@ export const getUserProfile = (): Promise<TUserProfileValues> => {
     .then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
-export const resetPassword = (
-  data: TFormResetPassword
-): Promise<Response> => {
-
-  return fetch(`${BASE_URL}${RESET_PASSWORD_API_ENDPOINT}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify({
-      email: data.email,
-    }),
-  })
-    .then((res) => checkResponseRequest(res));
-};
-
 export const deleteUserProfile = (): Promise<Response> => {
   const accessToken = localStorage.getItem("accessToken");
   if (!accessToken) {
     return Promise.reject("No accessToken available");
   }
 
-  return fetch(`${BASE_URL}${USER_PROFILE_GET_AND_PATCH_API_ENDPOINT}`, {
+  return fetch(API.USER_PROFILE, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -157,16 +91,6 @@ export const deleteUserProfile = (): Promise<Response> => {
     },
   })
     .then((res) => checkResponseRequest(res));
-};
-
-export const getListCountry = (): Promise<TListCountry> => {
-  return fetch(`${BASE_URL}${LIST_COUNTRY_GET_API_ENDPOINT}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then(checkResponse<TServerResponse<TListCountry>>);
 };
 
 export const checkResponseRequest = (res: Response) => {
@@ -180,7 +104,7 @@ export const checkResponseRequest = (res: Response) => {
 export const editingDataPersonal = (
   data: TFormDataPersonalValues,
 ): Promise<TUserProfileValues> => {
-  return fetch(FETCH_UPDATEURL, {
+  return fetch(API.USER_PROFILE, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -196,7 +120,7 @@ export const editingAvatar = (
 ): Promise<TUserProfileValues> => {
   const formData = new FormData();
   formData.append("user_photo", data.user_photo[0]);
-  return fetch(FETCH_UPDATEURL, {
+  return fetch(API.USER_PROFILE, {
     method: "PATCH",
     headers: {
       "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
@@ -209,7 +133,7 @@ export const editingAvatar = (
 export const editingConfidentiality = (
   data: TFormConfidentialityValues,
 ): Promise<TUserProfileValues> => {
-  return fetch(FETCH_UPDATEURL, {
+  return fetch(API.USER_PROFILE, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -226,7 +150,7 @@ export const getFormProfile = (): Promise<TUserProfileValues> => {
     return Promise.reject("No accessToken available");
   }
 
-  return fetch(`${BASE_URL}${USER_PROFILES_API_ENDPOINT}`, {
+  return fetch(API.USERS_PROFILES, {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",

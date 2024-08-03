@@ -12,7 +12,7 @@ import style from "./index.module.scss";
 type TOption = {
   value: number;
   label: string;
-}
+};
 
 type TFormValues = {
   first_name: string;
@@ -31,7 +31,7 @@ type TFormValues = {
   languages: number[];
 };
 
-export const FormApplyRegistration = () => {
+export const FormEventRegistration = () => {
   const dispatch = useDispatch();
   const {inboundData} = useSelector(state => state.applyRegistration);
   const {data: experienceData, optionsExperience} = useSelector(state => state.experience);
@@ -102,15 +102,15 @@ export const FormApplyRegistration = () => {
   const maxDate = today.subtract(10, 'year');
 
   return (
-    <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <AccordionRegistration
         title='Персональные данные'
         isError={Boolean(errors?.first_name || errors?.last_name || errors?.date_of_birth)}
       >
-        <div className={style.inputBlock}>
-          <h3>Имя</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Имя</h3>
           <input
-            className={cn(style.input, {[style.error]: errors.first_name})}
+            className={cn({'error': errors.first_name})}
             type='text'
             placeholder='Иван'
             {...register('first_name', {
@@ -125,15 +125,15 @@ export const FormApplyRegistration = () => {
               },
             })}
           />
-          <span className={style.errorMessage}>
-            {errors?.first_name?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.first_name?.message}&nbsp;
           </span>
         </div>
 
-        <div className={style.inputBlock}>
-          <h3>Фамилия</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Фамилия</h3>
           <input
-            className={cn(style.input, {[style.error]: errors.last_name})}
+            className={cn({'error': errors.last_name})}
             type='text'
             placeholder='Иванов'
             {...register('last_name', {
@@ -148,13 +148,13 @@ export const FormApplyRegistration = () => {
               },
             })}
           />
-          <span className={style.errorMessage}>
-            {errors?.last_name?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.last_name?.message}&nbsp;
           </span>
         </div>
 
-        <div className={style.inputBlock}>
-          <h3>Дата рождения</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Дата рождения</h3>
           <DatePicker
             name="date_of_birth"
             control={control}
@@ -162,8 +162,8 @@ export const FormApplyRegistration = () => {
             minDate={minDate}
             maxDate={maxDate}
           />
-          <span className={style.errorMessage}>
-            {errors.date_of_birth?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors.date_of_birth?.message}&nbsp;
           </span>
         </div>
       </AccordionRegistration>
@@ -172,10 +172,10 @@ export const FormApplyRegistration = () => {
         title='Контакты'
         isError={Boolean(errors?.email || errors?.phone)}
       >
-        <div className={style.inputBlock}>
-          <h3>Email</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Email</h3>
           <input
-            className={cn(style.input, {[style.error]: errors.email})}
+            className={cn({'error': errors.email})}
             type='email'
             placeholder='ivanoff@gmail.com'
             {...register('email', {
@@ -186,15 +186,15 @@ export const FormApplyRegistration = () => {
               },
             })}
           />
-          <span className={style.errorMessage}>
-            {errors?.email?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.email?.message}&nbsp;
           </span>
         </div>
 
-        <div className={style.inputBlock}>
-          <h3>Номер телефона</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Номер телефона</h3>
           <input
-            className={cn(style.input, {[style.error]: errors.phone})}
+            className={cn({'error': errors.phone})}
             type='tel'
             placeholder='8 800 555 25 25'
             {...register('phone', {
@@ -205,8 +205,8 @@ export const FormApplyRegistration = () => {
               },
             })}
           />
-          <span className={style.errorMessage}>
-            {errors?.phone?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.phone?.message}&nbsp;
           </span>
         </div>
       </AccordionRegistration>
@@ -215,10 +215,10 @@ export const FormApplyRegistration = () => {
         title='Работа'
         isError={Boolean(errors?.place_of_work || errors?.position || errors?.experience || errors?.specialization)}
       >
-        <div className={style.inputBlock}>
-          <h3>Место работы</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Место работы</h3>
           <input
-            className={cn(style.input, {[style.error]: errors.place_of_work})}
+            className={cn({'error': errors.place_of_work})}
             type='text'
             placeholder='Yandex Tech'
             {...register('place_of_work', {
@@ -233,15 +233,15 @@ export const FormApplyRegistration = () => {
               },
             })}
           />
-          <span className={style.errorMessage}>
-            {errors?.place_of_work?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.place_of_work?.message}&nbsp;
           </span>
         </div>
 
-        <div className={style.inputBlock}>
-          <h3>Должность</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Должность</h3>
           <input
-            className={cn(style.input, {[style.error]: errors.position})}
+            className={cn({'error': errors.position})}
             type='text'
             placeholder='Frontend Developer'
             {...register('position', {
@@ -256,13 +256,13 @@ export const FormApplyRegistration = () => {
               },
             })}
           />
-          <span className={style.errorMessage}>
-            {errors?.position?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.position?.message}&nbsp;
           </span>
         </div>
 
-        <div className={style.inputBlock}>
-          <h3>Ваш опыт работы</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Ваш опыт работы</h3>
           <Select
             name='experience'
             control={control}
@@ -270,13 +270,13 @@ export const FormApplyRegistration = () => {
             placeholder='не выбран'
             rules={{required: 'обязательное поле'}}
           />
-          <span className={style.errorMessage}>
-            {errors?.experience?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.experience?.message}&nbsp;
           </span>
         </div>
 
-        <div className={style.inputBlock}>
-          <h3>Ваше направление</h3>
+        <div className='inputBlock mt-md'>
+          <h3 className='required'>Ваше направление</h3>
           <Select
             name='specialization'
             control={control}
@@ -284,8 +284,8 @@ export const FormApplyRegistration = () => {
             placeholder='не выбран'
             rules={{required: 'обязательное поле'}}
           />
-          <span className={style.errorMessage}>
-            {errors?.specialization?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.specialization?.message}&nbsp;
           </span>
         </div>
 
@@ -309,8 +309,8 @@ export const FormApplyRegistration = () => {
         title='Формат участия'
         isError={Boolean(errors.online)}
       >
-        <div className={cn(style.onlineOfflineContainer, style.checkboxContainer)}>
-          <h3>Формат</h3>
+        <div className={cn(style.checkboxContainer, 'inputBlock mt-md')}>
+          <h3 className='required'>Формат</h3>
           <label>
             <input
               className='checkbox'
@@ -333,8 +333,8 @@ export const FormApplyRegistration = () => {
             />
             Оффлайн
           </label>
-          <span className={style.errorMessage}>
-            {errors?.online?.message || '\u200B'}
+          <span className='errorMessage'>
+            {errors?.online?.message}&nbsp;
           </span>
         </div>
       </AccordionRegistration>
@@ -349,8 +349,8 @@ export const FormApplyRegistration = () => {
           компаний «ЯНДЕКС», в соответствии с Федеральным законом «о
           персональных данных».
         </p>
-        <span className={style.errorMessage}>
-          {errors.agreement ? 'соглашение обязательно' : '\u200B'}
+        <span className='errorMessage'>
+          {errors.agreement && 'соглашение обязательно'}&nbsp;
         </span>
       </div>
 

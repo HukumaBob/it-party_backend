@@ -23,9 +23,9 @@ export const Footer = () => {
             <div className={style.socials}>
               <h2>Следите за нашими новостями</h2>
               <nav>
-                <a href="https://google.com"><VKIcon/></a>
-                <a href="https://google.com"><RutubeIcon/></a>
-                <a href="https://google.com"><TelegramIcon/></a>
+                <a href="https://google.com" target='_blank' rel="noopener noreferrer"><VKIcon/></a>
+                <a href="https://google.com" target='_blank' rel="noopener noreferrer"><RutubeIcon/></a>
+                <a href="https://google.com" target='_blank' rel="noopener noreferrer"><TelegramIcon/></a>
               </nav>
             </div>
           </div>

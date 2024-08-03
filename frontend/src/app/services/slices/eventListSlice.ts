@@ -1,12 +1,12 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
+import {API} from "../../api/constants";
 import dayjs from "dayjs";
+import {RootState} from "../../../main.tsx";
 
 type TOption = {
   value: number;
   label: string;
 }
-
 type TFilters = {
   name: string;
   specializations: Record<string, boolean>;
@@ -17,7 +17,6 @@ type TFilters = {
   offset: number;
   limit: number;
 }
-
 type TEvent = {
   id: number;
   info: string;
@@ -28,7 +27,6 @@ type TEvent = {
   time: string;
   user_application_status: 'not_applied' | 'pending' | 'approved' | 'rejected' | 'is_favorite';
 }
-
 type TInitialState = {
   data: TEvent[];
   loading: boolean;
@@ -39,16 +37,16 @@ type TInitialState = {
   pageCount: number;
   default_date_after: string;
 }
-
 type TResponse = {
   results: TEvent[];
   count: number;
 }
 
 export const getEventList =
-  createAsyncThunk<TResponse, undefined, { rejectValue: string; state: { eventList: TInitialState } }>
+  createAsyncThunk<TResponse, undefined, { rejectValue: string; state: RootState }>
   ("fetch_event_list",
     async (_, {rejectWithValue, getState}) => {
+      const state = getState()
       const {
         limit,
         offset,
@@ -58,8 +56,9 @@ export const getEventList =
         date_after,
         date_before,
         specializations,
-      } = getState().eventList.filters;
-      const default_date_after = getState().eventList.default_date_after;
+      } = state.eventList.filters;
+      const default_date_after = state.eventList.default_date_after;
+      const {isAuthorized, accessToken} = state.authorization
 
       const search = new URLSearchParams()
       search.append("limit", String(limit))
@@ -76,12 +75,12 @@ export const getEventList =
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
       }
-      if (localStorage.getItem('accessToken')) {
-        headers["Authorization"] = `Bearer ${localStorage.getItem('accessToken')}`;
+      if (isAuthorized) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
       }
 
       try {
-        const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}?${search.toString()}`, {
+        const response = await fetch(`${API.EVENT_LIST}?${search.toString()}`, {
           method: "GET",
           headers: headers
         });
@@ -127,7 +126,7 @@ const eventListSlice = createSlice({
       state.filters.name = action.payload
       resetPagination(state)
     },
-    setSpecializationFilter(state, action: PayloadAction<{ id: number, type: string }>) {
+    setSpecializationFilter(state, action: PayloadAction<{ id: number, type: 'remove' | 'add' }>) {
       const {type, id} = action.payload
       if (type === 'add') {
         state.filters.specializations[id] = true;
