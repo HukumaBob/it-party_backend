@@ -18,10 +18,14 @@ export const ModalAuthorization = () => {
       onClose={handleClose}
       aria-labelledby="modal-authorization"
       aria-describedby="modal-user-authorization"
-      sx={{'.MuiBackdrop-root': {backdropFilter: 'blur(12px)'}}}
-    >
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '.MuiBackdrop-root': {backdropFilter: 'blur(3px)'}
+      }}>
       <div className={style.container}>
-        <LogoIcon className={style.image}/>
+        <LogoIcon className={style.logo}/>
         <FormAuthorization/>
       </div>
     </Modal>

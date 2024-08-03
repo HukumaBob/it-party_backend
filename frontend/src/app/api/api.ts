@@ -6,7 +6,7 @@ import {
   TFormConfidentialityValues,
   TListCountry,
   TFormEditAvatar,
-  TFormResetPassword,
+  // TFormResetPassword,
 } from "../types/types";
 import {API} from "./constants";
 
@@ -118,21 +118,14 @@ export const getUserProfile = (): Promise<TUserProfileValues> => {
     .then(checkResponse<TServerResponse<TUserProfileValues>>);
 };
 
-export const resetPassword = (
-  data: TFormResetPassword
-): Promise<Response> => {
-
-  return fetch(API.RESET_PASSWORD, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify({
-      email: data.email,
-    }),
-  })
-    .then((res) => checkResponseRequest(res));
-};
+// export const resetPassword = (data: TFormResetPassword): Promise<Response> => {
+//   return fetch(API.RESET_PASSWORD, {
+//     method: "POST",
+//     headers: {"Content-Type": "application/json;charset=utf-8"},
+//     body: JSON.stringify({email: data.email}),
+//   })
+//     .then((res) => checkResponseRequest(res));
+// };
 
 export const deleteUserProfile = (): Promise<Response> => {
   const accessToken = localStorage.getItem("accessToken");

@@ -6,9 +6,7 @@ export type TFormAuthorization = {
 
 export type TAuthorizationInitialState = {
   openModal: boolean;
-  showPassword: boolean;
   openRegistration: boolean;
-  checked: boolean;
   error?: string | null;
   ok: boolean;
   authorizationUser: boolean;
@@ -99,13 +97,9 @@ export type TFormConfidentialityValues = {
   [index: string]: any;
 };
 
-export type TFormPassword = {
-  id: string;
-}
-
-export type TFormResetPassword = {
-  email: string;
-}
+// export type TFormResetPassword = {
+//   email: string;
+// }
 
 export type TLoginResponse = {
   user?: TFormAuthorization;

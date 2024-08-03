@@ -156,9 +156,6 @@ export const profileSlice = createSlice({
     setClickTimeInterval: (state, action: PayloadAction<boolean>) => {
       state.clickTimeInterval = action.payload;
     },
-    setOpenModalResetPassword: (state, action: PayloadAction<boolean>) => {
-      state.openModalResetPassword = action.payload;
-    },
     setResetOk: (state, action: PayloadAction<boolean>) => {
       state.resetOk = action.payload;
     },
@@ -234,7 +231,6 @@ export const {
   setApprovalApplicationChecked,
   setNewEventsChecked,
   setClickTimeInterval,
-  setOpenModalResetPassword,
   setResetOk,
   resetProfile
 } = profileSlice.actions;

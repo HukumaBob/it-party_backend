@@ -1,4 +1,4 @@
-type Endpoints = {
+type TEndpoints = {
   LOGIN: string;
   USERS: string;
   RESET_PASSWORD: string;
@@ -21,11 +21,9 @@ type Endpoints = {
   // REJECT_REASON: string;
 }
 
-// const base = import.meta.env.VITE_BASE_URL
-// const BASE_URL = base ? base + '/' : "http://localhost:8000/"
-const BASE_URL = "http://localhost:8000/"
+const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8000"
 
-const endpoints: Endpoints = {
+const endpoints: TEndpoints = {
   LOGIN: "auth/jwt/create/",                        // авторизация(получение jwt токена)
   USERS: "auth/users/",                             // регистрация пользователя
   RESET_PASSWORD: "auth/users/reset_password/",     // сброс пароля пользователя
@@ -49,10 +47,10 @@ const endpoints: Endpoints = {
 }
 
 export const API = new Proxy(endpoints, {
-  get(target: Endpoints, prop: keyof Endpoints) {
-    if (prop in target) {
-      return BASE_URL + target[prop];
+  get(endpoints: TEndpoints, key: keyof TEndpoints) {
+    if (key in endpoints) {
+      return BASE_URL + '/' + endpoints[key];
     }
-    return undefined;
+    throw new Error(`api.ts: unknown endpoint ${String(key)}`);
   }
 })

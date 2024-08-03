@@ -1,18 +1,16 @@
-import { PayloadAction, createSlice, createAction } from "@reduxjs/toolkit";
-import { TAuthorizationInitialState } from "../../types/types";
-import { loginUser, registerUsers } from "../actions/authorization";
+import {PayloadAction, createSlice, createAction} from "@reduxjs/toolkit";
+import {TAuthorizationInitialState} from "../../types/types";
+import {loginUser, registerUsers} from "../actions/authorization";
 
 export const resetState = createAction('resetState');
 
 export const initialState: TAuthorizationInitialState = {
   openModal: false,
-  showPassword: false,
   openRegistration: false,
-  checked: false,
   error: null,
   ok: false,
   authorizationUser: false,
-  data: { email: "", password: "" },
+  data: {email: "", password: ""},
 };
 export const authorizationSlice = createSlice({
   name: "authorization",
@@ -21,14 +19,8 @@ export const authorizationSlice = createSlice({
     setOpenModal: (state, action: PayloadAction<boolean>) => {
       state.openModal = action.payload;
     },
-    setShowPassword: (state, action: PayloadAction<boolean>) => {
-      state.showPassword = action.payload;
-    },
     setOpenRegistration: (state, action: PayloadAction<boolean>) => {
       state.openRegistration = action.payload;
-    },
-    setCheked: (state, action: PayloadAction<boolean>) => {
-      state.checked = action.payload;
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
@@ -69,9 +61,7 @@ export const authorizationSlice = createSlice({
 
 export const {
   setOpenModal,
-  setShowPassword,
   setOpenRegistration,
-  setCheked,
   setError,
   setOk,
   setAuth

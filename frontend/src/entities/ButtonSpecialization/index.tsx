@@ -9,7 +9,7 @@ export const ButtonSpecialization: React.FC<{ title: string, id: number }> = ({t
   const isActive = useSelector(state => state.eventList.filters.specializations?.[String(id)])
 
   const handleClick = () => {
-    dispatch(setSpecializationFilter({id: id, type: isActive ? 'remove' : 'add'}))
+    dispatch(setSpecializationFilter({id: id, formType: isActive ? 'remove' : 'add'}))
   }
 
   return (

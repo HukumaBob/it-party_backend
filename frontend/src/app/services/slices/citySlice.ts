@@ -1,4 +1,4 @@
-import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {API} from "../../api/constants";
 
 type TCity = {
@@ -9,9 +9,9 @@ type TCity = {
 
 type TInitialState = {
   data: TCity[];
-  cityList: Record<string, string>
+  cityList: Record<string, string>;
   status: 'idle' | 'loading' | 'success' | 'error';
-  error: string | null;
+  error: string | undefined | null;
 }
 
 export const getCityList = createAsyncThunk<TCity[], undefined, { rejectValue: string }>(
@@ -50,18 +50,18 @@ const specializationsSlice = createSlice({
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(getCityList.fulfilled, (state, action: PayloadAction<TCity[]>) => {
+      .addCase(getCityList.fulfilled, (state, action) => {
         const data = action.payload;
         state.data = data;
         state.cityList = data.reduce((acc: Record<string, string>, current) => {
           acc[current.id] = current.name
           return acc
         }, {})
-        state.status = 'success'
+        state.status = 'success';
       })
-      .addCase(getCityList.rejected, (state: any, action: PayloadAction<string | undefined>) => {
-        state.data = null;
-        state.cityList = null;
+      .addCase(getCityList.rejected, (state, action) => {
+        state.data = [];
+        state.cityList = {};
         state.error = action.payload;
         state.status = 'error';
       })
