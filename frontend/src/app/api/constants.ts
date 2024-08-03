@@ -21,8 +21,9 @@ type Endpoints = {
   // REJECT_REASON: string;
 }
 
-const base = import.meta.env.VITE_BASE_URL
-const BASE_URL = base ? base + '/' : "http://localhost:8000/"
+// const base = import.meta.env.VITE_BASE_URL
+// const BASE_URL = base ? base + '/' : "http://localhost:8000/"
+const BASE_URL = "http://localhost:8000/"
 
 const endpoints: Endpoints = {
   LOGIN: "auth/jwt/create/",                        // авторизация(получение jwt токена)
