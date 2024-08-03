@@ -34,7 +34,7 @@ export const ModalSuccess = () => {
         alignItems: 'center',
         justifyContent: 'center',
         '.MuiBackdrop-root': {
-          backdropFilter: 'blur(3px)',
+          backdropFilter: 'blur(5px)',
         }
       }}
     >

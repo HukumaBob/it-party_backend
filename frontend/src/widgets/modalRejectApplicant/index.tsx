@@ -68,7 +68,7 @@ export const ModalRejectApplicant = () => {
       onClose={handleClose}
       aria-labelledby="modal-success"
       aria-describedby="modal-registration-success"
-      sx={{'.MuiBackdrop-root': {backdropFilter: 'blur(3px)'}}}
+      sx={{'.MuiBackdrop-root': {backdropFilter: 'blur(5px)'}}}
     >
       <div className={style.wrapper}>
         <div className={style.container}>

@@ -15,7 +15,6 @@ import stackListSlice from "./slices/stackListSlice"
 import sliderSlice from "./slices/sliderSlice";
 import questionAnswerSlice from "./slices/questionAnswerSlice";
 import adminEventListSlice from "./slices/adminEventListSlice";
-import resetPasswordSlice from "./slices/resetPasswordSlice.ts";
 
 export const rootReducer = combineReducers({
   authorization: authorizationSlice,
@@ -34,5 +33,4 @@ export const rootReducer = combineReducers({
   questionAnswer: questionAnswerSlice,
   adminEvents: adminEventListSlice,
   adminApplicants: adminApplicantsSlice,
-  resetPassword: resetPasswordSlice,
 });

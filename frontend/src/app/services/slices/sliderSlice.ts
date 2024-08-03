@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {BASE_URL, EVENTS_API_ENDPOINT} from "../../api/constants";
 import dayjs from "dayjs";
 import banner_orange from "../../assets/image/banners/banner_1.webp";
 import banner_green from "../../assets/image/banners/banner_2.webp";
@@ -67,7 +67,7 @@ export const getSliderList =
       }
 
       try {
-        const response = await fetch(`${API.EVENT_LIST}?${search.toString()}`, {
+        const response = await fetch(`${BASE_URL}${EVENTS_API_ENDPOINT}?${search.toString()}`, {
           method: "GET",
           headers: headers
         });

@@ -1,49 +1,54 @@
-import {useState} from "react";
-import {Link, useNavigate} from 'react-router-dom';
+import React from "react";
+import {useNavigate} from 'react-router-dom';
+import style from "./index.module.scss";
 import {useForm} from "react-hook-form";
 import useProfileState from '../../shared/useProfileState';
+import closeIcon from "../../app/assets/icons/close_mini.svg";
+import checkIcon from "../../app/assets/icons/check_mark.svg";
 import Preloader from "../../shared/Preloader";
+import {FormResetPassword} from "../../shared/FormResetPassword";
 import {getListCountry} from "../../app/api/api";
-import {setUser, setResetOk} from "../../app/services/slices/profileSlice";
-import {useDispatch, useSelector} from "../../app/types/hooks";
-import {loginUser, registerUsers} from "../../app/services/actions/authorization";
-import {receiveProfile, createProfile} from "../../app/services/actions/profile";
-import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
 import {
   setAuth,
+  setCheked,
   setError,
   setOk,
   setOpenModal,
-  setOpenRegistration
+  setOpenRegistration,
+  setShowPassword,
 } from "../../app/services/slices/authorization";
-import CloseIcon from "../../app/assets/icons/close.svg?react";
-import YandexIcon from "../../app/assets/icons/yandex.svg?react";
-import EyeIcon from "../../app/assets/icons/eye.svg?react";
-import cn from 'classnames';
-import style from "./index.module.scss";
-
-type TFormAuthorization = {
-  email: string;
-  password: string;
-  agreement_required?: boolean;
-}
+import {setUser, setOpenModalResetPassword, setResetOk} from "../../app/services/slices/profileSlice";
+import {useDispatch, useSelector} from "../../app/types/hooks";
+import {TFormAuthorization} from "../../app/types/types";
+import yandex from "../../app/assets/icons/Yandex.svg";
+import eyeIcon from "../../app/assets/icons/eye.svg";
+import eyeSlashedIcon from "../../app/assets/icons/eye-slashed.svg";
+import {
+  loginUser,
+  registerUsers,
+} from "../../app/services/actions/authorization";
+import {
+  receiveProfile,
+  createProfile,
+} from "../../app/services/actions/profile";
 
 export const FormAuthorization = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [passwordIsVisible, setPassowrdIsVisible] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-
+  const [loading, setLoading] = React.useState<boolean>(false);
   const {handleChange} = useProfileState();
 
   const handleCloseModal = () => {
     dispatch(setOpenModal(false));
     dispatch(setOpenRegistration(false));
+    dispatch(setCheked(false));
     dispatch(setOk(false));
     dispatch(setResetOk(false));
   };
   const {
+    showPassword,
     openRegistration,
+    checked,
     error,
     ok,
     data,
@@ -51,14 +56,20 @@ export const FormAuthorization = () => {
   } = useSelector((state) => state.authorization);
   const {
     receiveProfileUser,
+    openModalResetPassword,
     resetOk,
+    email,
   } = useSelector((state) => state.profile);
-
+  const handleClick = () => {
+    dispatch(setShowPassword(!showPassword));
+  };
   const handleOpenRegistration = () => {
     dispatch(setOpenRegistration(!openRegistration));
     dispatch(setError(null));
   };
-
+  const handleCheked = () => {
+    dispatch(setCheked(!checked));
+  };
   const handleUserInfo = () => {
     const dataStorage = localStorage.getItem("updateInfo");
     const data = dataStorage ? JSON.parse(dataStorage) : {};
@@ -72,24 +83,40 @@ export const FormAuthorization = () => {
     handleCloseModal();
   };
 
-  const handleResetPassword = () => {
-    dispatch(setModalResetPassword({open: true, formType: 'authorization'}));
-    handleCloseModal();
+  function handleResetPassword() {
+    dispatch(setOpenModalResetPassword(true));
   };
-
   const {
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm<TFormAuthorization>({mode: "onTouched"});
+  } = useForm<TFormAuthorization>({
+    mode: "onTouched",
+  });
 
-  const onSubmit = (formData: TFormAuthorization) => {
+  const onSubmit = (data: TFormAuthorization) => {
+
+    const formData = {
+      ...data,
+      agreement_required: checked,
+    };
     if (openRegistration) {
       setLoading(true);
-      dispatch(registerUsers(formData));
+      dispatch(
+        registerUsers({
+          email: formData.email,
+          password: formData.password,
+          agreement_required: formData.agreement_required,
+        }),
+      );
     } else {
       setLoading(true);
-      dispatch(loginUser(formData))
+      dispatch(
+        loginUser({
+          email: data.email,
+          password: data.password,
+        })
+      )
         .then((item) => {
           getListCountry()
             .then((countries) => {
@@ -139,14 +166,21 @@ export const FormAuthorization = () => {
   };
 
   return (
-    <div className={style.container}>
-      <button className={style.buttonClose} onClick={handleCloseModal} type='button'>
-        <CloseIcon/>
-      </button>
-      <h2 className={style.title}>
-        {openRegistration ? "Регистрация" : (resetOk ? "Сброс пароля" : "Авторизация")}
-      </h2>
-
+    <div className={(ok || resetOk) ? style.containerCenter : style.container}>
+      <div className={openModalResetPassword === true ? style.containerReset : style.popupBlock}>
+        <FormResetPassword id="resetPasswordAuthorization"/>
+      </div>
+      <section className={style.titleBlock}>
+        <img
+          src={closeIcon}
+          alt='CloseIcon'
+          className={style.icon}
+          onClick={handleCloseModal}
+        />
+        <h2 className={style.title}>
+          {openRegistration ? "Регистрация" : (resetOk ? "Сброс пароля" : "Авторизация")}
+        </h2>
+      </section>
       {ok && (
         <div className={style.registationTrue}>
           <span>
@@ -165,88 +199,98 @@ export const FormAuthorization = () => {
           </div>
         </div>
       )}
-
+      {resetOk && (
+        <div className={style.resetTrue}>
+          <span className={style.resetPassword_span}>
+          Мы отправили письмо вам на почту. Перейдите по ссылке в письме чтобы сбросить пароль.
+          </span>
+          <p>
+            <span>Письмо отправлено на </span>
+            <span className={style.resetPasswordTrue_email}>{email}</span>
+          </p>
+          <div>
+            <button className={style.button} onClick={handleCloseModal}>
+              Готово
+            </button>
+          </div>
+        </div>
+      )}
       {ok === false && resetOk === false && (
         <>
-          <form onSubmit={handleSubmit(onSubmit)}>
-
+          <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
             <div className={style.inputBlock}>
-              <h3>Email</h3>
+              <label>Email</label>
               <input
-                className={cn({[style.error]: errors.email})}
+                className={`${errors.email ? style.errorInput : style.input}`}
                 type='email'
                 placeholder='ivan@ya.ru'
                 {...register("email", {
-                  required: "обязательное поле",
+                  required: "Обязательное поле",
                   pattern: {
                     value: /^[A-ZА-Я0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "неверный формат почты",
+                    message: "Неверный формат почты",
                   },
                 })}
               />
-              <span className={style.errorMessage}>
-                {error || errors?.email?.message || '\u200B'}
-              </span>
+              <span className={style.error}>{error}</span>
+              {errors.email?.message && (
+                <span
+                  className={`${errors.email ? style.error : style.message}`}>
+                  {errors.email.message}
+                </span>
+              )}
             </div>
-
             <div className={style.inputBlock}>
-              <h3>Пароль</h3>
+              <label>Пароль</label>
+
+              <label
+                className={`${
+                  errors.email || error ? style.eyeIconWithError : style.eyeIcon
+                }`}
+                onClick={handleClick}>
+                {showPassword ? (
+                  <img src={eyeSlashedIcon} alt='eyeSlashedIcon'/>
+                ) : (
+                  <img src={eyeIcon} alt='eyeIcon'/>
+                )}
+              </label>
               <input
-                className={cn({[style.error]: errors.password})}
-                type={`${passwordIsVisible ? "text" : "password"}`}
-                placeholder={passwordIsVisible ? 'введите пароль' : '************'}
+                type={`${showPassword ? "text" : "password"}`}
+                className={`${
+                  errors.password ? style.errorInput : style.input
+                }`}
+                placeholder='********'
                 {...register("password", {
-                  required: "обязательное поле",
+                  required: "Обязательное поле",
                   minLength: {
                     value: 8,
-                    message: "слишком короткий пароль",
+                    message: "Слишком короткий пароль",
                   },
                   pattern: {
                     value: /^(?=.*[A-ZА-Я])(?=.*\d)[A-Za-zА-Яа-я\d._%+-]{8,}$/i,
                     message:
-                      "пароль должен содержать минимум одну цифру",
+                      "Пароль должен содержать минимум 1 цифру или букву",
                   },
                 })}
               />
-
-              <button
-                className={cn(style.buttonShowPassword, {[style.passwordIsHidden]: !passwordIsVisible})}
-                onClick={() => setPassowrdIsVisible(!passwordIsVisible)} type='button'>
-                <EyeIcon/>
-              </button>
-              <span className={style.errorMessage}>
-                {errors?.password?.message || '\u200B'}
-              </span>
+              {errors.password?.message && (
+                <span
+                  className={`${
+                    errors.password ? style.error : style.message
+                  }`}>
+                  {errors.password.message}
+                </span>
+              )}
             </div>
-
             <button
-              className={style.buttonResetPassword}
               type='button'
+              className={style.buttonResetPassword}
               onClick={handleResetPassword}>
               Не помню пароль
             </button>
-
-            {openRegistration &&
-              <div className={cn(style.agreementBlock, {[style.errorOutline]: errors.agreement_required})}>
-                <input
-                  className='checkbox'
-                  type='checkbox'
-                  {...register('agreement_required', {required: 'соглашение обязательно'})} />
-                <p>
-                  Соглашаюсь с&nbsp;
-                  <Link to='/'>пользовательским соглашением</Link>
-                  &nbsp;и&nbsp;
-                  <Link to='/'>политикой конфиденциальности</Link>
-                </p>
-                <span className={style.errorMessage}>
-                  {errors?.agreement_required?.message || '\u200B'}
-                </span>
-              </div>
-            }
-
             <button
               type='submit'
-              className={style.buttonSubmit}
+              className={style.button}
               onClick={() => {
                 dispatch(setAuth(true));
                 dispatch(setUser(true));
@@ -256,16 +300,51 @@ export const FormAuthorization = () => {
                 : <Preloader/>
               }
             </button>
-
+            {openRegistration && (
+              <div className={style.element}>
+                <div className={style.container_checkbox}>
+                  <div className={style.customCheckBox} onClick={handleCheked}>
+                    {checked ? <img src={checkIcon} alt='check'/> : ""}
+                  </div>
+                </div>
+                <p className={style.agreement}>
+                  Соглашаюсь с <span>Пользовательским соглашением</span> и
+                  <span>Политикой конфиденциальности</span>
+                </p>
+              </div>
+            )}
           </form>
-
-          <div className={style.divider}/>
-          <button className={style.buttonYandex} type='button'>
-            <YandexIcon/>Войти с Яндекс ID
-          </button>
-          <button className={style.buttonRegister} onClick={handleOpenRegistration} type='button'>
-            {openRegistration ? 'Логин' : 'Зарегистрироваться'}
-          </button>
+          <p className={style.lineBlock}>
+            <span className={style.line}></span> или{" "}
+            <span className={style.line}></span>{" "}
+          </p>
+          <div className={style.buttonBlock}>
+            {openRegistration ? (
+              <button
+                type='button'
+                className={style.buttonRegister}
+                onClick={handleOpenRegistration}>
+                Войти
+              </button>
+            ) : (
+              <button type='button' className={style.buttonYandex}>
+                <img src={yandex} alt='yandex'/> Войти с Яндекс ID
+              </button>
+            )}
+            {openRegistration ? (
+              <button type='button' className={style.buttonYandex}>
+                <img src={yandex} alt='yandex'/> Войти с Яндекс ID
+              </button>
+            ) : (
+              <button
+                type='button'
+                className={style.buttonRegister}
+                onClick={handleOpenRegistration}>
+                Зарегистрироваться
+              </button>
+            )}
+          </div>
+          <span className={style.loginProblem}>Проблемы со входом?</span>
         </>
       )}
     </div>

@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {BASE_URL, ADMIN_EVENT_LIST} from "../../api/constants";
 
 type TApplicationCounts = {
   approved: number;
@@ -29,7 +29,7 @@ export const getAdminEventList = createAsyncThunk<TEvent[], undefined, { rejectV
   async (_, {rejectWithValue}) => {
 
     try {
-      const response = await fetch(API.ADMIN_EVENT_LIST, {
+      const response = await fetch(`${BASE_URL}${ADMIN_EVENT_LIST}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

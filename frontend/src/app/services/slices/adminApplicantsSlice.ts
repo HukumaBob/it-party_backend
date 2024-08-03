@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {BASE_URL, ADMIN_EVENT_LIST, USER_EVENT_STATUS} from "../../api/constants";
 
 type TUser = {
   id: number;
@@ -48,7 +48,7 @@ export const patchAdminApplicantStatus = createAsyncThunk<undefined, TPatchData,
     }
 
     try {
-      const response = await fetch(`${API.USER_EVENT_STATUS}${id}/`, {
+      const response = await fetch(`${BASE_URL}${USER_EVENT_STATUS}/${id}/`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export const getAdminApplicantsList = createAsyncThunk<TApplicant[], number, { r
   async (id, {rejectWithValue}) => {
 
     try {
-      const response = await fetch(`${API.ADMIN_EVENT_LIST}${id}/user_events`, {
+      const response = await fetch(`${BASE_URL}${ADMIN_EVENT_LIST}/${id}/user_events`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

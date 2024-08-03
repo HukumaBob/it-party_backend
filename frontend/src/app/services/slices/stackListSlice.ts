@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {BASE_URL, STACK} from "../../api/constants";
 
 type TOption = {
   value: number;
@@ -35,7 +35,7 @@ export const getStackList = createAsyncThunk<TStackObject[], undefined, { reject
   'fetch_stack_list',
   async function (_, {rejectWithValue}) {
     try {
-      const response = await fetch(API.STACK_LIST, {
+      const response = await fetch(`${BASE_URL}${STACK}`, {
         method: "GET",
         headers: {"Content-Type": "application/json"},
       })
@@ -75,7 +75,7 @@ const stackListSlice = createSlice({
         // data - не используется:
         state.data = action.payload;
         // optionsSpecialization - для селектов в форме:
-        state.optionsSpecialization = data.reduce((acc: Record<string, TOption>, current) => {
+        state.optionsSpecialization = data.reduce((acc:Record<string, TOption>, current) => {
           const specialization = current.specialization
           acc[specialization.id] = {value: specialization.id, label: specialization.specialization}
           return acc;

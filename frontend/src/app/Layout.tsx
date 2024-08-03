@@ -6,7 +6,6 @@ import {Footer} from "../entities/Footer";
 import {ModalAuthorization} from "../widgets/ModalAuthorization";
 import {ModalSuccess} from "../widgets/ModalSuccess";
 import {ModalRejectApplicant} from "../widgets/modalRejectApplicant";
-import {ModalResetPassword} from "../widgets/ModalResetPassword";
 
 export const Layout: React.FC<{ type?: 'admin' }> = ({type}) => (
   <div className='appContainer'>
@@ -18,6 +17,5 @@ export const Layout: React.FC<{ type?: 'admin' }> = ({type}) => (
     <ModalAuthorization/>
     <ModalSuccess/>
     <ModalRejectApplicant/>
-    <ModalResetPassword/>
   </div>
 );
