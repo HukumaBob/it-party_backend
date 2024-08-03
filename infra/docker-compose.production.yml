@@ -39,7 +39,7 @@ services:
       - frontend
     volumes:
       - static:/staticfiles
-      - media:/var/html/media/     
+      - media:/app/media/     
   redis:
     image: redis:latest
     restart: always
