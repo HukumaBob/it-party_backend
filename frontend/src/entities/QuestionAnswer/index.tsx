@@ -10,7 +10,7 @@ export const QuestionAnswer = () => {
 
   return (
     <div>
-      <h2 className={style.title}>Частые вопросы - FAQ</h2>
+      <h2 className={style.title}>Частые вопросы</h2>
 
       {data.map(({id, question, answer}) => (
         <Accordion key={id}>
