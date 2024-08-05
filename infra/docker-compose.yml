@@ -42,7 +42,7 @@ services:
       - backend
       - frontend
     volumes:
-      - static:/staticfiles
+      - static:/staticfiles/
       - media:/app/media/   
   redis:
     image: redis:latest
