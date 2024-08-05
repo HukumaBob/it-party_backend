@@ -25,7 +25,8 @@ type TEndpoints = {
 }
 
 // const BASE_URL = "http://localhost:8000"
-const BASE_URL = "https://itparty.ddns.net"
+const BASE_URL = ""
+// const BASE_URL = "https://itparty.ddns.net"
 // const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8000"
 
 const endpoints: TEndpoints = {
