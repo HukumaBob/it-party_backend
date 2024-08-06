@@ -229,7 +229,7 @@ SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = env(
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'collected_static'
 
-MEDIA_URL = '/media/'
+MEDIA_URL = ''
 MEDIA_ROOT = BASE_DIR / 'media'
 
 ASGI_APPLICATION = 'backend.asgi.application'
