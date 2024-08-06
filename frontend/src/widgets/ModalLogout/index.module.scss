@@ -1,0 +1,14 @@
+.title {
+  margin-bottom: var(--sp-24);
+  font-size: var(--sp-24);
+  font-weight: 400;
+  text-align: center;
+}
+
+.buttonLogout {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 8px;
+  background-color: var(--c-def-blue);
+  color: var(--c-def-white);
+}

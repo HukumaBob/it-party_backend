@@ -33,6 +33,7 @@ svg {
 a {
   font-family: YS-Text, sans-serif;
   text-decoration: none;
+  outline-color: var(--c-str-medium);
 }
 
 input,
@@ -42,6 +43,7 @@ option {
   font-family: YS-Text, sans-serif;
   font-size: 16px;
   color: var(--c-def-black);
+  outline-color: var(--c-str-medium);
 
   &::placeholder {
     font-family: YS-Text, sans-serif;
@@ -56,6 +58,7 @@ button {
   border: none;
   background-color: transparent;
   cursor: pointer;
+  outline-color: var(--c-str-medium);
 }
 
 h1, h2, h3, h4, h5, h6 {

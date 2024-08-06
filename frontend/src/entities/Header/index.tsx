@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {Popover} from "@mui/material";
-import {Link, useMatch, useNavigate} from "react-router-dom";
+import {Link, useMatch} from "react-router-dom";
 import {useDispatch, useSelector} from "../../app/types/hooks";
-import {setOpenAuthorizationModal, logoutUser} from "../../app/services/slices/authorizationSlice.ts";
+import {setOpenAuthorizationModal} from "../../app/services/slices/authorizationSlice.ts";
 import {getUserProfile} from "../../app/services/slices/profileUserSlice.ts";
+import {ModalLogout} from "../../widgets/ModalLogout";
 import LogoIcon from "../../app/assets/icons/logo.svg?react";
-import login_avatar from '../../app/assets/image/other/login_avatar.webp'
+import login_avatar from '../../app/assets/image/other/avatar.webp'
 import style from "./index.module.scss";
 
 export const Header = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const isMainPage = useMatch('/')
   const {isAuthorized} = useSelector(state => state.authorization);
   const {statusGetProfile} = useSelector(state => state.profileUser);
@@ -27,16 +27,21 @@ export const Header = () => {
   const handleOpenModal = () => {
     dispatch(setOpenAuthorizationModal(true));
   };
-  const handleLogout = () => {
-    handleCloseMenu()
-    dispatch(logoutUser())
-    navigate('/', {replace: true});
-  };
+
   useEffect(() => {
     if (isAuthorized && statusGetProfile === 'idle') {
       dispatch(getUserProfile());
     }
   }, [isAuthorized, statusGetProfile]);
+
+  const [modalLogoutIsOpen, setModalLogoutIsOpen] = useState(false);
+  const handleOpenModalLogout = () => {
+    setModalLogoutIsOpen(true);
+  };
+  const handleCloseModalLogout = () => {
+    handleCloseMenu();
+    setModalLogoutIsOpen(false);
+  };
 
   return (
     <header className={style.header}>
@@ -73,10 +78,11 @@ export const Header = () => {
             <Link onClick={handleCloseMenu} to='/profile'>Управление аккаунтом</Link>
             <Link onClick={handleCloseMenu} to='/profile/events'>Мои мероприятия</Link>
             <Link onClick={handleCloseMenu} to='/admin'>Админ панель</Link>
-            <Link onClick={handleLogout} to='/'>Выйти</Link>
+            <button onClick={handleOpenModalLogout}>Выйти</button>
           </nav>
         </Popover>
 
+        <ModalLogout isOpen={modalLogoutIsOpen} handleClose={handleCloseModalLogout}/>
       </div>
     </header>
   );

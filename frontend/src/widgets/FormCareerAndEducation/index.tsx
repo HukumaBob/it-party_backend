@@ -23,13 +23,13 @@ type TFormData = {
 
 export const FormCareerAndEducation = () => {
   const dispatch = useDispatch();
-  const {data, statusGetProfile} = useSelector((state) => state.profileUser);
+  const {data, statusGetProfile, statusUpdateProfile} = useSelector((state) => state.profileUser);
   const {specializationsSelectOptions, status: specializationsStatus} = useSelector((state) => state.specializations);
   const {experienceSelectOptions, status: experienceStatus} = useSelector((state) => state.experience);
   const {educationSelectOptions, status: educationStatus} = useSelector((state) => state.education);
   const {incomeSelectOptions, status: incomeStatus} = useSelector((state) => state.income);
-  const isLoading = [statusGetProfile, specializationsStatus, educationStatus, incomeStatus, experienceStatus].includes('loading');
-  const isError = [statusGetProfile, specializationsStatus, educationStatus, incomeStatus, experienceStatus].includes('error');
+  const isLoading = [statusGetProfile, statusUpdateProfile, specializationsStatus, educationStatus, incomeStatus, experienceStatus].includes('loading');
+  const isError = [statusGetProfile, statusUpdateProfile, specializationsStatus, educationStatus, incomeStatus, experienceStatus].includes('error');
 
   useEffect(() => {
     specializationsStatus === 'idle' && dispatch(getSpecializationsList());
@@ -79,9 +79,7 @@ export const FormCareerAndEducation = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2 className='profileTitle'>Карьера и образование</h2>
-
-      <div className='inputBlock mt-lg'>
+      <div className='inputBlock'>
         <h3>Место работы</h3>
         <input
           className={cn({'error': errors.place_of_work})}
@@ -95,8 +93,8 @@ export const FormCareerAndEducation = () => {
           })}
         />
         <span className='errorMessage'>
-            {errors?.place_of_work?.message}&nbsp;
-          </span>
+          {errors?.place_of_work?.message}&nbsp;
+        </span>
       </div>
 
       <div className='inputBlock mt-sm'>
@@ -113,8 +111,8 @@ export const FormCareerAndEducation = () => {
           })}
         />
         <span className='errorMessage'>
-            {errors?.position?.message}&nbsp;
-          </span>
+          {errors?.position?.message}&nbsp;
+        </span>
       </div>
 
       <div className='inputBlock mt-sm'>

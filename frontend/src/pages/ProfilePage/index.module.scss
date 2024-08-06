@@ -1,11 +1,10 @@
 .container {
   display: flex;
+  align-items: start;
   gap: 28px;
-  position: relative;
 }
 
-.navigateContainer {
-  align-self: start;
+.linksContainer {
   padding: 16px;
   width: 328px;
   display: flex;
@@ -19,15 +18,10 @@
 
   a,
   button {
-    border-radius: 8px;
     padding: 13px 12px;
-    color: var(--c-def-blue);
-  }
-
-  button {
     text-align: left;
-    font-family: YS-Text, sans-serif;
-    font-size: var(--sp-16);
+    color: var(--c-def-blue);
+    border-radius: 8px;
   }
 
   .active {
@@ -36,11 +30,9 @@
   }
 }
 
-.formContainer {
+.formsContainer {
+  padding: 20px;
   width: 680px;
-  padding: 20px 20px 24px 20px;
-  display: flex;
-  flex-direction: column;
   border-radius: var(--sp-12);
   border: 1px solid var(--c-str-light);
   background-color: var(--c-def-bg);

@@ -1,152 +1,155 @@
-# hackathon Backend
+Here is the translated text with the markdown format preserved:
 
-## Описание проекта
+# ITparty Backend
 
-itParty - это веб-приложение, разработанное на Django DRF и React JS которое позволяет пользователям регистрироваться на различные ивенты.
+## Project Description
 
-## Установка и запуск проекта
+itParty is a web application developed with Django DRF and React JS that allows users to register for various events.
 
-### Требования
+## Installation and Project Launch
 
-- Python 3.11 или выше
+### Requirements
+
+- Python 3.11 or higher
 - pip (Python Package Installer)
 
-### Шаги для установки
+### Installation Steps
 
-1. **Клонирование репозитория**
+1. **Clone the repository**
 
-   Сначала клонируйте репозиторий на ваш локальный компьютер с помощью git.
+   First, clone the repository to your local computer using git.
 
    ```bash
    git clone https://github.com/hukumabob/hackathon.git
    ```
 
-2. **Создание виртуального окружения**
+2. **Create a virtual environment**
 
-   Перейдите в каталог проекта и создайте виртуальное окружение Python с помощью команды:
+   Navigate to the project directory and create a Python virtual environment using the command:
 
    ```bash
    cd backend
    python -m venv venv
    ```
 
-3. **Активация виртуального окружения**
+3. **Activate the virtual environment**
 
-   Активируйте виртуальное окружение с помощью следующей команды:
+   Activate the virtual environment using the following command:
 
-   - На Windows:
+   - On Windows:
 
      ```bash
      . \venv\Scripts\activate
      ```
 
-   - На Unix или MacOS:
+   - On Unix or MacOS:
 
      ```bash
      source venv/bin/activate
      ```
 
-4. **Установка зависимостей**
+4. **Install dependencies**
 
-   Установите все необходимые зависимости, указанные в файле `requirements.txt`, с помощью pip:
+   Install all necessary dependencies listed in the `requirements.txt` file using pip:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-5. **Инициализация базы данных**
+5. **Initialize the database**
 
-   Примените все миграции Django для инициализации базы данных:
+   Apply all Django migrations to initialize the database:
 
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
-   и соберите статические файлы
-   
+   and collect static files
+
    ```
    python manage.py collectstatic
    ```
 
-   Создайте суперюзера:
+   Create a superuser:
 
    ```bash
    python manage.py createsuperuser
    ```
 
-6. **Генерация начальных данных**
+6. **Generate initial data**
 
-   Запустите команду для генерации начальных данных:
+   Run the command to generate initial data:
 
    ```bash
    python manage.py generate_initial_data
    ```
 
-7. **Генерация начальных пользователей и профилей**
+7. **Generate initial users and profiles**
 
-   Запустите команду для генерации начальных пользователей:
+   Run the command to generate initial users:
 
    ```bash
    python manage.py generate_initial_users
    ```
 
-   и юзеров с профилями
+   and users with profiles
 
    ```bash
    python manage.py generate_initial_data_users_profile
    ```
 
-8. **Генерация начальных ивентов**
+8. **Generate initial events**
 
-   Запустите команду для генерации начальных ивентов:
+   Run the command to generate initial events:
 
    ```bash
    python manage.py generate_initial_events
    ```
 
-9. **Запуск сервера**
+9. **Start the server**
 
-   Запустите сервер Django на стандартном порту 8000:
+   Run the Django server on the default port 8000:
 
    ```bash
    python manage.py runserver
    ```
-   Админка на MVT Django работает по адресу
+   The Django MVT admin panel works at
+
    ```
    http://localhost:8000/mvt_admin/
    ```
-10. **Настройка Celery**
+10. **Set up Celery**
 
-Установите Redis (для Windows потребуется WSL), запустите его
+Install Redis (for Windows, WSL is required), and start it
 
 ```bash
 redis-server
 redis-cli
 ```
 
-Запустите Celery:
+Start Celery:
 
 ```bash
 celery -A backend worker -l info -P eventlet
 celery -A backend beat --loglevel=info
 ```
 
-После выполнения этих шагов вы должны иметь работающий экземпляр hackathon, доступный по адресу `http://localhost:8000`.
+After completing these steps, you should have a working instance of hackathon available at `http://localhost:8000`.
 
-Заполните нужные начальные данные через админку Django: `http://localhost:8000/admin`
+Populate the required initial data through the Django admin panel: `http://localhost:8000/admin`
 
-11. **Запуск приложения через Docker Compose**
+11. **Run the application via Docker Compose**
 
-## Запуск приложения через Docker Compose на стандартном порту 8000:
+## Running the application via Docker Compose on the default port 8000:
 
 ```bash
 cd infra/
-docker compose up # sudo service redis-server stop - если занят порт 
+docker compose up # sudo service redis-server stop - if the port is occupied
 docker compose exec backend python manage.py migrate
 docker compose exec backend python manage.py collectstatic
 docker compose exec backend cp -r /app/static/. /static/
 docker compose exec backend python manage.py generate_initial_data
-# Если хотите добавить тестовые данные запустите и это:
+# If you want to add test data, also run this:
 docker compose exec backend python manage.py generate_initial_users
 docker compose exec backend python manage.py generate_initial_data_users_profile
 docker compose exec backend python manage.py generate_initial_events
@@ -154,9 +157,9 @@ docker compose exec backend python manage.py generate_initial_events
 docker compose exec backend python manage.py createsuperuser
 ```
 
-## Удаленный сервер:
+## Remote Server:
 
-### Прокси сервер nginx:
+### Nginx proxy server:
 ```
 server {
     server_name example.ddns.net;
@@ -190,22 +193,22 @@ server {
 
 ```
 
-## Документация API
+## API Documentation
 
-Документацию API можно найти по адресу `http://localhost:8000/swagger`.
+API documentation can be found at `http://localhost:8000/swagger`.
 
-## Тестирование
+## Testing
 
-Для запуска тестов используйте следующую команду:
+To run the tests, use the following command:
 
 ```bash
 python manage.py test
 ```
 
-## Поддержка
+## Support
 
-Если у вас возникли проблемы или вопросы, пожалуйста, создайте issue в этом репозитории.
+If you encounter any issues or have questions, please create an issue in this repository.
 
-## Лицензия
+## License
 
-itParty является открытым исходным кодом, лицензированным под [MIT license](LICENSE).
+itParty is open-source software licensed under the [MIT license](LICENSE).

@@ -1,7 +1,6 @@
-import React, { useState} from "react";
-import { useForm } from "react-hook-form";
-import style from "./index.module.scss";
-import { useDispatch, useSelector } from "../../app/types/hooks";
+import {useState, useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "../../app/types/hooks";
 import checkIcon from "../../app/assets/icons/check_mark.svg";
 import arrow_down from "../../app/assets/icons/arrow_down.svg";
 import {
@@ -12,8 +11,9 @@ import {
   setSelectedTimeInterval,
   setClickTimeInterval,
 } from "../../app/services/slices/profileSlice";
-import { TFormDataPersonalValues, TUserProfileValues } from "../../app/types/types";
-import { editingDataPersonal } from "../../app/api/api";
+import {TFormDataPersonalValues, TUserProfileValues} from "../../app/types/types";
+import {editingDataPersonal} from "../../app/api/api";
+import style from "./index.module.scss";
 
 export const FormNotifications = () => {
   const dispatch = useDispatch();
@@ -25,16 +25,16 @@ export const FormNotifications = () => {
     newEventsChecked,
     selectedTimeInterval,
   } = useSelector((state) => state.profile);
-  
+
   const [isActiveFilter, setActiveFilter] = useState<boolean>((selectedTimeInterval !== 5) ? true : false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let checkboxNew = document.querySelector('input[type="checkbox"]');
-    if(checkboxNew !== null) {
+    if (checkboxNew !== null) {
       const attributeFilterActive = checkboxNew.hasAttribute('checked');
-      if(selectedTimeInterval !== 5 && isActiveFilter === true && attributeFilterActive === false) {
+      if (selectedTimeInterval !== 5 && isActiveFilter === true && attributeFilterActive === false) {
         checkboxNew.setAttribute('checked', 'true');
-      }  
+      }
     }
   }, []);
 
@@ -74,9 +74,9 @@ export const FormNotifications = () => {
   const handleActiveFilter = () => {
     let checkboxNew = document.querySelector('input[type="checkbox"]');
     const status = !isActiveFilter;
-    setActiveFilter(status); 
-    if(checkboxNew !== null) {
-      if(status) {
+    setActiveFilter(status);
+    if (checkboxNew !== null) {
+      if (status) {
         checkboxNew.setAttribute('checked', 'true');
         dispatch(setSelectedTimeInterval(0));
       } else {
@@ -86,9 +86,9 @@ export const FormNotifications = () => {
     }
   }
 
-  const onSubmit = (data:TFormDataPersonalValues) => {
-    let dataNew:TFormDataPersonalValues = {}
-    if(isActiveFilter === true && data.notification !== undefined) {
+  const onSubmit = (data: TFormDataPersonalValues) => {
+    let dataNew: TFormDataPersonalValues = {}
+    if (isActiveFilter === true && data.notification !== undefined) {
       editingDataPersonal(data)
         .then((data: TUserProfileValues) => {
           localStorage.setItem("updateInfo", JSON.stringify(data));
@@ -101,8 +101,8 @@ export const FormNotifications = () => {
           console.log(error);
           alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
         })
-    } else if(isActiveFilter === true && data.notification === undefined) {
-      if(selectedTimeInterval === 5) {
+    } else if (isActiveFilter === true && data.notification === undefined) {
+      if (selectedTimeInterval === 5) {
         dataNew.notification = 0;
         editingDataPersonal(dataNew)
           .then((data: TUserProfileValues) => {
@@ -121,7 +121,7 @@ export const FormNotifications = () => {
           "Нет текущих изменений."
         );
       }
-    } else if(isActiveFilter === false && data.notification !== undefined) {
+    } else if (isActiveFilter === false && data.notification !== undefined) {
       dataNew = data;
       dataNew.notification = 5;
       editingDataPersonal(dataNew)
@@ -136,8 +136,8 @@ export const FormNotifications = () => {
           console.log(error);
           alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
         })
-    } else if(isActiveFilter === false && data.notification === undefined) {
-      if(selectedTimeInterval !== 5) {
+    } else if (isActiveFilter === false && data.notification === undefined) {
+      if (selectedTimeInterval !== 5) {
         dataNew.notification = 5;
         editingDataPersonal(dataNew)
           .then((data: TUserProfileValues) => {
@@ -160,32 +160,36 @@ export const FormNotifications = () => {
   }
 
   return (
-    <form className={style.formSection} onSubmit={handleSubmit(onSubmit)} id="#formNotifications" noValidate>
+    <form className={style.formSection} onSubmit={handleSubmit(onSubmit)} noValidate>
       <h2 className={style.form_title}>Настройка уведомлений</h2>
+
       <div className={style.filterCheckbox}>
         <h3 className={style.filteCheckbox_subtitle}>Уведомления</h3>
         <label className={style.filterCheckbox_toggle}>
-          <input type="checkbox" className={style.filterCheckbox_input} id="filter" name="filter" onClick={handleActiveFilter} />
+          <input type="checkbox" className={style.filterCheckbox_input} id="filter" name="filter"
+                 onClick={handleActiveFilter}/>
           <span className={style.filterCheckbox_slider}></span>
         </label>
       </div>
+
       <div className={isActiveFilter ? style.notificationsBlock : style.notificationsBlockHide}>
         <div className={style.element}>
           <div className={style.element_checkboxBlock}>
             <div className={style.container_checkbox}>
               <div className={style.customCheckBox} onClick={handleEmailChange}>
-                {emailChecked ? <img src={checkIcon} alt='check' /> : ""}
+                {emailChecked ? <img src={checkIcon} alt='check'/> : ""}
               </div>
               <span>Email</span>
             </div>
             <div className={style.container_checkbox}>
               <div className={style.customCheckBox} onClick={handleSmsChange}>
-                {smsChecked ? <img src={checkIcon} alt='check' /> : ""}
+                {smsChecked ? <img src={checkIcon} alt='check'/> : ""}
               </div>
               <span>СМС-уведомления</span>
             </div>
           </div>
         </div>
+
         <div className={style.element}>
           <div className={style.element_checkboxBlock}>
             <h3 className={style.element_subtitle}>
@@ -193,18 +197,19 @@ export const FormNotifications = () => {
             </h3>
             <div className={style.container_checkbox}>
               <div className={style.customCheckBox} onClick={handleApprovalApplicationChange}>
-                {approvalApplicationChecked ? <img src={checkIcon} alt='check' /> : ""}
+                {approvalApplicationChecked ? <img src={checkIcon} alt='check'/> : ""}
               </div>
               <span>Одобрение заявки</span>
             </div>
             <div className={style.container_checkbox}>
               <div className={style.customCheckBox} onClick={handleNewEvents}>
-                {newEventsChecked ? <img src={checkIcon} alt='check' /> : ""}
+                {newEventsChecked ? <img src={checkIcon} alt='check'/> : ""}
               </div>
               <span>Новые мероприятия</span>
             </div>
-          </div>  
+          </div>
         </div>
+
         <div className={style.element}>
           <div className={style.container_selectInput}>
             <label>
@@ -212,13 +217,13 @@ export const FormNotifications = () => {
             </label>
             <div className={style.customSelect} onClick={handleClickTimeInterval}>
               <span>{(selectedTimeInterval === 1 && "За час") ||
-                     (selectedTimeInterval === 2 && "За 2 часа") ||
-                     (selectedTimeInterval === 3 && "За день") ||
-                     (selectedTimeInterval === 4 && "За неделю") ||
-                     (selectedTimeInterval === 5 && "Никогда") ||
-                     (selectedTimeInterval === 0 && "")}
+                (selectedTimeInterval === 2 && "За 2 часа") ||
+                (selectedTimeInterval === 3 && "За день") ||
+                (selectedTimeInterval === 4 && "За неделю") ||
+                (selectedTimeInterval === 5 && "Никогда") ||
+                (selectedTimeInterval === 0 && "")}
               </span>
-              <img src={arrow_down} alt='arrow' />
+              <img src={arrow_down} alt='arrow'/>
             </div>
             {clickTimeInterval && (
               <div className={style.options}>
@@ -249,15 +254,12 @@ export const FormNotifications = () => {
                 </div>
               </div>
             )}
-          </div>  
-        </div>        
+          </div>
+        </div>
       </div>
+
       <div className={style.buttonBlock}>
-        <button
-          type='submit'
-          className={
-            style.submit
-          }>
+        <button type='submit' className={style.submit}>
           Сохранить
         </button>
       </div>

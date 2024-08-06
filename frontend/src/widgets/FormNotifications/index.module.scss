@@ -133,7 +133,6 @@
 
   .element_subtitle {
     font-weight: 500;
-    font-family: "YS-Text";
     font-size: 18px;
     line-height: 1.33;
   }
@@ -151,7 +150,6 @@
   }
 
   .required {
-    font-family: "YS-Text";
     font-size: var(--sp-13);
     color: var(--c-black-500);
   }
@@ -217,14 +215,12 @@
 
   span {
     font-weight: 500;
-    font-family: "YS-Text";
     font-size: 16px;
     line-height: 1.25;
   }
 }
 
 .error {
-  font-family: "YS-Text";
   font-size: var(--sp-13);
   color: var(--c-er-red);
 }

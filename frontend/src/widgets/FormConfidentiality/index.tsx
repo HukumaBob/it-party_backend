@@ -1,178 +1,122 @@
-import React from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import {useForm} from "react-hook-form";
-import {TFormConfidentialityValues, TUserProfileValues, TFormDataPersonalValues} from "../../app/types/types";
-import {editingDataPersonal, deleteUserProfile} from "../../app/api/api";
-import style from "./index.module.scss";
 import {useDispatch, useSelector} from "../../app/types/hooks";
-import {setPhone} from "../../app/services/slices/profileSlice";
-import useProfileState from '../../shared/useProfileState/index';
+import {deleteUserProfile, updateUserProfile} from "../../app/services/slices/profileUserSlice.ts";
 import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
+import {ModalWrapper} from "../../shared/ModalWrapper";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
+import cn from "classnames";
+import style from "./index.module.scss";
+
+type TFormData = { "phone": string };
 
 export const FormConfidentiality = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {resetForm} = useProfileState();
-  const {
-    phone,
-    email,
-  } = useSelector((state) => state.profile);
-
-  React.useEffect(() => {
-    if (phone !== "") {
-      setValue("phone", phone);
-    }
-  }, []);
-
-  function handleResetPassword() {
-    dispatch(setModalResetPassword({open: true, formType: 'profile'}));
-  }
-
-  function handleDeleteProfile() {
-    deleteUserProfile()
-      .then(() => {
-        localStorage.removeItem('updateInfo');
-        resetForm();
-        alert(
-          "Данные успешно удалены.",
-        );
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Произошла ошибка при удалении профиля. Попробуйте еще раз позже.");
-      })
-  }
+  const {data, statusGetProfile, statusUpdateProfile, statusDeleteUser} = useSelector((state) => state.profileUser);
+  const isLoading = [statusGetProfile, statusUpdateProfile, statusDeleteUser].includes('loading');
+  const isError = [statusGetProfile, statusUpdateProfile, statusDeleteUser].includes('error');
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
-    setValue,
-  } = useForm<TFormConfidentialityValues>({mode: "onTouched"});
+    formState: {errors},
+    reset
+  } = useForm<TFormData>({mode: "onTouched"});
 
+  useEffect(() => {
+    if (statusGetProfile === 'success') {
+      reset({phone: data.phone});
+    }
+  }, [statusGetProfile]);
 
-  const onSubmit = (data: TFormConfidentialityValues) => {
-    let promise = new Promise<TFormDataPersonalValues>((resolve) => {
-      let objectData: TFormDataPersonalValues = {};
-      const profile = localStorage.getItem("updateInfo");
-      const profileData = profile ? JSON.parse(profile) : {};
-      for (const key in data) {
-        const keyCurrent = key;
-        for (const keyData in profileData) {
-          const keyProfile = keyData;
-          if (data[key] !== profileData[keyProfile]) {
-            objectData[keyCurrent] = data[keyCurrent];
-          } else {
-            continue;
-          }
-        }
-      }
-      resolve(objectData);
-    })
-    promise.then((objectData: TFormDataPersonalValues) => {
-      editingDataPersonal(objectData)
-        .then((data: TUserProfileValues) => {
-          localStorage.setItem("updateInfo", JSON.stringify(data));
-          dispatch(setPhone(data.phone));
-          alert(
-            "Данные успешно обновлены.",
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-        })
-    })
+  const onSubmit = (formData: TFormData) => {
+    dispatch(updateUserProfile(formData))
+  };
+
+  const handleResetPassword = () => {
+    dispatch(setModalResetPassword({open: true, formType: 'profile'}));
+  };
+
+  const [modalConfirmDelete, setModalConfirmDeleteIsOpen] = useState(false);
+  const handleOpenModalConfirmDelete = () => {
+    setModalConfirmDeleteIsOpen(true);
+  };
+  const handleCloseModalConfirmDelete = () => {
+    setModalConfirmDeleteIsOpen(false);
+  };
+  const handleDeleteProfile = () => {
+    dispatch(deleteUserProfile());
+    navigate('/', {replace: true});
   };
 
   return (
-    <section>
-      <form className={style.form} onSubmit={handleSubmit(onSubmit)} id="formConfidentiality">
-        <div className={style.form_container}>
-          <h2 className={style.form_title}>Настройки безопасности</h2>
-          <div className={style.name_form}>
-            <label>
-              Email <span>*</span>
-            </label>
-            <input
-              type='email'
-              className={style.inputHide}
-              value={email}
-              disabled
-            />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className='inputBlock'>
+        <h3>Email</h3>
+        <input type='email' value={data.email} disabled/>
+      </div>
 
-            <span className={style.message}>
-              {"Невозможно изменить. Необходимо для регистрации на мероприятие."}
-            </span>
-          </div>
-          <div className={style.name_form}>
-            <label className={style.labelPassword}>
-              Пароль
-            </label>
-            <input
-              type='password'
-              className={style.inputHide}
-              placeholder='********'
-              disabled
-            />
+      <div className='inputBlock mt-lg'>
+        <h3>Пароль</h3>
+        <input type='password' placeholder='***********' disabled/>
+      </div>
 
-            <button
-              type='button'
-              className={style.buttonResetPassword}
-              onClick={handleResetPassword}>
-              Сбросить пароль
-            </button>
+      <button
+        className={style.buttonResetPassword}
+        type='button'
+        onClick={handleResetPassword}
+      >
+        Сбросить пароль
+      </button>
 
-          </div>
-          <div className={style.name_form}>
-            <label>
-              Номер телефона<span>*</span>
-            </label>
-            <input
-              className={errors.phone ? style.errorInput : ""}
-              type='phone'
-              placeholder='+79521120101'
-              {...register("phone", {
-                minLength: {
-                  value: 11,
-                  message: "Слишком короткий номер телефона. Min = 11.",
-                },
-                maxLength: {
-                  value: 13,
-                  message: "Слишком длинный номер телефона. Max = 13.",
-                },
-                pattern: {
-                  value: /^\+?[78][-(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$/,
-                  message: "Некорректный формат номера телефона. ",
-                },
-              })}
-            />
+      <div className='inputBlock mt-sm'>
+        <h3>Номер телефона</h3>
+        <input
+          className={cn({'error': errors.phone})}
+          type='phone'
+          placeholder='+78005550022'
+          {...register("phone", {
+            minLength: {
+              value: 11,
+              message: "слишком короткий номер, min = 11",
+            },
+            maxLength: {
+              value: 13,
+              message: "слишком длинный номер телефона, max = 13",
+            },
+            pattern: {
+              value: /^\+?[78][-(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$/,
+              message: "некорректный формат номера",
+            },
+          })}
+        />
+        <span className='errorMessage'>
+          {errors?.phone?.message}&nbsp;
+        </span>
+      </div>
 
-            <span
-              className={`${errors.phone ? style.error : style.message}`}>
-              {errors?.phone?.message ||
-                "Необходимо для регистрации на мероприятие"}
-            </span>
-          </div>
-        </div>
-        <div className={style.buttonBlock}>
-          <button
-            type='submit'
-            className={!isValid ? style.disabled : style.submit}
-            disabled={!isValid}
-          >
-            Сохранить
-          </button>
-          <button
-            type='button'
-            className={style.buttonDeleteProfile}
-            onClick={handleDeleteProfile}
-          >
-            Удалить профиль
-          </button>
-        </div>
-      </form>
-    </section>
+      <div className={style.buttonsBlock}>
+        <button className='buttonProfileSubmit' type='submit'>
+          Сохранить
+        </button>
+
+        <button type='button' className={style.buttonDeleteProfile} onClick={handleOpenModalConfirmDelete}>
+          Удалить профиль
+        </button>
+      </div>
+
+      <ModalWrapper isOpen={modalConfirmDelete} handleClose={handleCloseModalConfirmDelete}>
+        <h2 className={style.titleConfirm}>Удалить профиль ?</h2>
+        <button className={style.buttonConfirm} onClick={handleDeleteProfile}>Удалить</button>
+      </ModalWrapper>
+
+      <div className={cn('modalLoadingErrorMessage', {'visible': isLoading || isError})}>
+        {isLoading && <LoadingIcon/>}
+        {isError && <ErrorIcon/>}
+      </div>
+    </form>
   );
 };

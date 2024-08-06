@@ -3,16 +3,13 @@ import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "../../app/types/hooks";
 import {resetPassword} from '../../app/services/slices/resetPasswordSlice.ts'
 import cn from "classnames";
-import style from "./index.module.scss";
 
-type TFormData = {
-  email: string;
-}
+type TFormData = { email: string }
 
 export const FormResetPassword = () => {
   const dispatch = useDispatch();
   const {formType} = useSelector(state => state.resetPassword)
-  const {email} = useSelector(state => state.profile);
+  const {email} = useSelector(state => state.profileUser.data);
 
   const {
     register,
@@ -30,13 +27,13 @@ export const FormResetPassword = () => {
   };
 
   return (
-    <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
-      <div className={style.inputBlock}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className='inputBlock sm'>
         <h3>Email</h3>
         <input
-          className={cn({[style.error]: errors.email})}
+          className={cn({'error': errors.email})}
           type='email'
-          placeholder='email@list.ru'
+          placeholder='ivanov@gmail.com'
           {...register("email", {
             required: "обязательное поле",
             pattern: {
@@ -46,12 +43,12 @@ export const FormResetPassword = () => {
           })}
           disabled={formType === 'profile'}
         />
-        <span className={style.errorMessage}>
+        <span className='errorMessage'>
           {errors?.email?.message}&nbsp;
         </span>
       </div>
 
-      <button className={style.buttonSubmit} type='submit'>
+      <button className='buttonSubmit' type='submit'>
         Сбросить пароль
       </button>
     </form>

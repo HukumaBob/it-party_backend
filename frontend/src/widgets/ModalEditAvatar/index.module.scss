@@ -1,0 +1,43 @@
+.dropBox {
+  margin-top: var(--sp-36);
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.6;
+  border: 2px dashed var(--c-black-300);
+  border-radius: 8px;
+  cursor: pointer;
+
+  img {
+    width: 115px;
+    height: 115px;
+    border-radius: 35px;
+  }
+}
+
+.message {
+  margin-top: 5px;
+  color: var(--c-black-500);
+  font-size: 17px;
+
+  span {
+    font-size: 14px;
+    color: var(--c-er-red);
+  }
+}
+
+.buttonSubmit {
+  margin-top: var(--sp-22);
+  padding: 12px 0;
+  width: 100%;
+  color: var(--c-def-white);
+  background-color: var(--c-def-blue);
+  border-radius: 8px;
+
+  &:disabled {
+    cursor: default;
+    background-color: var(--c-black-300);
+  }
+}

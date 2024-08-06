@@ -1,0 +1,38 @@
+.container {
+  margin-bottom: var(--sp-36);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-16);
+}
+
+.avatar {
+  padding: 5px;
+  display: grid;
+  border-radius: 8px;
+
+  &:hover svg {
+    opacity: 1;
+  }
+
+  img, svg {
+    grid-area: 1 / 1 / -1 / -1;
+    width: 115px;
+    height: 115px;
+    border-radius: 35px;
+  }
+
+  svg {
+    padding: 34px;
+    color: var(--c-black-500);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}
+
+.title {
+  margin-top: 10px;
+  font-size: var(--sp-24);
+  font-weight: 400;
+}

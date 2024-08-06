@@ -22,11 +22,11 @@ type TFormData = {
 
 export const FormDataPersonal = () => {
   const dispatch = useDispatch();
-  const {data, statusGetProfile} = useSelector((state) => state.profileUser);
+  const {data, statusGetProfile, statusUpdateProfile} = useSelector((state) => state.profileUser);
   const {countrySelectOptions, status: countryListStatus} = useSelector((state) => state.country);
   const {familyStatusSelectOptions, status: familyListStatus} = useSelector((state) => state.familyStatus);
-  const isLoading = [statusGetProfile, countryListStatus, familyListStatus].includes('loading');
-  const isError = [statusGetProfile, countryListStatus, familyListStatus].includes('error');
+  const isLoading = [statusGetProfile, statusUpdateProfile, countryListStatus, familyListStatus].includes('loading');
+  const isError = [statusGetProfile, statusUpdateProfile, countryListStatus, familyListStatus].includes('error');
 
   useEffect(() => {
     countryListStatus === 'idle' && dispatch(getCountryList())
@@ -89,8 +89,8 @@ export const FormDataPersonal = () => {
           })}
         />
         <span className='errorMessage'>
-            {errors?.first_name?.message}&nbsp;
-          </span>
+          {errors?.first_name?.message}&nbsp;
+        </span>
       </div>
 
       <div className='inputBlock mt-sm'>
@@ -111,8 +111,8 @@ export const FormDataPersonal = () => {
           })}
         />
         <span className='errorMessage'>
-            {errors?.last_name?.message}&nbsp;
-          </span>
+          {errors?.last_name?.message}&nbsp;
+        </span>
       </div>
 
       <div className='inputBlock mt-sm'>

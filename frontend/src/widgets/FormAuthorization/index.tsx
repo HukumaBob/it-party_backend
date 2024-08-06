@@ -156,7 +156,7 @@ export const FormAuthorization = () => {
         {formType === 'login' ? 'Регистрация' : 'Логин'}
       </button>
 
-      <div className={cn('modalLoadingErrorMessage', {'visible': {'visible': isLoading || isError}})}>
+      <div className={cn('modalLoadingErrorMessage', {'visible': isLoading || isError})}>
         {isLoading && <LoadingIcon/>}
         {isError && <ErrorIcon/>}
       </div>

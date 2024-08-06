@@ -20,7 +20,7 @@ export const ModalResetPassword = () => {
         <div className={style.successContainer}>
           <p>Мы отправили письмо вам на почту.</p>
           <p>Перейдите по ссылке в письме чтобы сбросить пароль.</p>
-          <p>Письмо отправлено на&nbsp; <span>{email}vasia_pupkin@gmail.com</span></p>
+          <p>Письмо отправлено на&nbsp; <span>{email}</span></p>
           <button onClick={handleCloseModal}>
             Готово
           </button>

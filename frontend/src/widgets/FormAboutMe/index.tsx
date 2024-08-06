@@ -18,7 +18,10 @@ type TFormData = {
 
 export const FormAboutMe = () => {
   const dispatch = useDispatch();
-  const {data, statusGetProfile} = useSelector((state) => state.profileUser);
+  const {data, statusGetProfile, statusUpdateProfile} = useSelector((state) => state.profileUser);
+  const isLoading = [statusGetProfile, statusUpdateProfile].includes('loading');
+  const isError = [statusGetProfile, statusUpdateProfile].includes('error');
+
 
   const {
     register,
@@ -47,8 +50,6 @@ export const FormAboutMe = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2 className='profileTitle'>Это поможет подобрать вам ивенты</h2>
-
       <div className='inputBlock'>
         <h3>Хобби</h3>
         <textarea
@@ -139,8 +140,7 @@ export const FormAboutMe = () => {
         </span>
       </div>
 
-      <h2 className='profileTitle'>Формат мероприятий</h2>
-      <p className='profileSubtitle'>Какой формат мероприятий вы предпочитаете?</p>
+      <h3 className='profileTitle'>Формат мероприятий</h3>
       <label className='profileCheckboxLabel'>
         <input
           className='checkbox'
@@ -157,15 +157,16 @@ export const FormAboutMe = () => {
           name='offline'/>
         Оффлайн
       </label>
+      <p className='profileSubtitle'>Какой формат мероприятий Вы предпочитаете?</p>
+
 
       <button type='submit' className='buttonProfileSubmit'>
         Сохранить
       </button>
 
-      <div
-        className={cn('modalLoadingErrorMessage', {'visible': statusGetProfile === 'loading' || statusGetProfile === 'error'})}>
-        {statusGetProfile === 'loading' && <LoadingIcon/>}
-        {statusGetProfile === 'error' && <ErrorIcon/>}
+      <div className={cn('modalLoadingErrorMessage', {'visible': isLoading || isError})}>
+        {isLoading && <LoadingIcon/>}
+        {isError && <ErrorIcon/>}
       </div>
     </form>
   );
