@@ -137,7 +137,7 @@ celery -A backend beat --loglevel=info
 
 11. **Запуск приложения через Docker Compose**
 
-Запуск приложения через Docker Compose на стандартном порту 8000:
+## Запуск приложения через Docker Compose на стандартном порту 8000:
 
 ```bash
 cd infra/
@@ -152,6 +152,42 @@ docker compose exec backend python manage.py generate_initial_data_users_profile
 docker compose exec backend python manage.py generate_initial_events
 # ___________________________________________________________
 docker compose exec backend python manage.py createsuperuser
+```
+
+## Удаленный сервер:
+
+### Прокси сервер nginx:
+```
+server {
+    server_name example.ddns.net;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/example.ddns.net/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/example.ddns.net/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = example.ddns.net) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+
+    listen 80;
+    server_name example.ddns.net;
+    return 404; # managed by Certbot
+}
+
 ```
 
 ## Документация API
