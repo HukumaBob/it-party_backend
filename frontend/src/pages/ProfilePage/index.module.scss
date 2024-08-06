@@ -1,12 +1,12 @@
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 328px minmax(300px, 800px);
   align-items: start;
   gap: 28px;
 }
 
 .linksContainer {
   padding: 16px;
-  width: 328px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -32,9 +32,40 @@
 
 .formsContainer {
   padding: 20px;
-  width: 680px;
   border-radius: var(--sp-12);
   border: 1px solid var(--c-str-light);
   background-color: var(--c-def-bg);
   position: relative;
+}
+
+@media (max-width: 1199.98px) {
+  .container {
+    grid-template-columns: 240px minmax(300px, 800px);
+    gap: 20px;
+  }
+
+  .linksContainer {
+    padding: 12px;
+    gap: 4px;
+
+    a,
+    button {
+      padding: 10px 12px;
+    }
+  }
+
+  .formsContainer {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .container {
+    display: block;
+  }
+
+  .linksContainer {
+    margin-bottom: 20px;
+    position: static;
+  }
 }

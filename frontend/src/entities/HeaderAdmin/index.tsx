@@ -18,7 +18,7 @@ export const HeaderAdmin = () => {
     setAnchorEl(null);
   };
 
-  const {name, secondName, avatar} = useSelector((store) => store.profile);
+  const {first_name, last_name, user_photo} = useSelector((store) => store.profileUser.data);
   const handleLogout = () => {
     handleCloseMenu()
     dispatch(resetProfile())
@@ -33,8 +33,8 @@ export const HeaderAdmin = () => {
         <div className={style.container}>
           <h1 className={style.title}>Я организую</h1>
           <button className={style.buttonMenu} onClick={handleOpenMenu}>
-            {name}&nbsp;{secondName}
-            <img className={style.avatar} src={avatar} alt='avatar'/>
+            {first_name}&nbsp;{last_name}
+            <img className={style.avatar} src={user_photo} alt='avatar'/>
           </button>
         </div>
 
