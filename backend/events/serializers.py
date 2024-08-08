@@ -154,6 +154,8 @@ class AdminUserEventSerializer(serializers.ModelSerializer):
         # Объедините данные профиля пользователя и айди связи user-event
         representation['profile_events'] = profile_events_data
         representation['application_status'] = instance.application_status
+        if 'logo' in representation:
+            representation['logo'] = f"{settings.MEDIA_URL}{instance.logo.name}"  # возвращает относительный путь        
 
         return representation
 
