@@ -1,7 +1,7 @@
+from backend import settings
 from rest_framework import serializers
 
 from users.serializers import UserProfileSerializer
-from userevents.serializers import UserEventSerializer
 
 from .models import (
     Event,
@@ -67,6 +67,11 @@ class EventSerializer(serializers.ModelSerializer):
             'date', 'time', 'user_application_status',
             'specializations',
             )
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if 'logo' in representation:
+            representation['logo'] = f"{settings.MEDIA_URL}{instance.logo.name}"  # возвращает относительный путь
+        return representation        
 
     def get_user_application_status(self, obj):
         request = self.context.get('request')
