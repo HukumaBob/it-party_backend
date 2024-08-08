@@ -3,7 +3,6 @@ import applyRegistrationSlice from "./slices/applyRegistrationSlice";
 import authorizationSlice from "./slices/authorizationSlice.ts";
 import eventListSlice from "./slices/eventListSlice";
 import adminApplicantsSlice from "./slices/adminApplicantsSlice";
-import profileSlice from "./slices/profileSlice";
 import myEventsSlice from "./slices/myEventsSlice";
 import specializationsSlice from "./slices/specializationsSlice";
 import citySlice from "./slices/citySlice";
@@ -16,15 +15,15 @@ import sliderSlice from "./slices/sliderSlice";
 import questionAnswerSlice from "./slices/questionAnswerSlice";
 import adminEventListSlice from "./slices/adminEventListSlice";
 import resetPasswordSlice from "./slices/resetPasswordSlice.ts";
-import profileUserSlice from "./slices/profileUserSlice";
+import profileSlice from "./slices/profileSlice.ts";
 import countrySlice from "./slices/countrySlice";
 import maritalStatusSlice from "./slices/familyStatusSlice.ts";
 import educationSlice from "./slices/educationSlice";
 import incomeSlice from "./slices/incomeSlice";
+import notificationSlice from "./slices/notificationSlice";
 
 export const rootReducer = combineReducers({
   authorization: authorizationSlice,
-  profile: profileSlice,
   eventList: eventListSlice,
   event: eventSlice,
   myEvents: myEventsSlice,
@@ -40,9 +39,10 @@ export const rootReducer = combineReducers({
   adminEvents: adminEventListSlice,
   adminApplicants: adminApplicantsSlice,
   resetPassword: resetPasswordSlice,
-  profileUser: profileUserSlice,
+  profile: profileSlice,
   country: countrySlice,
   familyStatus: maritalStatusSlice,
   education: educationSlice,
   income: incomeSlice,
+  notification: notificationSlice,
 });

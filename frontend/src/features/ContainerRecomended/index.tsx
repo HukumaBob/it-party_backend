@@ -1,14 +1,14 @@
 import {useEffect} from "react";
-import {useSelector} from "../../app/types/hooks";
-import {useDispatch} from "../../app/types/hooks";
+import {useAppSelector} from "../../app/services/hooks.ts";
+import {useAppDispatch} from "../../app/services/hooks.ts";
 import {getSliderList} from "../../app/services/slices/sliderSlice";
 import {SliderCards} from '../../entities/SliderCards'
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
 
 export const ContainerRecommended = () => {
-  const {recommended, statusRecommended} = useSelector((store) => store.slider);
-  const dispatch = useDispatch();
+  const {recommended, statusRecommended} = useAppSelector((store) => store.slider);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (statusRecommended === 'idle' || statusRecommended === 'error') {

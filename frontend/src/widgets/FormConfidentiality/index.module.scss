@@ -1,11 +1,12 @@
 .buttonsBlock {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: var(--sp-18) var(--sp-36);
 }
 
 .buttonDeleteProfile {
-  margin-top: 34px;
   padding: var(--sp-12) 0;
   width: 100%;
   max-width: 300px;

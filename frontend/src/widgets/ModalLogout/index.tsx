@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {useDispatch} from "../../app/types/hooks.ts";
+import {useAppDispatch} from "../../app/services/hooks.ts";
 import {logoutUser} from "../../app/services/slices/authorizationSlice.ts";
 import {ModalWrapper} from "../../shared/ModalWrapper";
 import style from "./index.module.scss";
@@ -11,7 +11,7 @@ type TProps = {
 };
 
 export const ModalLogout: React.FC<TProps> = ({isOpen, handleClose}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation()
 

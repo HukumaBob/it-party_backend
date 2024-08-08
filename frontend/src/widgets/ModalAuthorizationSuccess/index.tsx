@@ -1,12 +1,12 @@
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {setOpenAuthorizationSuccessModal} from "../../app/services/slices/authorizationSlice.ts";
 import {ModalWrapper} from "../../shared/ModalWrapper/";
 import cn from "classnames";
 import style from "./index.module.scss";
 
 export const ModalAuthorizationSuccess = () => {
-  const dispatch = useDispatch();
-  const {userEmail, modalAuthorizationSuccessIsOpen} = useSelector(state => state.authorization);
+  const dispatch = useAppDispatch();
+  const {userEmail, modalAuthorizationSuccessIsOpen} = useAppSelector(state => state.authorization);
   const handleCloseModal = () => {
     dispatch(setOpenAuthorizationSuccessModal(false));
   };

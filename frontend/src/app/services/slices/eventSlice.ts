@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
-import {RootState} from "../../../main.tsx";
+import {RootState} from "../hooks.ts";
+import {API} from "../constants.ts";
+
 
 type TSpecialization = {
   id: number;

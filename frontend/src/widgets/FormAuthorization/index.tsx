@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Link} from 'react-router-dom';
 import {useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {
   loginUser,
   createUser,
@@ -23,7 +23,7 @@ type TFormData = {
 };
 
 export const FormAuthorization = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [passwordIsVisible, setPasswordIsVisible] = useState<boolean>(false);
   let {
     formType,
@@ -32,7 +32,7 @@ export const FormAuthorization = () => {
     statusCreate,
     errorLogin,
     errorCreate
-  } = useSelector((state) => state.authorization);
+  } = useAppSelector((state) => state.authorization);
   const isLoading = [statusLogin, statusCreate].includes('loading');
   const isError = [statusLogin, statusCreate].includes('error') &&
     (typeof errorLogin === 'string' || typeof errorCreate === 'string');
@@ -41,8 +41,7 @@ export const FormAuthorization = () => {
     dispatch(setFormType(formType === 'login' ? 'registration' : 'login'));
   };
   const handleCloseModal = () => {
-    dispatch(setOpenAuthorizationModal(false));
-    dispatch(setFormType('login'));
+    !isLoading && dispatch(setOpenAuthorizationModal(false));
   };
   const handleResetPassword = () => {
     dispatch(setModalResetPassword({open: true, formType: 'authorization'}));

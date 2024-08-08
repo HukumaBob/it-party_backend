@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import {useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "../../app/types/hooks";
-import {deleteUserProfile, updateUserProfile} from "../../app/services/slices/profileUserSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
+import {deleteUserProfile, updateUserProfile} from "../../app/services/slices/profileSlice.ts";
 import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
 import {ModalWrapper} from "../../shared/ModalWrapper";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
@@ -14,8 +14,10 @@ type TFormData = { "phone": string };
 
 export const FormConfidentiality = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const {data, statusGetProfile, statusUpdateProfile, statusDeleteUser} = useSelector((state) => state.profileUser);
+  const dispatch = useAppDispatch();
+  const [hasFormChanged, setHasFormChanged] = useState(false);
+  const [initialValues, setInitialValues] = useState<TFormData | null>(null);
+  const {data, statusGetProfile, statusUpdateProfile, statusDeleteUser} = useAppSelector((state) => state.profile);
   const isLoading = [statusGetProfile, statusUpdateProfile, statusDeleteUser].includes('loading');
   const isError = [statusGetProfile, statusUpdateProfile, statusDeleteUser].includes('error');
 
@@ -23,14 +25,27 @@ export const FormConfidentiality = () => {
     register,
     handleSubmit,
     formState: {errors},
-    reset
+    reset,
+    watch
   } = useForm<TFormData>({mode: "onTouched"});
 
   useEffect(() => {
     if (statusGetProfile === 'success') {
-      reset({phone: data.phone});
+      const initialFormValues = {phone: data.phone};
+      setInitialValues(initialFormValues);
+      reset(initialFormValues);
     }
   }, [statusGetProfile]);
+
+  useEffect(() => {
+    const subscription = watch((currentValues) => {
+      if (initialValues) {
+        const changed = currentValues.phone !== initialValues.phone;
+        setHasFormChanged(changed);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, initialValues]);
 
   const onSubmit = (formData: TFormData) => {
     dispatch(updateUserProfile(formData))
@@ -99,7 +114,7 @@ export const FormConfidentiality = () => {
       </div>
 
       <div className={style.buttonsBlock}>
-        <button className='buttonProfileSubmit' type='submit'>
+        <button className='buttonProfileSubmit' type='submit' disabled={!hasFormChanged}>
           Сохранить
         </button>
 

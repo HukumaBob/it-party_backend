@@ -1,7 +1,7 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "../../app/types/hooks";
-import {updateUserProfile} from "../../app/services/slices/profileUserSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
+import {updateUserProfile} from "../../app/services/slices/profileSlice.ts";
 import {getFamilyStatusList} from "../../app/services/slices/familyStatusSlice.ts";
 import {getCountryList} from "../../app/services/slices/countrySlice.ts";
 import {DatePicker} from "../../shared/FormFields/DatePicker";
@@ -15,16 +15,18 @@ type TOption = { value: number; label: string };
 type TFormData = {
   "first_name": string;
   "last_name": string;
-  "country": TOption;
+  "country": TOption | null;
   "date_of_birth": Dayjs;
-  "familystatus": TOption;
+  "familystatus": TOption | null;
 };
 
 export const FormDataPersonal = () => {
-  const dispatch = useDispatch();
-  const {data, statusGetProfile, statusUpdateProfile} = useSelector((state) => state.profileUser);
-  const {countrySelectOptions, status: countryListStatus} = useSelector((state) => state.country);
-  const {familyStatusSelectOptions, status: familyListStatus} = useSelector((state) => state.familyStatus);
+  const dispatch = useAppDispatch();
+  const [hasFormChanged, setHasFormChanged] = useState(false);
+  const [initialValues, setInitialValues] = useState<TFormData | null>(null);
+  const {data, statusGetProfile, statusUpdateProfile} = useAppSelector((state) => state.profile);
+  const {countrySelectOptions, status: countryListStatus} = useAppSelector((state) => state.country);
+  const {familyStatusSelectOptions, status: familyListStatus} = useAppSelector((state) => state.familyStatus);
   const isLoading = [statusGetProfile, statusUpdateProfile, countryListStatus, familyListStatus].includes('loading');
   const isError = [statusGetProfile, statusUpdateProfile, countryListStatus, familyListStatus].includes('error');
 
@@ -38,23 +40,36 @@ export const FormDataPersonal = () => {
     handleSubmit,
     formState: {errors},
     reset,
-    control
+    control,
+    watch
   } = useForm<TFormData>({mode: "onTouched"});
 
   useEffect(() => {
     if (statusGetProfile === 'success' && countryListStatus === 'success' && familyListStatus == 'success') {
       const getOption = (data: TOption[], target: number | undefined) =>
-        data.find((option) => option.value === target) || {};
+        data.find((option) => option.value === target) || null;
 
-      reset({
+      const initialFormValues = {
         first_name: data.first_name,
         last_name: data.last_name,
         date_of_birth: dayjs(data.date_of_birth),
         country: getOption(countrySelectOptions, data.country),
         familystatus: getOption(familyStatusSelectOptions, data.familystatus),
-      });
+      };
+      setInitialValues(initialFormValues);
+      reset(initialFormValues);
     }
   }, [statusGetProfile, countryListStatus, familyListStatus]);
+
+  useEffect(() => {
+    const subscription = watch((currentValues) => {
+      if (initialValues) {
+        const changed = JSON.stringify(initialValues) !== JSON.stringify(currentValues);
+        setHasFormChanged(changed);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, initialValues]);
 
   const onSubmit = (formData: TFormData) => {
     dispatch(updateUserProfile({
@@ -148,7 +163,7 @@ export const FormDataPersonal = () => {
         />
       </div>
 
-      <button className='buttonProfileSubmit' type='submit'>
+      <button className='buttonProfileSubmit' type='submit' disabled={!hasFormChanged}>
         Сохранить
       </button>
 

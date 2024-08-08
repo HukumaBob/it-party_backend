@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {useDispatch} from "../../app/types/hooks";
+import {useAppDispatch} from "../../app/services/hooks.ts";
 import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
 import {SliderCube} from '../../entities/SliderCube'
 import {EventsCatalog} from "../../widgets/EventsCatalog";
@@ -11,7 +11,7 @@ import cn from 'classnames'
 import style from "./index.module.scss";
 
 export const MainPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => () => {
     // закрыть модалку если покидаем страницу
     dispatch(closeModalSuccess())

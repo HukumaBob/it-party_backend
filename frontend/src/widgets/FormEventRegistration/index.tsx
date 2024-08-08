@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import dayjs from "dayjs";
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {applyRegistration} from "../../app/services/slices/applyRegistrationSlice";
 import {AccordionRegistration} from "../../entities/AccordionRegistration";
 import {Select} from "../../shared/FormFields/Select";
@@ -32,10 +32,10 @@ type TFormValues = {
 };
 
 export const FormEventRegistration = () => {
-  const dispatch = useDispatch();
-  const {inboundData} = useSelector(state => state.applyRegistration);
-  const {data: experienceData, optionsExperience} = useSelector(state => state.experience);
-  const {optionsSpecialization, optionsStack} = useSelector(state => state.stackList)
+  const dispatch = useAppDispatch();
+  const {inboundData} = useAppSelector(state => state.applyRegistration);
+  const {data: experienceData, optionsExperience} = useAppSelector(state => state.experience);
+  const {optionsSpecialization, optionsStack} = useAppSelector(state => state.stackList)
 
   const {
     register,

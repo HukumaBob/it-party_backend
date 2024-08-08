@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {closeModalRejectApplicant, getAdminApplicantsList} from "../../app/services/slices/adminApplicantsSlice";
 import {AdminApplicants} from "../../features/AdminApplicants";
 import banner from "../../app/assets/image/other/admin_banner_applicants.webp";
@@ -10,8 +10,8 @@ import style from "./index.module.scss";
 
 export const AdminApplicantsPage = () => {
   const {id} = useParams()
-  const {loading, error} = useSelector(state => state.adminApplicants)
-  const dispatch = useDispatch();
+  const {loading, error} = useAppSelector(state => state.adminApplicants)
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getAdminApplicantsList(Number(id)))

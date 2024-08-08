@@ -1,15 +1,15 @@
 import {useEffect, useState} from "react";
 import Modal from '@mui/material/Modal';
-import {useSelector, useDispatch} from "../../app/types/hooks";
+import {useAppSelector, useAppDispatch} from "../../app/services/hooks.ts";
 import {ContainerFormRegistration} from "../../features/ContainerFormRegistration";
 import {setOpenAuthorizationModal} from "../../app/services/slices/authorizationSlice.ts";
 import CloseIcon from "../../app/assets/icons/close.svg?react";
 import style from "./index.module.scss";
 
 export const ModalEventRegistration = ({id}: { id: number }) => {
-  const dispatch = useDispatch();
-  const isOpenModalSuccess = useSelector(state => state.applyRegistration.isOpenModalSuccess)
-  const {isAuthorized} = useSelector(state => state.authorization)
+  const dispatch = useAppDispatch();
+  const isOpenModalSuccess = useAppSelector(state => state.applyRegistration.isOpenModalSuccess)
+  const {isAuthorized} = useAppSelector(state => state.authorization)
   const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => {
     if (!isAuthorized) {

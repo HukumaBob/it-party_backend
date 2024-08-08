@@ -1,6 +1,6 @@
 import Modal from "@mui/material/Modal";
 import {useForm} from "react-hook-form";
-import {useSelector, useDispatch} from "../../app/types/hooks";
+import {useAppSelector, useAppDispatch} from "../../app/services/hooks.ts";
 import {patchAdminApplicantStatus, closeModalRejectApplicant} from "../../app/services/slices/adminApplicantsSlice";
 import {Select} from "../../shared/FormFields/Select";
 import CrossIcon from "../../app/assets/icons/close.svg?react";
@@ -14,12 +14,12 @@ type TFormValues = {
 };
 
 export const ModalRejectApplicant = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isModalRejectApplicantOpen,
     applicantStatusId,
     applicantFullName
-  } = useSelector((store) => store.adminApplicants);
+  } = useAppSelector((store) => store.adminApplicants);
 
   const handleClose = () => {
     dispatch(closeModalRejectApplicant())

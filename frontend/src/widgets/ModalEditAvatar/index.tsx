@@ -1,15 +1,15 @@
 import {useEffect, useState} from 'react';
 import {useDropzone, DropzoneOptions} from 'react-dropzone';
-import {useDispatch, useSelector} from "../../app/types/hooks";
-import {setModalEditAvatar, updateUserAvatar} from "../../app/services/slices/profileUserSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
+import {setModalEditAvatar, updateUserAvatar} from "../../app/services/slices/profileSlice.ts";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import cn from "classnames";
 import style from './index.module.scss';
 
 export const ModalEditAvatar = () => {
-  const dispatch = useDispatch();
-  const {statusUpdateAvatar} = useSelector(state => state.profileUser);
+  const dispatch = useAppDispatch();
+  const {statusUpdateAvatar} = useAppSelector(state => state.profile);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

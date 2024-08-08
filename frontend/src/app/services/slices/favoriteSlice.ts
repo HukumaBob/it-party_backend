@@ -1,6 +1,6 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
-import {RootState} from "../../../main.tsx";
+import {RootState} from "../hooks.ts";
+import {API} from "../constants.ts";
 
 type TEvent = {
   id: number;
@@ -12,7 +12,7 @@ type TEvent = {
   time: string;
   user_application_status: 'not_applied' | 'pending' | 'approved' | 'rejected';
 }
-type TInitialState = {
+export type TInitialState = {
   data: TEvent[];
   loading: boolean;
   error: string | null | undefined;
@@ -52,7 +52,7 @@ export const getFavoriteList =
     },
   );
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   data: [],
   loading: false,
   error: null,

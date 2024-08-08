@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {API} from "../constants.ts";
 
 type TEducation = { id: number; education: string };
 type TOption = { value: number; label: string };

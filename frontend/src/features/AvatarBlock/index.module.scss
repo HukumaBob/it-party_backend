@@ -1,7 +1,7 @@
 .container {
   margin-bottom: var(--sp-36);
   display: flex;
-  align-items: center;
+  //align-items: center;
   gap: var(--sp-16);
 }
 
@@ -23,16 +23,20 @@
 
   svg {
     padding: 34px;
-    color: var(--c-black-500);
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(5px);
+    color: var(--c-black-300);
+    background-color: #FFFFFFAA;
+    backdrop-filter: blur(3px);
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.1s;
   }
 }
 
 .title {
-  margin-top: 10px;
+  margin-top: var(--sp-16);
+  width: 0;
+  line-height: 1.35;
+  font-family: YS-Text, sans-serif;
   font-size: var(--sp-24);
-  font-weight: 400;
+  font-weight: 300;
+  transform: skew(-1deg);
 }

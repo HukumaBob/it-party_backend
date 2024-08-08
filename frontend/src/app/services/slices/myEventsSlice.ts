@@ -1,6 +1,6 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {RootState} from "../../../main.tsx";
-import {API} from "../../api/constants";
+import {RootState} from "../hooks.ts";
+import {API} from "../constants.ts";
 
 type TEvent = {
   id: number;

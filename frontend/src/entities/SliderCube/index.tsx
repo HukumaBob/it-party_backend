@@ -1,13 +1,13 @@
 import {useState} from "react";
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {EffectCube, Pagination, A11y, Autoplay, Keyboard} from 'swiper/modules'
-import {useSelector} from "../../app/types/hooks";
+import {useAppSelector} from "../../app/services/hooks.ts";
 import cn from "classnames";
 import style from './index.module.scss'
 
 export const SliderCube = () => {
   const [index, setIndex] = useState(0);
-  const {cube: data} = useSelector((store) => store.slider);
+  const {cube: data} = useAppSelector((store) => store.slider);
   const classes = [style.slide1, style.slide2, style.slide3, style.slide4]
 
   return (

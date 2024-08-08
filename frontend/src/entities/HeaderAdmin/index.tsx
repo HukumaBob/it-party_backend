@@ -1,14 +1,13 @@
 import React, {useState} from "react";
-import {Popover} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "../../app/types/hooks";
-import {resetProfile} from "../../app/services/slices/profileSlice";
+import {Popover} from "@mui/material";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {logoutUser} from "../../app/services/slices/authorizationSlice.ts";
 import style from "./index.module.scss";
 
 export const HeaderAdmin = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -18,10 +17,9 @@ export const HeaderAdmin = () => {
     setAnchorEl(null);
   };
 
-  const {first_name, last_name, user_photo} = useSelector((store) => store.profileUser.data);
+  const {first_name, last_name, user_photo} = useAppSelector((store) => store.profile.data);
   const handleLogout = () => {
     handleCloseMenu()
-    dispatch(resetProfile())
     dispatch(logoutUser())
     navigate('/', {replace: true});
   };

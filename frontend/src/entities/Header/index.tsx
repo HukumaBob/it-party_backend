@@ -1,20 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {Popover} from "@mui/material";
 import {Link, useMatch} from "react-router-dom";
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {setOpenAuthorizationModal} from "../../app/services/slices/authorizationSlice.ts";
-import {getUserProfile} from "../../app/services/slices/profileUserSlice.ts";
+import {getUserProfile} from "../../app/services/slices/profileSlice.ts";
 import {ModalLogout} from "../../widgets/ModalLogout";
 import LogoIcon from "../../app/assets/icons/logo.svg?react";
 import login_avatar from '../../app/assets/image/other/avatar.webp'
 import style from "./index.module.scss";
 
 export const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isMainPage = useMatch('/')
-  const {isAuthorized} = useSelector(state => state.authorization);
-  const {statusGetProfile} = useSelector(state => state.profileUser);
-  const {first_name, last_name, user_photo} = useSelector(state => state.profileUser.data);
+  const {isAuthorized} = useAppSelector(state => state.authorization);
+  const {statusGetProfile} = useAppSelector(state => state.profile);
+  const {first_name, last_name, user_photo} = useAppSelector(state => state.profile.data);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {

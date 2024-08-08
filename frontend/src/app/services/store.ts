@@ -12,42 +12,34 @@ import {
   PURGE,
   REGISTER
 } from 'redux-persist';
-import {RootState} from "../../main.tsx";
+import {RootState} from "./hooks.ts";
+import {
+  initialState as authorizationInitialState,
+  TInitialState as TAuthorizationInitialState
+} from "./slices/authorizationSlice.ts";
+import {
+  initialState as favoriteInitialState,
+  TInitialState as TFavoriteInitialState
+} from "./slices/favoriteSlice.ts";
 
-type TFavorite = {
-  favorite: Record<string, any>;
-};
-type TAuthorization = {
-  refreshToken: string;
-  accessToken: string;
-  isAuthorized: boolean
-};
-
-const favoriteTransform = createTransform<TFavorite, TFavorite>(
-  (inboundState) => ({favorite: inboundState.favorite}),
-  (outboundState) => ({...outboundState, loading: false, error: null, data: []}),
+const favoriteTransform = createTransform<TFavoriteInitialState, TFavoriteInitialState>(
+  (inboundState) => ({
+    ...favoriteInitialState,
+    favorite: inboundState.favorite
+  }),
+  outboundState => outboundState,
   {whitelist: ['favorite']}
 );
 
-const authorizationTransform = createTransform<TAuthorization, TAuthorization>(
+const authorizationTransform = createTransform<TAuthorizationInitialState, TAuthorizationInitialState>(
   (inboundState) => ({
+    ...authorizationInitialState,
     refreshToken: inboundState.refreshToken,
     accessToken: inboundState.accessToken,
-    isAuthorized: inboundState.isAuthorized
+    isAuthorized: inboundState.isAuthorized,
   }),
-  (outboundState) => ({
-    ...outboundState,
-    modalIsOpen: false,
-    modalAuthorizationSuccessIsOpen: false,
-    formType: 'login',
-    statusLogin: 'idle',
-    errorLogin: null,
-    statusCreate: 'idle',
-    errorCreate: null,
-    formError: null,
-    userEmail: null,
-  }),
-  {whitelist: ['refreshToken', 'accessToken', 'isAuthorized']}
+  outboundState => outboundState,
+  {whitelist: ['authorization']}
 );
 
 const persistConfig = {

@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {getAdminEventList} from "../../app/services/slices/adminEventListSlice";
 import {CardEventAdmin} from "../../entities/CardEventAdmin";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
@@ -43,8 +43,8 @@ const a11yProps = (index: number) => ({
 });
 
 export const AdminPage = () => {
-  const dispatch = useDispatch();
-  const {loading, error, allEvents, pastEvents, futureEvents} = useSelector(state => state.adminEvents);
+  const dispatch = useAppDispatch();
+  const {loading, error, allEvents, pastEvents, futureEvents} = useAppSelector(state => state.adminEvents);
 
   useEffect(() => {
     dispatch(getAdminEventList())

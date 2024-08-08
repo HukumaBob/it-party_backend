@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import {useSelector, useDispatch} from "../../app/types/hooks";
+import {useAppSelector, useAppDispatch} from "../../app/services/hooks.ts";
 import {openModalRejectApplicant, patchAdminApplicantStatus} from "../../app/services/slices/adminApplicantsSlice";
 import IconCross from "../../app/assets/icons/close.svg?react";
 import IconCheckMark from "../../app/assets/icons/check_mark.svg?react";
@@ -7,8 +7,8 @@ import cn from "classnames";
 import style from "./index.module.scss";
 
 export const AdminApplicants = () => {
-  const data = useSelector((store) => store.adminApplicants.data);
-  const dispatch = useDispatch();
+  const data = useAppSelector((store) => store.adminApplicants.data);
+  const dispatch = useAppDispatch();
 
   const handleApprove = (id: number) => {
     const patchData = {

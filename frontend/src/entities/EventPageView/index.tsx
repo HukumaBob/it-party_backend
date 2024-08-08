@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import Masonry from '@mui/lab/Masonry';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {useSelector} from "../../app/types/hooks";
+import {useAppSelector} from "../../app/services/hooks.ts";
 import {ModalEventRegistration} from "../../widgets/ModalEventRegistration";
 import map from "../../app/assets/image/other/howToGet.png";
 import dayjs from 'dayjs';
@@ -10,8 +10,8 @@ import style from "./index.module.scss";
 
 export const EventPageView = () => {
   const {id} = useParams<{ id: string }>();
-  const {name, date, logo, city, description, gallery, speakers, address} = useSelector(state => state.event.data)
-  const cityList = useSelector((store) => store.city.cityList);
+  const {name, date, logo, city, description, gallery, speakers, address} = useAppSelector(state => state.event.data)
+  const cityList = useAppSelector((store) => store.city.cityList);
   const randomColor = [style.orange, style.green, style.blue, style.purple][Math.floor(Math.random() * 4)]
   const eventDate = dayjs(date)
   const isPhone = useMediaQuery('(max-width:767.98px)');

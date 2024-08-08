@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {FilterSearch} from "../../features/FilterSearch";
 import {FilterSpecialization} from '../../features/FilterSpecialization';
 import {FilterDate} from "../../features/FilterDate";
@@ -17,11 +17,11 @@ import cn from "classnames";
 import style from "./index.module.scss";
 
 export const FiltersBlock = () => {
-  const dispatch = useDispatch()
-  const {city, date_before, date_after, specializations} = useSelector(state => state.eventList.filters)
-  const {status: cityStatus} = useSelector(state => state.city)
-  const {status: specializationStatus} = useSelector(state => state.specializations)
-  const eventsError = useSelector(state => state.eventList.error)
+  const dispatch = useAppDispatch()
+  const {city, date_before, date_after, specializations} = useAppSelector(state => state.eventList.filters)
+  const {status: cityStatus} = useAppSelector(state => state.city)
+  const {status: specializationStatus} = useAppSelector(state => state.specializations)
+  const eventsError = useAppSelector(state => state.eventList.error)
 
   return (
     <div className={cn({[style.disabled]: cityStatus === 'error' || specializationStatus === 'error' || eventsError})}>

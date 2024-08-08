@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery'
 import {FiltersBlock} from "../FiltersBlock";
 import {CardEvent} from "../../entities/CardEvent";
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {getEventList, setEventListPageNumber, setPageLimit} from "../../app/services/slices/eventListSlice";
 import {getSpecializationsList} from "../../app/services/slices/specializationsSlice";
 import {getCityList} from "../../app/services/slices/citySlice";
@@ -12,10 +12,10 @@ import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import style from "./index.module.scss";
 
 export const EventsCatalog = () => {
-  const dispatch = useDispatch();
-  const {data, loading: eventsLoading, error, filters, pageNumber, pageCount} = useSelector((store) => store.eventList);
-  const {status: cityStatus} = useSelector((store) => store.city);
-  const {status: specializationsStatus} = useSelector((store) => store.specializations);
+  const dispatch = useAppDispatch();
+  const {data, loading: eventsLoading, error, filters, pageNumber, pageCount} = useAppSelector((store) => store.eventList);
+  const {status: cityStatus} = useAppSelector((store) => store.city);
+  const {status: specializationsStatus} = useAppSelector((store) => store.specializations);
   const isPhoneSM = useMediaQuery('(max-width: 576px)')
   const isTablet = useMediaQuery('(min-width: 991.98px)')
 

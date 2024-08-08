@@ -99,4 +99,9 @@
   margin-top: var(--sp-34);
   padding: 13px 0;
   max-width: 300px;
+
+  &:disabled {
+    cursor: default;
+    background-color: var(--c-black-300);
+  }
 }

@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import SearchIcon from "../../app/assets/icons/search.svg?react";
 import ResetIcon from "../../app/assets/icons/close.svg?react";
-import {useDispatch, useSelector} from '../../app/types/hooks';
+import {useAppDispatch, useAppSelector} from '../../app/services/hooks.ts';
 import {setNameFilter} from '../../app/services/slices/eventListSlice';
 import style from "./index.module.scss";
 
 export const FilterSearch = () => {
-  const dispatch = useDispatch()
-  const {name: value} = useSelector(state => state.eventList.filters)
+  const dispatch = useAppDispatch()
+  const {name: value} = useAppSelector(state => state.eventList.filters)
   const [inputValue, setInputValue] = useState(value || "")
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

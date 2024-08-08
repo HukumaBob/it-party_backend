@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {API} from "../constants.ts";
 
 type TFormData = { email: string; }
 type TFormType = 'authorization' | 'profile' | null;

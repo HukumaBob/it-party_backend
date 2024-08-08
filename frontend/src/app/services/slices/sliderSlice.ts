@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {API} from "../constants.ts";
 import dayjs from "dayjs";
+import {RootState} from "../hooks.ts";
 import banner_orange from "../../assets/image/banners/banner_1.webp";
 import banner_green from "../../assets/image/banners/banner_2.webp";
 import banner_blue from "../../assets/image/banners/banner_3.webp";
@@ -38,31 +39,31 @@ type TResponse = {
 type TType = 'recommended' | 'popular';
 
 export const getSliderList =
-  createAsyncThunk<TEvent[], TType, { rejectValue: string; }>
+  createAsyncThunk<TEvent[], TType, { rejectValue: string; state: RootState }>
   ("fetch_slider_list",
-    async (type, {rejectWithValue}) => {
-
-      const search = new URLSearchParams()
-      search.append("limit", "10")
-      search.append("offset", "0")
-
-      if (type === 'recommended') {
-        const date = dayjs().add(6, 'month').format('YYYY-MM-DD')
-        search.append("date_after", date)
-      }
-      if (type === 'popular') {
-        const date = dayjs().format('YYYY-MM-DD')
-        search.append("date_after", date)
-      }
-
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-      }
-      if (localStorage.getItem('accessToken')) {
-        headers["Authorization"] = `Bearer ${localStorage.getItem('accessToken')}`;
-      }
-
+    async (type, {rejectWithValue, getState}) => {
       try {
+        const search = new URLSearchParams()
+        search.append("limit", "10")
+        search.append("offset", "0")
+
+        if (type === 'recommended') {
+          const date = dayjs().add(6, 'month').format('YYYY-MM-DD')
+          search.append("date_after", date)
+        }
+        if (type === 'popular') {
+          const date = dayjs().format('YYYY-MM-DD')
+          search.append("date_after", date)
+        }
+
+        const accessToken = getState().authorization.accessToken
+        const headers: Record<string, string> = {
+          "Content-Type": "application/json",
+        }
+        if (accessToken) {
+          headers["Authorization"] = `Bearer ${accessToken}`;
+        }
+
         const response = await fetch(`${API.EVENT_LIST}?${search.toString()}`, {
           method: "GET",
           headers: headers

@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {Popover} from "@mui/material";
 import SettingsIcon from "../../app/assets/icons/settings.svg?react";
 import {ButtonSpecialization} from '../../entities/ButtonSpecialization';
-import {useSelector} from '../../app/types/hooks';
+import {useAppSelector} from '../../app/services/hooks.ts';
 import cn from 'classnames';
 import style from "./index.module.scss";
 
 export const FilterSpecialization = () => {
-  const {data} = useSelector(state => state.specializations)
-  const {specializations} = useSelector(state => state.eventList.filters)
+  const {data} = useAppSelector(state => state.specializations)
+  const {specializations} = useAppSelector(state => state.eventList.filters)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {

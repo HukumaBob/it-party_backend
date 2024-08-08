@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import {App} from "./app/App";
 import {BrowserRouter} from "react-router-dom";
 import {PersistGate} from 'redux-persist/integration/react';
-import {rootReducer} from "./app/services/rootReducer";
 import {store, persistor} from "./app/services/store";
 import {Provider} from "react-redux";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
@@ -29,6 +28,3 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>,
 );
-
-export type RootState = ReturnType<typeof rootReducer>;
-export type AppDispatch = typeof store.dispatch;

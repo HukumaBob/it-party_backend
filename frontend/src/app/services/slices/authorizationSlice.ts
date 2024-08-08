@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants.ts";
+import {API} from "../constants.ts";
 
 type TError = { statusCode: number; statusText: string };
 type TErrorLogin = TError & { detail: string };
@@ -7,7 +7,7 @@ type TErrorCreate = TError & { email: string[], password: string[] }
 type TResponseError = string | TErrorLogin | TErrorCreate | null | undefined;
 type TFormType = 'login' | 'registration';
 type TStatus = 'idle' | 'loading' | 'success' | 'error';
-type TInitialState = {
+export type TInitialState = {
   modalIsOpen: boolean;
   modalAuthorizationSuccessIsOpen: boolean;
   formType: TFormType;
@@ -89,7 +89,7 @@ export const loginUser =
     }
   );
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   modalIsOpen: false,
   modalAuthorizationSuccessIsOpen: false,
   formType: 'login',
@@ -113,6 +113,9 @@ export const authorizationSlice = createSlice({
   reducers: {
     setOpenAuthorizationModal: (state, action: PayloadAction<boolean>) => {
       state.modalIsOpen = action.payload;
+      if (!action.payload) {
+        state.formType = 'login';
+      }
     },
     setOpenAuthorizationSuccessModal: (state, action: PayloadAction<boolean>) => {
       state.modalAuthorizationSuccessIsOpen = action.payload;
@@ -124,6 +127,7 @@ export const authorizationSlice = createSlice({
       state.refreshToken = null;
       state.accessToken = null;
       state.isAuthorized = false;
+      state.statusLogin = 'idle';
       state.userEmail = null;
     }
   },
@@ -153,6 +157,7 @@ export const authorizationSlice = createSlice({
           }
         }
       })
+
       .addCase(loginUser.pending, (state) => {
         state.statusLogin = 'loading';
         state.errorLogin = null;
@@ -163,7 +168,9 @@ export const authorizationSlice = createSlice({
         state.refreshToken = action.payload.refresh;
         state.accessToken = action.payload.access;
         state.isAuthorized = true;
-        state.modalIsOpen = false;
+        if (state.formType === 'login') {
+          state.modalIsOpen = false;
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.errorLogin = action.payload;

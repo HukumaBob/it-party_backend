@@ -1,12 +1,12 @@
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {Pagination, A11y, Autoplay, Keyboard, Navigation, EffectFade} from 'swiper/modules'
-import {useSelector} from "../../app/types/hooks";
+import {useAppSelector} from "../../app/services/hooks.ts";
 import useMediaQuery from '@mui/material/useMediaQuery'
 import cn from "classnames";
 import style from './index.module.scss'
 
 export const SliderReview = () => {
-  const {data} = useSelector((store) => store.review);
+  const {data} = useAppSelector((store) => store.review);
   const isDesktop = useMediaQuery('(min-width: 1200px)')
 
   return (

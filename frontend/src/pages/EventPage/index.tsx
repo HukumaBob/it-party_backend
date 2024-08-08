@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {getEvent} from "../../app/services/slices/eventSlice";
 import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
 import {EventPageView} from "../../entities/EventPageView";
@@ -9,10 +9,10 @@ import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import {getCityList} from "../../app/services/slices/citySlice";
 
 export const EventPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {id} = useParams<{ id: string }>();
-  const {loading, error} = useSelector(state => state.event)
-  const {status: cityStatus} = useSelector((store) => store.city);
+  const {loading, error} = useAppSelector(state => state.event)
+  const {status: cityStatus} = useAppSelector((store) => store.city);
 
   useEffect(() => {
     if (cityStatus === 'idle' || cityStatus === 'error') {

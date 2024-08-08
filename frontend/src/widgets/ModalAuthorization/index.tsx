@@ -1,12 +1,12 @@
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {setOpenAuthorizationModal} from "../../app/services/slices/authorizationSlice.ts";
 import {FormAuthorization} from "../FormAuthorization";
 import {ModalWrapper} from "../../shared/ModalWrapper";
 import LogoIcon from "../../app/assets/icons/logo_text.svg?react";
 
 export const ModalAuthorization = () => {
-  const dispatch = useDispatch();
-  const {modalIsOpen} = useSelector(state => state.authorization);
+  const dispatch = useAppDispatch();
+  const {modalIsOpen} = useAppSelector(state => state.authorization);
   const handleClose = () => {
     dispatch(setOpenAuthorizationModal(false));
   };

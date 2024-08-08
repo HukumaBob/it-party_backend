@@ -1,11 +1,11 @@
 import {setOnlineFilter} from "../../app/services/slices/eventListSlice";
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import cn from "classnames";
 import style from "./index.module.scss";
 
 export const FilterOnline = () => {
-  const dispatch = useDispatch();
-  const {online} = useSelector(state => state.eventList.filters)
+  const dispatch = useAppDispatch();
+  const {online} = useAppSelector(state => state.eventList.filters)
 
   return (
     <button

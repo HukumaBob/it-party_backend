@@ -3,10 +3,10 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowIcon from "../../app/assets/icons/arrow_open.svg?react";
 import style from "./index.module.scss";
-import {useSelector} from "../../app/types/hooks";
+import {useAppSelector} from "../../app/services/hooks.ts";
 
 export const QuestionAnswer = () => {
-  const data = useSelector(state => state.questionAnswer.data)
+  const data = useAppSelector(state => state.questionAnswer.data)
 
   return (
     <div>

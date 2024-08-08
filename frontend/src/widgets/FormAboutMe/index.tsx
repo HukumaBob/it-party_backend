@@ -1,7 +1,7 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "../../app/types/hooks";
-import {updateUserProfile} from "../../app/services/slices/profileUserSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
+import {updateUserProfile} from "../../app/services/slices/profileSlice.ts";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import cn from "classnames";
@@ -17,22 +17,24 @@ type TFormData = {
 };
 
 export const FormAboutMe = () => {
-  const dispatch = useDispatch();
-  const {data, statusGetProfile, statusUpdateProfile} = useSelector((state) => state.profileUser);
+  const dispatch = useAppDispatch();
+  const [hasFormChanged, setHasFormChanged] = useState(false);
+  const [initialValues, setInitialValues] = useState<TFormData | null>(null);
+  const {data, statusGetProfile, statusUpdateProfile} = useAppSelector((state) => state.profile);
   const isLoading = [statusGetProfile, statusUpdateProfile].includes('loading');
   const isError = [statusGetProfile, statusUpdateProfile].includes('error');
-
 
   const {
     register,
     handleSubmit,
     formState: {errors},
-    reset
+    reset,
+    watch
   } = useForm<TFormData>({mode: "onTouched"});
 
   useEffect(() => {
     if (statusGetProfile === 'success') {
-      reset({
+      const initialFormValues = {
         hobby: data.hobby,
         values: data.values,
         aims: data.aims,
@@ -40,9 +42,21 @@ export const FormAboutMe = () => {
         motivation: data.motivation,
         online: data.online,
         offline: data.offline,
-      });
+      };
+      setInitialValues(initialFormValues);
+      reset(initialFormValues);
     }
   }, [statusGetProfile]);
+
+  useEffect(() => {
+    const subscription = watch((currentValues) => {
+      if (initialValues) {
+        const changed = JSON.stringify(initialValues) !== JSON.stringify(currentValues);
+        setHasFormChanged(changed);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, initialValues]);
 
   const onSubmit = (formData: TFormData) => {
     dispatch(updateUserProfile(formData))
@@ -146,7 +160,7 @@ export const FormAboutMe = () => {
           className='checkbox'
           type='checkbox'
           {...register('online')}
-          name='online'/>
+        />
         Онлайн
       </label>
       <label className='profileCheckboxLabel'>
@@ -154,13 +168,12 @@ export const FormAboutMe = () => {
           className='checkbox'
           type='checkbox'
           {...register('offline')}
-          name='offline'/>
+        />
         Оффлайн
       </label>
       <p className='profileSubtitle'>Какой формат мероприятий Вы предпочитаете?</p>
 
-
-      <button type='submit' className='buttonProfileSubmit'>
+      <button className='buttonProfileSubmit' type='submit' disabled={!hasFormChanged}>
         Сохранить
       </button>
 

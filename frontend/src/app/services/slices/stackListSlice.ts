@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {API} from "../constants.ts";
 
 type TOption = {
   value: number;

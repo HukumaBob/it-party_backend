@@ -1,6 +1,6 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
-import {RootState} from "../../../main.tsx";
+import {RootState} from "../hooks.ts";
+import {API} from "../constants.ts";
 
 type TUser = {
   id: number;
@@ -66,14 +66,14 @@ export const patchAdminApplicantStatus =
 export const getAdminApplicantsList =
   createAsyncThunk<TApplicant[], number, { rejectValue: string; state: RootState }>(
     "fetch_admin_applicants_List",
-    async (id, {rejectWithValue}) => {
-
+    async (id, {rejectWithValue, getState}) => {
       try {
+        const accessToken = getState().authorization.accessToken
         const response = await fetch(`${API.ADMIN_EVENT_LIST}${id}/user_events`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+            "authorization": `Bearer ${accessToken}`,
           },
         });
         if (!response.ok) return rejectWithValue(response.statusText);

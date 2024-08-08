@@ -1,28 +1,32 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {API} from "../constants.ts";
 
-type TFamilyStatus = { id: number; familystatus: string };
+type TNotification = {
+  id: number;
+  notification: string;
+  minutes_before_notification: number;
+};
 type TOption = { value: number; label: string };
 type TInitialState = {
-  data: TFamilyStatus[];
-  familyStatusSelectOptions: TOption[]
+  data: TNotification[];
+  notificationSelectOptions: TOption[]
   status: 'idle' | 'loading' | 'success' | 'error';
   error: string | undefined | null;
 };
 
-export const getFamilyStatusList =
-  createAsyncThunk<TFamilyStatus[], undefined, { rejectValue: string }>(
-    'fetch_family_status_list',
+export const getNotificationList =
+  createAsyncThunk<TNotification[], undefined, { rejectValue: string }>(
+    'fetch_notification_list',
     async function (_, {rejectWithValue}) {
       try {
-        const response = await fetch(API.FAMILY_STATUS_LIST, {
+        const response = await fetch(API.NOTIFICATION_LIST, {
           method: "GET",
           headers: {"Content-Type": "application/json"},
         })
         if (!response.ok) {
           return rejectWithValue(response.statusText);
         }
-        const data: TFamilyStatus[] = await response.json();
+        const data: TNotification[] = await response.json();
         return data
       } catch (err) {
         return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
@@ -32,34 +36,34 @@ export const getFamilyStatusList =
 
 const initialState: TInitialState = {
   data: [],
-  familyStatusSelectOptions: [],
+  notificationSelectOptions: [],
   status: 'idle',
   error: null,
 };
 
-const familyStatusSlice = createSlice({
-  name: "family_status",
+const notificationSlice = createSlice({
+  name: "notification",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getFamilyStatusList.pending, (state) => {
+      .addCase(getNotificationList.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(getFamilyStatusList.fulfilled, (state, action) => {
+      .addCase(getNotificationList.fulfilled, (state, action) => {
         const data = action.payload;
         state.data = data;
-        state.familyStatusSelectOptions = data.map(({id, familystatus}) => ({value: id, label: familystatus}))
+        state.notificationSelectOptions = data.map(({id, notification}) => ({value: id, label: notification}))
         state.status = 'success';
       })
-      .addCase(getFamilyStatusList.rejected, (state, action) => {
+      .addCase(getNotificationList.rejected, (state, action) => {
         state.data = [];
-        state.familyStatusSelectOptions = [];
+        state.notificationSelectOptions = [];
         state.error = action.payload;
         state.status = 'error';
       })
   },
 });
 
-export default familyStatusSlice.reducer;
+export default notificationSlice.reducer;

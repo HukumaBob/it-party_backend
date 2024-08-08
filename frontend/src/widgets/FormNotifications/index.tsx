@@ -1,267 +1,152 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "../../app/types/hooks";
-import checkIcon from "../../app/assets/icons/check_mark.svg";
-import arrow_down from "../../app/assets/icons/arrow_down.svg";
-import {
-  setEmailChecked,
-  setSmsChecked,
-  setApprovalApplicationChecked,
-  setNewEventsChecked,
-  setSelectedTimeInterval,
-  setClickTimeInterval,
-} from "../../app/services/slices/profileSlice";
-import {TFormDataPersonalValues, TUserProfileValues} from "../../app/types/types";
-import {editingDataPersonal} from "../../app/api/api";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
+import {getNotificationList} from "../../app/services/slices/notificationSlice.ts";
+import {updateUserProfile} from "../../app/services/slices/profileSlice.ts";
+import {Select} from "../../shared/FormFields/Select";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
+import cn from "classnames";
 import style from "./index.module.scss";
 
-export const FormNotifications = () => {
-  const dispatch = useDispatch();
-  const {
-    clickTimeInterval,
-    smsChecked,
-    emailChecked,
-    approvalApplicationChecked,
-    newEventsChecked,
-    selectedTimeInterval,
-  } = useSelector((state) => state.profile);
+type TOption = { value: number; label: string };
+type TFormData = {
+  "receive_notifications": boolean;
+  "notification_email": boolean;
+  "notification_sms": boolean;
+  "notification_registration_approval": boolean;
+  "notification_event": boolean;
+  "notification": TOption | null;
+};
 
-  const [isActiveFilter, setActiveFilter] = useState<boolean>((selectedTimeInterval !== 5) ? true : false);
+export const FormNotifications = () => {
+  const dispatch = useAppDispatch();
+  const [hasFormChanged, setHasFormChanged] = useState(false);
+  const [initialValues, setInitialValues] = useState<TFormData | null>(null);
+  const {data, statusGetProfile, statusUpdateProfile} = useAppSelector((state) => state.profile);
+  const {status: notificationListStatus, notificationSelectOptions} = useAppSelector((state) => state.notification);
+  const isLoading = [statusGetProfile, statusUpdateProfile, notificationListStatus].includes('loading');
+  const isError = [statusGetProfile, statusUpdateProfile, notificationListStatus].includes('error');
 
   useEffect(() => {
-    let checkboxNew = document.querySelector('input[type="checkbox"]');
-    if (checkboxNew !== null) {
-      const attributeFilterActive = checkboxNew.hasAttribute('checked');
-      if (selectedTimeInterval !== 5 && isActiveFilter === true && attributeFilterActive === false) {
-        checkboxNew.setAttribute('checked', 'true');
-      }
-    }
-  }, []);
+    notificationListStatus === 'idle' && dispatch(getNotificationList())
+  }, [notificationListStatus]);
 
   const {
+    register,
     handleSubmit,
-    setValue,
-  } = useForm<TFormDataPersonalValues>({
-    mode: "onTouched",
-  });
+    reset,
+    control,
+    watch,
+  } = useForm<TFormData>({mode: "onTouched"});
 
-  const handleEmailChange = () => {
-    dispatch(setEmailChecked(!emailChecked));
-  };
+  useEffect(() => {
+    if (statusGetProfile === 'success' && notificationListStatus === 'success') {
+      const getOption = (data: TOption[], target: number | undefined) =>
+        data.find((option) => option.value === target) || null;
 
-  const handleSmsChange = () => {
-    dispatch(setSmsChecked(!smsChecked));
-  };
+      const initialFormValues = {
+        receive_notifications: data.receive_notifications || false,
+        notification_email: data.notification_email || false,
+        notification_sms: data.notification_sms || false,
+        notification_registration_approval: data.notification_registration_approval || false,
+        notification_event: data.notification_event || false,
+        notification: getOption(notificationSelectOptions, data.notification),
+      };
 
-  const handleApprovalApplicationChange = () => {
-    dispatch(setApprovalApplicationChecked(!approvalApplicationChecked));
-  }
-
-  const handleNewEvents = () => {
-    dispatch(setNewEventsChecked(!newEventsChecked));
-  }
-
-  const handleOptionsClickTimeInterval = (value: number) => {
-    dispatch(setSelectedTimeInterval(value));
-    dispatch(setClickTimeInterval(false));
-    setValue("notification", value);
-  }
-
-  const handleClickTimeInterval = () => {
-    dispatch(setClickTimeInterval(!clickTimeInterval));
-  }
-
-  const handleActiveFilter = () => {
-    let checkboxNew = document.querySelector('input[type="checkbox"]');
-    const status = !isActiveFilter;
-    setActiveFilter(status);
-    if (checkboxNew !== null) {
-      if (status) {
-        checkboxNew.setAttribute('checked', 'true');
-        dispatch(setSelectedTimeInterval(0));
-      } else {
-        checkboxNew.removeAttribute('checked');
-        dispatch(setSelectedTimeInterval(5));
-      }
+      setInitialValues(initialFormValues);
+      reset(initialFormValues);
     }
-  }
+  }, [statusGetProfile, notificationListStatus]);
 
-  const onSubmit = (data: TFormDataPersonalValues) => {
-    let dataNew: TFormDataPersonalValues = {}
-    if (isActiveFilter === true && data.notification !== undefined) {
-      editingDataPersonal(data)
-        .then((data: TUserProfileValues) => {
-          localStorage.setItem("updateInfo", JSON.stringify(data));
-          dispatch(setSelectedTimeInterval(data.notification));
-          alert(
-            "Данные успешно обновлены.",
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-        })
-    } else if (isActiveFilter === true && data.notification === undefined) {
-      if (selectedTimeInterval === 5) {
-        dataNew.notification = 0;
-        editingDataPersonal(dataNew)
-          .then((data: TUserProfileValues) => {
-            localStorage.setItem("updateInfo", JSON.stringify(data));
-            dispatch(setSelectedTimeInterval(data.notification));
-            alert(
-              "Данные успешно обновлены.",
-            );
-          })
-          .catch((error) => {
-            console.log(error);
-            alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-          })
-      } else {
-        alert(
-          "Нет текущих изменений."
-        );
+  useEffect(() => {
+    const subscription = watch((currentValues) => {
+      if (initialValues) {
+        // Проверка, изменились ли значения формы, когда уведомления активированы
+        const hasActiveChanges = currentValues.receive_notifications &&
+          JSON.stringify(initialValues) !== JSON.stringify(currentValues);
+        // Проверка, изменилось ли значение флажка "receive_notifications"
+        const hasNotificationToggleChanged = currentValues.receive_notifications !== initialValues.receive_notifications;
+        const changed = hasActiveChanges || hasNotificationToggleChanged;
+        setHasFormChanged(changed);
       }
-    } else if (isActiveFilter === false && data.notification !== undefined) {
-      dataNew = data;
-      dataNew.notification = 5;
-      editingDataPersonal(dataNew)
-        .then((data: TUserProfileValues) => {
-          localStorage.setItem("updateInfo", JSON.stringify(data));
-          dispatch(setSelectedTimeInterval(data.notification));
-          alert(
-            "Данные успешно обновлены.",
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-        })
-    } else if (isActiveFilter === false && data.notification === undefined) {
-      if (selectedTimeInterval !== 5) {
-        dataNew.notification = 5;
-        editingDataPersonal(dataNew)
-          .then((data: TUserProfileValues) => {
-            localStorage.setItem("updateInfo", JSON.stringify(data));
-            dispatch(setSelectedTimeInterval(data.notification));
-            alert(
-              "Данные успешно обновлены.",
-            );
-          })
-          .catch((error) => {
-            console.log(error);
-            alert("Произошла ошибка при отправке формы. Попробуйте еще раз позже.");
-          })
-      } else {
-        alert(
-          "Нет текущих изменений."
-        );
-      }
-    }
-  }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, initialValues]);
+
+  const onSubmit = (formData: TFormData) => {
+    dispatch(updateUserProfile({
+      ...formData,
+      notification: formData.notification?.value
+    }))
+  };
 
   return (
-    <form className={style.formSection} onSubmit={handleSubmit(onSubmit)} noValidate>
-      <h2 className={style.form_title}>Настройка уведомлений</h2>
+    <form onSubmit={handleSubmit(onSubmit)}>
 
-      <div className={style.filterCheckbox}>
-        <h3 className={style.filteCheckbox_subtitle}>Уведомления</h3>
-        <label className={style.filterCheckbox_toggle}>
-          <input type="checkbox" className={style.filterCheckbox_input} id="filter" name="filter"
-                 onClick={handleActiveFilter}/>
-          <span className={style.filterCheckbox_slider}></span>
+      <div className={style.row}>
+        <label className={style.toggleButton}>
+          <input type='checkbox' {...register('receive_notifications')}/>
+          <span></span>
         </label>
+        <h3>получать уведомления</h3>
       </div>
 
-      <div className={isActiveFilter ? style.notificationsBlock : style.notificationsBlockHide}>
-        <div className={style.element}>
-          <div className={style.element_checkboxBlock}>
-            <div className={style.container_checkbox}>
-              <div className={style.customCheckBox} onClick={handleEmailChange}>
-                {emailChecked ? <img src={checkIcon} alt='check'/> : ""}
-              </div>
-              <span>Email</span>
-            </div>
-            <div className={style.container_checkbox}>
-              <div className={style.customCheckBox} onClick={handleSmsChange}>
-                {smsChecked ? <img src={checkIcon} alt='check'/> : ""}
-              </div>
-              <span>СМС-уведомления</span>
-            </div>
-          </div>
-        </div>
+      <div className={cn(style.notificationBlock, {[style.enabled]: watch('receive_notifications')})}>
+        <label className='profileCheckboxLabel'>
+          <input
+            className='checkbox'
+            type='checkbox'
+            {...register('notification_email')}
+          />
+          EMAIL уведомления
+        </label>
+        <label className='profileCheckboxLabel'>
+          <input
+            className='checkbox'
+            type='checkbox'
+            {...register('notification_sms')}
+          />
+          SMS уведомления
+        </label>
 
-        <div className={style.element}>
-          <div className={style.element_checkboxBlock}>
-            <h3 className={style.element_subtitle}>
-              Уведомлять меня
-            </h3>
-            <div className={style.container_checkbox}>
-              <div className={style.customCheckBox} onClick={handleApprovalApplicationChange}>
-                {approvalApplicationChecked ? <img src={checkIcon} alt='check'/> : ""}
-              </div>
-              <span>Одобрение заявки</span>
-            </div>
-            <div className={style.container_checkbox}>
-              <div className={style.customCheckBox} onClick={handleNewEvents}>
-                {newEventsChecked ? <img src={checkIcon} alt='check'/> : ""}
-              </div>
-              <span>Новые мероприятия</span>
-            </div>
-          </div>
-        </div>
+        <h3 className={cn('profileTitle', style.title)}>Уведомлять меня</h3>
+        <label className='profileCheckboxLabel'>
+          <input
+            className='checkbox'
+            type='checkbox'
+            {...register('notification_registration_approval')}
+          />
+          Одобрение заявки
+        </label>
+        <label className='profileCheckboxLabel'>
+          <input
+            className='checkbox'
+            type='checkbox'
+            {...register('notification_event')}
+          />
+          Новые мероприятия
+        </label>
 
-        <div className={style.element}>
-          <div className={style.container_selectInput}>
-            <label>
-              Предстоящие мероприятия
-            </label>
-            <div className={style.customSelect} onClick={handleClickTimeInterval}>
-              <span>{(selectedTimeInterval === 1 && "За час") ||
-                (selectedTimeInterval === 2 && "За 2 часа") ||
-                (selectedTimeInterval === 3 && "За день") ||
-                (selectedTimeInterval === 4 && "За неделю") ||
-                (selectedTimeInterval === 5 && "Никогда") ||
-                (selectedTimeInterval === 0 && "")}
-              </span>
-              <img src={arrow_down} alt='arrow'/>
-            </div>
-            {clickTimeInterval && (
-              <div className={style.options}>
-                <div
-                  className={selectedTimeInterval !== 1 ? style.option : style.optionHide}
-                  onClick={() => handleOptionsClickTimeInterval(1)}>
-                  За час
-                </div>
-                <div
-                  className={selectedTimeInterval !== 2 ? style.option : style.optionHide}
-                  onClick={() => handleOptionsClickTimeInterval(2)}>
-                  За 2 часа
-                </div>
-                <div
-                  className={selectedTimeInterval !== 3 ? style.option : style.optionHide}
-                  onClick={() => handleOptionsClickTimeInterval(3)}>
-                  За день
-                </div>
-                <div
-                  className={selectedTimeInterval !== 4 ? style.option : style.optionHide}
-                  onClick={() => handleOptionsClickTimeInterval(4)}>
-                  За неделю
-                </div>
-                <div
-                  className={selectedTimeInterval !== 5 ? style.option : style.optionHide}
-                  onClick={() => handleOptionsClickTimeInterval(5)}>
-                  Никогда
-                </div>
-              </div>
-            )}
-          </div>
+        <div className='inputBlock mt-lg'>
+          <h3>Получать уведомления</h3>
+          <Select
+            name='notification'
+            control={control}
+            options={notificationSelectOptions}
+            placeholder='не выбрано'
+            rules={{}}
+          />
         </div>
       </div>
 
-      <div className={style.buttonBlock}>
-        <button type='submit' className={style.submit}>
-          Сохранить
-        </button>
+      <button className='buttonProfileSubmit' type='submit' disabled={!hasFormChanged}>
+        Сохранить
+      </button>
+
+      <div className={cn('modalLoadingErrorMessage', {'visible': isLoading || isError})}>
+        {isLoading && <LoadingIcon/>}
+        {isError && <ErrorIcon/>}
       </div>
     </form>
   );

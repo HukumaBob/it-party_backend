@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {RootState} from "../hooks.ts";
+import {API} from "../constants.ts";
 import dayjs from "dayjs";
-import {RootState} from "../../../main.tsx";
 
 type TOption = {
   value: number;

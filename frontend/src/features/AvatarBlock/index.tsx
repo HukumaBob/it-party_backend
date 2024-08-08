@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useLocation} from "react-router-dom";
-import {useDispatch, useSelector} from "../../app/types/hooks";
-import {setModalEditAvatar} from "../../app/services/slices/profileUserSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
+import {setModalEditAvatar} from "../../app/services/slices/profileSlice.ts";
 import {ModalEditAvatar} from "../../widgets/ModalEditAvatar";
 import {ModalWrapper} from "../../shared/ModalWrapper";
 import PhotoCameraIcon from "../../app/assets/icons/photo-camera.svg?react";
@@ -9,7 +9,7 @@ import avatarDefault from "../../app/assets/image/other/avatar.webp"
 import style from "./index.module.scss";
 
 export const AvatarBlock = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation()
   let {
     modalEditAvatarIsOpen,
@@ -18,7 +18,7 @@ export const AvatarBlock = () => {
       last_name,
       user_photo
     }
-  } = useSelector(state => state.profileUser);
+  } = useAppSelector(state => state.profile);
 
 
   const handleClose = () => {

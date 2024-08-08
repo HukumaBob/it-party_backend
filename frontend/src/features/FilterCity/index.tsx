@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 import Select, {StylesConfig, components, DropdownIndicatorProps, SingleValue} from 'react-select';
 import ArrowIcon from '../../app/assets/icons/arrow_down.svg?react';
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {setCityFilter} from "../../app/services/slices/eventListSlice";
 
 type TOption = {
@@ -63,9 +63,9 @@ const DropdownIndicator = (props: DropdownIndicatorProps<TOption, false>) => {
 };
 
 export const FilterCity = () => {
-  const dispatch = useDispatch()
-  const cityList = useSelector(state => state.city.data)
-  const {city} = useSelector(state => state.eventList.filters)
+  const dispatch = useAppDispatch()
+  const cityList = useAppSelector(state => state.city.data)
+  const {city} = useAppSelector(state => state.eventList.filters)
 
   const options = useMemo(() => (
     cityList && cityList.map(({id, name}) => ({value: id, label: name}))

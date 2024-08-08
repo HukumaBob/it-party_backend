@@ -1,33 +1,35 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {getSpecializationsList} from "../../app/services/slices/specializationsSlice.ts";
-import {updateUserProfile} from "../../app/services/slices/profileUserSlice.ts";
+import {updateUserProfile} from "../../app/services/slices/profileSlice.ts";
+import {getExperienceList} from "../../app/services/slices/experienceSlice.ts";
 import {getEducationList} from "../../app/services/slices/educationSlice.ts";
 import {getIncomeList} from "../../app/services/slices/incomeSlice.ts";
 import {Select} from "../../shared/FormFields/Select";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import cn from "classnames";
-import {getExperienceList} from "../../app/services/slices/experienceSlice.ts";
 
 type TOption = { value: number; label: string };
 type TFormData = {
   "place_of_work": string;
   "position": string;
-  "experience": TOption;
-  "specialization": TOption;
-  "income": TOption;
-  "education": TOption;
+  "experience": TOption | null;
+  "specialization": TOption | null;
+  "income": TOption | null;
+  "education": TOption | null;
 };
 
 export const FormCareerAndEducation = () => {
-  const dispatch = useDispatch();
-  const {data, statusGetProfile, statusUpdateProfile} = useSelector((state) => state.profileUser);
-  const {specializationsSelectOptions, status: specializationsStatus} = useSelector((state) => state.specializations);
-  const {experienceSelectOptions, status: experienceStatus} = useSelector((state) => state.experience);
-  const {educationSelectOptions, status: educationStatus} = useSelector((state) => state.education);
-  const {incomeSelectOptions, status: incomeStatus} = useSelector((state) => state.income);
+  const dispatch = useAppDispatch();
+  const [hasFormChanged, setHasFormChanged] = useState(false);
+  const [initialValues, setInitialValues] = useState<TFormData | null>(null);
+  const {data, statusGetProfile, statusUpdateProfile} = useAppSelector((state) => state.profile);
+  const {specializationsSelectOptions, status: specializationsStatus} = useAppSelector((state) => state.specializations);
+  const {experienceSelectOptions, status: experienceStatus} = useAppSelector((state) => state.experience);
+  const {educationSelectOptions, status: educationStatus} = useAppSelector((state) => state.education);
+  const {incomeSelectOptions, status: incomeStatus} = useAppSelector((state) => state.income);
   const isLoading = [statusGetProfile, statusUpdateProfile, specializationsStatus, educationStatus, incomeStatus, experienceStatus].includes('loading');
   const isError = [statusGetProfile, statusUpdateProfile, specializationsStatus, educationStatus, incomeStatus, experienceStatus].includes('error');
 
@@ -43,7 +45,8 @@ export const FormCareerAndEducation = () => {
     handleSubmit,
     formState: {errors},
     control,
-    reset
+    reset,
+    watch
   } = useForm<TFormData>({mode: "onTouched"});
 
   useEffect(() => {
@@ -54,26 +57,39 @@ export const FormCareerAndEducation = () => {
       incomeStatus === 'success' &&
       experienceStatus === 'success') {
       const getOption = (data: TOption[], target: number | undefined) =>
-        data.find((option) => option.value === target) || {};
+        data.find((option) => option.value === target) || null;
 
-      reset({
+      const initialFormValues = {
         place_of_work: data.place_of_work,
         position: data.position,
         experience: getOption(experienceSelectOptions, data.experience),
         specialization: getOption(specializationsSelectOptions, data.specialization),
         income: getOption(incomeSelectOptions, data.income),
         education: getOption(educationSelectOptions, data.education),
-      });
+      };
+      setInitialValues(initialFormValues);
+      reset(initialFormValues);
     }
   }, [statusGetProfile, specializationsStatus, educationStatus, incomeStatus]);
+
+  useEffect(() => {
+    const subscription = watch((currentValues) => {
+      if (initialValues) {
+        const changed = JSON.stringify(initialValues) !== JSON.stringify(currentValues);
+        setHasFormChanged(changed);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, initialValues]);
+
 
   const onSubmit = (formData: TFormData) => {
     dispatch(updateUserProfile({
       ...formData,
-      experience: formData.experience.value,
-      specialization: formData.specialization.value,
-      income: formData.income.value,
-      education: formData.education.value,
+      experience: formData.experience?.value,
+      specialization: formData.specialization?.value,
+      income: formData.income?.value,
+      education: formData.education?.value,
     }))
   };
 
@@ -159,7 +175,7 @@ export const FormCareerAndEducation = () => {
         />
       </div>
 
-      <button type='submit' className='buttonProfileSubmit'>
+      <button className='buttonProfileSubmit' type='submit' disabled={!hasFormChanged}>
         Сохранить
       </button>
 

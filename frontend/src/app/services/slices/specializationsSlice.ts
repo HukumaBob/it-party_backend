@@ -1,5 +1,5 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
+import {API} from "../constants.ts";
 
 type TSpecialization = { id: number; specialization: string; index: number };
 type TOption = { value: number; label: string };

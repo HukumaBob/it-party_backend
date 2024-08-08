@@ -1,6 +1,6 @@
 import {PayloadAction, createSlice, createAsyncThunk, UnknownAction} from "@reduxjs/toolkit";
-import {API} from "../../api/constants";
-import {RootState} from "../../../main.tsx";
+import {RootState} from "../hooks.ts";
+import {API} from "../constants.ts";
 
 type TRegistrationData = {
   first_name: string;
@@ -43,8 +43,8 @@ export const getRegistrationData =
   createAsyncThunk<TRegistrationData, number, { rejectValue: string; state: RootState }>
   ("fetch_registration_data",
     async (id, {rejectWithValue, getState}) => {
-      const accessToken = getState().authorization.accessToken
       try {
+        const accessToken = getState().authorization.accessToken
         const response = await fetch(
           `${API.REGISTER_AND_APPLY}/${id}/`,
           {

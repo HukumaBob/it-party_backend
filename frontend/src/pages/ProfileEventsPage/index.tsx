@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import {useDispatch, useSelector} from "../../app/types/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {getMyEventsList} from "../../app/services/slices/myEventsSlice";
 import {getFavoriteList} from "../../app/services/slices/favoriteSlice";
 import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
@@ -44,20 +44,20 @@ const a11yProps = (index: number) => ({
 });
 
 export const ProfileEvents = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     loading: favoriteLoading,
     error: favoriteError,
     data: favoriteData,
     favorite: favoriteList
-  } = useSelector((state) => state.favorite);
+  } = useAppSelector((state) => state.favorite);
   const {
     loading: myEventsLoading,
     error: myEventsError,
     allEvents,
     pastEvents,
     futureEvents,
-  } = useSelector((state) => state.myEvents);
+  } = useAppSelector((state) => state.myEvents);
 
   const [activeTab, setActiveTab] = React.useState(0);
   const handleChange = (_: any, newValue: number) => {

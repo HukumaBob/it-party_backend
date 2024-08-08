@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Popover} from "@mui/material";
 import dayjs, {Dayjs} from "dayjs";
 import {DateCalendar} from "@mui/x-date-pickers";
-import {useDispatch, useSelector} from '../../app/types/hooks';
+import {useAppDispatch, useAppSelector} from '../../app/services/hooks.ts';
 import {setDateBeforeFilter, setDateAfterFilter} from "../../app/services/slices/eventListSlice";
 import CalendarIcon from "../../app/assets/icons/calendar.svg?react";
 import ArrowIcon from "../../app/assets/icons/arrow_right.svg?react";
@@ -11,9 +11,9 @@ import style from "./index.module.scss";
 
 
 export const FilterDate = () => {
-  const dispatch = useDispatch();
-  const {date_after, date_before} = useSelector(state => state.eventList.filters)
-  const default_date_after = useSelector(state => state.eventList.default_date_after)
+  const dispatch = useAppDispatch();
+  const {date_after, date_before} = useAppSelector(state => state.eventList.filters)
+  const default_date_after = useAppSelector(state => state.eventList.default_date_after)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [type, setType] = useState<string>('date_after')
 

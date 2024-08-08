@@ -1,4 +1,4 @@
-import {useSelector, useDispatch} from "../../app/types/hooks";
+import {useAppSelector, useAppDispatch} from "../../app/services/hooks.ts";
 import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
 import {FormResetPassword} from "../../shared/FormResetPassword";
 import {ModalWrapper} from "../../shared/ModalWrapper";
@@ -8,8 +8,8 @@ import cn from "classnames";
 import style from "./index.module.scss";
 
 export const ModalResetPassword = () => {
-  const dispatch = useDispatch();
-  const {status, email, formType, modalIsOpen} = useSelector(state => state.resetPassword);
+  const dispatch = useAppDispatch();
+  const {status, email, formType, modalIsOpen} = useAppSelector(state => state.resetPassword);
   const handleCloseModal = () => {
     dispatch(setModalResetPassword({open: false}));
   };

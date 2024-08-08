@@ -5,7 +5,7 @@ import {Outlet} from "react-router-dom";
 import {Footer} from "../entities/Footer";
 import {ModalAuthorization} from "../widgets/ModalAuthorization";
 import {ModalEventRegistrationSuccess} from "../widgets/ModalEventRegistrationSuccess";
-import {ModalRejectApplicant} from "../widgets/МodalRejectApplicant";
+import {ModalRejectApplicant} from "../widgets/ModalRejectApplicant";
 import {ModalResetPassword} from "../widgets/ModalResetPassword";
 import {ModalAuthorizationSuccess} from "../widgets/ModalAuthorizationSuccess";
 
