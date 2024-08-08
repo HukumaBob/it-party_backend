@@ -59,11 +59,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://itparty.ddns.net",
-    # добавьте здесь любые другие разрешённые домены
-]
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "https://itparty.ddns.net",
+        # добавьте здесь любые другие разрешённые домены
+    ]
 
 ROOT_URLCONF = 'backend.urls'
 TEMPLATES_DIR = BASE_DIR / 'templates'

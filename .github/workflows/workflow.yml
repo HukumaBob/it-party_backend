@@ -189,7 +189,7 @@ jobs:
           sudo docker compose -f docker-compose.production.yml pull
           # Перезапускает все контейнеры в Docker Compose
           sudo docker stop itparty-redis-1
-          sudo docker compose -f docker-compose.production.yml down
+          sudo docker compose -f docker-compose.production.yml down -v
           sudo docker compose -f docker-compose.production.yml up -d
           # Выполняет миграции и сбор статики
           sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
