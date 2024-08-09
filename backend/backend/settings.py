@@ -201,8 +201,8 @@ DJOSER = {
     #  'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': 'api/v1/username/reset/confirm/{uid}/{token}',
     # 'ACTIVATION_URL': '#/activate/{uid}/{token}',  #  Регистрация на стороне клиента
-    'ACTIVATION_URL': 'api/v1/activate/{uid}/{token}',  #  Регистрация на стороне сервера
-    'SEND_ACTIVATION_EMAIL': True,
+    # 'ACTIVATION_URL': 'api/v1/activate/{uid}/{token}',  #  Регистрация на стороне сервера
+    'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {'user_create': 'users.serializers.UserSerializer', },
 }
 

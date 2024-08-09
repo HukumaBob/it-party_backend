@@ -7,8 +7,8 @@ from django.core.management.base import BaseCommand
 from mixer.backend.django import mixer
 from faker import Faker
 
-fake = Faker(locale= settings.LANGUAGE_CODE)  # Генерация данных на русском языке
-RANGE = 50
+fake = Faker(locale=settings.LANGUAGE_CODE)  # Генерация данных на русском языке
+RANGE = 20
 
 class Command(BaseCommand):
     help = 'Generate test users and their profiles'
@@ -29,28 +29,27 @@ class Command(BaseCommand):
             user.save()
 
             specialization_instance = Specialization.objects.order_by('?').first()
-            # Генерация профиля пользователя
-            profile = UserProfile.objects.create(
-                user=user,
-                phone=fake.phone_number(),
-                place_of_work=fake.company(),
-                position=fake.job(),
-                online=fake.boolean(),
-                agreement_optional=fake.boolean(),
-                specialization=specialization_instance,
-                experience=Experience.objects.order_by('?').first(),
-                date_of_birth=fake.date_of_birth(),
-                familystatus=FamilyStatus.objects.order_by('?').first(),
-                education=Education.objects.order_by('?').first(),
-                income=Income.objects.order_by('?').first(),
-                notification=Notification.objects.order_by('?').first(),
-                country=Country.objects.order_by('?').first(),
-                hobby=fake.text(),
-                values=fake.text(),
-                aims=fake.text(),
-                cv=fake.text(),
-                motivation=fake.text()
-            )
+            # Получение уже существующего профиля пользователя
+            profile = user.userprofile
+            profile.phone = fake.phone_number()
+            profile.place_of_work = fake.company()
+            profile.position = fake.job()
+            profile.online = fake.boolean()
+            profile.agreement_optional = fake.boolean()
+            profile.specialization = specialization_instance
+            profile.experience = Experience.objects.order_by('?').first()
+            profile.date_of_birth = fake.date_of_birth()
+            profile.familystatus = FamilyStatus.objects.order_by('?').first()
+            profile.education = Education.objects.order_by('?').first()
+            profile.income = Income.objects.order_by('?').first()
+            profile.notification = Notification.objects.order_by('?').first()
+            profile.country = Country.objects.order_by('?').first()
+            profile.hobby = fake.text()
+            profile.values = fake.text()
+            profile.aims = fake.text()
+            profile.cv = fake.text()
+            profile.motivation = fake.text()
+            profile.save()
 
             # Получаем случайное количество стеков (от 1 до 3)
             num_stacks = fake.random.randint(1, 3)
@@ -65,4 +64,3 @@ class Command(BaseCommand):
                     f'"{user.email}" and their profile'
                 )
             )
-            
