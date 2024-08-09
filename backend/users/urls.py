@@ -34,7 +34,7 @@ router_v1.register(
 urlpatterns = [
     path('', include(router_v1.urls)),
     path(
-        'activate/<uidb64>/<token>/',
+        'activate/<uidb64>/<token>',
         ActivateAccountView.as_view(),
         name='activate'
         ),

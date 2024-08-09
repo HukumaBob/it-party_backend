@@ -14,4 +14,9 @@ urlpatterns = [
     path('mvt_admin/speakers/create/', views.speaker_create, name='speaker_create'),
     path('mvt_admin/speakers/<int:pk>/update/', views.speaker_update, name='speaker_update'),
     path('mvt_admin/speakers/<int:pk>/delete/', views.speaker_delete, name='speaker_delete'),    
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, 
+        document_root=settings.MEDIA_ROOT
+        )
