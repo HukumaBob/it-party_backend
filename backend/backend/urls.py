@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    path('auth/', include('djoser.social.urls')),
     # path('auth/', include('django_channels_jwt.urls')),
     path('', include('social_django.urls', namespace='social')),
     path(

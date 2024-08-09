@@ -67,7 +67,7 @@ class UserProfile(models.Model):
         blank=True, null=True, verbose_name=_("Специализация")
     )
     stacks = models.ManyToManyField(
-        'Stack', blank=True, null=True, verbose_name=_("Стеки")
+        'Stack', blank=True, verbose_name=_("Стеки")
     )
     experience = models.ForeignKey(
         'Experience', on_delete=models.CASCADE,
