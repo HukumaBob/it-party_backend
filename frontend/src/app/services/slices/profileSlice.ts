@@ -3,9 +3,8 @@ import {RootState} from "../hooks.ts";
 import {API} from "../constants.ts";
 
 type TError = { statusCode: number; statusText: string };
-type TErrorLogin = TError & { detail: string };
-type TErrorCreate = TError & { email: string[], password: string[] };
-type TResponseError = string | TErrorLogin | TErrorCreate | null | undefined;
+type TErrorDetailed = TError & Record<string, string[]>;
+type TResponseError = TError | TErrorDetailed | null | undefined;
 type TStatus = 'idle' | 'loading' | 'success' | 'error';
 type TUserProfile = {
   "phone": string;
@@ -41,12 +40,10 @@ type TUserProfile = {
 type TInitialState = {
   data: TUserProfile;
   statusGetProfile: TStatus;
-  // statusCreateProfile: TStatus;
   statusUpdateProfile: TStatus;
   statusUpdateAvatar: TStatus;
   statusDeleteUser: TStatus;
   errorGetProfile: string | undefined | null;
-  // errorCreateProfile: TResponseError;
   errorUpdateProfile: TResponseError;
   errorUpdateAvatar: TResponseError;
   errorDeleteUser: TResponseError;
@@ -77,63 +74,29 @@ export const getUserProfile =
     }
   );
 
-// export const createUserProfile =
-//   createAsyncThunk<TUserProfile, undefined, { rejectValue: TResponseError; state: RootState }>(
-//     'create_user_profile',
-//     async function (_, {rejectWithValue, getState}) {
-//       try {
-//         const accessToken = getState().authorization.accessToken;
-//         const response = await fetch(API.USER_PROFILE, {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//             "authorization": `Bearer ${accessToken}`,
-//           },
-//           body: JSON.stringify({}),
-//         })
-//         if (!response.ok) {
-//           const errorData = await response.json();
-//           return rejectWithValue({
-//             statusCode: response.status,
-//             statusText: response.statusText,
-//             detail: errorData.detail
-//           });
-//         }
-//         const data: TUserProfile = await response.json();
-//         return data
-//       } catch (err) {
-//         return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
-//       }
-//     }
-//   );
-
 export const updateUserProfile =
   createAsyncThunk<TUserProfile, Partial<TUserProfile>, { rejectValue: TResponseError; state: RootState }>(
     'update_user_profile',
     async function (formData, {rejectWithValue, getState}) {
-      try {
-        const accessToken = getState().authorization.accessToken;
-        const response = await fetch(API.USER_PROFILE, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            "authorization": `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify(formData),
-        })
-        if (!response.ok) {
-          const errorData = await response.json();
-          return rejectWithValue({
-            statusCode: response.status,
-            statusText: response.statusText,
-            detail: errorData.detail
-          });
+      const accessToken = getState().authorization.accessToken;
+      const response = await fetch(API.USER_PROFILE, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(formData),
+      })
+      if (!response.ok) {
+        const {status: statusCode, statusText} = response;
+        if ([500, 404].includes(statusCode)) {
+          return rejectWithValue({statusCode, statusText});
         }
-        const data: TUserProfile = await response.json();
-        return data
-      } catch (err) {
-        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
+        const errorData = await response.json();
+        return rejectWithValue({statusCode, statusText, ...errorData});
       }
+      const data: TUserProfile = await response.json();
+      return data
     }
   );
 
@@ -141,29 +104,24 @@ export const updateUserAvatar =
   createAsyncThunk<TUserProfile, File, { rejectValue: TResponseError; state: RootState }>(
     'update_user_avatar',
     async function (imageFile, {rejectWithValue, getState}) {
-      try {
-        const accessToken = getState().authorization.accessToken;
-        const formData = new FormData();
-        formData.append("user_photo", imageFile);
-        const response = await fetch(API.USER_PROFILE, {
-          method: "PATCH",
-          headers: {"authorization": `Bearer ${accessToken}`},
-          body: formData,
-        })
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          return rejectWithValue({
-            statusCode: response.status,
-            statusText: response.statusText,
-            detail: errorData.detail
-          });
+      const accessToken = getState().authorization.accessToken;
+      const formData = new FormData();
+      formData.append("user_photo", imageFile);
+      const response = await fetch(API.USER_PROFILE, {
+        method: "PATCH",
+        headers: {"authorization": `Bearer ${accessToken}`},
+        body: formData,
+      })
+      if (!response.ok) {
+        const {status: statusCode, statusText} = response;
+        if ([500, 404].includes(statusCode)) {
+          return rejectWithValue({statusCode, statusText});
         }
-        const data: TUserProfile = await response.json();
-        return data
-      } catch (err) {
-        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
+        const errorData = await response.json();
+        return rejectWithValue({statusCode, statusText, ...errorData});
       }
+      const data: TUserProfile = await response.json();
+      return data
     }
   );
 
@@ -171,25 +129,21 @@ export const deleteUserProfile =
   createAsyncThunk<undefined, undefined, { rejectValue: TResponseError; state: RootState }>(
     'delete_user_profile',
     async function (_, {rejectWithValue, getState}) {
-      try {
-        const accessToken = getState().authorization.accessToken;
-        const response = await fetch(API.USER_PROFILE, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "authorization": `Bearer ${accessToken}`,
-          },
-        })
-        if (!response.ok) {
-          const errorData = await response.json();
-          return rejectWithValue({
-            statusCode: response.status,
-            statusText: response.statusText,
-            detail: errorData.detail
-          });
+      const accessToken = getState().authorization.accessToken;
+      const response = await fetch(API.USER_PROFILE, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": `Bearer ${accessToken}`,
+        },
+      })
+      if (!response.ok) {
+        const {status: statusCode, statusText} = response;
+        if ([500, 404].includes(statusCode)) {
+          return rejectWithValue({statusCode, statusText});
         }
-      } catch (err) {
-        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
+        const errorData = await response.json();
+        return rejectWithValue({statusCode, statusText, ...errorData});
       }
     }
   );
@@ -197,12 +151,10 @@ export const deleteUserProfile =
 const initialState: TInitialState = {
   data: {} as TUserProfile,
   statusGetProfile: 'idle',
-  // statusCreateProfile: 'idle',
   statusUpdateProfile: 'idle',
   statusUpdateAvatar: 'idle',
   statusDeleteUser: 'idle',
   errorGetProfile: null,
-  // errorCreateProfile: null,
   errorUpdateProfile: null,
   errorUpdateAvatar: null,
   errorDeleteUser: null,
@@ -219,6 +171,9 @@ export const profileSlice = createSlice({
       if (!payload) {
         state.statusUpdateAvatar = 'idle';
       }
+    },
+    logoutProfile: (state) => {
+      Object.assign(state, initialState);
     }
   },
   extraReducers: (builder) => {
@@ -228,26 +183,26 @@ export const profileSlice = createSlice({
         state.errorGetProfile = null;
       })
       .addCase(getUserProfile.fulfilled, (state, action) => {
-        state.data = action.payload;
+        const data = action.payload
+        state.data = {
+          ...data,
+          first_name: data.first_name || '',
+          last_name: data.last_name || '',
+          place_of_work: data.place_of_work || '',
+          position: data.position || '',
+          hobby: data.hobby || '',
+          values: data.values || '',
+          aims: data.aims || '',
+          cv: data.cv || '',
+          motivation: data.motivation || '',
+          phone: data.phone || '',
+        }
         state.statusGetProfile = 'success';
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.statusGetProfile = 'error';
         state.errorGetProfile = action.payload;
       })
-
-      // .addCase(createUserProfile.pending, (state) => {
-      //   state.statusCreateProfile = 'loading';
-      //   state.errorCreateProfile = null;
-      // })
-      // .addCase(createUserProfile.fulfilled, (state, action) => {
-      //   state.data = action.payload;
-      //   state.statusCreateProfile = 'success';
-      // })
-      // .addCase(createUserProfile.rejected, (state, action) => {
-      //   state.statusCreateProfile = 'error';
-      //   state.errorCreateProfile = action.payload;
-      // })
 
       .addCase(updateUserProfile.pending, (state) => {
         state.statusUpdateProfile = 'loading';
@@ -290,5 +245,5 @@ export const profileSlice = createSlice({
   },
 });
 
-export const {setModalEditAvatar} = profileSlice.actions;
+export const {setModalEditAvatar, logoutProfile} = profileSlice.actions;
 export default profileSlice.reducer;

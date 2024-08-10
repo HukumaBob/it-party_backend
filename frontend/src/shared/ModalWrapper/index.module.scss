@@ -25,10 +25,18 @@
 }
 
 .buttonClose {
+  padding: 3px;
+  margin: 0 -3px -9px auto;
   display: block;
-  margin-left: auto;
-  margin-bottom: -14px;
+  color: var(--c-str-dark);
+  border-radius: 8px;
   position: relative; // кнопка поверх title
+  transition: all 0.05s ease-out;
+
+  &:hover {
+    background-color: var(--c-def-blue);
+    color: var(--c-def-white);
+  }
 }
 
 @media (max-height: 750px) {
@@ -58,5 +66,15 @@
   .buttonClose {
     margin-left: auto;
     margin-bottom: var(--sp-16);
+  }
+}
+
+@media (any-hover: none) {
+  .wrapper {
+    margin: 0 10px 0 15px;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
   }
 }

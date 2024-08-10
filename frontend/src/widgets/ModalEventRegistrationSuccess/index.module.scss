@@ -1,18 +1,8 @@
 .container {
-  margin: 60px 15px;
-  width: 100%;
-  max-width: 850px;
-  padding: 65px 20px 55px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
-
-  border-radius: var(--sp-28);
-  background-color: var(--c-def-white);
-  position: relative;
-  outline: none;
 
   h2 {
     font-size: var(--sp-24);
@@ -24,21 +14,7 @@
     text-align: center;
   }
 
-  button:first-of-type {
-  position: absolute;
-    right: 25px;
-    top: 25px;
-    padding: 5px;
-    align-self: end;
-    border-radius: 4px;
-    border: 1px solid transparent;
-
-    &:hover {
-      border-color: var(--c-black-100);
-    }
-  }
-
-  button:last-of-type {
+  button {
     width: 100%;
     max-width: 300px;
     padding: 14px;

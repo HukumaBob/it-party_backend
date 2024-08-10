@@ -31,13 +31,6 @@ export const CardEvent: React.FC<TCardEvent> =
    }) => {
     const dispatch = useAppDispatch();
     const isFavorite = useAppSelector(state => state.favorite.favorite[String(id)]);
-    const finalized = dayjs(`${date} ${time}`).isBefore(dayjs())
-    if (finalized) {
-      user_application_status = 'finalized';
-    }
-    if (user_application_status === 'is_favorite') {
-      user_application_status = 'not_applied';
-    }
     const handleClick = () => {
       dispatch(handleFavoriteClick(id))
     }
@@ -70,15 +63,7 @@ export const CardEvent: React.FC<TCardEvent> =
         </Link>
 
         <div className={style.registrationContainer}>
-          {
-            {
-              not_applied: <ModalEventRegistration id={id}/>,
-              pending: <div className={cn(style.notification, style.pending)}>Ожидает подтверждения</div>,
-              approved: <div className={cn(style.notification, style.approved)}>Билет</div>,
-              rejected: <div className={cn(style.notification, style.rejected)}>Отклонено</div>,
-              finalized: <div className={cn(style.notification, style.finalized)}>Мероприятие завершено</div>,
-            }[user_application_status]
-          }
+          <ModalEventRegistration id={id} name={name} status={user_application_status} date={date} time={time}/>
         </div>
       </div>
     );

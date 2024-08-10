@@ -39,6 +39,7 @@ type Event = {
   stream: string | null;
   is_archive: boolean;
   city: number;
+  user_application_status: 'not_applied' | 'pending' | 'approved' | 'rejected' | 'finalized' | 'is_favorite';
 }
 type TInitialState = {
   data: Event;
@@ -87,7 +88,7 @@ const eventSlice = createSlice({
         state.error = null;
       })
       .addCase(getEvent.fulfilled, (state, action: PayloadAction<Event>) => {
-        // const data = action.payload;
+        const data = action.payload;
 
         // const specializationsObj = data.specializations.reduce((acc: Record<string, string>, current) => {
         //   acc[current.id] = current.specialization
@@ -99,7 +100,8 @@ const eventSlice = createSlice({
         //     specializations: item.specializations.map(specializationIndex => specializationsObj[specializationIndex])
         //   }
         // })
-        state.data = action.payload;
+
+        state.data = {...data, user_application_status: 'not_applied'}
         state.loading = false;
       })
       .addCase(getEvent.rejected, (state, action: PayloadAction<string | undefined>) => {

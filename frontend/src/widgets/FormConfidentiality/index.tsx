@@ -4,6 +4,7 @@ import {useForm} from "react-hook-form";
 import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {deleteUserProfile, updateUserProfile} from "../../app/services/slices/profileSlice.ts";
 import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
+import {logoutUser} from "../../app/services/slices/authorizationSlice.ts";
 import {ModalWrapper} from "../../shared/ModalWrapper";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
@@ -48,6 +49,8 @@ export const FormConfidentiality = () => {
   }, [watch, initialValues]);
 
   const onSubmit = (formData: TFormData) => {
+    setInitialValues(formData);
+    setHasFormChanged(false);
     dispatch(updateUserProfile(formData))
   };
 
@@ -55,17 +58,22 @@ export const FormConfidentiality = () => {
     dispatch(setModalResetPassword({open: true, formType: 'profile'}));
   };
 
-  const [modalConfirmDelete, setModalConfirmDeleteIsOpen] = useState(false);
+  const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
   const handleOpenModalConfirmDelete = () => {
-    setModalConfirmDeleteIsOpen(true);
+    setModalConfirmDelete(true);
   };
   const handleCloseModalConfirmDelete = () => {
-    setModalConfirmDeleteIsOpen(false);
+    setModalConfirmDelete(false);
   };
   const handleDeleteProfile = () => {
     dispatch(deleteUserProfile());
-    navigate('/', {replace: true});
   };
+  useEffect(() => {
+    if (statusDeleteUser === 'success') {
+      dispatch(logoutUser())
+      navigate('/', {replace: true});
+    }
+  }, [statusDeleteUser]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

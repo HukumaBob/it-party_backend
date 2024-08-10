@@ -16,7 +16,7 @@ type TFormData = {
   "first_name": string;
   "last_name": string;
   "country": TOption | null;
-  "date_of_birth": Dayjs;
+  "date_of_birth": Dayjs | undefined;
   "familystatus": TOption | null;
 };
 
@@ -52,7 +52,7 @@ export const FormDataPersonal = () => {
       const initialFormValues = {
         first_name: data.first_name,
         last_name: data.last_name,
-        date_of_birth: dayjs(data.date_of_birth),
+        date_of_birth: data.date_of_birth ? dayjs(data.date_of_birth) : undefined,
         country: getOption(countrySelectOptions, data.country),
         familystatus: getOption(familyStatusSelectOptions, data.familystatus),
       };
@@ -72,9 +72,11 @@ export const FormDataPersonal = () => {
   }, [watch, initialValues]);
 
   const onSubmit = (formData: TFormData) => {
+    setInitialValues(formData);
+    setHasFormChanged(false);
     dispatch(updateUserProfile({
       ...formData,
-      date_of_birth: dayjs(formData.date_of_birth).format('YYYY-MM-DD'),
+      date_of_birth: formData.date_of_birth ? dayjs(formData.date_of_birth).format('YYYY-MM-DD') : undefined,
       country: formData.country?.value,
       familystatus: formData.familystatus?.value
     }))

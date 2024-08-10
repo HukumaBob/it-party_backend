@@ -7,10 +7,11 @@ type TProps = {
   isOpen: boolean;
   handleClose: () => void;
   Icon?: React.FC<SVGProps<SVGSVGElement>>;
+  width?: number;
   children: React.ReactNode;
 };
 
-export const ModalWrapper: React.FC<TProps> = ({isOpen = false, handleClose, Icon, children}) => {
+export const ModalWrapper: React.FC<TProps> = ({isOpen = false, handleClose, Icon, width, children}) => {
   return (
     <Modal
       open={isOpen}
@@ -20,7 +21,7 @@ export const ModalWrapper: React.FC<TProps> = ({isOpen = false, handleClose, Ico
       sx={{
         display: 'grid',
         placeContent: 'center',
-        gridTemplateColumns: 'minmax(auto, 414px)',
+        gridTemplateColumns: `minmax(auto, ${width || 414}px)`,
         '.MuiBackdrop-root': {backdropFilter: 'blur(3px)'}
       }}>
       <div className={style.wrapper}>

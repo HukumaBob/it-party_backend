@@ -1,14 +1,25 @@
+import React from "react";
 import {useEffect, useState} from "react";
 import Modal from '@mui/material/Modal';
+import dayjs from "dayjs";
 import {useAppSelector, useAppDispatch} from "../../app/services/hooks.ts";
 import {ContainerFormRegistration} from "../../features/ContainerFormRegistration";
 import {setOpenAuthorizationModal} from "../../app/services/slices/authorizationSlice.ts";
 import CloseIcon from "../../app/assets/icons/close.svg?react";
+import cn from "classnames";
 import style from "./index.module.scss";
 
-export const ModalEventRegistration = ({id}: { id: number }) => {
+type TProps = {
+  id: number;
+  name: string;
+  status: string;
+  date: string;
+  time: string;
+};
+
+export const ModalEventRegistration: React.FC<TProps> = ({id, name, status, date, time}) => {
   const dispatch = useAppDispatch();
-  const isOpenModalSuccess = useAppSelector(state => state.applyRegistration.isOpenModalSuccess)
+  const isOpenModalSuccess = useAppSelector(state => state.applyRegistration.isModalSuccessOpen)
   const {isAuthorized} = useAppSelector(state => state.authorization)
   const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => {
@@ -25,11 +36,23 @@ export const ModalEventRegistration = ({id}: { id: number }) => {
     isOpenModalSuccess && setOpen(false)
   }, [isOpenModalSuccess]);
 
+  const finalized = dayjs(`${date} ${time}`).isBefore(dayjs())
+  if (finalized) {
+    status = 'finalized';
+  }
+
   return (
     <div>
-      <button className={style.registerButton} onClick={handleOpen}>
-        Зарегистрироваться
-      </button>
+      {
+        {
+          not_applied: <button className={style.registerButton} onClick={handleOpen}>Зарегистрироваться</button>,
+          is_favorite: <button className={style.registerButton} onClick={handleOpen}>Зарегистрироваться</button>,
+          pending: <div className={cn(style.notification, style.pending)}>Ожидает подтверждения</div>,
+          approved: <div className={cn(style.notification, style.approved)}>Билет</div>,
+          rejected: <div className={cn(style.notification, style.rejected)}>Отклонено</div>,
+          finalized: <div className={cn(style.notification, style.finalized)}>Мероприятие завершено</div>,
+        }[status]
+      }
 
       <Modal
         open={open}
@@ -50,7 +73,7 @@ export const ModalEventRegistration = ({id}: { id: number }) => {
               Пожалуйста, заполните поля имя и фамилию кириллицей.
             </p>
 
-            <ContainerFormRegistration id={id}/>
+            <ContainerFormRegistration id={id} name={name}/>
           </div>
         </div>
       </Modal>

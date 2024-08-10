@@ -4,31 +4,26 @@ import {getRegistrationData} from "../../app/services/slices/applyRegistrationSl
 import {getExperienceList} from "../../app/services/slices/experienceSlice";
 import {getStackList} from "../../app/services/slices/stackListSlice";
 import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
-import loadingSvg from "../../app/assets/icons/loading.svg";
-import errorSvg from "../../app/assets/icons/error.svg";
+import LoadingIcon from "../../app/assets/icons/loading.svg?react";
+import ErrorIcon from "../../app/assets/icons/error.svg?react";
 
-export const ContainerFormRegistration: React.FC<{ id: number }> = ({id}) => {
+export const ContainerFormRegistration: React.FC<{ id: number; name: string }> = ({id, name}) => {
   const dispatch = useAppDispatch();
   const {status: experienceStatus} = useAppSelector(state => state.experience);
   const {status: stackStatus} = useAppSelector(state => state.stackList)
   const {loadingGET, loadingPOST, error: applyRegistrationError} = useAppSelector(state => state.applyRegistration);
 
   useEffect(() => {
-    dispatch(getRegistrationData(id))
-    if (experienceStatus === 'idle' || experienceStatus === 'error') {
-      dispatch(getExperienceList())
-    }
-    if (stackStatus === 'idle' || stackStatus === 'error') {
-      dispatch(getStackList())
-    }
+    dispatch(getRegistrationData({id, name}))
+    experienceStatus === 'idle' && dispatch(getExperienceList())
+    stackStatus === 'idle' && dispatch(getStackList())
   }, [dispatch]);
 
   if (applyRegistrationError || experienceStatus === 'error' || stackStatus === 'error') {
-    return <img className='loading-error-icon' src={errorSvg} alt="loading icon"/>
+    return <ErrorIcon className='loading-error-icon'/>
   }
   if (loadingGET || loadingPOST || experienceStatus !== 'success' || stackStatus !== 'success') {
-    return <img className='loading-error-icon' src={loadingSvg} alt="loading icon"/>
+    return <LoadingIcon className='loading-error-icon'/>
   }
-
   return <FormEventRegistration/>
 }

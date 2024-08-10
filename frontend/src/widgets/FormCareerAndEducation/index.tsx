@@ -84,6 +84,8 @@ export const FormCareerAndEducation = () => {
 
 
   const onSubmit = (formData: TFormData) => {
+    setInitialValues(formData);
+    setHasFormChanged(false);
     dispatch(updateUserProfile({
       ...formData,
       experience: formData.experience?.value,

@@ -1,10 +1,12 @@
 import {PayloadAction, createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {AppDispatch} from '../hooks.ts'
 import {API} from "../constants.ts";
+import {logoutProfile} from "./profileSlice.ts";
 
 type TError = { statusCode: number; statusText: string };
 type TErrorLogin = TError & { detail: string };
 type TErrorCreate = TError & { email: string[], password: string[] }
-type TResponseError = string | TErrorLogin | TErrorCreate | null | undefined;
+type TResponseError = TError | TErrorLogin | TErrorCreate | null | undefined;
 type TFormType = 'login' | 'registration';
 type TStatus = 'idle' | 'loading' | 'success' | 'error';
 export type TInitialState = {
@@ -42,23 +44,18 @@ export const createUser =
   createAsyncThunk<undefined, TFormDataCreate, { rejectValue: TResponseError }>(
     'post_create_user',
     async function (formData, {rejectWithValue}) {
-      try {
-        const response = await fetch(API.USERS, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(formData),
-        })
-        if (!response.ok) {
-          const errorData = await response.json();
-          return rejectWithValue({
-            statusCode: response.status,
-            statusText: response.statusText,
-            email: errorData.email,
-            password: errorData.password
-          });
+      const response = await fetch(API.USERS, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(formData),
+      })
+      if (!response.ok) {
+        const {status: statusCode, statusText} = response;
+        if ([500, 404].includes(statusCode)) {
+          return rejectWithValue({statusCode, statusText});
         }
-      } catch (err) {
-        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
+        const {email, password} = await response.json();
+        return rejectWithValue({statusCode, statusText, email, password});
       }
     }
   );
@@ -67,25 +64,30 @@ export const loginUser =
   createAsyncThunk<TLoginResponse, TFormDataLogin, { rejectValue: TResponseError }>(
     'post_login_user',
     async function (formData, {rejectWithValue}) {
-      try {
-        const response = await fetch(API.LOGIN, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(formData),
-        })
-        if (!response.ok) {
-          const errorData = await response.json();
-          return rejectWithValue({
-            statusCode: response.status,
-            statusText: response.statusText,
-            detail: errorData.detail
-          });
+      const response = await fetch(API.LOGIN, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(formData),
+      })
+      if (!response.ok) {
+        const {status: statusCode, statusText} = response;
+        if ([500, 404].includes(statusCode)) {
+          return rejectWithValue({statusCode, statusText});
         }
-        const data: TLoginResponse = await response.json();
-        return data
-      } catch (err) {
-        return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
+        const {detail} = await response.json();
+        return rejectWithValue({statusCode, statusText, detail});
       }
+      const data: TLoginResponse = await response.json();
+      return data
+    }
+  );
+
+export const logoutUser =
+  createAsyncThunk<void, undefined, { dispatch: AppDispatch }>(
+    'logout_user',
+    async function (_, {dispatch}) {
+      dispatch(logoutAuthorization());
+      dispatch(logoutProfile());
     }
   );
 
@@ -119,11 +121,14 @@ export const authorizationSlice = createSlice({
     },
     setOpenAuthorizationSuccessModal: (state, action: PayloadAction<boolean>) => {
       state.modalAuthorizationSuccessIsOpen = action.payload;
+      if (!action.payload) {
+        state.formType = 'login';
+      }
     },
     setFormType: (state, action: PayloadAction<TFormType>) => {
       state.formType = action.payload;
     },
-    logoutUser: (state) => {
+    logoutAuthorization: (state) => {
       state.refreshToken = null;
       state.accessToken = null;
       state.isAuthorized = false;
@@ -190,7 +195,7 @@ export const authorizationSlice = createSlice({
 export const {
   setOpenAuthorizationModal,
   setFormType,
-  logoutUser,
-  setOpenAuthorizationSuccessModal
+  setOpenAuthorizationSuccessModal,
+  logoutAuthorization
 } = authorizationSlice.actions;
 export default authorizationSlice.reducer;

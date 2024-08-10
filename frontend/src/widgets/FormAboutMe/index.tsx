@@ -59,6 +59,8 @@ export const FormAboutMe = () => {
   }, [watch, initialValues]);
 
   const onSubmit = (formData: TFormData) => {
+    setInitialValues(formData);
+    setHasFormChanged(false);
     dispatch(updateUserProfile(formData))
   };
 

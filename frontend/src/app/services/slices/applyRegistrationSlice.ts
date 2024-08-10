@@ -33,16 +33,16 @@ type TInitialState = {
   inboundData: TRegistrationData | null;
   loadingGET: boolean;
   loadingPOST: boolean;
-  isOpenModalSuccess: boolean;
+  isModalSuccessOpen: boolean;
   postApplicationResultMessage: string | undefined;
   error: string | undefined | null;
-  eventId: number | null;
+  eventName: string | null;
 };
 
 export const getRegistrationData =
-  createAsyncThunk<TRegistrationData, number, { rejectValue: string; state: RootState }>
+  createAsyncThunk<TRegistrationData, { id: number; name: string }, { rejectValue: string; state: RootState }>
   ("fetch_registration_data",
-    async (id, {rejectWithValue, getState}) => {
+    async ({id}, {rejectWithValue, getState}) => {
       try {
         const accessToken = getState().authorization.accessToken
         const response = await fetch(
@@ -101,10 +101,10 @@ const initialState: TInitialState = {
   inboundData: null,
   loadingGET: false,
   loadingPOST: false,
-  isOpenModalSuccess: false,
+  isModalSuccessOpen: false,
   postApplicationResultMessage: undefined,
   error: null,
-  eventId: null
+  eventName: null
 };
 
 const isError = (action: UnknownAction) => action.type.endsWith('rejected');
@@ -114,8 +114,8 @@ const applyRegistrationSlice = createSlice({
   initialState,
   reducers: {
     closeModalSuccess(state) {
-      state.isOpenModalSuccess = false;
-      state.eventId = null;
+      state.isModalSuccessOpen = false;
+      state.eventName = null;
     },
   },
   extraReducers: (builder) => {
@@ -127,7 +127,7 @@ const applyRegistrationSlice = createSlice({
       .addCase(getRegistrationData.fulfilled, (state, action) => {
         state.inboundData = action.payload;
         state.loadingGET = false
-        state.eventId = action.meta.arg
+        state.eventName = action.meta.arg.name
       })
 
       .addCase(applyRegistration.pending, (state) => {
@@ -136,7 +136,7 @@ const applyRegistrationSlice = createSlice({
       })
       .addCase(applyRegistration.fulfilled, (state, action) => {
         state.postApplicationResultMessage = action.payload;
-        state.isOpenModalSuccess = true;
+        state.isModalSuccessOpen = true;
         state.loadingPOST = false;
       })
 

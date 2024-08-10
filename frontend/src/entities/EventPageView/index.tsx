@@ -10,7 +10,18 @@ import style from "./index.module.scss";
 
 export const EventPageView = () => {
   const {id} = useParams<{ id: string }>();
-  const {name, date, logo, city, description, gallery, speakers, address} = useAppSelector(state => state.event.data)
+  const {
+    name,
+    date,
+    time,
+    logo,
+    city,
+    description,
+    gallery,
+    speakers,
+    address,
+    user_application_status
+  } = useAppSelector(state => state.event.data)
   const cityList = useAppSelector((store) => store.city.cityList);
   const randomColor = [style.orange, style.green, style.blue, style.purple][Math.floor(Math.random() * 4)]
   const eventDate = dayjs(date)
@@ -40,7 +51,7 @@ export const EventPageView = () => {
         </div>
 
         <div className={style.buttonContainer}>
-          <ModalEventRegistration id={Number(id)}/>
+          <ModalEventRegistration id={Number(id)} name={name} status={user_application_status} date={date} time={time}/>
         </div>
       </div>
 
@@ -59,7 +70,7 @@ export const EventPageView = () => {
         <h2 className={style.title}>{titleText}</h2>
         <p className={style.description}>Регистрация открыта.<br/>Для регистрации необходимо заполнить<br/>форму.</p>
         <div className={style.buttonContainer}>
-          <ModalEventRegistration id={Number(id)}/>
+          <ModalEventRegistration id={Number(id)} name={name} status={user_application_status} date={date} time={time}/>
         </div>
       </div>
 
