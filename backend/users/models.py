@@ -15,8 +15,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    first_name = models.CharField(max_length=30, blank=True, null=True, )
-    last_name = models.CharField(max_length=30, blank=True, null=True,)
+    first_name = models.CharField(max_length=30, blank=True, null=True, default='')
+    last_name = models.CharField(max_length=30, blank=True, null=True, default='')
     date_joined = models.DateTimeField(auto_now_add=True)
     user_photo = models.ImageField(
         blank=True, upload_to='user_photo/', verbose_name=_("Фотография пользователя")
@@ -49,13 +49,16 @@ class UserProfile(models.Model):
         User, on_delete=models.CASCADE, verbose_name=_("Юзер")
         )
     phone = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name=_("Телефон")
+        max_length=255, blank=True,
+        null=True, verbose_name=_("Телефон"), default=''
         )
     place_of_work = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name=_("Место работы")
+        max_length=255, blank=True, null=True, 
+        verbose_name=_("Место работы"), default=''
         )
     position = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name=_("Должность")
+        max_length=255, blank=True, null=True,
+        verbose_name=_("Должность"), default=''
         )
     online = models.BooleanField(default=False, verbose_name=_("Онлайн"))
     offline = models.BooleanField(default=False, verbose_name=_("Офлайн"))
@@ -98,19 +101,19 @@ class UserProfile(models.Model):
         blank=True, null=True, verbose_name=_("Страна")
     )
     hobby = models.TextField(
-        blank=True, null=True, verbose_name=_("Хобби")
+        blank=True, null=True, verbose_name=_("Хобби"), default=''
         )
     values = models.TextField(
-        blank=True, null=True, verbose_name=_("Жизненные ценности")
+        blank=True, null=True, verbose_name=_("Жизненные ценности"), default=''
         )
     aims = models.TextField(
-        blank=True, null=True, verbose_name=_("Жизненные цели")
+        blank=True, null=True, verbose_name=_("Жизненные цели"), default=''
         )
     cv = models.TextField(
-        blank=True, null=True, verbose_name=_("Автобиография")
+        blank=True, null=True, verbose_name=_("Автобиография"), default=''
         )
     motivation = models.TextField(
-        blank=True, null=True, verbose_name=_("Мотивации")
+        blank=True, null=True, verbose_name=_("Мотивации"), default=''
         )
 
     def __str__(self):
