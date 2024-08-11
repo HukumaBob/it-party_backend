@@ -1,7 +1,7 @@
 import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
 import {ModalWrapper} from "../../shared/ModalWrapper";
-import SuccessIcon from "../../app/assets/icons/successForm.svg?react";
+import SuccessIcon from "../../app/assets/icons/success.svg?react";
 import style from "./index.module.scss";
 
 export const ModalEventRegistrationSuccess = () => {

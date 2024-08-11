@@ -1,6 +1,6 @@
 import {useAppSelector, useAppDispatch} from "../../app/services/hooks.ts";
 import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
-import {FormResetPassword} from "../../shared/FormResetPassword";
+import {FormResetPassword} from "../FormResetPassword";
 import {ModalWrapper} from "../../shared/ModalWrapper";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";

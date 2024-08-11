@@ -6,12 +6,13 @@ import {setOpenAuthorizationModal} from "../../app/services/slices/authorization
 import {getUserProfile} from "../../app/services/slices/profileSlice.ts";
 import {ModalLogout} from "../../widgets/ModalLogout";
 import LogoIcon from "../../app/assets/icons/logo.svg?react";
-import login_avatar from '../../app/assets/image/other/avatar.webp'
+import LoginIcon from "../../app/assets/icons/login.svg?react";
 import style from "./index.module.scss";
 
 export const Header = () => {
   const dispatch = useAppDispatch();
   const isMainPage = useMatch('/')
+  const isActivationPage = useMatch('/activate/*')
   const {isAuthorized} = useAppSelector(state => state.authorization);
   const {statusGetProfile} = useAppSelector(state => state.profile);
   const {first_name, last_name, user_photo} = useAppSelector(state => state.profile.data);
@@ -50,15 +51,15 @@ export const Header = () => {
         <div className={style.container}>
           {isMainPage ? <LogoIcon/> : <Link to='/'><LogoIcon/></Link>}
 
-          {isAuthorized
-            ? <button className={style.buttonMenu} onClick={handleOpenMenu}>
-              {first_name}&nbsp;{last_name}
-              <img className={style.avatar} src={user_photo} alt='avatar'/>
-            </button>
-            : <button className={style.buttonEnter} onClick={handleOpenModal}>
-              Login
-              <img className={style.avatar} src={login_avatar} alt='avatar'/>
-            </button>}
+          {isActivationPage ? null :
+            isAuthorized
+              ? <button className={style.buttonMenu} onClick={handleOpenMenu}>
+                {first_name}&nbsp;{last_name}
+                <img className={style.avatar} src={user_photo} alt='avatar'/>
+              </button>
+              : <button className={style.buttonEnter} onClick={handleOpenModal}>
+                Login <LoginIcon/>
+              </button>}
         </div>
 
         <Popover

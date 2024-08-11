@@ -25,9 +25,9 @@ type TFormData = {
 export const FormAuthorization = () => {
   const dispatch = useAppDispatch();
   const [passwordIsVisible, setPasswordIsVisible] = useState<boolean>(false);
-  let {formType, formError, statusLogin, statusCreate} = useAppSelector((state) => state.authorization);
+  const {formType, formError, statusLogin, statusCreate, createUserIsExist} = useAppSelector((state) => state.authorization);
   const isLoading = [statusLogin, statusCreate].includes('loading');
-  const isError = [statusLogin, statusCreate].includes('error') && !formError
+  const isError = [statusLogin, statusCreate].includes('error') && !formError && !createUserIsExist
 
   const handleChangeFormType = () => {
     dispatch(setFormType(formType === 'login' ? 'registration' : 'login'));

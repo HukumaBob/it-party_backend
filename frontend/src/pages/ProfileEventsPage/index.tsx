@@ -9,9 +9,9 @@ import {CardEvent} from "../../entities/CardEvent";
 import {ContainerRecommended} from "../../features/ContainerRecomended";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
-import style from './index.module.scss'
+import style from './index.module.scss';
 
-type TabPanelProps = {
+type TProps = {
   children: React.ReactNode;
   index: number;
   value: number;
@@ -21,7 +21,7 @@ type TabPanelProps = {
   message?: string;
 }
 
-const TabPanel = ({children, value, index, loading, error, length, message, ...other}: TabPanelProps) => (
+const TabPanel: React.FC<TProps> = ({children, value, index, loading, error, length, message, ...other}) => (
   <div
     role="tabpanel"
     hidden={value !== index}

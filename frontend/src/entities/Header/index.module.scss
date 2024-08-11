@@ -19,19 +19,30 @@
 }
 
 .buttonEnter {
+  padding: 9.5px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 20px;
+  border-radius: 8px;
+  transition: all 0.05s ease-out;
+
+  &:hover {
+    background: var(--c-def-blue);
+    color: var(--c-def-white);
+  }
+}
+
+.buttonMenu {
   padding: 5px 0 5px 5px;
   display: flex;
   align-items: center;
   gap: var(--sp-12);
   font-size: 20px;
-  color: var(--c-black-500);
-}
-
-.buttonMenu {
-  @extend .buttonEnter;
   color: var(--c-def-black);
   font-family: YS-Display, sans-serif;
   font-weight: 500;
+  border-radius: 8px;
 }
 
 .popOver {

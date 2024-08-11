@@ -72,7 +72,6 @@ export const applyRegistration =
     async (data, {rejectWithValue, getState}) => {
       const accessToken = getState().authorization.accessToken
       const {id, ...restData} = data;
-
       try {
         const response = await fetch(
           `${API.SUBMIT_APPLICATION}/${id}/`,

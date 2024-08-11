@@ -183,20 +183,7 @@ export const profileSlice = createSlice({
         state.errorGetProfile = null;
       })
       .addCase(getUserProfile.fulfilled, (state, action) => {
-        const data = action.payload
-        state.data = {
-          ...data,
-          first_name: data.first_name || '',
-          last_name: data.last_name || '',
-          place_of_work: data.place_of_work || '',
-          position: data.position || '',
-          hobby: data.hobby || '',
-          values: data.values || '',
-          aims: data.aims || '',
-          cv: data.cv || '',
-          motivation: data.motivation || '',
-          phone: data.phone || '',
-        }
+        state.data = action.payload
         state.statusGetProfile = 'success';
       })
       .addCase(getUserProfile.rejected, (state, action) => {
