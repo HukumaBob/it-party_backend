@@ -97,8 +97,9 @@ class EventSerializer(BaseImageSerializer):
         return 'not_applied'
 
 
-class EventDetailSerializer(serializers.ModelSerializer):
+class EventDetailSerializer(BaseImageSerializer):
     """Сериализатор для подробной информации от эвенте."""
+    image_fields = ['logo']
     speakers = SpeakerSerializer(read_only=True, many=True)
     gallery = EventGallerySerializer(read_only=True, many=True)
     form_template = FormTemplateSerializer(read_only=True)

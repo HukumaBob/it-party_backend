@@ -130,7 +130,7 @@ export const deleteUserProfile =
     'delete_user_profile',
     async function (_, {rejectWithValue, getState}) {
       const accessToken = getState().authorization.accessToken;
-      const response = await fetch(API.USER_PROFILE, {
+      const response = await fetch(API.USER_DELETE, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

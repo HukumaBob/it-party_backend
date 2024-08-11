@@ -3,6 +3,8 @@ type TEndpoints = {
   USERS: string;
   USER_ACTIVATE: string;
   RESEND_ACTIVATION: string;
+  
+  USER_DELETE: string,
   USER_PROFILE: string;
   RESET_PASSWORD: string;
 
@@ -35,6 +37,7 @@ const endpoints: TEndpoints = {
   USERS: "auth/users/",                               // POST, регистрация пользователя
   USER_ACTIVATE: "auth/users/activation/",            // POST, активация пользователя по email
   RESEND_ACTIVATION: "auth/users/resend_activation/", // POST, повторная отправка имейла для активации
+  USER_DELETE: "api/v1/delete-user",
   USER_PROFILE: "api/v1/userprofiles/me/",            // GET, PATCH, DELETE, получение/обновление/удаление пользователя
   RESET_PASSWORD: "auth/users/reset_password/",       // POST, сброс пароля пользователя
 
