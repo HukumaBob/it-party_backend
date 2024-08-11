@@ -13,6 +13,15 @@ from .models import (
 from userevents.models import UserEvent
 from users.models import User, UserProfile, Specialization
 
+class BaseImageSerializer(serializers.ModelSerializer):
+    # Определяем метод для обработки полей для фотографий (без домена, только путь)
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        for field in self.image_fields:
+            if field in representation and getattr(instance, field, None):
+                representation[field] = f"{settings.MEDIA_URL}{getattr(instance, field).name}"
+        return representation
+
 
 class FormTemplateSerializer(serializers.ModelSerializer):
 
@@ -21,19 +30,23 @@ class FormTemplateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SpeakerSerializer(serializers.ModelSerializer):
+class SpeakerSerializer(BaseImageSerializer):
+    image_fields = ['foto']
 
     class Meta:
         model = Speaker
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'foto']
 
-class SpeakerDetailSerializer(serializers.ModelSerializer):
+class SpeakerDetailSerializer(BaseImageSerializer):
+    image_fields = ['foto']
+
 
     class Meta:
         model = Speaker
         fields = '__all__'
 
-class EventGallerySerializer(serializers.ModelSerializer):
+class EventGallerySerializer(BaseImageSerializer):
+    image_fields = ['event_photo']
 
     class Meta:
         model = EventGallery
@@ -54,8 +67,9 @@ class RejectionReasonSerializer(serializers.ModelSerializer):
         model = RejectionReason
         fields = '__all__'
 
-class EventSerializer(serializers.ModelSerializer):
+class EventSerializer(BaseImageSerializer):
     """Главная страница списка эвентов."""
+    image_fields = ['logo']
     description = serializers.CharField(max_length=100)
     user_application_status = serializers.SerializerMethodField()
     specializations = SpecializationSerializer(many=True)
@@ -66,12 +80,7 @@ class EventSerializer(serializers.ModelSerializer):
             'id', 'logo', 'name', 'description',
             'date', 'time', 'user_application_status',
             'specializations',
-            )
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        if 'logo' in representation:
-            representation['logo'] = f"{settings.MEDIA_URL}{instance.logo.name}"  # возвращает относительный путь
-        return representation        
+            )     
 
     def get_user_application_status(self, obj):
         request = self.context.get('request')
@@ -150,7 +159,6 @@ class AdminUserEventSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         # Получите данные профиля пользователя по айди
         profile_events_data = UserProfileSerializer(instance.user_profile).data
-
         # Объедините данные профиля пользователя и айди связи user-event
         representation['profile_events'] = profile_events_data
         representation['application_status'] = instance.application_status
