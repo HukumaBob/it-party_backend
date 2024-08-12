@@ -203,6 +203,7 @@ DJOSER = {
     'ACTIVATION_URL': 'activate/{uid}/{token}',  #  Регистрация на стороне клиента
     # 'ACTIVATION_URL': 'api/v1/activate/{uid}/{token}',  #  Регистрация на стороне сервера
     'SEND_ACTIVATION_EMAIL': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     'SERIALIZERS': {'user_create': 'users.serializers.UserSerializer', },
 }
 
