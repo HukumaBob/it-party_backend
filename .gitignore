@@ -1,3 +1,5 @@
 .venv
 .env
 backend/collected_static
+backend/media/animals/.gitkeep
+backend/media/test_events/.gitkeep

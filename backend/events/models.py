@@ -40,6 +40,7 @@ def get_default_fields():
         "phone": "",
         "online": False,
         "offline": False,
+        "email": User.email,
         }
 
 
