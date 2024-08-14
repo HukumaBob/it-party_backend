@@ -22,6 +22,24 @@ class BaseImageSerializer(serializers.ModelSerializer):
                 representation[field] = f"{settings.MEDIA_URL}{getattr(instance, field).name}"
         return representation
 
+class UserApplicationStatusMixin:
+    """Миксин для добавления поля user_application_status в сериализатор."""
+    user_application_status = serializers.SerializerMethodField()
+
+    def get_user_application_status(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            user_profile = UserProfile.objects.filter(
+                user=request.user
+            ).first()
+            if user_profile:
+                user_event = UserEvent.objects.filter(
+                    user_profile=user_profile, event=obj
+                ).first()
+                if user_event:
+                    return user_event.application_status
+        return 'not_applied'    
+
 
 class FormTemplateSerializer(serializers.ModelSerializer):
 
@@ -67,11 +85,11 @@ class RejectionReasonSerializer(serializers.ModelSerializer):
         model = RejectionReason
         fields = '__all__'
 
-class EventSerializer(BaseImageSerializer):
+class EventSerializer(UserApplicationStatusMixin, BaseImageSerializer):
     """Главная страница списка эвентов."""
     image_fields = ['logo']
     description = serializers.CharField(max_length=100)
-    user_application_status = serializers.SerializerMethodField()
+    user_application_status = serializers.SerializerMethodField() # Это уже есть в миксине
     specializations = SpecializationSerializer(many=True)
 
     class Meta:
@@ -82,34 +100,23 @@ class EventSerializer(BaseImageSerializer):
             'specializations',
             )     
 
-    def get_user_application_status(self, obj):
-        request = self.context.get('request')
-        if request.user.is_authenticated:
-            user_profile = UserProfile.objects.filter(
-                user=request.user
-                ).first()
-            if user_profile:
-                user_event = UserEvent.objects.filter(
-                    user_profile=user_profile, event=obj
-                    ).first()
-                if user_event:
-                    return user_event.application_status
-        return 'not_applied'
 
-
-class EventDetailSerializer(BaseImageSerializer):
-    """Сериализатор для подробной информации от эвенте."""
+class EventDetailSerializer(UserApplicationStatusMixin, BaseImageSerializer):
+    """Сериализатор для подробной информации о событии."""
     image_fields = ['logo']
     speakers = SpeakerSerializer(read_only=True, many=True)
     gallery = EventGallerySerializer(read_only=True, many=True)
     form_template = FormTemplateSerializer(read_only=True)
     specializations = SpecializationSerializer(read_only=True, many=True)
     event_admin = EventAdminSerializer(read_only=True, many=True)
-        
+    user_application_status = serializers.SerializerMethodField() # Это уже есть в миксине
 
     class Meta:
         model = Event
         fields = '__all__'
+        extra_fields = ('user_application_status',)  # Дополнительные вычисляемые поля
+
+
 
 class AdminEventSerializer(serializers.ModelSerializer):
     application_status_counts = serializers.SerializerMethodField()
