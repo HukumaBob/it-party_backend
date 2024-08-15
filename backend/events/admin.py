@@ -4,7 +4,8 @@ from .models import (
     Event,
     Speaker,
     FormTemplate,
-    RejectionReason
+    RejectionReason,
+    EventGallery,
     )
 
 
@@ -33,4 +34,11 @@ class FormTemplateAdmin(admin.ModelAdmin):
 class EventFormTemplateAdmin(admin.ModelAdmin):
     list_display = [
         field.name for field in RejectionReason._meta.fields
+        ]
+
+
+@admin.register(EventGallery)
+class EventGalleryAdmin(admin.ModelAdmin):
+    list_display = [
+        field.name for field in EventGallery._meta.fields
         ]

@@ -69,6 +69,8 @@ class EventViewSet(viewsets.ModelViewSet):
         specialization_ids = data.pop('specializations')
         event_admin_ids = data.pop('event_admin')
 
+        # Получаем галерею изображений
+        gallery_data = data.pop('gallery', [])
 
         # Создаем form_template
         form_template_data = data.pop('form_template')
@@ -85,6 +87,7 @@ class EventViewSet(viewsets.ModelViewSet):
         event.speakers.set(speaker_ids)
         event.specializations.set(specialization_ids)
         event.event_admin.set(event_admin_ids)
+        event.gallery.set(gallery_data)
 
         return Response(EventDetailSerializer(event).data, status=status.HTTP_201_CREATED)
 
