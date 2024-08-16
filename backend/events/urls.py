@@ -3,6 +3,7 @@ from rest_framework import routers
 from .views import (
     AdminEventListView,
     AdminUserEventView,
+    EventGalleryViewSet,
     EventViewSet,
     RejectionReasonView,
     SpeakerViewSet
@@ -23,6 +24,12 @@ router_v1.register(
     r'speaker',
     SpeakerViewSet,
     basename='speaker'
+)
+
+router_v1.register(
+    r'gallery',
+    EventGalleryViewSet,
+    basename='gallery'
 )
 
 router_v1.register(

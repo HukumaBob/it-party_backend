@@ -3,13 +3,14 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from userevents.models import UserEvent
-from .models import Event, RejectionReason, Speaker, FormTemplate
+from .models import Event, EventGallery, RejectionReason, Speaker, FormTemplate
 from additions.models import City
 from .filters import EventFilter, SpeakerFilter
 from .permissions import IsStaffOrReadOnly
 from .serializers import (
     AdminEventSerializer, 
-    AdminUserEventSerializer, 
+    AdminUserEventSerializer,
+    EventGallerySerializer, 
     EventSerializer, 
     EventDetailSerializer, 
     RejectionReasonSerializer, 
@@ -188,3 +189,30 @@ class RejectionReasonView(viewsets.ModelViewSet):
     queryset = RejectionReason.objects.all()
     serializer_class = RejectionReasonSerializer
     pagination_class = None
+
+class EventGalleryViewSet(viewsets.ModelViewSet):
+    queryset = EventGallery.objects.all()
+    serializer_class = EventGallerySerializer
+    permission_classes_by_action = {
+        'create': [IsStaffOrReadOnly],
+        'update': [IsStaffOrReadOnly],
+        'partial_update': [IsStaffOrReadOnly],
+        'destroy': [IsStaffOrReadOnly],
+        'default': [AllowAny],
+    }
+
+    def get_permissions(self):
+        try:
+            # return permission_classes depending on `action`
+            return [
+                permission()
+                for permission in self.permission_classes_by_action[
+                    self.action
+                    ]
+                ]
+        except KeyError:
+            # action is not set return default permission_classes
+            return [
+                permission()
+                for permission in self.permission_classes_by_action['default']
+                ]    
