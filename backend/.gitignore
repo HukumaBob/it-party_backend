@@ -7,8 +7,8 @@ db.sqlite3
 # media
 # Игнорировать папку media/user_photo
 
-media/animals/*
-# media/images/*
+# media/animals/*
+media/images/*
 media/tickets/*
 media/user_photo/*
 
