@@ -1,3 +1,5 @@
+from django.core.files.storage import default_storage
+from django.db import transaction
 from rest_framework import viewsets, status, generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -83,16 +85,100 @@ class EventViewSet(viewsets.ModelViewSet):
         # Создаем событие и присваиваем ему город
         event = Event.objects.create(city=city, **data)
 
+        # Создаем объекты EventGallery и добавляем их к событию
+        gallery_objects = []
+        for gallery_item in gallery_data:
+            # Создаем объект EventGallery
+            gallery_obj = EventGallery.objects.create(
+                event_photo=gallery_item["event_photo"],
+                caption=gallery_item.get("caption", "")
+            )
+            gallery_objects.append(gallery_obj)        
+
         # Связываем спикеров и специализации и организаторов с созданным событием
         event.speakers.set(speaker_ids)
         event.specializations.set(specialization_ids)
         event.event_admin.set(event_admin_ids)
-        event.gallery.set(gallery_data)
+        event.gallery.set(gallery_objects)
 
         return Response(
             EventDetailSerializer(event).data, status=status.HTTP_201_CREATED
         )
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        data = request.data.copy()
 
+        # Обновляем основные поля события
+        speaker_ids = data.pop("speakers", None)
+        specialization_ids = data.pop("specializations", None)
+        event_admin_ids = data.pop("event_admin", None)
+        gallery_data = data.pop("gallery", None)
+
+        # Обновляем City, если передан новый ID
+        city_id = data.pop("city", None)
+        if city_id:
+            city = City.objects.get(id=city_id)
+            instance.city = city
+
+        # Обновляем остальные поля объекта
+        for attr, value in data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Обновляем спикеров, специализации и организаторов
+        if speaker_ids is not None:
+            instance.speakers.set(speaker_ids)
+        if specialization_ids is not None:
+            instance.specializations.set(specialization_ids)
+        if event_admin_ids is not None:
+            instance.event_admin.set(event_admin_ids)
+
+        # Обновляем галерею, если данные предоставлены
+        if gallery_data is not None:
+            # Удаляем существующие объекты EventGallery, связанные с событием
+            instance.gallery.clear()
+
+            # Создаем новые объекты EventGallery и связываем их с событием
+            gallery_objects = []
+            for gallery_item in gallery_data:
+                gallery_obj = EventGallery.objects.create(
+                    event_photo=gallery_item["event_photo"],
+                    caption=gallery_item.get("caption", "")
+                )
+                gallery_objects.append(gallery_obj)
+            
+            instance.gallery.set(gallery_objects)
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+    
+    @staticmethod
+    def delete_related_files(instance):
+        # Удаление файлов лого
+        if instance.logo and default_storage.exists(instance.logo.path):
+            default_storage.delete(instance.logo.path)
+
+        # Удаление файлов галереи
+        for gallery_item in instance.gallery.all():
+            if gallery_item.event_photo and default_storage.exists(gallery_item.event_photo.path):
+                default_storage.delete(gallery_item.event_photo.path)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        # Откатываем транзакцию в случае ошибки
+        with transaction.atomic():
+            # Удаляем связанные файлы
+            self.delete_related_files(instance)
+
+            # Удаляем связанные объекты галереи вручную
+            instance.gallery.all().delete()
+
+            # Удаляем объект события
+            self.perform_destroy(instance)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class SpeakerViewSet(viewsets.ModelViewSet):
     """
