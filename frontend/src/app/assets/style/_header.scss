@@ -1,0 +1,134 @@
+.header {
+  margin-bottom: 60px;
+  background: var(--c-gray);
+  box-shadow: 0 3px 3px 0 #00000011;
+  color: var(--c-def-black);
+
+  &.admin {
+    margin-bottom: 0;
+    background: var(--c-str-dark);
+    color: var(--c-def-white);
+  }
+
+  &__container {
+    height: 84px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    font-family: "YS-Display", sans-serif;
+    font-size: var(--sp-28);
+    font-weight: 400;
+    color: inherit;
+  }
+
+  &__avatar {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &__buttonMenu {
+    padding: 5px 0 5px 5px;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-12);
+    font-size: 20px;
+    color: inherit;
+    font-family: YS-Display, sans-serif;
+    font-weight: 500;
+    border-radius: 8px;
+
+    &.admin {
+      font-weight: 400;
+    }
+  }
+
+  &__buttonEnter {
+    padding: 9.5px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 20px;
+    border-radius: 8px;
+    transition: all 0.05s ease-out;
+
+    &:hover {
+      background: var(--c-def-blue);
+      color: var(--c-def-white);
+    }
+  }
+
+  &__nav {
+    padding: 25px 50px 25px 80px;
+    display: grid;
+    justify-items: end;
+    gap: 5px;
+    background: var(--c-gray);
+
+    &.admin {
+      background: var(--c-str-dark);
+
+      a, button {
+        font-weight: 400;
+        color: var(--c-def-white);
+      }
+    }
+
+    a,
+    button {
+      padding: 10px 5px;
+      font-family: "YS-Display", sans-serif;
+      color: var(--c-def-black);
+      font-weight: 500;
+      text-transform: uppercase;
+      text-align: right;
+      letter-spacing: 0.6px;
+
+      &:hover {
+        color: var(--c-def-blue);
+      }
+    }
+  }
+
+  @media (max-width: 1199.98px) {
+    &__logo {
+      font-size: var(--sp-24);
+    }
+
+    &__buttonEnter,
+    &__buttonMenu {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    &__logo {
+      font-size: var(--sp-22);
+    }
+
+    &__buttonEnter,
+    &__buttonMenu {
+      gap: 8px;
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    &__logo {
+      font-size: 20px;
+    }
+
+    &__nav {
+      padding: 25px 45px 25px 45px;
+
+      a,
+      button {
+        font-size: 15px;
+      }
+    }
+  }
+}

@@ -30,6 +30,10 @@ export const FormDataPersonal = () => {
   const isLoading = [statusGetProfile, statusUpdateProfile, countryListStatus, familyListStatus].includes('loading');
   const isError = [statusGetProfile, statusUpdateProfile, countryListStatus, familyListStatus].includes('error');
 
+  const toTitleCase = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
   useEffect(() => {
     countryListStatus === 'idle' && dispatch(getCountryList())
     familyListStatus === 'idle' && dispatch(getFamilyStatusList())
@@ -41,7 +45,8 @@ export const FormDataPersonal = () => {
     formState: {errors},
     reset,
     control,
-    watch
+    watch,
+    setValue
   } = useForm<TFormData>({mode: "onTouched"});
 
   useEffect(() => {
@@ -103,6 +108,7 @@ export const FormDataPersonal = () => {
               value: /^[A-ZА-Я]+$/i,
               message: "некорректный формат имени",
             },
+            onChange: (e) => setValue("first_name", toTitleCase(e.target.value))
           })}
         />
         <span className='errorMessage'>
@@ -125,6 +131,7 @@ export const FormDataPersonal = () => {
               value: /^[A-ZА-Я]+$/i,
               message: "некорректный формат фамилии",
             },
+            onChange: (e) => setValue("last_name", toTitleCase(e.target.value))
           })}
         />
         <span className='errorMessage'>

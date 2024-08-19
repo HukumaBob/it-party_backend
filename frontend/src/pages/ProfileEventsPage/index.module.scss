@@ -4,6 +4,14 @@
   font-weight: 500;
 }
 
+.paginationContainer {
+  display: flex;
+
+  nav {
+    margin-right: 0;
+  }
+}
+
 .recommendedContainer {
   margin-top: 80px;
 }

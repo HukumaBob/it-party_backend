@@ -41,15 +41,10 @@ export const ModalEditAvatar = () => {
   const {getRootProps, getInputProps} = useDropzone(dropzoneOptions);
 
   const handleUpload = () => {
-    if (selectedFile) {
-      dispatch(updateUserAvatar(selectedFile))
-    }
+    selectedFile && dispatch(updateUserAvatar(selectedFile))
   };
-
   useEffect(() => {
-    if (statusUpdateAvatar == 'success') {
-      dispatch(setModalEditAvatar(false))
-    }
+    statusUpdateAvatar == 'success' && dispatch(setModalEditAvatar(false))
   }, [statusUpdateAvatar])
 
   return (

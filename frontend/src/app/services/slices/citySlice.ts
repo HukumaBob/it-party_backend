@@ -5,13 +5,15 @@ type TCity = {
   id: number;
   name: string;
   country_id: number;
-}
+};
+type TOption = { value: number; label: string };
 type TInitialState = {
   data: TCity[];
   cityList: Record<string, string>;
+  citySelectOptions: TOption[];
   status: 'idle' | 'loading' | 'success' | 'error';
   error: string | undefined | null;
-}
+};
 
 export const getCityList =
   createAsyncThunk<TCity[], undefined, { rejectValue: string }>(
@@ -36,6 +38,7 @@ export const getCityList =
 const initialState: TInitialState = {
   data: [],
   cityList: {},
+  citySelectOptions: [],
   status: 'idle',
   error: null,
 };
@@ -53,6 +56,7 @@ const citySlice = createSlice({
       .addCase(getCityList.fulfilled, (state, action) => {
         const data = action.payload;
         state.data = data;
+        state.citySelectOptions = data.map(({id, name}) => ({value: id, label: name}))
         state.cityList = data.reduce((acc: Record<string, string>, current) => {
           acc[current.id] = current.name
           return acc

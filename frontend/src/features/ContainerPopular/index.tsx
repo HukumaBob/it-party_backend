@@ -10,10 +10,8 @@ export const ContainerPopular = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (statusPopular === 'idle' || statusPopular === 'error') {
-      dispatch(getSliderList('popular'));
-    }
-  }, [dispatch]);
+    statusPopular === 'idle' && dispatch(getSliderList('popular'));
+  }, []);
 
   if (statusPopular === 'loading') {
     return <LoadingIcon className='loading-error-icon'/>
@@ -21,7 +19,6 @@ export const ContainerPopular = () => {
   if (statusPopular === 'error') {
     return <ErrorIcon className='loading-error-icon'/>
   }
-
 
   return (
     <div className='slider-section'>

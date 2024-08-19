@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {NavLink, Route, Routes, Outlet} from "react-router-dom";
 import {AvatarBlock} from "../../features/AvatarBlock";
 import {FormDataPersonal} from "../../widgets/FormDataPersonal";
@@ -19,13 +18,6 @@ const ProfileLayout = () => (
 
 export const ProfilePage = () => {
   const activeClassName = ({isActive}: { isActive: boolean }) => (isActive ? style.active : '')
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const handleOpenModal = () => {
-    setModalIsOpen(true);
-  };
-  const handleCloseModal = () => {
-    setModalIsOpen(false);
-  };
 
   return (
     <div className={cn(style.container, 'container')}>
@@ -35,7 +27,7 @@ export const ProfilePage = () => {
         <NavLink className={activeClassName} to='about'>О себе</NavLink>
         <NavLink className={activeClassName} to='confidentiality'>Конфиденциальность</NavLink>
         <NavLink className={activeClassName} to='notice'>Уведомления</NavLink>
-        <button onClick={handleOpenModal}>Выйти</button>
+        <ModalLogout/>
       </nav>
 
       <Routes>
@@ -47,8 +39,6 @@ export const ProfilePage = () => {
           <Route path='notice' element={<FormNotifications/>}/>
         </Route>
       </Routes>
-
-      <ModalLogout isOpen={modalIsOpen} handleClose={handleCloseModal}/>
     </div>
   );
 };

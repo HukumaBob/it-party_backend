@@ -18,6 +18,7 @@ export const TimePicker: React.FC<TProps> = ({name, control, rules}) => {
       render={({field, fieldState: {error}}) => (
         <MuiTimePicker
           {...field}
+          value={field.value || null}
           format="hh : mm"
           views={['hours', 'minutes']}
           slots={{openPickerIcon: () => <TimeIcon/>}}

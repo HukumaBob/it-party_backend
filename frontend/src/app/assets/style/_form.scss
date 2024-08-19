@@ -76,6 +76,10 @@
     border: 1px solid var(--c-str-medium);
     border-radius: 8px;
     resize: vertical;
+
+    &.error {
+      border-color: var(--c-er-red);
+    }
   }
 
   .errorMessage {

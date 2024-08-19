@@ -1,112 +1,85 @@
 .banner {
   width: 100%;
-  max-height: 240px;
+  height: 240px;
   object-fit: cover;
   margin-bottom: var(--sp-40);
 }
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 328px;
+  grid-template-columns: 1fr 25.5%;
   gap: var(--sp-24);
-
-  h1,
-  h2 {
-    margin-bottom: var(--sp-24);
-    font-size: var(--sp-24);
-    font-weight: 500;
-  }
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-16);
-}
-
-.row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-20);
-}
-
-.addressRow {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--sp-20);
-
-  label:last-of-type {
-    grid-column: 1 / -1;
-  }
+  position: relative;
 }
 
 .gallery {
-  div {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-20);
-  }
-
   img {
     width: 100%;
     border-radius: 8px;
   }
-
-  button {
-    padding: 13px;
-    font-weight: 500;
-    color: var(--c-def-blue);
-    border-radius: 8px;
-    box-shadow: 2px 2px 12px 0 #242F7B26;
-  }
 }
 
-.buttonSubmit {
-  margin-top: 20px;
-  padding: 15px;
+.galleryTitle {
+  font-family: 'YS-Display', sans-serif;
+  margin-bottom: 61px;
+  font-size: var(--sp-24);
   font-weight: 500;
-  color: var(--c-def-white);
-  border-radius: 8px;
-  background-color: var(--c-def-blue);
 }
 
-.buttonArchive {
+.galleryContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-12);
+}
+
+.galleryButton {
+  width: 100%;
   padding: 14px;
   font-weight: 500;
   color: var(--c-def-blue);
   border-radius: 8px;
   border: 1px solid var(--c-def-blue);
+
+  &.error {
+    border-color: var(--c-er-red);
+  }
+}
+
+.galleryError {
+  font-size: 14px;
+  color: var(--c-er-red);
 }
 
 @media (max-width: 1399.98px) {
-  .container {
-    grid-template-columns: 1fr 280px;
+  .banner {
+    height: 200px;
   }
 }
 
 @media (max-width: 1199.98px) {
-  .container {
-    grid-template-columns: 1fr 240px;
+  .banner {
+    height: 180px;
   }
 }
 
 @media (max-width: 991.98px) {
-  .container {
-    grid-template-columns: 1fr 200px;
-    gap: var(--sp-20);
-  }
-
-  .row {
-    grid-template-columns: 1fr;
+  .banner {
+    height: 160px;
   }
 }
 
 @media (max-width: 767.98px) {
+  .banner {
+    height: unset;
+    max-height: 160px;
+  }
+
   .container {
     grid-template-columns: 1fr;
   }
 
-  .addressRow {
-    grid-template-columns: 1fr;
+  .galleryTitle {
+    margin-top: 20px;
+    margin-bottom: 5px;
   }
 }

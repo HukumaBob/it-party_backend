@@ -9,15 +9,11 @@ import {DatePicker} from "../../shared/FormFields/DatePicker";
 import cn from "classnames";
 import style from "./index.module.scss";
 
-type TOption = {
-  value: number;
-  label: string;
-};
-
-type TFormValues = {
+type TOption = { value: number; label: string };
+type TFormData = {
   first_name: string;
   last_name: string;
-  date_of_birth: string | null;
+  date_of_birth: string;
   email: string;
   phone: string;
   place_of_work: string;
@@ -45,7 +41,7 @@ export const FormEventRegistration = () => {
     watch,
     control,
     trigger,
-  } = useForm<TFormValues>({mode: 'onTouched'});
+  } = useForm<TFormData>({mode: 'onTouched'});
 
   useEffect(() => {
     // вставка начальных значений в форму:
@@ -53,7 +49,7 @@ export const FormEventRegistration = () => {
       const initialData: Record<string, any> = {
         "first_name": inboundData.first_name,
         "last_name": inboundData.last_name,
-        "date_of_birth": inboundData.date_of_birth ? dayjs(inboundData.date_of_birth) : null,
+        "date_of_birth": inboundData.date_of_birth ? dayjs(inboundData.date_of_birth) : undefined,
         "place_of_work": inboundData.place_of_work,
         "position": inboundData.position,
         "phone": inboundData.phone,
@@ -66,14 +62,14 @@ export const FormEventRegistration = () => {
     }
   }, [inboundData, experienceData]);
 
-  const onSubmit = (data: TFormValues) => {
+  const onSubmit = (data: TFormData) => {
     // отправка данных:
     if (inboundData) {
       const formData = {
         ...data,
         "date_of_birth": dayjs(data.date_of_birth).format('YYYY-MM-DD'),
         "specialization": data.specialization.value,
-        "experience": data.experience!.value,
+        "experience": data.experience.value,
       };
       dispatch(applyRegistration({id: inboundData.user_event_id, ...formData}))
     }

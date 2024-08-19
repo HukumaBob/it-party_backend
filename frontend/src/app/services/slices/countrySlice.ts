@@ -1,7 +1,13 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {API} from "../constants.ts";
 
-type TCountry = { id: number; name: string; index: number };
+type TCountry = {
+  id: number;
+  name: string;
+  index: number;
+  country_code: string;
+  input_mask: string;
+};
 type TOption = { value: number; label: string };
 type TInitialState = {
   data: TCountry[];
@@ -22,8 +28,19 @@ export const getCountryList =
         if (!response.ok) {
           return rejectWithValue(response.statusText);
         }
-        const data: TCountry[] = await response.json();
-        return data
+        const data = await response.json();
+        const addData = [
+          {country_code: 'RU', input_mask: '+9 (999) 999-9999'},
+          {country_code: 'UA', input_mask: '+999 (99) 999-99-99'},
+          {country_code: 'BY', input_mask: '+999 (99) 999-99-99'}
+        ]
+        type TData = {
+          id: number;
+          name: string;
+          index: number;
+        }
+        const resultData: TCountry[] = data.map((item: TData, i: number) => ({...item, ...addData[i]}));
+        return resultData
       } catch (err) {
         return rejectWithValue(err instanceof Error ? err.message : 'unknown error');
       }

@@ -188,14 +188,20 @@ export const initialState: TInitialState = {
   userEmail: null,
 };
 
-export const authorizationSlice = createSlice({
+const authorizationSlice = createSlice({
   name: "authorization",
   initialState,
   reducers: {
     setOpenAuthorizationModal: (state, action: PayloadAction<boolean>) => {
-      state.modalIsOpen = action.payload;
-      if (!action.payload) {
+      const modalIsOpen = action.payload;
+      state.modalIsOpen = modalIsOpen;
+      if (!modalIsOpen) {
         state.formType = 'login';
+        state.statusLogin = 'idle';
+        state.statusCreate = 'idle';
+        state.formError = null;
+        state.errorCreate = null;
+        state.errorLogin = null;
       }
     },
     setOpenAuthorizationSuccessModal: (state, action: PayloadAction<boolean>) => {
@@ -268,7 +274,6 @@ export const authorizationSlice = createSlice({
             state.activationTokenIsExpired = true;
           }
           if (statusCode === 400) {
-            console.log('asdf')
             state.activationTokenNotFound = true;
           }
         }

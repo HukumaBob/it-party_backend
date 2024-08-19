@@ -11,10 +11,8 @@ export const ContainerRecommended = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (statusRecommended === 'idle' || statusRecommended === 'error') {
-      dispatch(getSliderList('recommended'));
-    }
-  }, [dispatch]);
+    statusRecommended === 'idle' && dispatch(getSliderList('recommended'));
+  }, []);
 
   if (statusRecommended === 'loading') {
     return <LoadingIcon className='loading-error-icon'/>

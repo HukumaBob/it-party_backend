@@ -1,5 +1,5 @@
 import {useAppSelector, useAppDispatch} from "../../app/services/hooks.ts";
-import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
+import {setModalResetPassword} from "../../app/services/slices/profileResetPasswordSlice.ts";
 import {FormResetPassword} from "../FormResetPassword";
 import {ModalWrapper} from "../../shared/ModalWrapper";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
@@ -9,7 +9,7 @@ import style from "./index.module.scss";
 
 export const ModalResetPassword = () => {
   const dispatch = useAppDispatch();
-  const {status, email, formType, modalIsOpen} = useAppSelector(state => state.resetPassword);
+  const {status, email, formType, modalIsOpen} = useAppSelector(state => state.profileResetPassword);
   const handleCloseModal = () => {
     dispatch(setModalResetPassword({open: false}));
   };

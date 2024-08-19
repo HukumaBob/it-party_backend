@@ -1,6 +1,3 @@
-import {useEffect} from "react";
-import {useAppDispatch} from "../../app/services/hooks.ts";
-import {closeModalSuccess} from "../../app/services/slices/applyRegistrationSlice";
 import {SliderCube} from '../../entities/SliderCube'
 import {EventsCatalog} from "../../widgets/EventsCatalog";
 import {QuestionAnswer} from "../../entities/QuestionAnswer";
@@ -10,21 +7,13 @@ import {SliderReview} from "../../entities/SliderReview";
 import cn from 'classnames'
 import style from "./index.module.scss";
 
-export const MainPage = () => {
-  const dispatch = useAppDispatch();
-  useEffect(() => () => {
-    // закрыть модалку если покидаем страницу
-    dispatch(closeModalSuccess())
-  }, [dispatch]);
-
-  return (
-    <div className={cn(style.container, 'container')}>
-      <SliderCube/>
-      <EventsCatalog/>
-      <QuestionAnswer/>
-      <ContainerPopular/>
-      <ContainerRecommended/>
-      <SliderReview/>
-    </div>
-  );
-};
+export const MainPage = () => (
+  <div className={cn(style.container, 'container')}>
+    <SliderCube/>
+    <EventsCatalog/>
+    <QuestionAnswer/>
+    <ContainerPopular/>
+    <ContainerRecommended/>
+    <SliderReview/>
+  </div>
+);

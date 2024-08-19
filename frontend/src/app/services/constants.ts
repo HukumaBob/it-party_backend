@@ -3,16 +3,17 @@ type TEndpoints = {
   USERS: string;
   USER_ACTIVATE: string;
   RESEND_ACTIVATION: string;
-  
-  USER_DELETE: string,
   USER_PROFILE: string;
+  DELETE_USER: string;
   RESET_PASSWORD: string;
 
   REGISTER_AND_APPLY: string;
+  REMOVE_FAVORITE: string;
   SUBMIT_APPLICATION: string;
   USER_EVENT_STATUS: string;
 
   EVENT_LIST: string;
+  GALLERY: string;
   ADMIN_EVENT_LIST: string;
   COUNTRY_LIST: string;
   FAMILY_STATUS_LIST: string;
@@ -24,7 +25,6 @@ type TEndpoints = {
   STACK_LIST: string;
   NOTIFICATION_LIST: string;
 
-  // REMOVE_FROM_FAVORITE: string;
   // LIST_EVENT_VIEW_STAFF_API_ENDPOINT: string;
   // REJECT_REASON: string;
 };
@@ -33,33 +33,36 @@ const BASE_URL = "";
 // export const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8000";
 
 const endpoints: TEndpoints = {
-  LOGIN: "auth/jwt/create/",                          // POST, авторизация(получение jwt токена)
-  USERS: "auth/users/",                               // POST, регистрация пользователя
-  USER_ACTIVATE: "auth/users/activation/",            // POST, активация пользователя по email
-  RESEND_ACTIVATION: "auth/users/resend_activation/", // POST, повторная отправка имейла для активации
-  USER_DELETE: "api/v1/delete-user",
-  USER_PROFILE: "api/v1/userprofiles/me/",            // GET, PATCH, DELETE, получение/обновление/удаление пользователя
-  RESET_PASSWORD: "auth/users/reset_password/",       // POST, сброс пароля пользователя
+  LOGIN: "auth/jwt/create/",                                 // POST, авторизация(получение jwt токена)
+  USERS: "auth/users/",                                      // POST, регистрация пользователя
+  USER_ACTIVATE: "auth/users/activation/",                   // POST, активация пользователя по email
+  RESEND_ACTIVATION: "auth/users/resend_activation/",        // POST, повторная отправка имейла для активации
+  USER_PROFILE: "api/v1/userprofiles/me/",                   // GET, PATCH, получение/обновление пользователя
+  DELETE_USER: "api/v1/delete-user/",                        // DELETE, удаление пользователя
+  RESET_PASSWORD: "auth/users/reset_password/",              // POST, сброс пароля пользователя
 
-  REGISTER_AND_APPLY: "api/v1/register_and_apply",    // GET, получение данных для регистрации на ивент
-  SUBMIT_APPLICATION: "api/v1/submit_application",    // POST, подача заявки на участие в ивенте
-  USER_EVENT_STATUS: "api/v1/user_event_status/",     // PATCH, статус участия пользователя в ивенте
+  REGISTER_AND_APPLY: "api/v1/register_and_apply",           // GET, получение данных для регистрации на ивент
+                                                             // POST, добавление в favorite
+  REMOVE_FAVORITE: "api/v1/remove_event_from_favorite/",     // DELETE, удаление ивента из избранного
+  SUBMIT_APPLICATION: "api/v1/submit_application",           // POST, подача заявки на участие в ивенте
+  USER_EVENT_STATUS: "api/v1/user_event_status/",            // PATCH, статус участия пользователя в ивенте
 
-  EVENT_LIST: "api/v1/events",                        // GET, список, ивенты
-  ADMIN_EVENT_LIST: 'api/v1/admin_events',            // GET, список, ивенты администратора
-  COUNTRY_LIST: "api/v1/countries/",                  // GET, список, страны
-  FAMILY_STATUS_LIST: "api/v1/family-statuses/",      // GET, список, семейное положение
-  EDUCATION_LIST: "api/v1/educations/",               // GET, список, образование
-  INCOME_LIST: "api/v1/incomes/",                     // GET, список, доходы
-  CITY_LIST: 'api/v1/cities/',                        // GET, список, города
-  SPECIALIZATION_LIST: 'api/v1/specialization/',      // GET, список, специализации
-  EXPERIENCE_LIST: 'api/v1/experience/',              // GET, список, опыт работы
-  STACK_LIST: 'api/v1/specialization_stacks/',        // GET, список, специализаций с IT языками по каждой специализации
-  NOTIFICATION_LIST: 'api/v1/notifications/',         // GET, список, уведомления
+  EVENT_LIST: "api/v1/events",                               // GET, список ивентов
+                                                             // POST, PATCH, DELETE, создание/редактирование/удаление ивента
+  GALLERY: "api/v1/gallery/",                                 // POST, отправка изображения ивента
+  ADMIN_EVENT_LIST: 'api/v1/admin_events',                   // GET, список, ивенты администратора
+  COUNTRY_LIST: "api/v1/countries/",                         // GET, список, страны
+  FAMILY_STATUS_LIST: "api/v1/family-statuses/",             // GET, список, семейное положение
+  EDUCATION_LIST: "api/v1/educations/",                      // GET, список, образование
+  INCOME_LIST: "api/v1/incomes/",                            // GET, список, доходы
+  CITY_LIST: 'api/v1/cities/',                               // GET, список, города
+  SPECIALIZATION_LIST: 'api/v1/specialization/',             // GET, список, специализации
+  EXPERIENCE_LIST: 'api/v1/experience/',                     // GET, список, опыт работы
+  STACK_LIST: 'api/v1/specialization_stacks/',               // GET, список, специализаций с IT языками по каждой специализации
+  NOTIFICATION_LIST: 'api/v1/notifications/',                // GET, список, уведомления
 
-  // REMOVE_FROM_FAVORITE: "api/v1/remove_event_from_favorite/", // удаление ивента из избранного
-  // LIST_EVENT_VIEW_STAFF: "api/v1/list_event_viev_staff/",     // просмотр списка ивентов персоналом
-  // REJECT_REASON : "api/v1/rejection_reason"                   // GET, список причин отказа
+  // LIST_EVENT_VIEW_STAFF: "api/v1/list_event_viev_staff/", // просмотр списка ивентов персоналом
+  // REJECT_REASON : "api/v1/rejection_reason"               // GET, список причин отказа
 };
 
 export const API = new Proxy(endpoints, {

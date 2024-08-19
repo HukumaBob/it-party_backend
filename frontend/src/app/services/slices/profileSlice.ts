@@ -7,6 +7,7 @@ type TErrorDetailed = TError & Record<string, string[]>;
 type TResponseError = TError | TErrorDetailed | null | undefined;
 type TStatus = 'idle' | 'loading' | 'success' | 'error';
 type TUserProfile = {
+  "id": number;
   "phone": string;
   "place_of_work": string;
   "position": string;
@@ -130,7 +131,7 @@ export const deleteUserProfile =
     'delete_user_profile',
     async function (_, {rejectWithValue, getState}) {
       const accessToken = getState().authorization.accessToken;
-      const response = await fetch(API.USER_DELETE, {
+      const response = await fetch(API.DELETE_USER, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -161,7 +162,7 @@ const initialState: TInitialState = {
   modalEditAvatarIsOpen: false,
 };
 
-export const profileSlice = createSlice({
+const profileSlice = createSlice({
   name: "profile_user",
   initialState,
   reducers: {

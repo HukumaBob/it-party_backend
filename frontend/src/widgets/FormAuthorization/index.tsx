@@ -8,7 +8,7 @@ import {
   setFormType,
   setOpenAuthorizationModal,
 } from "../../app/services/slices/authorizationSlice.ts";
-import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
+import {setModalResetPassword} from "../../app/services/slices/profileResetPasswordSlice.ts";
 import YandexIcon from "../../app/assets/icons/yandex.svg?react";
 import EyeIcon from "../../app/assets/icons/eye.svg?react";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";

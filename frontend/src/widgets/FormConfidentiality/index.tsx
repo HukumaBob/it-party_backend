@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {useForm} from "react-hook-form";
 import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
 import {deleteUserProfile, updateUserProfile} from "../../app/services/slices/profileSlice.ts";
-import {setModalResetPassword} from "../../app/services/slices/resetPasswordSlice.ts";
+import {setModalResetPassword} from "../../app/services/slices/profileResetPasswordSlice.ts";
 import {logoutUser} from "../../app/services/slices/authorizationSlice.ts";
 import {ModalWrapper} from "../../shared/ModalWrapper";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
@@ -99,7 +99,7 @@ export const FormConfidentiality = () => {
         <h3>Номер телефона</h3>
         <input
           className={cn({'error': errors.phone})}
-          type='phone'
+          type='tel'
           placeholder='+78005550022'
           {...register("phone", {
             minLength: {

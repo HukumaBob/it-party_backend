@@ -6,17 +6,17 @@ import ArrowIcon from "../../../app/assets/icons/arrow_down.svg?react";
 type TOption = {
   value: string | number;
   label: string;
-}
-
+};
 type TProps = {
   options: TOption[];
   name: string;
   control: any;
   placeholder?: string;
   rules?: any;
-}
+  multiple?: boolean;
+};
 
-const customStyles: (hasError: boolean) => StylesConfig<TOption, false> = (isError) => ({
+const customStyles: (hasError: boolean) => StylesConfig<TOption, boolean> = (isError) => ({
   control: (provided, state) => ({
     ...provided,
     borderRadius: '8px',
@@ -56,6 +56,29 @@ const customStyles: (hasError: boolean) => StylesConfig<TOption, false> = (isErr
     color: 'var(--c-black-300)',
     fontSize: '14px',
   }),
+  multiValue: (provided) => ({
+    ...provided,
+    backgroundColor: 'var(--c-str-light)',
+    borderRadius: '4px',
+    padding: '4px 2px',
+  }),
+  multiValueLabel: (provided) => ({
+    ...provided,
+    color: 'var(--c-def-black)',
+    fontFamily: 'YS-Text',
+    fontSize: '16px',
+  }),
+  multiValueRemove: (provided) => ({
+    ...provided,
+    color: 'var(--c-def-black)',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginRight: '3px',
+    '&:hover': {
+      backgroundColor: 'var(--c-er-red)',
+      color: 'var(--c-def-white)',
+    },
+  }),
 });
 
 const DropdownIndicator = (props: any) => {
@@ -66,7 +89,7 @@ const DropdownIndicator = (props: any) => {
   );
 };
 
-export const Select: React.FC<TProps> = ({options, name, control, placeholder, rules}) => {
+export const Select: React.FC<TProps> = ({options, name, control, placeholder, rules, multiple = false}) => {
   return (
     <Controller
       name={name}
@@ -76,6 +99,7 @@ export const Select: React.FC<TProps> = ({options, name, control, placeholder, r
         <ReactSelect
           {...field}
           options={options}
+          isMulti={multiple}
           styles={customStyles(Boolean(error))}
           placeholder={placeholder}
           components={{DropdownIndicator}}

@@ -1,7 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
 import {API} from "../constants.ts";
 
-type TFormData = { email: string; }
 type TFormType = 'authorization' | 'profile' | null;
 type TInitialState = {
   modalIsOpen: boolean;
@@ -9,10 +8,10 @@ type TInitialState = {
   email: string | null;
   status: 'idle' | 'loading' | 'success' | 'error';
   error: string | null;
-}
+};
 
 export const resetPassword =
-  createAsyncThunk<undefined, TFormData, { rejectValue: string }>(
+  createAsyncThunk<undefined, { email: string }, { rejectValue: string }>(
     'post_reset_password',
     async function (formData, {rejectWithValue}) {
       try {
@@ -38,8 +37,8 @@ const initialState: TInitialState = {
   error: null,
 };
 
-const resetPasswordSlice = createSlice({
-  name: "reset_password",
+const profileResetPasswordSlice = createSlice({
+  name: "profile_reset_password",
   initialState,
   reducers: {
     setModalResetPassword: (state, action: PayloadAction<{ open: boolean, formType?: TFormType }>) => {
@@ -68,5 +67,5 @@ const resetPasswordSlice = createSlice({
   },
 });
 
-export const {setModalResetPassword} = resetPasswordSlice.actions;
-export default resetPasswordSlice.reducer;
+export const {setModalResetPassword} = profileResetPasswordSlice.actions;
+export default profileResetPasswordSlice.reducer;

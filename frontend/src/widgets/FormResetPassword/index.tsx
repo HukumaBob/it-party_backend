@@ -1,14 +1,14 @@
 import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
-import {resetPassword} from '../../app/services/slices/resetPasswordSlice.ts'
+import {resetPassword} from '../../app/services/slices/profileResetPasswordSlice.ts'
 import cn from "classnames";
 
 type TFormData = { email: string }
 
 export const FormResetPassword = () => {
   const dispatch = useAppDispatch();
-  const {formType} = useAppSelector(state => state.resetPassword)
+  const {formType} = useAppSelector(state => state.profileResetPassword)
   const {email} = useAppSelector(state => state.profile.data);
 
   const {

@@ -12,7 +12,7 @@ type TCubeSlide = {
   title: string;
   city: string;
   image: string;
-}
+};
 type TEvent = {
   id: number;
   info: string;
@@ -22,7 +22,7 @@ type TEvent = {
   date: string;
   time: string;
   user_application_status: 'not_applied' | 'pending' | 'approved' | 'rejected' | 'is_favorite';
-}
+};
 type TInitialState = {
   recommended: TEvent[];
   statusRecommended: 'idle' | 'loading' | 'success' | 'error';
@@ -31,11 +31,11 @@ type TInitialState = {
   statusPopular: 'idle' | 'loading' | 'success' | 'error';
   errorPopular: string | null;
   cube: TCubeSlide[],
-}
+};
 type TResponse = {
   results: TEvent[];
   count: number;
-}
+};
 type TType = 'recommended' | 'popular';
 
 export const getSliderList =
