@@ -17,10 +17,20 @@ class BaseImageSerializer(serializers.ModelSerializer):
     # Определяем метод для обработки полей для фотографий (без домена, только путь)
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+
         for field in self.image_fields:
             if field in representation and getattr(instance, field, None):
-                representation[field] = f"{settings.MEDIA_URL}{getattr(instance, field).name}"
+                # Добавляем полный URL только если это запрос на чтение
+                media_path = ""
+                if self._is_read_request():
+                    media_path = f"{settings.MEDIA_URL}"
+
+                representation[field] = f"{media_path}{getattr(instance, field).name}"
         return representation
+
+    def _is_read_request(self):
+        request = self.context.get('request')
+        return request and request.method not in ['POST', 'PUT', 'PATCH']
 
 class UserApplicationStatusMixin:
     """Миксин для добавления поля user_application_status в сериализатор."""

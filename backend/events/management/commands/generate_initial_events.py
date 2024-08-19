@@ -41,7 +41,7 @@ class Command(BaseCommand):
                 speaker = Speaker.objects.create(
                     foto=self.get_real_image('test_users'),  # Замена фото спикера на реальное изображение
                     name=fake.name(),
-                    info=fake.text()
+                    info=fake.text(max_nb_chars=50)
                 )
                 speaker.specializations.set([random.choice(specializations)])
                 event.speakers.add(speaker)
@@ -49,7 +49,7 @@ class Command(BaseCommand):
             for _ in range(random.randint(4, 5)):
                 event_gallery = EventGallery.objects.create(
                     event_photo=self.get_real_image('test_gallery'),  # Замена фото галереи на реальное изображение
-                    caption=fake.name(),
+                    caption=fake.text(max_nb_chars=30),
                 )
                 event.gallery.add(event_gallery)
 
