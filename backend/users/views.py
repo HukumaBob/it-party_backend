@@ -1,4 +1,5 @@
 from django.contrib.auth.views import PasswordResetConfirmView
+from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -12,17 +13,19 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils.translation import gettext_lazy as _
 from .models import (
+    User,
     UserProfile,
     Specialization,
     Stack,
     Experience,
     )
-from .permissions import IsOwnerOrAdmin
+from .permissions import IsOwnerOrAdmin, IsSuperUser
 from .serializers import (
     UserProfileSerializer,
     SpecializationSerializer,
     StackSerializer,
-    ExperienceSerializer
+    ExperienceSerializer,
+    UserSimplySerializer
     )
 
 
@@ -167,3 +170,11 @@ class ExperienceViewSet(
     serializer_class = ExperienceSerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = None
+
+
+class SuperUserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSimplySerializer
+    permission_classes = [IsSuperUser]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['is_staff']    

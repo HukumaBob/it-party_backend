@@ -3,6 +3,7 @@ from rest_framework import routers
 from .views import (
     ActivateAccountView,
     CustomPasswordResetConfirmView,
+    SuperUserViewSet,
     UserProfileViewSet,
     SpecializationViewSet,
     StackViewSet,
@@ -29,6 +30,9 @@ router_v1.register(
     )
 router_v1.register(
     r'experience', ExperienceViewSet, basename='experience'
+    )
+router_v1.register(
+    r'superuser', SuperUserViewSet, basename='superuser'
     )
 
 urlpatterns = [

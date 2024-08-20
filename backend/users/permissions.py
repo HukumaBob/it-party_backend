@@ -19,3 +19,17 @@ class IsOwnerOrAdmin(permissions.BasePermission):
             return True
         # Во всех остальных случаях доступ запрещен
         return False
+
+class IsSuperUser(permissions.BasePermission):
+    """
+    Разрешение, позволяющее суперпользователям создавать, обновлять, удалять и
+    просматривать объекты. Все остальные не имеют доступа.
+    """
+
+    def has_permission(self, request, view):
+        # Проверка на суперпользователя для всех запросов
+        return request.user and request.user.is_superuser
+
+    def has_object_permission(self, request, view, obj):
+        # Проверка на суперпользователя для операций с объектом
+        return request.user and request.user.is_superuser

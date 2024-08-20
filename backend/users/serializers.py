@@ -64,6 +64,14 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserSimplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id', 'email', 'first_name',
+            'last_name', 'is_staff'
+            )
+
 class UserPassportSerializer(serializers.ModelSerializer):
 
     class Meta:
