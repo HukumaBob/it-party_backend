@@ -19,8 +19,20 @@
   }
 }
 
-.buttonSubmit {
+.buttonsBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.errorMessage {
   margin-top: 20px;
+  margin-bottom: 5px;
+  display: block;
+  font-size: var(--sp-13);
+  color: var(--c-er-red);
+}
+
+.buttonSubmit {
   padding: 15px;
   font-weight: 500;
   color: var(--c-def-white);
@@ -29,6 +41,7 @@
 }
 
 .buttonArchive {
+  margin-top: 5px;
   padding: 14px;
   font-weight: 500;
   color: var(--c-def-blue);

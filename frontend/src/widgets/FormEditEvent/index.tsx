@@ -1,27 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {useParams} from "react-router-dom";
 import dayjs from "dayjs";
 import {useForm} from "react-hook-form";
 import {DatePicker} from "../../shared/FormFields/DatePicker";
 import {TimePicker} from "../../shared/FormFields/TimePicker";
 import {Select} from "../../shared/FormFields/Select";
 import {useAppDispatch, useAppSelector} from "../../app/services/hooks.ts";
-import {createEvent} from "../../app/services/slices/adminEventCreateSlice.ts";
+import {adminEditEvent} from "../../app/services/slices/adminEditEventSlice.ts";
 import LoadingIcon from "../../app/assets/icons/loading.svg?react";
 import ErrorIcon from "../../app/assets/icons/error.svg?react";
 import cn from "classnames";
 import style from "./index.module.scss";
 
-type FileWithMetadata = {
-  file: File;
-  fileName: string;
-  fieldName: string;
-  url: string;
-  caption: string;
-};
-type TProps = {
-  selectedFiles: FileWithMetadata[];
-  logo: string;
-  setFilesError: (value: boolean) => void;
+type TSelectedFiles = {
+  files: { file: File; fileName: string; url: string; caption: string, isServerAsset: boolean }[];
+  logoIndex: number;
 };
 type TOption = { value: number; label: string };
 export type TFormData = {
@@ -39,36 +32,69 @@ export type TFormData = {
   stream: string;
   record_link: string;
   form_template: Record<string, any>;
-  logo: string;
-  files: File[];
+  files: TSelectedFiles;
+};
+type TProps = {
+  selectedFiles: TSelectedFiles;
+  galleryError: boolean;
+  setGalleryError: (value: boolean) => void;
 };
 
-export const FormCreateEvent: React.FC<TProps> = ({selectedFiles, logo, setFilesError}) => {
-  const dispatch = useAppDispatch()
+export const FormEditEvent: React.FC<TProps> = ({selectedFiles, setGalleryError, galleryError}) => {
+  const dispatch = useAppDispatch();
+  const {eventId} = useParams();
+  const type: 'update' | 'create' = eventId ? 'update' : 'create'
   const {countrySelectOptions, status: countryListStatus} = useAppSelector((state) => state.country);
   const {citySelectOptions, status: cityListStatus} = useAppSelector((state) => state.city);
-  const {statusCreateEvent} = useAppSelector((state) => state.eventCreate);
+  const {statusCreateEvent, statusGetEvent, statusUpdateEvent, data} = useAppSelector((state) => state.adminEditEvent);
   const {id: userId} = useAppSelector((state) => state.profile.data);
-  const isLoading = [statusCreateEvent, countryListStatus, cityListStatus].includes('loading');
-  const isError = [statusCreateEvent, countryListStatus, cityListStatus].includes('error');
+  const isLoading = [statusCreateEvent, statusGetEvent, statusUpdateEvent, countryListStatus, cityListStatus].includes('loading');
+  const isError = [statusCreateEvent, statusGetEvent, statusUpdateEvent, countryListStatus, cityListStatus].includes('error');
 
   const {
     register,
     handleSubmit,
     formState: {errors},
-    // reset,
     control,
-    // watch,
-    // setValue
+    reset,
   } = useForm<TFormData>({mode: "onTouched"});
+
+  useEffect(() => {
+    // вставка начальных значений в форму:
+    if (statusGetEvent === 'success' && !isLoading && !isError) {
+      const getOption = (data: TOption[], target: number | undefined) =>
+        data.find((option) => option.value === target) || null;
+
+      const format = [];
+      data.online && format.push({value: 'online', label: 'online'})
+      data.offline && format.push({value: 'offline', label: 'offline'})
+
+      const initialData: Record<string, any> = {
+        name: data.name,
+        date: dayjs(data.date),
+        time: dayjs(data.time, 'HH:mm:ss'),
+        description: data.description,
+        format: format,
+        // country: getOption(countrySelectOptions, data.country),
+        city: getOption(citySelectOptions, data.city),
+        address: data.address,
+        // speakers: number[];
+        // specializations: number[];
+        // event_admin: number[];
+        stream: data.stream,
+        record_link: data.record_link
+        // form_template: Record<string, any>;
+      }
+      reset(initialData);
+    }
+  }, [statusGetEvent, isLoading, isError]);
 
   const onSubmit = handleSubmit(
     (formData: TFormData) => {
-      if (selectedFiles.length === 0) return setFilesError(true);
-
+      if (selectedFiles.files.length < 2) return setGalleryError(true);
       const {format, country, ...data} = formData;
 
-      const createData = {
+      const eventData = {
         ...data,
         ...format.reduce((acc: Record<string, boolean>, current) => {
           acc[current.value] = true;
@@ -80,7 +106,10 @@ export const FormCreateEvent: React.FC<TProps> = ({selectedFiles, logo, setFiles
         speakers: [],
         specializations: [],
         event_admin: [userId],
-        form_template: {
+      };
+
+      if (type === 'create') {
+        eventData.form_template = {
           "name": "Standart",
           "fields": {
             "first_name": "",
@@ -93,17 +122,23 @@ export const FormCreateEvent: React.FC<TProps> = ({selectedFiles, logo, setFiles
             "phone": "",
             "online": false
           }
-        },
-        logo: logo,
-        files: selectedFiles.map(({file, caption}) => ({file, caption})),
-      };
-      dispatch(createEvent(createData));
+        }
+      }
+      const requestData = {
+        type,
+        eventData,
+        files: selectedFiles,
+        eventId
+      }
+      dispatch(adminEditEvent(requestData));
     }
-  )
+  );
 
   return (
     <form className={style.form} onSubmit={onSubmit}>
-      <h1 className={style.title}>Создать мероприятие</h1>
+      <h1 className={style.title}>
+        {type === 'create' ? 'Создать' : 'Редактировать'} мероприятие
+      </h1>
 
       <div className='inputBlock'>
         <h3 className='required'>Название</h3>
@@ -113,10 +148,7 @@ export const FormCreateEvent: React.FC<TProps> = ({selectedFiles, logo, setFiles
           placeholder='введите название мероприятия'
           {...register('name', {
             required: 'обязательное поле',
-            minLength: {
-              value: 2,
-              message: 'слишком короткое название',
-            },
+            minLength: {value: 2, message: 'слишком короткое название'},
           })}
         />
         <span className='errorMessage'>
@@ -130,6 +162,7 @@ export const FormCreateEvent: React.FC<TProps> = ({selectedFiles, logo, setFiles
           <DatePicker
             name="date"
             control={control}
+            minDate={dayjs()}
             rules={{required: 'обязательное поле'}}
           />
           <span className='errorMessage'>
@@ -172,10 +205,7 @@ export const FormCreateEvent: React.FC<TProps> = ({selectedFiles, logo, setFiles
           placeholder='введите описание мереприятия'
           {...register('description', {
             required: 'обязательное поле',
-            minLength: {
-              value: 2,
-              message: 'слишком короткое описание',
-            },
+            minLength: {value: 2, message: 'слишком короткое описание'},
           })}
         />
         <span className='errorMessage'>
@@ -221,10 +251,7 @@ export const FormCreateEvent: React.FC<TProps> = ({selectedFiles, logo, setFiles
           placeholder='введите адрес'
           {...register('address', {
             required: 'обязательное поле',
-            minLength: {
-              value: 2,
-              message: 'слишком короткий адрес',
-            },
+            minLength: {value: 2, message: 'слишком короткий адрес'},
           })}
         />
         <span className='errorMessage'>
@@ -273,16 +300,20 @@ export const FormCreateEvent: React.FC<TProps> = ({selectedFiles, logo, setFiles
         </span>
       </div>
 
-
-      <button className={style.buttonSubmit} type='submit'>Сохранить</button>
-      <button className={style.buttonArchive} type='button'>В архив</button>
-
+      <div className={style.buttonsBlock}>
+        <span className={style.errorMessage}>
+          {galleryError && 'добавьте не менее 2 фото в галерею'}&nbsp;
+        </span>
+        <button className={style.buttonSubmit} type='submit'>
+          {type === 'create' ? 'Создать' : 'Сохранить'}
+        </button>
+        {type === 'update' && <button className={style.buttonArchive} type='button'>В архив</button>}
+      </div>
 
       <div className={cn('modalLoadingErrorMessage', {'visible': isLoading || isError})}>
         {isLoading && <LoadingIcon/>}
         {isError && <ErrorIcon/>}
       </div>
-
     </form>
-  )
-}
+  );
+};

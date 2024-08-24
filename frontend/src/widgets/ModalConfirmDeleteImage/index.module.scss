@@ -1,0 +1,35 @@
+.title {
+  margin-bottom: var(--sp-36);
+  font-size: var(--sp-24);
+  font-weight: 400;
+  text-align: center;
+
+  span {
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+  }
+}
+
+.buttonsBlock {
+  display: flex;
+  gap: var(--sp-12);
+
+  button {
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 8px;
+    background-color: var(--c-def-blue);
+    color: var(--c-def-white);
+
+    &:first-of-type {
+      background-color: var(--c-er-red);
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .buttonsBlock {
+    flex-direction: column;
+  }
+}

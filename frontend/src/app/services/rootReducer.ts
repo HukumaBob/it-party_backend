@@ -1,5 +1,6 @@
 import {combineReducers} from "redux";
 import adminApplicantsSlice from "./slices/adminApplicantsSlice";
+import adminEditEventSlice from "./slices/adminEditEventSlice.ts";
 import adminEventListSlice from "./slices/adminEventListSlice";
 import applyRegistrationSlice from "./slices/applyRegistrationSlice";
 import authorizationSlice from "./slices/authorizationSlice.ts";
@@ -10,21 +11,21 @@ import eventListSlice from "./slices/eventListSlice";
 import eventSlice from "./slices/eventSlice";
 import experienceSlice from "./slices/experienceSlice";
 import favoriteSlice from "./slices/favoriteSlice";
-import maritalStatusSlice from "./slices/familyStatusSlice.ts";
 import incomeSlice from "./slices/incomeSlice";
+import maritalStatusSlice from "./slices/familyStatusSlice.ts";
 import notificationSlice from "./slices/notificationSlice";
 import profileEventListSlice from "./slices/profileEventListSlice.ts";
-import profileSlice from "./slices/profileSlice.ts";
 import profileResetPasswordSlice from "./slices/profileResetPasswordSlice.ts";
+import profileSlice from "./slices/profileSlice.ts";
 import questionAnswerSlice from "./slices/questionAnswerSlice";
 import reviewSlice from "./slices/reviewSlice";
 import sliderSlice from "./slices/sliderSlice";
 import specializationsSlice from "./slices/specializationsSlice";
 import stackListSlice from "./slices/stackListSlice";
-import adminEventCreateSlice from "./slices/adminEventCreateSlice.ts";
 
 export const rootReducer = combineReducers({
   adminApplicants: adminApplicantsSlice,
+  adminEditEvent: adminEditEventSlice,
   adminEvents: adminEventListSlice,
   applyRegistration: applyRegistrationSlice,
   authorization: authorizationSlice,
@@ -32,7 +33,6 @@ export const rootReducer = combineReducers({
   country: countrySlice,
   education: educationSlice,
   event: eventSlice,
-  eventCreate: adminEventCreateSlice,
   eventList: eventListSlice,
   experience: experienceSlice,
   familyStatus: maritalStatusSlice,

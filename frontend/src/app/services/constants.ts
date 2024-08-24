@@ -48,8 +48,10 @@ const endpoints: TEndpoints = {
   USER_EVENT_STATUS: "api/v1/user_event_status/",            // PATCH, статус участия пользователя в ивенте
 
   EVENT_LIST: "api/v1/events",                               // GET, список ивентов
+                                                             // + /id/ GET, подрробная информация об ивенте
                                                              // POST, PATCH, DELETE, создание/редактирование/удаление ивента
-  GALLERY: "api/v1/gallery/",                                 // POST, отправка изображения ивента
+  GALLERY: "api/v1/gallery/",                                // POST, отправка изображения ивента
+                                                             //  + /id/ DELETE, удаление изображения
   ADMIN_EVENT_LIST: 'api/v1/admin_events',                   // GET, список, ивенты администратора
   COUNTRY_LIST: "api/v1/countries/",                         // GET, список, страны
   FAMILY_STATUS_LIST: "api/v1/family-statuses/",             // GET, список, семейное положение

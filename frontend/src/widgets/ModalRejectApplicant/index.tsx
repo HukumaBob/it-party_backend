@@ -83,8 +83,8 @@ export const ModalRejectApplicant = () => {
               rules={{required: 'не выбрана причина отказа'}}
             />
             <span className={style.errorMessage}>
-          {errors?.explanation?.message || '\u200B'}
-        </span>
+              {errors?.explanation?.message || '\u200B'}
+            </span>
             <button type='submit'>Отправить</button>
           </form>
         </div>

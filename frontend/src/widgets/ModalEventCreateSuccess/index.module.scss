@@ -1,0 +1,31 @@
+.title {
+  margin-bottom: var(--sp-36);
+  font-size: var(--sp-24);
+  font-weight: 400;
+  text-align: center;
+}
+
+.icon {
+  margin: 0 auto;
+}
+
+.buttonsBlock {
+  display: flex;
+  gap: var(--sp-12);
+
+  a,
+  button {
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 8px;
+    background-color: var(--c-def-blue);
+    color: var(--c-def-white);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .buttonsBlock {
+    flex-direction: column;
+  }
+}

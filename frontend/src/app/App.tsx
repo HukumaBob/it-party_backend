@@ -24,7 +24,7 @@ export const App = () => (
     <Route element={<Layout type='admin'/>}>
       <Route path='/admin' element={<AdminPage/>}/>
       <Route path='/admin/event/new' element={<AdminEventPage/>}/>
-      <Route path='/admin/event/:id' element={<AdminEventPage/>}/>
+      <Route path='/admin/event/:eventId' element={<AdminEventPage/>}/>
       <Route path='/admin/applicants/:id' element={<AdminApplicantsPage/>}/>
       <Route path='/admin/*' element={<NotFoundPage/>}/>
     </Route>

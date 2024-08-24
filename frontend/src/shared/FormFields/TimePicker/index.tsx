@@ -7,7 +7,7 @@ type TProps = {
   name: string;
   control: any;
   rules: any;
-}
+};
 
 export const TimePicker: React.FC<TProps> = ({name, control, rules}) => {
   return (
